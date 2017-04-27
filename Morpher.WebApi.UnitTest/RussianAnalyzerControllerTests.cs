@@ -83,6 +83,7 @@
             Assert.AreEqual(new ServiceErrorMessage(new ExceededDailyLimitException()), serviceErrorMessage);
         }
 
+        [Test]
         public void Declension_Error_WordsNotFound()
         {
             bool paidUser;
