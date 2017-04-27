@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace Morpher.WebApi.Controllers
+﻿namespace Morpher.WebApi.Controllers
 {
+    using System;
+    using System.Web.Mvc;
+
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -13,6 +10,13 @@ namespace Morpher.WebApi.Controllers
             ViewBag.Title = "Home Page";
 
             return View();
+        }
+
+        public ActionResult Default()
+        {
+            ViewBag.Title = "Примеры вызова";
+            ViewBag.Url = "http://api.morphger.ru/";
+            return this.View();
         }
     }
 }

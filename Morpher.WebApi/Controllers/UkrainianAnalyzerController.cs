@@ -28,7 +28,7 @@
             this.morpherLog = morpherLog;
         }
 
-        [Route("declension")]
+        [Route("declension", Name = "UkrainianDeclension")]
         [HttpGet]
         public HttpResponseMessage Declension(string s, string token = null, ResponseFormat? format = null)
         {

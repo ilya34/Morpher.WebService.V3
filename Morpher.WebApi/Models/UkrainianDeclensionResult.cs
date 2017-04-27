@@ -5,7 +5,7 @@
     [DataContract(Name = "GetXmlUkrResult")]
     public class UkrainianDeclensionResult : UkrainianDeclensionForms
     {
-        [DataMember(Name = "рід", EmitDefaultValue = false)]
+        [DataMember(Name = "рід", EmitDefaultValue = false, Order = 7)]
         public string Gender { get; set; }
     }
 }
