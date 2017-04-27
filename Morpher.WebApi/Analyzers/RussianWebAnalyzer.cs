@@ -28,7 +28,7 @@
         {
             if (string.IsNullOrWhiteSpace(s))
             {
-                throw new RussianWordsNotFoundException();
+                throw new WordsNotFoundException();
             }
 
             try
@@ -111,7 +111,7 @@
                 // BEST EXCEPTION HANDLING EVER. 11/10
                 if (exception.Message.Contains("Не найдено русских слов"))
                 {
-                    throw new RussianWordsNotFoundException();
+                    throw new WordsNotFoundException();
                 }
 
                 if (exception.Message.Contains("Склонение числительных, заданных строкой, не поддерживается."))
@@ -127,7 +127,7 @@
         {
             if (string.IsNullOrWhiteSpace(unit))
             {
-                throw new RussianWordsNotFoundException();
+                throw new WordsNotFoundException();
             }
 
             PropisResult result;
@@ -167,7 +167,7 @@
         {
             if (string.IsNullOrWhiteSpace(s))
             {
-                throw new RussianWordsNotFoundException();
+                throw new WordsNotFoundException();
             }
 
             MorpherSoap.AdjectiveGenders result;
@@ -183,7 +183,7 @@
         {
             if (string.IsNullOrWhiteSpace(s))
             {
-                throw new RussianWordsNotFoundException();
+                throw new WordsNotFoundException();
             }
 
             using (WebServiceSoapClient client = new WebServiceSoapClient("WebServiceSoap"))

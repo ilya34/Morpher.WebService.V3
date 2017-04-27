@@ -225,7 +225,7 @@
     <Compile Include="Models\Exceptions\MorpherException.cs" />
     <Compile Include="Models\Exceptions\NotPayedException.cs" />
     <Compile Include="Models\Exceptions\NumeralsDeclensionNotSupportedException.cs" />
-    <Compile Include="Models\Exceptions\RussianWordsNotFoundException.cs" />
+    <Compile Include="Models\Exceptions\WordsNotFoundException.cs" />
     <Compile Include="Models\Exceptions\TokenNotFoundException.cs" />
     <Compile Include="Models\FullName.cs" />
     <Compile Include="Models\Interfaces\IRussianParadigm.cs" />

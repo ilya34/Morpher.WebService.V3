@@ -24,7 +24,7 @@
         {
             if (string.IsNullOrWhiteSpace(s))
             {
-                throw new RussianWordsNotFoundException();
+                throw new WordsNotFoundException();
             }
 
             GetXmlUkrResult result;
@@ -62,7 +62,7 @@
         {
             if (string.IsNullOrWhiteSpace(unit))
             {
-                throw new RussianWordsNotFoundException();
+                throw new WordsNotFoundException();
             }
 
             PropisUkrResult result;
