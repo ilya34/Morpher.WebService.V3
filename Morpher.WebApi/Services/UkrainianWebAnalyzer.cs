@@ -1,12 +1,11 @@
-﻿namespace Morpher.WebApi.Analyzers
+﻿namespace Morpher.WebApi.Services
 {
     using System;
-    using System.Net;
 
-    using Morpher.WebApi.Analyzers.Interfaces;
     using Morpher.WebApi.Models;
     using Morpher.WebApi.Models.Exceptions;
     using Morpher.WebApi.MorpherSoap;
+    using Morpher.WebApi.Services.Interfaces;
 
     public class UkrainianWebAnalyzer : IUkrainianAnalyzer
     {

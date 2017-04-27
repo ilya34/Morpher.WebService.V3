@@ -7,16 +7,13 @@
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            var requestUrl = this.HttpContext.Request.Url;
+            if (requestUrl != null)
+            {
+                this.ViewBag.Url = requestUrl.GetComponents(UriComponents.SchemeAndServer, UriFormat.Unescaped);
+            }
 
             return View();
-        }
-
-        public ActionResult Default()
-        {
-            ViewBag.Title = "Примеры вызова";
-            ViewBag.Url = "http://api.morphger.ru/";
-            return this.View();
         }
     }
 }

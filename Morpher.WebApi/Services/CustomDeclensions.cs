@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebApi.Analyzers
+﻿namespace Morpher.WebApi.Services
 {
     using System;
     using System.Collections.Generic;
@@ -8,9 +8,9 @@
 
     using Dapper;
 
-    using Morpher.WebApi.Analyzers.Interfaces;
     using Morpher.WebApi.Models;
     using Morpher.WebApi.Models.Interfaces;
+    using Morpher.WebApi.Services.Interfaces;
 
     public class CustomDeclensions : ICustomDeclensions
     {

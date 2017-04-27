@@ -10,8 +10,6 @@
     using System.Text;
     using System.Web;
 
-    using Microsoft.Ajax.Utilities;
-
     using Morpher.WebApi.Models;
     using Morpher.WebApi.Models.Exceptions;
 

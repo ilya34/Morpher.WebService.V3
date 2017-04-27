@@ -8,7 +8,6 @@
 
     using Moq;
 
-    using Morpher.WebApi.Analyzers.Interfaces;
     using Morpher.WebApi.ApiThrottler;
     using Morpher.WebApi.Controllers;
     using Morpher.WebApi.Models;

@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebApi.Analyzers.Interfaces
+﻿namespace Morpher.WebApi.Services.Interfaces
 {
     using System;
     using System.Collections.Generic;

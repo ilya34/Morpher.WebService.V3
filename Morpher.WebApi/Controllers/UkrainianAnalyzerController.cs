@@ -5,7 +5,6 @@
     using System.Net.Http;
     using System.Web.Http;
 
-    using Morpher.WebApi.Analyzers.Interfaces;
     using Morpher.WebApi.ApiThrottler;
     using Morpher.WebApi.Extensions;
     using Morpher.WebApi.Models;
