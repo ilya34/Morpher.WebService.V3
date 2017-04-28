@@ -142,9 +142,9 @@
             analyzerController.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             HttpResponseMessage responseMessage = analyzerController.Spell(default(int), "any");
-            responseMessage.TryGetContentValue(out RussianDeclensionResult declensionResult);
+            responseMessage.TryGetContentValue(out RussianNumberSpelling numberSpelling);
 
-            Assert.NotNull(declensionResult);
+            Assert.NotNull(numberSpelling);
         }
     }
 }
