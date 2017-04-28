@@ -7,9 +7,9 @@
         private static readonly string ErrorMessage = "Данный token не найден";
 
         public TokenNotFoundException()
-            : base(ErrorMessage, -1)
+            : base(ErrorMessage, 9)
         {
-            this.Code = -1;
+            this.Code = 9;
         }
 
         public TokenNotFoundException(string message, int code)
