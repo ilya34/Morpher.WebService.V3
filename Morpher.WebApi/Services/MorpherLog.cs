@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebApi.Services.Interfaces
+﻿namespace Morpher.WebApi.Services
 {
     using System;
     using System.Collections.Generic;
@@ -6,9 +6,11 @@
     using System.Data.SqlClient;
     using System.Linq;
     using System.Net.Http;
+    using System.Security.Policy;
 
     using Morpher.WebApi.Extensions;
     using Morpher.WebApi.Models.Exceptions;
+    using Morpher.WebApi.Services.Interfaces;
 
     public class MorpherLog : IMorpherLog
     {
@@ -17,6 +19,8 @@
         private readonly DataTable dataTable;
 
         private readonly int logCapicity;
+
+        private readonly Object lockObject = new object();
 
         public MorpherLog(string connectionString, int logCapicity)
         {
@@ -38,7 +42,8 @@
             string remoteAddress = message.GetClientIp();
             Dictionary<string, string> dictionary = message.GetQueryStrings();
             string queryString = string.Empty;
-            string querySource = message.RequestUri.ToString();
+            string querySource = new Uri(message.RequestUri.ToString()).AbsolutePath;
+
             int errorCode = exception?.Code ?? 0;
             if (dictionary != null)
             {
@@ -48,32 +53,33 @@
             string userAgent = message.Headers.UserAgent?.ToString();
             Guid? token = message.GetToken();
 
-            this.dataTable.Rows.Add(remoteAddress, queryString, querySource, token, userAgent, errorCode);
-
-            if (this.dataTable.Rows.Count >= this.logCapicity)
+            lock (this.lockObject)
             {
-                using (SqlConnection connection = new SqlConnection(this.connectionString))
+                this.dataTable.Rows.Add(remoteAddress, queryString, querySource, token, userAgent, errorCode);
+
+                if (this.dataTable.Rows.Count >= this.logCapicity)
                 {
-                    using (
-                        SqlBulkCopy bulkCopy = new SqlBulkCopy(
-                            connection,
-                            SqlBulkCopyOptions.TableLock | SqlBulkCopyOptions.FireTriggers
-                            | SqlBulkCopyOptions.UseInternalTransaction,
-                            null))
+                    using (SqlConnection connection = new SqlConnection(this.connectionString))
                     {
-                        foreach (DataColumn column in this.dataTable.Columns)
+                        using (SqlBulkCopy bulkCopy = new SqlBulkCopy(
+                            connection,
+                            SqlBulkCopyOptions.TableLock | SqlBulkCopyOptions.FireTriggers | SqlBulkCopyOptions.UseInternalTransaction,
+                            null))
                         {
-                            bulkCopy.ColumnMappings.Add(column.ColumnName, column.ColumnName);
+                            foreach (DataColumn column in this.dataTable.Columns)
+                            {
+                                bulkCopy.ColumnMappings.Add(column.ColumnName, column.ColumnName);
+                            }
+
+                            bulkCopy.DestinationTableName = this.dataTable.TableName;
+                            connection.Open();
+                            bulkCopy.WriteToServer(this.dataTable);
+                            connection.Close();
                         }
-
-                        bulkCopy.DestinationTableName = this.dataTable.TableName;
-                        connection.Open();
-                        bulkCopy.WriteToServer(this.dataTable);
-                        connection.Close();
                     }
-                }
 
-                this.dataTable.Rows.Clear();
+                    this.dataTable.Rows.Clear();
+                }
             }
         }
     }

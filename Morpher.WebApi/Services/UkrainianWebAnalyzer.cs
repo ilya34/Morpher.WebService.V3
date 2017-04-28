@@ -86,13 +86,13 @@
                            UnitDeclension =
                                new UkrainianDeclensionForms()
                                    {
-                                       Nominative = result.n.Н,
-                                       Genitive = result.n.Р,
-                                       Dative = result.n.Д,
-                                       Accusative = result.n.З,
-                                       Instrumental = result.n.О,
-                                       Prepositional = result.n.М,
-                                       Vocative = result.n.К
+                                       Nominative = result.unit.Н,
+                                       Genitive = result.unit.Р,
+                                       Dative = result.unit.Д,
+                                       Accusative = result.unit.З,
+                                       Instrumental = result.unit.О,
+                                       Prepositional = result.unit.М,
+                                       Vocative = result.unit.К
                                    }
                        };
         }

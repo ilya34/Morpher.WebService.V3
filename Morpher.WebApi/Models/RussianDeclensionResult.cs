@@ -11,16 +11,16 @@
         [DataMember(Name = "множественное", EmitDefaultValue = false, Order = 8)]
         public RussianDeclensionForms Plural { get; set; }
 
-        [DataMember(Name = "ФИО", EmitDefaultValue = false, Order = 9)]
+        [DataMember(Name = "ФИО", EmitDefaultValue = false, Order = 13)]
         public FullName FullName { get; set; }
 
-        [DataMember(Order = 10, Name = "Где", EmitDefaultValue = false)]
+        [DataMember(Order = 10, Name = "где", EmitDefaultValue = false)]
         public string Where { get; set; }
 
-        [DataMember(Order = 11, Name = "Куда", EmitDefaultValue = false)]
+        [DataMember(Order = 11, Name = "куда", EmitDefaultValue = false)]
         public string To { get; set; }
 
-        [DataMember(Order = 12, Name = "Откуда", EmitDefaultValue = false)]
+        [DataMember(Order = 12, Name = "откуда", EmitDefaultValue = false)]
         public string From { get; set; }
     }
 }

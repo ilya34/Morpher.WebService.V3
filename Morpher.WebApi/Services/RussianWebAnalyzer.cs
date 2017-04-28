@@ -60,13 +60,13 @@
                     RussianDeclensionForms declensionForms =
                         new RussianDeclensionForms()
                         {
-                            Nominative = result.И,
-                            Genitive = result.Р,
-                            Dative = result.Д,
-                            Accusative = result.В,
-                            Instrumental = result.Т,
-                            Prepositional = result.П,
-                            Locative = result.По
+                            Nominative = result.множественное.И,
+                            Genitive = result.множественное.Р,
+                            Dative = result.множественное.Д,
+                            Accusative = result.множественное.В,
+                            Instrumental = result.множественное.Т,
+                            Prepositional = result.множественное.П,
+                            Locative = result.множественное.По
                         };
                     declensionResult.Plural = declensionForms;
                 }
@@ -87,7 +87,7 @@
                     this.customDeclensions.SetUserDeclensions(declensionResult, s, false, token.Value);
                     if (declensionResult.Plural != null)
                     {
-                        this.customDeclensions.SetUserDeclensions(declensionResult, s, true, token.Value);
+                        this.customDeclensions.SetUserDeclensions(declensionResult.Plural, s, true, token.Value);
                     }
                 }
 
@@ -142,7 +142,7 @@
                                new RussianDeclensionForms()
                                {
                                    Nominative = result.n.И,
-                                   Genitive = result.n.Т,
+                                   Genitive = result.n.Р,
                                    Dative = result.n.Д,
                                    Accusative = result.n.В,
                                    Instrumental = result.n.Т,
@@ -153,7 +153,7 @@
                                new RussianDeclensionForms()
                                {
                                    Nominative = result.unit.И,
-                                   Genitive = result.unit.Т,
+                                   Genitive = result.unit.Р,
                                    Dative = result.unit.Д,
                                    Accusative = result.unit.В,
                                    Instrumental = result.unit.Т,

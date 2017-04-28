@@ -7,6 +7,7 @@
 
     using Morpher.WebApi.Extensions;
     using Morpher.WebApi.Models;
+    using Morpher.WebApi.Models.Exceptions;
     using Morpher.WebApi.Services.Interfaces;
 
     public class ServiceController : ApiController
@@ -28,7 +29,29 @@
                                           this.apiThrottler.GetQueryLimit(this.Request.GetClientIp()) : 
                                           this.apiThrottler.GetQueryLimit(guid.Value);
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, cacheObject.DailyLimit, format);
+            if (cacheObject != null)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, cacheObject.DailyLimit, format);
+            }
+
+            return this.Request.CreateResponse(
+                HttpStatusCode.OK,
+                new ServiceErrorMessage(new TokenNotFoundException()),
+                format);
+        }
+
+        [Route("validate_client_token")]
+        [HttpGet]
+        public HttpResponseMessage ValidateClientToken(string clientToken, ResponseFormat? format = null)
+        {
+            string ip = this.Request.GetClientIp();
+
+            if (ip != "::1")
+            {
+                return this.Request.CreateResponse(HttpStatusCode.Forbidden, "Not today", format);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, this.apiThrottler.UpdateCache(clientToken), format);
         }
     }
 }

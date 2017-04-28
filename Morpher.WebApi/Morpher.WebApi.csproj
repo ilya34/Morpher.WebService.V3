@@ -213,7 +213,7 @@
     <Compile Include="Models\ServiceErrorMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Interfaces\IMorpherLog.cs" />
-    <Compile Include="Services\Interfaces\MorpherLog.cs" />
+    <Compile Include="Services\MorpherLog.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.AdjectiveGenders.datasource">
