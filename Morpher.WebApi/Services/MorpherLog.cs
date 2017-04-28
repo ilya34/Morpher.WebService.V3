@@ -77,7 +77,7 @@
 
             lock (this.lockObject)
             {
-                this.dataTable.Rows.Add(remoteAddress, queryString.Substring(0, 150), querySource.Substring(0, 150), token, userAgent, errorCode);
+                this.dataTable.Rows.Add(remoteAddress, queryString.Truncate(150), querySource.Truncate(150), token, userAgent, errorCode);
 
                 // Синхронизируем с бд
                 if (this.dataTable.Rows.Count >= this.logCapicity)
