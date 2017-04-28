@@ -34,7 +34,8 @@
         {
             try
             {
-                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out bool paidUser);
+                bool paidUser;
+                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
 
                 if (result != ApiThrottlingResult.Success)
                 {
@@ -63,7 +64,8 @@
         {
             try
             {
-                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out bool paidUser);
+                bool paidUser;
+                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
 
                 if (result != ApiThrottlingResult.Success)
                 {
@@ -92,7 +94,8 @@
         {
             try
             {
-                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out bool paidUser);
+                bool paidUser;
+                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
 
                 if (result != ApiThrottlingResult.Success)
                 {
@@ -121,7 +124,8 @@
         {
             try
             {
-                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out bool paidUser);
+                bool paidUser;
+                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
 
                 if (result != ApiThrottlingResult.Success)
                 {
