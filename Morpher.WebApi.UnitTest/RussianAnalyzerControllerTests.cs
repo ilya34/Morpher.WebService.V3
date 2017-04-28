@@ -131,11 +131,11 @@
 
             RussianAnalyzerController analyzerController =
                 new RussianAnalyzerController(analyzer, apiThrottler, log)
-                    {
-                        Request = new HttpRequestMessage(
+                {
+                    Request = new HttpRequestMessage(
                             HttpMethod.Get,
                             $"http://localhost:0/russian/spell?n={default(int)}&unit=any")
-                    };
+                };
             analyzerController.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             HttpResponseMessage responseMessage = analyzerController.Spell(default(int), "any");

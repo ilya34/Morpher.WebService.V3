@@ -8,6 +8,6 @@
     {
         UkrainianDeclensionResult Declension(string s, Guid? token = null, bool paidUser = false);
 
-        UkrainianNumberSpelling Spell(decimal n, string unit);
+        UkrainianNumberSpelling Spell(int n, string unit);
     }
 }

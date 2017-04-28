@@ -57,7 +57,7 @@
             return declensionResult;
         }
 
-        public UkrainianNumberSpelling Spell(decimal n, string unit)
+        public UkrainianNumberSpelling Spell(int n, string unit)
         {
             if (string.IsNullOrWhiteSpace(unit))
             {

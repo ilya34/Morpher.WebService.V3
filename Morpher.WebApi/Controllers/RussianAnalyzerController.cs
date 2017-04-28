@@ -59,7 +59,7 @@
 
         [Route("spell")]
         [HttpGet]
-        public HttpResponseMessage Spell(decimal n, string unit, string token = null, ResponseFormat? format = null)
+        public HttpResponseMessage Spell(int n, string unit, string token = null, ResponseFormat? format = null)
         {
             try
             {

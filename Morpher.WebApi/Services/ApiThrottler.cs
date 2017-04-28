@@ -61,7 +61,7 @@
         {
             CacheObject cacheObject = this.GetQueryLimit(guid);
             paidUser = false;
-            
+
             // Если cacheObject null, то токен не был найден в кэше, или бд.
             if (cacheObject == null)
             {
@@ -112,18 +112,18 @@
 
         }
 
-       /// <summary>
-       /// Удаляет клиента из кэша
-       /// </summary>
-       /// <param name="key">Токен клиента</param>
-       /// <returns>Успешность удаления клиента</returns>
-        public bool UpdateCache(string key)
+        /// <summary>
+        /// Удаляет клиента из кэша
+        /// </summary>
+        /// <param name="key">Токен клиента</param>
+        /// <returns>Успешность удаления клиента</returns>
+        public bool DeleteFromCache(string key)
         {
             lock (this.lockObject)
             {
-                if (this.memoryCache.Contains(key))
+                if (this.memoryCache.Contains(key.ToLowerInvariant()))
                 {
-                    this.memoryCache.Remove(key);
+                    this.memoryCache.Remove(key.ToLowerInvariant());
                     return true;
                 }
 
@@ -160,7 +160,7 @@
                     "sp_GetQueryCountByIp",
                     new { Ip = ip },
                     commandType: CommandType.StoredProcedure);
-                
+
                 // Я думаю что клиенту не стоит видеть  отрицательное значение запросов.
                 // Так как логи пишуться на все запросы, а после пересчета логов их может оказаться больше чем доступно для юзера.
                 limit -= query;
@@ -171,11 +171,11 @@
 
                 // Записываем  объект в кэш.
                 cacheObject = new CacheObject()
-                                  {
-                                      DailyLimit = limit,
-                                      PaidUser = false,
-                                      Unlimited = false
-                                  };
+                {
+                    DailyLimit = limit,
+                    PaidUser = false,
+                    Unlimited = false
+                };
 
                 this.SetObject(ip, cacheObject);
 
@@ -208,25 +208,27 @@
 
             if (cacheObject.Unlimited)
             {
-                return cacheObject;
+                cacheObject.DailyLimit = 1000;
             }
-
-            int queries;
-
-            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            else
             {
-                queries = connection.QuerySingle<int>(
-                    "sp_GetQueryCount",
-                    new { Token = guid },
-                    commandType: CommandType.StoredProcedure);
-            }
+                int queries;
 
-            // Я думаю что клиенту не стоит видеть  отрицательное значение запросов.
-            // Так как логи пишуться на все запросы, а после пересчета логов их может оказаться больше чем доступно для юзера.
-            cacheObject.DailyLimit -= queries;
-            if (cacheObject.DailyLimit < 0)
-            {
-                cacheObject.DailyLimit = 0;
+                using (SqlConnection connection = new SqlConnection(this.connectionString))
+                {
+                    queries = connection.QuerySingle<int>(
+                        "sp_GetQueryCount",
+                        new { Token = guid },
+                        commandType: CommandType.StoredProcedure);
+                }
+
+                // Я думаю что клиенту не стоит видеть  отрицательное значение запросов.
+                // Так как логи пишуться на все запросы, а после пересчета логов их может оказаться больше чем доступно для юзера.
+                cacheObject.DailyLimit -= queries;
+                if (cacheObject.DailyLimit < 0)
+                {
+                    cacheObject.DailyLimit = 0;
+                }
             }
 
             this.SetObject(guid.ToString(), cacheObject);
@@ -242,7 +244,7 @@
         {
             lock (this.lockObject)
             {
-                this.memoryCache.Set(key, cacheObject, new DateTimeOffset(DateTime.Today.AddDays(1)));
+                this.memoryCache.Set(key.ToLowerInvariant(), cacheObject, new DateTimeOffset(DateTime.Today.AddDays(1)));
             }
         }
 

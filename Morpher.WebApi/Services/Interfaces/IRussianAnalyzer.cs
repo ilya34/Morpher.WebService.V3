@@ -9,7 +9,7 @@
     {
         RussianDeclensionResult Declension(string s, Guid? token = null, bool paidUser = false);
 
-        RussianNumberSpelling Spell(decimal n, string unit);
+        RussianNumberSpelling Spell(int n, string unit);
 
         AdjectiveGenders AdjectiveGenders(string s);
 

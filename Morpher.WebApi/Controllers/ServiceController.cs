@@ -51,7 +51,7 @@
                 return this.Request.CreateResponse(HttpStatusCode.Forbidden, "Not today", format);
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, this.apiThrottler.UpdateCache(clientToken), format);
+            return this.Request.CreateResponse(HttpStatusCode.OK, this.apiThrottler.DeleteFromCache(clientToken), format);
         }
     }
 }

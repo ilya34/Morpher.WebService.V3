@@ -25,7 +25,7 @@
             return ApiThrottlingResult.Success;
         }
 
-        public bool UpdateCache(string key)
+        public bool DeleteFromCache(string key)
         {
             return true;
         }

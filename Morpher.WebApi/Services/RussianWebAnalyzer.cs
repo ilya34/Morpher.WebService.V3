@@ -123,7 +123,7 @@
             }
         }
 
-        public RussianNumberSpelling Spell(decimal n, string unit)
+        public RussianNumberSpelling Spell(int n, string unit)
         {
             if (string.IsNullOrWhiteSpace(unit))
             {
