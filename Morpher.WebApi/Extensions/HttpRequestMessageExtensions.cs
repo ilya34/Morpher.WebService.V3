@@ -53,9 +53,8 @@
 
         public static Guid? GetToken(this HttpRequestMessage message)
         {
-            Guid guid;
 
-            if (Guid.TryParse(message.GetQueryString("token") ?? message.GetBasicAuthorization(), out guid))
+            if (Guid.TryParse(message.GetQueryString("token") ?? message.GetBasicAuthorization(), out Guid guid))
             {
                 return guid;
             }
@@ -83,8 +82,7 @@
 
         public static string GetHeader(this HttpRequestMessage message, string key)
         {
-            IEnumerable<string> keys = null;
-            if (!message.Headers.TryGetValues(key, out keys))
+            if (!message.Headers.TryGetValues(key, out IEnumerable<string> keys))
             {
                 return null;
             }

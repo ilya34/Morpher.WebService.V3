@@ -80,8 +80,7 @@
                 return this.Throttle(httpRequest.GetClientIp());
             }
 
-            Guid guid;
-            if (!Guid.TryParse(token, out guid))
+            if (!Guid.TryParse(token, out Guid guid))
             {
                 return ApiThrottlingResult.InvalidToken;
             }
