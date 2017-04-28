@@ -102,7 +102,8 @@
                 return this.Throttle(httpRequest.GetClientIp());
             }
 
-            if (!Guid.TryParse(token, out Guid guid))
+            Guid guid;
+            if (!Guid.TryParse(token, out guid))
             {
                 return ApiThrottlingResult.InvalidToken;
             }
@@ -148,9 +149,7 @@
             // Проверяем заблокирован ли ip адрес
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
-                if (connection.QuerySingleOrDefault<bool>(
-                    "SELECT Blocked FROM RemoteAddresses WHERE REMOTE_ADDR = @ip",
-                    new { ip }))
+                if (this.IsIpBlocked(ip))
                 {
                     return null;
                 }
@@ -180,6 +179,16 @@
                 this.SetObject(ip, cacheObject);
 
                 return cacheObject;
+            }
+        }
+
+        public bool IsIpBlocked(string ip)
+        {
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                return connection.QuerySingleOrDefault<bool>(
+                    "SELECT Blocked FROM RemoteAddresses WHERE REMOTE_ADDR = @ip",
+                    new { ip });
             }
         }
 

@@ -45,7 +45,8 @@
 
             HttpResponseMessage responseMessage = analyzerController.Declension("any");
 
-            responseMessage.TryGetContentValue(out RussianDeclensionResult declensionResult);
+            RussianDeclensionResult declensionResult;
+            responseMessage.TryGetContentValue(out declensionResult);
 
             Assert.NotNull(declensionResult);
         }
@@ -75,7 +76,8 @@
 
             HttpResponseMessage responseMessage = analyzerController.Declension("any");
 
-            responseMessage.TryGetContentValue(out ServiceErrorMessage serviceErrorMessage);
+            ServiceErrorMessage serviceErrorMessage;
+            responseMessage.TryGetContentValue(out serviceErrorMessage);
 
             Assert.AreEqual(new ServiceErrorMessage(new ExceededDailyLimitException()), serviceErrorMessage);
         }
@@ -110,7 +112,8 @@
 
             HttpResponseMessage responseMessage = analyzerController.Declension("any");
 
-            responseMessage.TryGetContentValue(out ServiceErrorMessage serviceErrorMessage);
+            ServiceErrorMessage serviceErrorMessage;
+            responseMessage.TryGetContentValue(out serviceErrorMessage);
 
             Assert.AreEqual(new ServiceErrorMessage(new ExceededDailyLimitException()), serviceErrorMessage);
         }
