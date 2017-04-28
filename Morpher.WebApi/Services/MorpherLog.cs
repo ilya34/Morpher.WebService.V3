@@ -20,8 +20,18 @@
 
         private readonly int logCapicity;
 
-        private readonly Object lockObject = new object();
+        private readonly object lockObject = new object();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MorpherLog"/> class. 
+        /// Логер в бд
+        /// </summary>
+        /// <param name="connectionString">
+        /// Строка подключения к бд, для синхронизации логов
+        /// </param>
+        /// <param name="logCapicity">
+        /// Размер временного лога
+        /// </param>
         public MorpherLog(string connectionString, int logCapicity)
         {
             this.connectionString = connectionString;
@@ -36,15 +46,27 @@
             this.dataTable.Columns.Add("ErrorCode", typeof(int));
         }
 
-
+        /// <summary>
+        /// Записывает запрос в лог, каждые <see cref="logCapicity"/>
+        /// записывает в базу.
+        /// </summary>
+        /// <param name="message">Http запрос, с него будут получены все данные для лога</param>
+        /// <param name="exception">Исключение, если есть</param>
         public void Log(HttpRequestMessage message, MorpherException exception = null)
         {
+            // ip клиента
             string remoteAddress = message.GetClientIp();
+
+            // запрос
             Dictionary<string, string> dictionary = message.GetQueryStrings();
-            string queryString = string.Empty;
+
+            // источник запроса
             string querySource = new Uri(message.RequestUri.ToString()).AbsolutePath;
 
             int errorCode = exception?.Code ?? 0;
+            string queryString = string.Empty;
+
+            // Формируем строку ввида param=value;param=value
             if (dictionary != null)
             {
                 queryString = string.Join(";", dictionary.Select(pair => $"{pair.Key}={pair.Value}"));
@@ -57,13 +79,15 @@
             {
                 this.dataTable.Rows.Add(remoteAddress, queryString, querySource, token, userAgent, errorCode);
 
+                // Синхронизируем с бд
                 if (this.dataTable.Rows.Count >= this.logCapicity)
                 {
                     using (SqlConnection connection = new SqlConnection(this.connectionString))
                     {
                         using (SqlBulkCopy bulkCopy = new SqlBulkCopy(
                             connection,
-                            SqlBulkCopyOptions.TableLock | SqlBulkCopyOptions.FireTriggers | SqlBulkCopyOptions.UseInternalTransaction,
+                            SqlBulkCopyOptions.TableLock | SqlBulkCopyOptions.FireTriggers
+                            | SqlBulkCopyOptions.UseInternalTransaction,
                             null))
                         {
                             foreach (DataColumn column in this.dataTable.Columns)

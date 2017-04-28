@@ -27,10 +27,16 @@
             this.memoryCache = MemoryCache.Default;
         }
 
+        /// <summary>
+        /// Выполняет тарификацию по IP адресу
+        /// </summary>
+        /// <param name="ip">ip адрес клиента</param>
+        /// <returns>Результат тарификации</returns>
         public ApiThrottlingResult Throttle(string ip)
         {
             CacheObject cacheObject = this.GetQueryLimit(ip);
 
+            // Если GetQueryLimit вернул null, значит IP адрес помечен в бд как Blocked
             if (cacheObject == null)
             {
                 return ApiThrottlingResult.IpBlocked;
@@ -45,16 +51,25 @@
 
         }
 
+        /// <summary>
+        /// Выполняет тарификацию по токену
+        /// </summary>
+        /// <param name="guid">Токен клиента</param>
+        /// <param name="paidUser">Существует для данного клиента активная подписка</param>
+        /// <returns>Результат тарификации</returns>
         public ApiThrottlingResult Throttle(Guid guid, out bool paidUser)
         {
             CacheObject cacheObject = this.GetQueryLimit(guid);
             paidUser = false;
+            
+            // Если cacheObject null, то токен не был найден в кэше, или бд.
             if (cacheObject == null)
             {
                 return ApiThrottlingResult.InvalidToken;
             }
 
             paidUser = cacheObject.PaidUser;
+
             if (cacheObject.Unlimited)
             {
                 return ApiThrottlingResult.Success;
@@ -68,6 +83,12 @@
             return ApiThrottlingResult.Overlimit;
         }
 
+        /// <summary>
+        /// Выполняет тарификацию
+        /// </summary>
+        /// <param name="httpRequest">Http запрос, из него будет получен токен, или ip адрес клиента</param>
+        /// <param name="paidUser">Существует для данного клиента активная подписка</param>
+        /// <returns>Результат тарификации</returns>
         public ApiThrottlingResult Throttle(HttpRequestMessage httpRequest, out bool paidUser)
         {
             string token = null;
@@ -75,6 +96,7 @@
 
             token = httpRequest.GetQueryString("token") ?? httpRequest.GetBasicAuthorization();
 
+            // Если токен не указан, выполняем тарификацию по IP
             if (string.IsNullOrEmpty(token))
             {
                 return this.Throttle(httpRequest.GetClientIp());
@@ -85,10 +107,16 @@
                 return ApiThrottlingResult.InvalidToken;
             }
 
+            // Выполяем тарификацию по токену
             return this.Throttle(guid, out paidUser);
 
         }
 
+       /// <summary>
+       /// Удаляет клиента из кэша
+       /// </summary>
+       /// <param name="key">Токен клиента</param>
+       /// <returns>Успешность удаления клиента</returns>
         public bool UpdateCache(string key)
         {
             lock (this.lockObject)
@@ -103,6 +131,11 @@
             }
         }
 
+        /// <summary>
+        /// Получает объет кэша по ip.
+        /// </summary>
+        /// <param name="ip">ip клиента</param>
+        /// <returns>Объект кэша</returns>
         public CacheObject GetQueryLimit(string ip)
         {
             CacheObject cacheObject = this.GetObjectFromCache(ip);
@@ -112,6 +145,7 @@
                 return cacheObject;
             }
 
+            // Проверяем заблокирован ли ip адрес
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
                 if (connection.QuerySingleOrDefault<bool>(
@@ -126,12 +160,16 @@
                     "sp_GetQueryCountByIp",
                     new { Ip = ip },
                     commandType: CommandType.StoredProcedure);
+                
+                // Я думаю что клиенту не стоит видеть  отрицательное значение запросов.
+                // Так как логи пишуться на все запросы, а после пересчета логов их может оказаться больше чем доступно для юзера.
                 limit -= query;
                 if (limit < 0)
                 {
                     limit = 0;
                 }
 
+                // Записываем  объект в кэш.
                 cacheObject = new CacheObject()
                                   {
                                       DailyLimit = limit,
@@ -145,6 +183,13 @@
             }
         }
 
+        /// <summary>
+        /// Получает объект кэша по token
+        /// </summary>
+        /// Если объект не доступен в кэше. 
+        /// Объект будет загружен из базы, и помещен в кэш.
+        /// <param name="guid">Токен клиента</param>
+        /// <returns>Объект кэша</returns>
         public CacheObject GetQueryLimit(Guid guid)
         {
             CacheObject cacheObject = this.GetObjectFromCache(guid.ToString());
@@ -154,6 +199,7 @@
                 return cacheObject;
             }
 
+            // Если объекта нет в кэше, нужно проверить его в бд.
             cacheObject = this.GetRecordFromDatabase(guid);
             if (cacheObject == null)
             {
@@ -175,6 +221,8 @@
                     commandType: CommandType.StoredProcedure);
             }
 
+            // Я думаю что клиенту не стоит видеть  отрицательное значение запросов.
+            // Так как логи пишуться на все запросы, а после пересчета логов их может оказаться больше чем доступно для юзера.
             cacheObject.DailyLimit -= queries;
             if (cacheObject.DailyLimit < 0)
             {
@@ -185,6 +233,11 @@
             return cacheObject;
         }
 
+        /// <summary>
+        /// Записывает объект в кэш по ключу.
+        /// </summary>
+        /// <param name="key">Ключ кэша</param>
+        /// <param name="cacheObject">Объект  кэша</param>
         public void SetObject(string key, CacheObject cacheObject)
         {
             lock (this.lockObject)
@@ -193,6 +246,11 @@
             }
         }
 
+        /// <summary>
+        /// Возвращает объект из кэша
+        /// </summary>
+        /// <param name="key">Ключ объекта в кэше</param>
+        /// <returns>Возвращает объект кеша</returns>
         public CacheObject GetObjectFromCache(string key)
         {
             lock (this.lockObject)
@@ -206,6 +264,11 @@
             return null;
         }
 
+        /// <summary>
+        /// Получает объект из бд
+        /// </summary>
+        /// <param name="guid">токен клиента</param>
+        /// <returns>Объект кеша</returns>
         public CacheObject GetRecordFromDatabase(Guid guid)
         {
             using (SqlConnection connection = new SqlConnection(this.connectionString))
@@ -217,6 +280,11 @@
             }
         }
 
+        /// <summary>
+        /// Уменьшает кол-во запросов для клиента
+        /// </summary>
+        /// <param name="key">ключ объекта в кэше</param>
+        /// <returns>Возвращает <c>false</c> если кол-во попыток меньше или равно 0</returns>
         private bool Decrement(string key)
         {
             lock (this.lockObject)

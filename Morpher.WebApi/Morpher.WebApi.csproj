@@ -163,11 +163,11 @@
   <ItemGroup>
     <Compile Include="Services\CustomDeclensions.cs" />
     <Compile Include="Services\Interfaces\ApiThrottlerLocal.cs" />
-    <Compile Include="Services\Interfaces\CustomDeclensionsLocal.cs" />
+    <Compile Include="Services\CustomDeclensionsLocal.cs" />
     <Compile Include="Services\Interfaces\ICustomDeclensions.cs" />
     <Compile Include="Services\Interfaces\IRussianAnalyzer.cs" />
     <Compile Include="Services\Interfaces\IUkrainianAnalyzer.cs" />
-    <Compile Include="Services\Interfaces\MorpherLogLocal.cs" />
+    <Compile Include="Services\MorpherLogLocal.cs" />
     <Compile Include="Services\RussianWebAnalyzer.cs" />
     <Compile Include="Services\UkrainianWebAnalyzer.cs" />
     <Compile Include="Controllers\UkrainianAnalyzerController.cs" />

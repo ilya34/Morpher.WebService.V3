@@ -1,4 +1,4 @@
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Morpher.WebApi.App_Start.NinjectWebCommon), "Start")]
+﻿[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Morpher.WebApi.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Morpher.WebApi.App_Start.NinjectWebCommon), "Stop")]
 
 namespace Morpher.WebApi.App_Start
@@ -70,8 +70,11 @@ namespace Morpher.WebApi.App_Start
         private static void RegisterServices(IKernel kernel)
         {
 
+            
             bool IsLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
 
+            // Если проект запущен как Local, то использутся заглушки для тарифов, и логов.
+            // CustomDeclensions должен смотреть в файл, а не SQL бд
             if (IsLocal)
             {
                 kernel.Bind<ICustomDeclensions>().To<CustomDeclensionsLocal>();

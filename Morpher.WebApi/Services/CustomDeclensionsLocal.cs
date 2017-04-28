@@ -1,8 +1,9 @@
-﻿namespace Morpher.WebApi.Services.Interfaces
+﻿namespace Morpher.WebApi.Services
 {
     using System;
 
     using Morpher.WebApi.Models.Interfaces;
+    using Morpher.WebApi.Services.Interfaces;
 
     public class CustomDeclensionsLocal : ICustomDeclensions
     {

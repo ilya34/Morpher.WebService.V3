@@ -1,8 +1,9 @@
-﻿namespace Morpher.WebApi.Services.Interfaces
+﻿namespace Morpher.WebApi.Services
 {
     using System.Net.Http;
 
     using Morpher.WebApi.Models.Exceptions;
+    using Morpher.WebApi.Services.Interfaces;
 
     public class MorpherLogLocal : IMorpherLog
     {
