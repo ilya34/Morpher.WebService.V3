@@ -126,7 +126,7 @@
             IMorpherLog log = Mock.Of<IMorpherLog>();
 
             IRussianAnalyzer analyzer = Mock.Of<IRussianAnalyzer>(
-                russianAnalyzer => russianAnalyzer.Spell(It.IsAny<decimal>(), It.IsAny<string>())
+                russianAnalyzer => russianAnalyzer.Spell(It.IsAny<int>(), It.IsAny<string>())
                                    == new RussianNumberSpelling());
 
             RussianAnalyzerController analyzerController =
