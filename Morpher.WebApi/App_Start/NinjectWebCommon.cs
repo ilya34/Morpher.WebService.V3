@@ -18,20 +18,20 @@ namespace Morpher.WebApi.App_Start
     using Ninject.Web.Common;
     using Ninject.Web.WebApi;
 
-    public static class NinjectWebCommon 
+    public static class NinjectWebCommon
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
         /// <summary>
         /// Starts the application
         /// </summary>
-        public static void Start() 
+        public static void Start()
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
         }
-        
+
         /// <summary>
         /// Stops the application.
         /// </summary>
@@ -39,7 +39,7 @@ namespace Morpher.WebApi.App_Start
         {
             bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -69,16 +69,30 @@ namespace Morpher.WebApi.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["MorpherDatabase"]
-                .ConnectionString;
 
-            int cacheSize = Convert.ToInt32(ConfigurationManager.AppSettings["Cachesize"]);
+            bool IsLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
+
+            if (IsLocal)
+            {
+                kernel.Bind<ICustomDeclensions>().To<CustomDeclensionsLocal>();
+                kernel.Bind<IApiThrottler>().ToConstant(new ApiThrottlerLocal());
+                kernel.Bind<IMorpherLog>().ToConstant(new MorpherLogLocal());
+            }
+            else
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["MorpherDatabase"].ConnectionString;
+
+                int cacheSize = Convert.ToInt32(ConfigurationManager.AppSettings["Cachesize"]);
+                kernel.Bind<ICustomDeclensions>()
+                    .To<CustomDeclensions>()
+                    .WithConstructorArgument("connectionString", connectionString);
+                kernel.Bind<IApiThrottler>().ToConstant(new ApiThrottler(connectionString));
+                kernel.Bind<IMorpherLog>().ToConstant(new MorpherLog(connectionString, cacheSize));
+            }
+
 
             kernel.Bind<IRussianAnalyzer>().To<RussianWebAnalyzer>();
             kernel.Bind<IUkrainianAnalyzer>().To<UkrainianWebAnalyzer>();
-            kernel.Bind<ICustomDeclensions>().To<CustomDeclensions>().WithConstructorArgument("connectionString", connectionString);
-            kernel.Bind<IApiThrottler>().ToConstant(new ApiThrottler(connectionString));
-            kernel.Bind<IMorpherLog>().ToConstant(new MorpherLog(connectionString, cacheSize));
-        }        
+        }
     }
 }

@@ -162,9 +162,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Services\CustomDeclensions.cs" />
+    <Compile Include="Services\Interfaces\ApiThrottlerLocal.cs" />
+    <Compile Include="Services\Interfaces\CustomDeclensionsLocal.cs" />
     <Compile Include="Services\Interfaces\ICustomDeclensions.cs" />
     <Compile Include="Services\Interfaces\IRussianAnalyzer.cs" />
     <Compile Include="Services\Interfaces\IUkrainianAnalyzer.cs" />
+    <Compile Include="Services\Interfaces\MorpherLogLocal.cs" />
     <Compile Include="Services\RussianWebAnalyzer.cs" />
     <Compile Include="Services\UkrainianWebAnalyzer.cs" />
     <Compile Include="Controllers\UkrainianAnalyzerController.cs" />
@@ -271,7 +274,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Connected Services\MorpherSoap\WebService.wsdl" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -281,6 +283,10 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Web.Local.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -295,6 +301,16 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
