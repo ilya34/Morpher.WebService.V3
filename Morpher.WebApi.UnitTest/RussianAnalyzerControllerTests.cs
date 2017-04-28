@@ -48,7 +48,7 @@
             RussianDeclensionResult declensionResult;
             responseMessage.TryGetContentValue(out declensionResult);
 
-            Assert.NotNull(declensionResult, "RussianDeclensionResult == null");
+            Assert.NotNull(declensionResult);
         }
 
         [Test]
@@ -116,6 +116,35 @@
             responseMessage.TryGetContentValue(out serviceErrorMessage);
 
             Assert.AreEqual(new ServiceErrorMessage(new ExceededDailyLimitException()), serviceErrorMessage);
+        }
+
+        [Test]
+        public void Spell_ShouldSuccess()
+        {
+            bool paidUser;
+            IApiThrottler apiThrottler = Mock.Of<IApiThrottler>(
+                throttler => throttler.Throttle(It.IsAny<HttpRequestMessage>(), out paidUser)
+                             == ApiThrottlingResult.Success);
+
+            IMorpherLog log = Mock.Of<IMorpherLog>();
+
+            IRussianAnalyzer analyzer = Mock.Of<IRussianAnalyzer>(
+                russianAnalyzer => russianAnalyzer.Spell(It.IsAny<decimal>(), It.IsAny<string>())
+                                   == new RussianNumberSpelling());
+
+            RussianAnalyzerController analyzerController =
+                new RussianAnalyzerController(analyzer, apiThrottler, log)
+                    {
+                        Request = new HttpRequestMessage(
+                            HttpMethod.Get,
+                            $"http://localhost:0/russian/spell?n={default(int)}&unit=any")
+                    };
+            analyzerController.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
+
+            HttpResponseMessage responseMessage = analyzerController.Spell(default(int), "any");
+            responseMessage.TryGetContentValue(out RussianDeclensionResult declensionResult);
+
+            Assert.NotNull(declensionResult);
         }
     }
 }
