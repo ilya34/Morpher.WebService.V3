@@ -263,7 +263,7 @@
             bool paidUser;
             ApiThrottlingResult result = apiThrottler.Throttle(Guid.NewGuid(), out paidUser);
 
-            morpherCacheMock.Verify(cache => cache.Decrement(It.IsAny<string>()), Times.Never);
+            morpherCacheMock.Verify(cache => cache.Decrement(It.IsAny<string>()), Times.Once);
             Assert.AreEqual(ApiThrottlingResult.Overlimit, result);
         }
 
