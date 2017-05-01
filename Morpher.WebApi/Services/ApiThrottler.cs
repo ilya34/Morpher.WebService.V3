@@ -15,15 +15,20 @@
 
     public class ApiThrottler : IApiThrottler
     {
-        private readonly MemoryCache memoryCache;
+        private readonly IMorpherDatabase morpherDatabase;
 
-        private readonly string connectionString;
+        private readonly IMorpherCache morpherCache;
+
+        private readonly MemoryCache memoryCache;
 
         private readonly object lockObject = new object();
 
-        public ApiThrottler(string connectionString)
+        private readonly DateTimeOffset absoluteExpiration = new DateTimeOffset(DateTime.Today.AddDays(1));
+
+        public ApiThrottler(IMorpherDatabase morpherDatabase, IMorpherCache morpherCache)
         {
-            this.connectionString = connectionString;
+            this.morpherDatabase = morpherDatabase;
+            this.morpherCache = morpherCache;
             this.memoryCache = MemoryCache.Default;
         }
 
@@ -42,7 +47,7 @@
                 return ApiThrottlingResult.IpBlocked;
             }
 
-            if (this.Decrement(ip))
+            if (this.morpherCache.Decrement(ip))
             {
                 return ApiThrottlingResult.Success;
             }
@@ -75,7 +80,7 @@
                 return ApiThrottlingResult.Success;
             }
 
-            if (this.Decrement(guid.ToString()))
+            if (this.morpherCache.Decrement(guid.ToString().ToLowerInvariant()))
             {
                 return ApiThrottlingResult.Success;
             }
@@ -118,18 +123,9 @@
         /// </summary>
         /// <param name="key">Токен клиента</param>
         /// <returns>Успешность удаления клиента</returns>
-        public bool DeleteFromCache(string key)
+        public object DeleteFromCache(string key)
         {
-            lock (this.lockObject)
-            {
-                if (this.memoryCache.Contains(key.ToLowerInvariant()))
-                {
-                    this.memoryCache.Remove(key.ToLowerInvariant());
-                    return true;
-                }
-
-                return false;
-            }
+            return this.morpherCache.Remove(key);
         }
 
         /// <summary>
@@ -139,57 +135,40 @@
         /// <returns>Объект кэша</returns>
         public CacheObject GetQueryLimit(string ip)
         {
-            CacheObject cacheObject = this.GetObjectFromCache(ip);
+            object cache = this.morpherCache.Get(ip);
 
-            if (cacheObject != null)
+            if (cache != null)
             {
-                return cacheObject;
+                return (CacheObject)cache;
             }
 
-            // Проверяем заблокирован ли ip адрес
-            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            if (this.morpherDatabase.IsIpBlocked(ip))
             {
-                if (this.IsIpBlocked(ip))
-                {
-                    return null;
-                }
-
-                int limit = connection.QuerySingleOrDefault<int>("SELECT TOP 1 DailyQueryLimit FROM WebServiceSettings");
-                int query = connection.QuerySingle<int>(
-                    "sp_GetQueryCountByIp",
-                    new { Ip = ip },
-                    commandType: CommandType.StoredProcedure);
-
-                // Я думаю что клиенту не стоит видеть  отрицательное значение запросов.
-                // Так как логи пишуться на все запросы, а после пересчета логов их может оказаться больше чем доступно для юзера.
-                limit -= query;
-                if (limit < 0)
-                {
-                    limit = 0;
-                }
-
-                // Записываем  объект в кэш.
-                cacheObject = new CacheObject()
-                {
-                    DailyLimit = limit,
-                    PaidUser = false,
-                    Unlimited = false
-                };
-
-                this.SetObject(ip, cacheObject);
-
-                return cacheObject;
+                return null;
             }
-        }
 
-        public bool IsIpBlocked(string ip)
-        {
-            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            int limit = this.morpherDatabase.GetDefaultDailyQueryLimit();
+            int query = this.morpherDatabase.GetQueryCountByIp(ip);
+   
+            // Я думаю что клиенту не стоит видеть  отрицательное значение запросов.
+            // Так как логи пишуться на все запросы, а после пересчета логов их может оказаться больше чем доступно для юзера.
+            limit -= query;
+            if (limit < 0)
             {
-                return connection.QuerySingleOrDefault<bool>(
-                    "SELECT Blocked FROM RemoteAddresses WHERE REMOTE_ADDR = @ip",
-                    new { ip });
+                limit = 0;
             }
+
+            // Записываем  объект в кэш.
+            CacheObject cacheObject = new CacheObject()
+            {
+                DailyLimit = limit,
+                PaidUser = false,
+                Unlimited = false
+            };
+
+            this.morpherCache.Set(ip, cacheObject, this.absoluteExpiration);
+
+            return cacheObject;
         }
 
         /// <summary>
@@ -201,15 +180,15 @@
         /// <returns>Объект кэша</returns>
         public CacheObject GetQueryLimit(Guid guid)
         {
-            CacheObject cacheObject = this.GetObjectFromCache(guid.ToString());
+            object obj = this.morpherCache.Get(guid.ToString().ToLowerInvariant());
 
-            if (cacheObject != null)
+            if (obj != null)
             {
-                return cacheObject;
+                return (CacheObject)obj;
             }
 
             // Если объекта нет в кэше, нужно проверить его в бд.
-            cacheObject = this.GetRecordFromDatabase(guid);
+            CacheObject cacheObject = this.morpherDatabase.GetUserLimits(guid);
             if (cacheObject == null)
             {
                 return null;
@@ -221,15 +200,7 @@
             }
             else
             {
-                int queries;
-
-                using (SqlConnection connection = new SqlConnection(this.connectionString))
-                {
-                    queries = connection.QuerySingle<int>(
-                        "sp_GetQueryCount",
-                        new { Token = guid },
-                        commandType: CommandType.StoredProcedure);
-                }
+                int queries = this.morpherDatabase.GetQueryCountByToken(guid);
 
                 // Я думаю что клиенту не стоит видеть  отрицательное значение запросов.
                 // Так как логи пишуться на все запросы, а после пересчета логов их может оказаться больше чем доступно для юзера.
@@ -240,82 +211,8 @@
                 }
             }
 
-            this.SetObject(guid.ToString(), cacheObject);
+            this.morpherCache.Set(guid.ToString().ToLowerInvariant(), cacheObject, this.absoluteExpiration);
             return cacheObject;
-        }
-
-        /// <summary>
-        /// Записывает объект в кэш по ключу.
-        /// </summary>
-        /// <param name="key">Ключ кэша</param>
-        /// <param name="cacheObject">Объект  кэша</param>
-        public void SetObject(string key, CacheObject cacheObject)
-        {
-            lock (this.lockObject)
-            {
-                this.memoryCache.Set(key.ToLowerInvariant(), cacheObject, new DateTimeOffset(DateTime.Today.AddDays(1)));
-            }
-        }
-
-        /// <summary>
-        /// Возвращает объект из кэша
-        /// </summary>
-        /// <param name="key">Ключ объекта в кэше</param>
-        /// <returns>Возвращает объект кеша</returns>
-        public CacheObject GetObjectFromCache(string key)
-        {
-            lock (this.lockObject)
-            {
-                if (this.memoryCache.Contains(key))
-                {
-                    return this.memoryCache.Get(key) as CacheObject;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Получает объект из бд
-        /// </summary>
-        /// <param name="guid">токен клиента</param>
-        /// <returns>Объект кеша</returns>
-        public CacheObject GetRecordFromDatabase(Guid guid)
-        {
-            using (SqlConnection connection = new SqlConnection(this.connectionString))
-            {
-                return connection.QueryFirstOrDefault<CacheObject>(
-                    "sp_GetLimit",
-                    new { Token = guid },
-                    commandType: CommandType.StoredProcedure);
-            }
-        }
-
-        /// <summary>
-        /// Уменьшает кол-во запросов для клиента
-        /// </summary>
-        /// <param name="key">ключ объекта в кэше</param>
-        /// <returns>Возвращает <c>false</c> если кол-во попыток меньше или равно 0</returns>
-        private bool Decrement(string key)
-        {
-            lock (this.lockObject)
-            {
-                if (!this.memoryCache.Contains(key))
-                {
-                    return false;
-                }
-
-                CacheObject cacheObject = this.memoryCache.Get(key) as CacheObject;
-
-                if (cacheObject?.DailyLimit > 0)
-                {
-                    cacheObject.DailyLimit--;
-                    this.SetObject(key, cacheObject);
-                    return true;
-                }
-
-                return false;
-            }
         }
     }
 }

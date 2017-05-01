@@ -25,9 +25,9 @@
             return ApiThrottlingResult.Success;
         }
 
-        public bool DeleteFromCache(string key)
+        public object DeleteFromCache(string key)
         {
-            return true;
+            return new object();
         }
 
         public CacheObject GetQueryLimit(string ip)

@@ -86,10 +86,16 @@ namespace Morpher.WebApi.App_Start
                 string connectionString = ConfigurationManager.ConnectionStrings["MorpherDatabase"].ConnectionString;
 
                 int cacheSize = Convert.ToInt32(ConfigurationManager.AppSettings["Cachesize"]);
+
                 kernel.Bind<ICustomDeclensions>()
                     .To<CustomDeclensions>()
                     .WithConstructorArgument("connectionString", connectionString);
-                kernel.Bind<IApiThrottler>().ToConstant(new ApiThrottler(connectionString));
+                kernel.Bind<IMorpherDatabase>()
+                    .To<MorpherDatabase>()
+                    .WithConstructorArgument("connectionString", connectionString);
+                kernel.Bind<IMorpherCache>().ToConstant(new MorpherCache("MorpherCache"));
+
+                kernel.Bind<IApiThrottler>().To<ApiThrottler>();
                 kernel.Bind<IMorpherLog>().ToConstant(new MorpherLog(connectionString, cacheSize));
             }
 

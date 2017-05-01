@@ -14,7 +14,7 @@
 
         ApiThrottlingResult Throttle(HttpRequestMessage httpRequest, out bool paidUser);
 
-        bool DeleteFromCache(string key);
+        object DeleteFromCache(string key);
 
         CacheObject GetQueryLimit(string ip);
 
