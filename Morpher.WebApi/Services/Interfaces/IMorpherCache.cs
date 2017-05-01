@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebApi.Services
+﻿namespace Morpher.WebApi.Services.Interfaces
 {
     using System;
 

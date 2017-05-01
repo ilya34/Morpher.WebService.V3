@@ -25,7 +25,7 @@
             return ApiThrottlingResult.Success;
         }
 
-        public object DeleteFromCache(string key)
+        public object RemoveFromCache(string key)
         {
             return new object();
         }

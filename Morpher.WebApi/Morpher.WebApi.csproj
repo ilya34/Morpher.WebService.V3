@@ -163,7 +163,7 @@
   <ItemGroup>
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\CustomDeclensions.cs" />
-    <Compile Include="Services\IMorpherCache.cs" />
+    <Compile Include="Services\Interfaces\IMorpherCache.cs" />
     <Compile Include="Services\Interfaces\IMorpherDatabase.cs" />
     <Compile Include="Services\Interfaces\ApiThrottlerLocal.cs" />
     <Compile Include="Services\CustomDeclensionsLocal.cs" />

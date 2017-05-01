@@ -5,6 +5,7 @@
     using System.Threading;
 
     using Morpher.WebApi.Models;
+    using Morpher.WebApi.Services.Interfaces;
 
     public class MorpherCache : MemoryCache, IMorpherCache
     {

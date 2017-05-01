@@ -1,12 +1,7 @@
 ﻿namespace Morpher.WebApi.Services
 {
     using System;
-    using System.Data;
-    using System.Data.SqlClient;
     using System.Net.Http;
-    using System.Runtime.Caching;
-
-    using Dapper;
 
     using Morpher.WebApi.ApiThrottler;
     using Morpher.WebApi.Extensions;
@@ -19,17 +14,12 @@
 
         private readonly IMorpherCache morpherCache;
 
-        private readonly MemoryCache memoryCache;
-
-        private readonly object lockObject = new object();
-
         private readonly DateTimeOffset absoluteExpiration = new DateTimeOffset(DateTime.Today.AddDays(1));
 
         public ApiThrottler(IMorpherDatabase morpherDatabase, IMorpherCache morpherCache)
         {
             this.morpherDatabase = morpherDatabase;
             this.morpherCache = morpherCache;
-            this.memoryCache = MemoryCache.Default;
         }
 
         /// <summary>
@@ -53,7 +43,6 @@
             }
 
             return ApiThrottlingResult.Overlimit;
-
         }
 
         /// <summary>
@@ -115,15 +104,14 @@
 
             // Выполяем тарификацию по токену
             return this.Throttle(guid, out paidUser);
-
         }
 
         /// <summary>
         /// Удаляет клиента из кэша
         /// </summary>
         /// <param name="key">Токен клиента</param>
-        /// <returns>Успешность удаления клиента</returns>
-        public object DeleteFromCache(string key)
+        /// <returns>Если запись найдена в кэше, удаленная запись кэша; в противном случае — значение null.</returns>
+        public object RemoveFromCache(string key)
         {
             return this.morpherCache.Remove(key);
         }
@@ -132,7 +120,7 @@
         /// Получает объет кэша по ip.
         /// </summary>
         /// <param name="ip">ip клиента</param>
-        /// <returns>Объект кэша</returns>
+        /// <returns>Запись в кэше; Если ip заблокирован - значение null.</returns>
         public CacheObject GetQueryLimit(string ip)
         {
             object cache = this.morpherCache.Get(ip);
@@ -149,7 +137,7 @@
 
             int limit = this.morpherDatabase.GetDefaultDailyQueryLimit();
             int query = this.morpherDatabase.GetQueryCountByIp(ip);
-   
+
             // Я думаю что клиенту не стоит видеть  отрицательное значение запросов.
             // Так как логи пишуться на все запросы, а после пересчета логов их может оказаться больше чем доступно для юзера.
             limit -= query;
@@ -159,12 +147,7 @@
             }
 
             // Записываем  объект в кэш.
-            CacheObject cacheObject = new CacheObject()
-            {
-                DailyLimit = limit,
-                PaidUser = false,
-                Unlimited = false
-            };
+            CacheObject cacheObject = new CacheObject() { DailyLimit = limit, PaidUser = false, Unlimited = false };
 
             this.morpherCache.Set(ip, cacheObject, this.absoluteExpiration);
 
