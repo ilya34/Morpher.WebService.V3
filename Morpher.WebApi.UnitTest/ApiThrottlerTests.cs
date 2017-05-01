@@ -5,6 +5,7 @@
 
     using Moq;
 
+    using Morpher.WebApi.ApiThrottler;
     using Morpher.WebApi.Models;
     using Morpher.WebApi.Services;
     using Morpher.WebApi.Services.Interfaces;
@@ -100,7 +101,7 @@
         }
 
         [Test]
-        public void GetQueryLimit_ByToken_NotExistingToken()
+        public void GetQueryLimit_ByToken_NonExistingToken()
         {
             IMorpherCache morpherCache = Mock.Of<IMorpherCache>(cache => cache.Get(It.IsAny<string>(), null) == null);
             Mock<IMorpherDatabase> morpherDatabaseMock = new Mock<IMorpherDatabase>();
@@ -114,7 +115,7 @@
 
         [Test]
         public void GetQueryLimit_ByToken_FoundInDatabase_Unlimited()
-        {           
+        {
             Mock<IMorpherCache> morpherCacheMock = new Mock<IMorpherCache>();
             morpherCacheMock.Setup(cache => cache.Get(It.IsAny<string>(), null)).Returns(null).Verifiable();
             morpherCacheMock.Setup(
@@ -140,7 +141,7 @@
         }
 
         [Test]
-        public void GetQueryLimit_ByToken_FoundInDatabase()
+        public void GetQueryLimit_ByToken_FoundInDatabase_Limited()
         {
             Mock<IMorpherCache> morpherCacheMock = new Mock<IMorpherCache>();
             morpherCacheMock.Setup(cache => cache.Get(It.IsAny<string>(), null)).Returns(null).Verifiable();
@@ -164,6 +165,121 @@
             morpherDatabaseMock.Verify(database => database.GetUserLimits(It.IsAny<Guid>()), Times.Once);
             morpherDatabaseMock.Verify(database => database.GetQueryCountByToken(It.IsAny<Guid>()), Times.Once);
             Assert.NotNull(cacheObject);
+        }
+
+        [Test]
+        public void Throttle_Ip_IpBlocked()
+        {
+            IMorpherDatabase morpherDatabase =
+                Mock.Of<IMorpherDatabase>(database => database.IsIpBlocked(It.IsAny<string>()) == true);
+
+            IMorpherCache cache = Mock.Of<IMorpherCache>(
+                morpherCache => morpherCache.Get(It.IsAny<string>(), null) == null);
+
+            IApiThrottler apiThrottler = new ApiThrottler(morpherDatabase, cache);
+
+            ApiThrottlingResult result = apiThrottler.Throttle("any ip");
+
+            Assert.AreEqual(ApiThrottlingResult.IpBlocked, result);
+        }
+
+        [Test]
+        public void Throttle_Ip_Overlimit()
+        {
+            IMorpherCache morpherCache =
+                Mock.Of<IMorpherCache>(cache => cache.Get(It.IsAny<string>(), null) == new CacheObject()
+                {
+                    DailyLimit = 0,
+                    Unlimited = false
+                }
+                && cache.Decrement(It.IsAny<string>()) == false);
+
+            IApiThrottler apiThrottler = new ApiThrottler(null, morpherCache);
+
+            ApiThrottlingResult result = apiThrottler.Throttle("any ip");
+
+            Assert.AreEqual(ApiThrottlingResult.Overlimit, result);
+        }
+
+        [Test]
+        public void Throttle_Ip_Success()
+        {
+            IMorpherCache morpherCache =
+                Mock.Of<IMorpherCache>(cache => cache.Get(It.IsAny<string>(), null) == new CacheObject()
+                {
+                    DailyLimit = 0,
+                    Unlimited = false
+                }
+                && cache.Decrement(It.IsAny<string>()) == true);
+
+            IApiThrottler apiThrottler = new ApiThrottler(null, morpherCache);
+
+            ApiThrottlingResult result = apiThrottler.Throttle("any ip");
+
+            Assert.AreEqual(ApiThrottlingResult.Success, result);
+        }
+
+        [Test]
+        public void Throttle_Token_Success_Limited()
+        {
+            Mock<IMorpherCache> morpherCacheMock = new Mock<IMorpherCache>();
+            morpherCacheMock.Setup(
+                cache => cache.Get(It.IsAny<string>(), null)).Returns(new CacheObject() { Unlimited = false });
+            morpherCacheMock.Setup(cache => cache.Decrement(It.IsAny<string>())).Returns(true).Verifiable();
+
+            IApiThrottler apiThrottler = new ApiThrottler(null, morpherCacheMock.Object);
+            bool paidUser;
+            ApiThrottlingResult result = apiThrottler.Throttle(Guid.NewGuid(), out paidUser);
+
+            morpherCacheMock.Verify(cache => cache.Decrement(It.IsAny<string>()), Times.Once);
+            Assert.AreEqual(ApiThrottlingResult.Success, result);
+        }
+
+        [Test]
+        public void Throttle_Token_Success_Unlimited()
+        {
+            Mock<IMorpherCache> morpherCacheMock = new Mock<IMorpherCache>();
+            morpherCacheMock.Setup(
+                cache => cache.Get(It.IsAny<string>(), null)).Returns(new CacheObject() { Unlimited = true });
+            morpherCacheMock.Setup(cache => cache.Decrement(It.IsAny<string>())).Returns(true).Verifiable();
+
+            IApiThrottler apiThrottler = new ApiThrottler(null, morpherCacheMock.Object);
+            bool paidUser;
+            ApiThrottlingResult result = apiThrottler.Throttle(Guid.NewGuid(), out paidUser);
+
+            morpherCacheMock.Verify(cache => cache.Decrement(It.IsAny<string>()), Times.Never);
+            Assert.AreEqual(ApiThrottlingResult.Success, result);
+        }
+
+        [Test]
+        public void Throttle_Token_Overlimit()
+        {
+            Mock<IMorpherCache> morpherCacheMock = new Mock<IMorpherCache>();
+            morpherCacheMock.Setup(
+                cache => cache.Get(It.IsAny<string>(), null)).Returns(new CacheObject() { Unlimited = false });
+            morpherCacheMock.Setup(cache => cache.Decrement(It.IsAny<string>())).Returns(false).Verifiable();
+
+            IApiThrottler apiThrottler = new ApiThrottler(null, morpherCacheMock.Object);
+            bool paidUser;
+            ApiThrottlingResult result = apiThrottler.Throttle(Guid.NewGuid(), out paidUser);
+
+            morpherCacheMock.Verify(cache => cache.Decrement(It.IsAny<string>()), Times.Never);
+            Assert.AreEqual(ApiThrottlingResult.Overlimit, result);
+        }
+
+        [Test]
+        public void Throttle_Token_InvalidToken()
+        {
+            IMorpherCache morpherCache = Mock.Of<IMorpherCache>(cache => cache.Get(It.IsAny<string>(), null) == null);
+            Mock<IMorpherDatabase> morpherDatabaseMock = new Mock<IMorpherDatabase>();
+            morpherDatabaseMock.Setup(database => database.GetUserLimits(It.IsAny<Guid>())).Returns(() => null);
+            IMorpherDatabase morpherDatabase = morpherDatabaseMock.Object;
+
+            IApiThrottler apiThrottler = new ApiThrottler(morpherDatabase, morpherCache);
+            bool paidUser;
+            ApiThrottlingResult result = apiThrottler.Throttle(Guid.NewGuid(), out paidUser);
+
+            Assert.AreEqual(ApiThrottlingResult.InvalidToken, result);
         }
     }
 }
