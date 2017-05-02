@@ -48,7 +48,7 @@
                 return Encoding.UTF8.GetString(Convert.FromBase64String(token));
             }
 
-            throw new TokenNotFoundException();
+            return "Invalid token";
         }
 
         public static Guid? GetToken(this HttpRequestMessage message)

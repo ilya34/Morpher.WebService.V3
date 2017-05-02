@@ -337,7 +337,11 @@
         {
             string base64 = "SW52YWxpZA==";
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:0/foo");
-            requestMessage.Headers.Add("Authorization", $"{base64}");
+            bool val = requestMessage.Headers.TryAddWithoutValidation("Authorization", base64);
+            if (val == false)
+            {
+                Assert.Fail("cannot add request header");
+            }
 
             IApiThrottler apiThrottler = new ApiThrottler(null, null);
             bool paidUser;
