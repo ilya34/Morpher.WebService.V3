@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Net.Http;
 
     using Moq;
 
@@ -278,6 +279,69 @@
             IApiThrottler apiThrottler = new ApiThrottler(morpherDatabase, morpherCache);
             bool paidUser;
             ApiThrottlingResult result = apiThrottler.Throttle(Guid.NewGuid(), out paidUser);
+
+            Assert.AreEqual(ApiThrottlingResult.InvalidToken, result);
+        }
+
+        [Test]
+        public void Throttle_HttpRequestMessage_ByQueryToken_Success()
+        {
+            Guid guid = Guid.NewGuid();
+            IMorpherCache morpherCache = Mock.Of<IMorpherCache>(
+                cache => cache.Get(guid.ToString().ToLowerInvariant(), null) == new CacheObject() { Unlimited = true });
+
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:0/foo?token={guid}");
+
+            IApiThrottler apiThrottler = new ApiThrottler(null, morpherCache);
+            bool paidUser;
+            ApiThrottlingResult result = apiThrottler.Throttle(requestMessage, out paidUser);
+
+            Assert.AreEqual(ApiThrottlingResult.Success, result);
+        }
+
+        [Test]
+        public void Throttle_HttpRequestMessage_ByBasicAuth_Success()
+        {
+            Guid guid = Guid.Parse("2F03BBCC-531F-4D75-A3BB-8D85D64600B6");
+            string base64 = "MkYwM0JCQ0MtNTMxRi00RDc1LUEzQkItOEQ4NUQ2NDYwMEI2Cg==";
+            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:0/foo");
+            message.Headers.Add("Authorization", $"Basic {base64}");
+
+            IMorpherCache morpherCache = Mock.Of<IMorpherCache>(
+                cache => cache.Get(guid.ToString().ToLowerInvariant(), null) == new CacheObject() { Unlimited = true });
+
+
+            IApiThrottler apiThrottler = new ApiThrottler(null, morpherCache);
+            bool paidUser;
+            ApiThrottlingResult result = apiThrottler.Throttle(message, out paidUser);
+
+            Assert.AreEqual(ApiThrottlingResult.Success, result);
+        }
+
+        [Test]
+        public void Throttle_HttpRequestMessage_ByToken_InvalidToken()
+        {
+            string invalidGuid = "invalid guid";
+
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:0/foo?token={invalidGuid}");
+
+            IApiThrottler apiThrottler = new ApiThrottler(null, null);
+            bool paidUser;
+            ApiThrottlingResult result = apiThrottler.Throttle(requestMessage, out paidUser);
+
+            Assert.AreEqual(ApiThrottlingResult.InvalidToken, result);
+        }
+
+        [Test]
+        public void Throttle_HttpRequestMessage_ByBasicAuth_InvalidToken()
+        {
+            string base64 = "SW52YWxpZA==";
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:0/foo");
+            requestMessage.Headers.Add("Authorization", $"{base64}");
+
+            IApiThrottler apiThrottler = new ApiThrottler(null, null);
+            bool paidUser;
+            ApiThrottlingResult result = apiThrottler.Throttle(requestMessage, out paidUser);
 
             Assert.AreEqual(ApiThrottlingResult.InvalidToken, result);
         }
