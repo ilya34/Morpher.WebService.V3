@@ -11,5 +11,10 @@
         {
             return;
         }
+
+        public void Sync()
+        {
+            return;
+        }
     }
 }

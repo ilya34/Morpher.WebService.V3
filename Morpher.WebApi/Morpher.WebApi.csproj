@@ -51,6 +51,9 @@
     <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.2\lib\net45\Dapper.dll</HintPath>
     </Reference>
+    <Reference Include="FluentScheduler, Version=5.1.4.0, Culture=neutral, PublicKeyToken=b76503528a14ebd1, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentScheduler.5.1.4\lib\net40\FluentScheduler.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.7\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
     </Reference>
@@ -161,7 +164,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Services\MorpherLog.cs" />
+    <Compile Include="Models\LogEntity.cs" />
+    <Compile Include="Services\LogSyncer.cs" />
     <Compile Include="Services\CustomDeclensions.cs" />
+    <Compile Include="Services\Interfaces\IDatabaseLog.cs" />
     <Compile Include="Services\Interfaces\IMorpherCache.cs" />
     <Compile Include="Services\Interfaces\IMorpherDatabase.cs" />
     <Compile Include="Services\Interfaces\ApiThrottlerLocal.cs" />
@@ -169,6 +176,7 @@
     <Compile Include="Services\Interfaces\ICustomDeclensions.cs" />
     <Compile Include="Services\Interfaces\IRussianAnalyzer.cs" />
     <Compile Include="Services\Interfaces\IUkrainianAnalyzer.cs" />
+    <Compile Include="Services\DatabaseLog.cs" />
     <Compile Include="Services\MorpherCache.cs" />
     <Compile Include="Services\MorpherDatabase.cs" />
     <Compile Include="Services\MorpherLogLocal.cs" />
@@ -220,7 +228,6 @@
     <Compile Include="Models\ServiceErrorMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Interfaces\IMorpherLog.cs" />
-    <Compile Include="Services\MorpherLog.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.AdjectiveGenders.datasource">

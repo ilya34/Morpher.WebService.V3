@@ -1,57 +1,28 @@
 ﻿namespace Morpher.WebApi.Services
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Linq;
     using System.Net.Http;
-    using System.Security.Policy;
 
     using Morpher.WebApi.Extensions;
+    using Morpher.WebApi.Models;
     using Morpher.WebApi.Models.Exceptions;
     using Morpher.WebApi.Services.Interfaces;
 
     public class MorpherLog : IMorpherLog
     {
-        private readonly string connectionString;
+        private readonly IDatabaseLog database;
 
-        private readonly DataTable dataTable;
+        private readonly ConcurrentQueue<LogEntity> log = new ConcurrentQueue<LogEntity>();
 
-        private readonly int logCapicity;
-
-        private readonly object lockObject = new object();
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MorpherLog"/> class. 
-        /// Логер в бд
-        /// </summary>
-        /// <param name="connectionString">
-        /// Строка подключения к бд, для синхронизации логов
-        /// </param>
-        /// <param name="logCapicity">
-        /// Размер временного лога
-        /// </param>
-        public MorpherLog(string connectionString, int logCapicity)
+        public MorpherLog(IDatabaseLog database)
         {
-            this.connectionString = connectionString;
-            this.logCapicity = logCapicity;
-            this.dataTable = new DataTable("Queries3");
-
-            this.dataTable.Columns.Add("RemoteAddress", typeof(string));
-            this.dataTable.Columns.Add("QueryString", typeof(string));
-            this.dataTable.Columns.Add("QuerySource", typeof(string));
-            this.dataTable.Columns.Add("WebServiceToken", typeof(Guid));
-            this.dataTable.Columns.Add("UserAgent", typeof(string));
-            this.dataTable.Columns.Add("ErrorCode", typeof(int));
+            this.database = database;
         }
 
-        /// <summary>
-        /// Записывает запрос в лог, каждые <see cref="logCapicity"/>
-        /// записывает в базу.
-        /// </summary>
-        /// <param name="message">Http запрос, с него будут получены все данные для лога</param>
-        /// <param name="exception">Исключение, если есть</param>
         public void Log(HttpRequestMessage message, MorpherException exception = null)
         {
             // ip клиента
@@ -75,36 +46,13 @@
             string userAgent = message.Headers.UserAgent?.ToString();
             Guid? token = message.GetToken();
 
-            lock (this.lockObject)
-            {
-                this.dataTable.Rows.Add(remoteAddress, queryString.Truncate(150), querySource.Truncate(150), token, userAgent, errorCode);
+            this.log.Enqueue(
+                new LogEntity(remoteAddress, queryString, querySource, DateTime.UtcNow, token, userAgent, errorCode));
+        }
 
-                // Синхронизируем с бд
-                if (this.dataTable.Rows.Count >= this.logCapicity)
-                {
-                    using (SqlConnection connection = new SqlConnection(this.connectionString))
-                    {
-                        using (SqlBulkCopy bulkCopy = new SqlBulkCopy(
-                            connection,
-                            SqlBulkCopyOptions.TableLock | SqlBulkCopyOptions.FireTriggers
-                            | SqlBulkCopyOptions.UseInternalTransaction,
-                            null))
-                        {
-                            foreach (DataColumn column in this.dataTable.Columns)
-                            {
-                                bulkCopy.ColumnMappings.Add(column.ColumnName, column.ColumnName);
-                            }
-
-                            bulkCopy.DestinationTableName = this.dataTable.TableName;
-                            connection.Open();
-                            bulkCopy.WriteToServer(this.dataTable);
-                            connection.Close();
-                        }
-                    }
-
-                    this.dataTable.Rows.Clear();
-                }
-            }
+        public void Sync()
+        {
+            this.database.Upload(this.log);
         }
     }
 }

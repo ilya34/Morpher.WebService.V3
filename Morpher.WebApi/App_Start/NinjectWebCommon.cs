@@ -11,6 +11,7 @@ namespace Morpher.WebApi.App_Start
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
     using Morpher.WebApi.ApiThrottler;
+    using Morpher.WebApi.Models;
     using Morpher.WebApi.Services;
     using Morpher.WebApi.Services.Interfaces;
 
@@ -87,6 +88,9 @@ namespace Morpher.WebApi.App_Start
 
                 int cacheSize = Convert.ToInt32(ConfigurationManager.AppSettings["Cachesize"]);
 
+                kernel.Bind<IDatabaseLog>()
+                    .To<DatabaseLog>()
+                    .WithConstructorArgument("connectionString", connectionString);
                 kernel.Bind<ICustomDeclensions>()
                     .To<CustomDeclensions>()
                     .WithConstructorArgument("connectionString", connectionString);
@@ -96,7 +100,11 @@ namespace Morpher.WebApi.App_Start
                 kernel.Bind<IMorpherCache>().ToConstant(new MorpherCache("MorpherCache"));
 
                 kernel.Bind<IApiThrottler>().To<ApiThrottler>();
-                kernel.Bind<IMorpherLog>().ToConstant(new MorpherLog(connectionString, cacheSize));
+
+
+                kernel.Bind<IMorpherLog>().To<MorpherLog>().InSingletonScope();
+                // HACK
+                //kernel.Bind<IMorpherLog>().ToConstant(new MorpherLog(kernel.Get<IDatabaseLog>()));
             }
 
 

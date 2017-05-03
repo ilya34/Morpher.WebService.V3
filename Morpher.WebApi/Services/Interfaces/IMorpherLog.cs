@@ -7,5 +7,7 @@
     public interface IMorpherLog
     {
         void Log(HttpRequestMessage message, MorpherException exception = null);
+
+        void Sync();
     }
 }
