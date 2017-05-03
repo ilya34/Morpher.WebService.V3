@@ -1,42 +1,29 @@
 ﻿namespace Morpher.WebApi
 {
-    using System.Data.SqlClient;
-    using System.Diagnostics;
-    using System.Linq;
+    using System;
+    using System.Configuration;
     using System.Web.Http;
     using System.Web.Mvc;
     using System.Web.Routing;
 
-    using Dapper;
-
     using FluentScheduler;
 
-    using Morpher.WebApi.Models;
     using Morpher.WebApi.Services;
-
-    using Newtonsoft.Json;
+    using Morpher.WebApi.Services.Interfaces;
 
     public class WebApiApplication : System.Web.HttpApplication
     {
         protected void Application_Start()
         {
-
-            var registry = new Registry();
-            var sampleJob = new LogSyncer();
-            registry.Schedule(() => Debug.WriteLine("Sort of executed")).ToRunEvery(30).Seconds();
-
-            registry.Schedule<LogSyncer>().ToRunEvery(30).Seconds();
-
-            JobManager.Initialize(registry);
-            
-            var formatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
-            formatter.SerializerSettings = new JsonSerializerSettings
-                                               {
-                                                   Formatting = Formatting.Indented,
-                                                   TypeNameHandling = TypeNameHandling.Objects,
-                                                   //ContractResolver = new CamelCasePropertyNamesContractResolver()
-                                               };
-
+            bool isLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
+           
+            if (!isLocal)
+            {
+                int everyMinutes = Convert.ToInt32(ConfigurationManager.AppSettings["SyncCacheEveryMinutes"]);
+                Registry registry = new Registry();
+                registry.Schedule<LogSyncer>().ToRunEvery(everyMinutes).Minutes();
+                JobManager.Initialize(registry);
+            }
 
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
@@ -46,7 +33,9 @@
 
         protected void Application_End()
         {
-            // TODO: Sync cache
+            IMorpherLog log =
+                (IMorpherLog)DependencyResolver.Current.GetService(typeof(IMorpherLog));
+            log.Sync();
         }
     }
 }

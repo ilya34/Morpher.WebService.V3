@@ -70,8 +70,6 @@ namespace Morpher.WebApi.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-
-            
             bool IsLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
 
             // Если проект запущен как Local, то использутся заглушки для тарифов, и логов.
@@ -85,9 +83,6 @@ namespace Morpher.WebApi.App_Start
             else
             {
                 string connectionString = ConfigurationManager.ConnectionStrings["MorpherDatabase"].ConnectionString;
-
-                int cacheSize = Convert.ToInt32(ConfigurationManager.AppSettings["Cachesize"]);
-
                 kernel.Bind<IDatabaseLog>()
                     .To<DatabaseLog>()
                     .WithConstructorArgument("connectionString", connectionString);
@@ -98,13 +93,10 @@ namespace Morpher.WebApi.App_Start
                     .To<MorpherDatabase>()
                     .WithConstructorArgument("connectionString", connectionString);
                 kernel.Bind<IMorpherCache>().ToConstant(new MorpherCache("MorpherCache"));
-
                 kernel.Bind<IApiThrottler>().To<ApiThrottler>();
-
-
                 kernel.Bind<IMorpherLog>().To<MorpherLog>().InSingletonScope();
-                // HACK
-                //kernel.Bind<IMorpherLog>().ToConstant(new MorpherLog(kernel.Get<IDatabaseLog>()));
+
+                
             }
 
 
