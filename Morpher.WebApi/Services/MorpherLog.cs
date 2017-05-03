@@ -16,12 +16,14 @@
     {
         private readonly IDatabaseLog database;
 
-        private readonly ConcurrentQueue<LogEntity> log = new ConcurrentQueue<LogEntity>();
+        private readonly ConcurrentQueue<LogEntity> logQueue = new ConcurrentQueue<LogEntity>();
 
         public MorpherLog(IDatabaseLog database)
         {
             this.database = database;
         }
+
+
 
         public void Log(HttpRequestMessage message, MorpherException exception = null)
         {
@@ -46,13 +48,13 @@
             string userAgent = message.Headers.UserAgent?.ToString();
             Guid? token = message.GetToken();
 
-            this.log.Enqueue(
+            this.logQueue.Enqueue(
                 new LogEntity(remoteAddress, queryString, querySource, DateTime.UtcNow, token, userAgent, errorCode));
         }
 
         public void Sync()
         {
-            this.database.Upload(this.log);
+            this.database.Upload(this.logQueue);
         }
     }
 }
