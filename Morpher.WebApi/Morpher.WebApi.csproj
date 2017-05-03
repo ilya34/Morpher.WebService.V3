@@ -164,6 +164,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Services\DummyRussianAnalyzer.cs" />
+    <Compile Include="Services\DummyUkrainianAnalyzer.cs" />
     <Compile Include="Services\MorpherLog.cs" />
     <Compile Include="Models\LogEntity.cs" />
     <Compile Include="Services\LogSyncer.cs" />
@@ -285,7 +287,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Connected Services\MorpherSoap\WebService.wsdl" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
