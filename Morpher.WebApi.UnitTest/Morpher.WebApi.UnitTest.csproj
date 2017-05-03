@@ -69,7 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiThrottlerTests.cs" />
-    <Compile Include="MorpherLog.cs" />
+    <Compile Include="MorpherLogTests.cs" />
     <Compile Include="RussianAnalyzerControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

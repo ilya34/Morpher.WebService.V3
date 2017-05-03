@@ -12,7 +12,7 @@
 
     [TestFixture]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    public class MorpherLog
+    public class MorpherLogTests
     {
         [Test]
         public void DataInserationTest_1()
