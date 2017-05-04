@@ -211,7 +211,7 @@
                     DailyLimit = 0,
                     Unlimited = false
                 }
-                && cache.Decrement(It.IsAny<string>()) == true);
+                && cache.Decrement(It.IsAny<CacheObject>()) == true);
 
             IApiThrottler apiThrottler = new ApiThrottler(null, morpherCache);
 
@@ -226,13 +226,13 @@
             Mock<IMorpherCache> morpherCacheMock = new Mock<IMorpherCache>();
             morpherCacheMock.Setup(
                 cache => cache.Get(It.IsAny<string>(), null)).Returns(new CacheObject() { Unlimited = false });
-            morpherCacheMock.Setup(cache => cache.Decrement(It.IsAny<string>())).Returns(true).Verifiable();
+            morpherCacheMock.Setup(cache => cache.Decrement(It.IsAny<CacheObject>())).Returns(true).Verifiable();
 
             IApiThrottler apiThrottler = new ApiThrottler(null, morpherCacheMock.Object);
             bool paidUser;
             ApiThrottlingResult result = apiThrottler.Throttle(Guid.NewGuid(), out paidUser);
 
-            morpherCacheMock.Verify(cache => cache.Decrement(It.IsAny<string>()), Times.Once);
+            morpherCacheMock.Verify(cache => cache.Decrement(It.IsAny<CacheObject>()), Times.Once);
             Assert.AreEqual(ApiThrottlingResult.Success, result);
         }
 
@@ -242,13 +242,13 @@
             Mock<IMorpherCache> morpherCacheMock = new Mock<IMorpherCache>();
             morpherCacheMock.Setup(
                 cache => cache.Get(It.IsAny<string>(), null)).Returns(new CacheObject() { Unlimited = true });
-            morpherCacheMock.Setup(cache => cache.Decrement(It.IsAny<string>())).Returns(true).Verifiable();
+            morpherCacheMock.Setup(cache => cache.Decrement(It.IsAny<CacheObject>())).Returns(true).Verifiable();
 
             IApiThrottler apiThrottler = new ApiThrottler(null, morpherCacheMock.Object);
             bool paidUser;
             ApiThrottlingResult result = apiThrottler.Throttle(Guid.NewGuid(), out paidUser);
 
-            morpherCacheMock.Verify(cache => cache.Decrement(It.IsAny<string>()), Times.Never);
+            morpherCacheMock.Verify(cache => cache.Decrement(It.IsAny<CacheObject>()), Times.Never);
             Assert.AreEqual(ApiThrottlingResult.Success, result);
         }
 
@@ -258,13 +258,13 @@
             Mock<IMorpherCache> morpherCacheMock = new Mock<IMorpherCache>();
             morpherCacheMock.Setup(
                 cache => cache.Get(It.IsAny<string>(), null)).Returns(new CacheObject() { Unlimited = false });
-            morpherCacheMock.Setup(cache => cache.Decrement(It.IsAny<string>())).Returns(false).Verifiable();
+            morpherCacheMock.Setup(cache => cache.Decrement(It.IsAny<CacheObject>())).Returns(false).Verifiable();
 
             IApiThrottler apiThrottler = new ApiThrottler(null, morpherCacheMock.Object);
             bool paidUser;
             ApiThrottlingResult result = apiThrottler.Throttle(Guid.NewGuid(), out paidUser);
 
-            morpherCacheMock.Verify(cache => cache.Decrement(It.IsAny<string>()), Times.Once);
+            morpherCacheMock.Verify(cache => cache.Decrement(It.IsAny<CacheObject>()), Times.Once);
             Assert.AreEqual(ApiThrottlingResult.Overlimit, result);
         }
 

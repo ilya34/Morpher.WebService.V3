@@ -37,7 +37,7 @@
                 return ApiThrottlingResult.IpBlocked;
             }
 
-            if (this.morpherCache.Decrement(ip))
+            if (this.morpherCache.Decrement(cacheObject))
             {
                 return ApiThrottlingResult.Success;
             }
@@ -69,7 +69,7 @@
                 return ApiThrottlingResult.Success;
             }
 
-            if (this.morpherCache.Decrement(guid.ToString().ToLowerInvariant()))
+            if (this.morpherCache.Decrement(cacheObject))
             {
                 return ApiThrottlingResult.Success;
             }
