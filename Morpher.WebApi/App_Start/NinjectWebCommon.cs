@@ -70,11 +70,11 @@ namespace Morpher.WebApi.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            bool IsLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
+            bool isLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
 
             // Если проект запущен как Local, то использутся заглушки для тарифов, и логов.
             // CustomDeclensions должен смотреть в файл, а не SQL бд
-            if (IsLocal)
+            if (isLocal)
             {
                 kernel.Bind<ICustomDeclensions>().To<CustomDeclensionsLocal>();
                 kernel.Bind<IApiThrottler>().ToConstant(new ApiThrottlerLocal());

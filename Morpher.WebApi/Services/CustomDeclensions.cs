@@ -24,7 +24,7 @@
         public void SetUserDeclensions(IRussianParadigm paradigm, string lemma, bool plural, Guid token = new Guid())
         {
             var nameForms = this.GetUserDeclensions(token, lemma, "RU");
-            if (nameForms != null)
+            if (nameForms != null && nameForms.Any())
             {
                 foreach (var nameForm in nameForms.Where(form => form.Plural == plural))
                 {
