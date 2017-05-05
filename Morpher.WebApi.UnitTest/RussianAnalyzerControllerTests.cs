@@ -32,7 +32,7 @@
             IMorpherLog log = Mock.Of<IMorpherLog>();
 
             IRussianAnalyzer analyzer = Mock.Of<IRussianAnalyzer>(
-                russianAnalyzer => russianAnalyzer.Declension(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<bool>())
+                russianAnalyzer => russianAnalyzer.Declension(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<DeclensionFlags?>(), It.IsAny<bool>())
                                    == new RussianDeclensionResult());
 
             RussianAnalyzerController analyzerController =
@@ -63,7 +63,7 @@
             IMorpherLog log = Mock.Of<IMorpherLog>();
 
             IRussianAnalyzer analyzer = Mock.Of<IRussianAnalyzer>(
-                russianAnalyzer => russianAnalyzer.Declension(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<bool>())
+                russianAnalyzer => russianAnalyzer.Declension(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<DeclensionFlags>(), It.IsAny<bool>())
                                    == new RussianDeclensionResult());
 
             RussianAnalyzerController analyzerController =
@@ -97,6 +97,7 @@
                     russianAnalyzer => russianAnalyzer.Declension(
                         It.IsAny<string>(),
                         It.IsAny<Guid>(),
+                        It.IsAny<DeclensionFlags>(),
                         It.IsAny<bool>()))
                 .Throws(new WordsNotFoundException());
 
@@ -167,11 +168,11 @@
 
             RussianAnalyzerController analyzerController =
                 new RussianAnalyzerController(analyzer, apiThrottler, log)
-                    {
-                        Request = new HttpRequestMessage(
+                {
+                    Request = new HttpRequestMessage(
                             HttpMethod.Get,
                             $"http://localhost:0/russian/spell?n=10&unit=рубль")
-                    };
+                };
             analyzerController.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             HttpResponseMessage httpResponseMessage = analyzerController.Spell(10, "any");
@@ -194,11 +195,11 @@
 
             RussianAnalyzerController analyzerController =
                 new RussianAnalyzerController(null, apiThrottler, log)
-                    {
-                        Request = new HttpRequestMessage(
+                {
+                    Request = new HttpRequestMessage(
                             HttpMethod.Get,
                             $"http://localhost:0/russian/spell?n=10&unit=рубль")
-                    };
+                };
             analyzerController.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             HttpResponseMessage httpResponseMessage = analyzerController.Spell(10, "any");
@@ -224,11 +225,11 @@
 
             RussianAnalyzerController analyzerController =
                 new RussianAnalyzerController(analyzer, apiThrottler, log)
-                    {
-                        Request = new HttpRequestMessage(
+                {
+                    Request = new HttpRequestMessage(
                             HttpMethod.Get,
                             $"http://localhost:0/russian/adjectivize?s=any")
-                    };
+                };
             analyzerController.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             HttpResponseMessage responseMessage = analyzerController.Adjectivize("any");
@@ -250,11 +251,11 @@
 
             RussianAnalyzerController analyzerController =
                 new RussianAnalyzerController(null, apiThrottler, log)
-                    {
-                        Request = new HttpRequestMessage(
+                {
+                    Request = new HttpRequestMessage(
                             HttpMethod.Get,
                             $"http://localhost:0/russian/adjectivize?s=any")
-                    };
+                };
             analyzerController.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             HttpResponseMessage responseMessage = analyzerController.Adjectivize("any");
@@ -283,11 +284,11 @@
 
             RussianAnalyzerController analyzerController =
                 new RussianAnalyzerController(analyzer, apiThrottler, log)
-                    {
-                        Request = new HttpRequestMessage(
+                {
+                    Request = new HttpRequestMessage(
                             HttpMethod.Get,
                             $"http://localhost:0/russian/adjectivize?s=any")
-                    };
+                };
             analyzerController.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             HttpResponseMessage responseMessage = analyzerController.Adjectivize("any");

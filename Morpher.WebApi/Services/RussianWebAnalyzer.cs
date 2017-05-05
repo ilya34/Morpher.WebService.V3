@@ -24,7 +24,7 @@
             this.customDeclensions = customDeclensions;
         }
 
-        public RussianDeclensionResult Declension(string s, Guid? token = null, bool paidUser = false)
+        public RussianDeclensionResult Declension(string s, Guid? token = null, DeclensionFlags? flags = null, bool paidUser = false)
         {
             if (string.IsNullOrWhiteSpace(s))
             {

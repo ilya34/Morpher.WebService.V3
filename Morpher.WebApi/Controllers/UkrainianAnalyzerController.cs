@@ -29,7 +29,7 @@
 
         [Route("declension", Name = "UkrainianDeclension")]
         [HttpGet]
-        public HttpResponseMessage Declension(string s, string token = null, ResponseFormat? format = null)
+        public HttpResponseMessage Declension(string s, string token = null, DeclensionFlags? flags = null, ResponseFormat? format = null)
         {
             try
             {
@@ -41,7 +41,7 @@
                 }
 
                 UkrainianDeclensionResult declensionResult =
-                    this.analyzer.Declension(s, this.Request.GetToken(), paidUser);
+                    this.analyzer.Declension(s, this.Request.GetToken(), flags, paidUser);
 
                 this.morpherLog.Log(this.Request);
                 return this.Request.CreateResponse(HttpStatusCode.OK, declensionResult, format);

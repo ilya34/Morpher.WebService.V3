@@ -40,9 +40,9 @@
                 format);
         }
 
-        [Route("validate_client_token")]
+        [Route("remove_client_from_cache")]
         [HttpGet]
-        public HttpResponseMessage ValidateClientToken(string clientToken, ResponseFormat? format = null)
+        public HttpResponseMessage RemoveClientFromCache(string clientToken, ResponseFormat? format = null)
         {
             string ip = this.Request.GetClientIp();
 

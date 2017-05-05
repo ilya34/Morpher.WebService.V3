@@ -7,7 +7,7 @@
 
     public interface IRussianAnalyzer
     {
-        RussianDeclensionResult Declension(string s, Guid? token = null, bool paidUser = false);
+        RussianDeclensionResult Declension(string s, Guid? token = null, DeclensionFlags? flags = null, bool paidUser = false);
 
         RussianNumberSpelling Spell(int n, string unit);
 

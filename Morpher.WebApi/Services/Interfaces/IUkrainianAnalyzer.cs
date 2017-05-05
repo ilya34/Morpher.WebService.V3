@@ -6,7 +6,7 @@
 
     public interface IUkrainianAnalyzer
     {
-        UkrainianDeclensionResult Declension(string s, Guid? token = null, bool paidUser = false);
+        UkrainianDeclensionResult Declension(string s, Guid? token = null, DeclensionFlags? flags = null, bool paidUser = false);
 
         UkrainianNumberSpelling Spell(int n, string unit);
     }

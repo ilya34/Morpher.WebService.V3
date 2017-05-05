@@ -8,7 +8,7 @@
 
     public class DummyRussianAnalyzer : IRussianAnalyzer
     {
-        public RussianDeclensionResult Declension(string s, Guid? token = null, bool paidUser = false)
+        public RussianDeclensionResult Declension(string s, Guid? token = null, DeclensionFlags? flags = null, bool paidUser = false)
         {
             return new RussianDeclensionResult();
         }
