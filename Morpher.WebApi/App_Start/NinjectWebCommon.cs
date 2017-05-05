@@ -79,9 +79,6 @@ namespace Morpher.WebApi.App_Start
                 kernel.Bind<ICustomDeclensions>().To<CustomDeclensionsLocal>();
                 kernel.Bind<IApiThrottler>().ToConstant(new ApiThrottlerLocal());
                 kernel.Bind<IMorpherLog>().ToConstant(new MorpherLogLocal());
-
-                kernel.Bind<IRussianAnalyzer>().To<DummyRussianAnalyzer>();
-                kernel.Bind<IUkrainianAnalyzer>().To<DummyUkrainianAnalyzer>();
             }
             else
             {
@@ -99,11 +96,11 @@ namespace Morpher.WebApi.App_Start
                 kernel.Bind<IApiThrottler>().To<ApiThrottler>();
                 kernel.Bind<IMorpherLog>().To<MorpherLog>().InSingletonScope();
 
-                kernel.Bind<IRussianAnalyzer>().To<RussianWebAnalyzer>();
-                kernel.Bind<IUkrainianAnalyzer>().To<UkrainianWebAnalyzer>();
             }
 
 
+            kernel.Bind<IRussianAnalyzer>().To<RussianWebAnalyzer>();
+            kernel.Bind<IUkrainianAnalyzer>().To<UkrainianWebAnalyzer>();
 
         }
     }
