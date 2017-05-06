@@ -184,23 +184,23 @@
             Assert.AreEqual(ApiThrottlingResult.IpBlocked, result);
         }
 
-        [Test]
-        public void Throttle_Ip_Overlimit()
-        {
-            IMorpherCache morpherCache =
-                Mock.Of<IMorpherCache>(cache => cache.Get(It.IsAny<string>(), null) == new CacheObject()
-                {
-                    DailyLimit = 0,
-                    Unlimited = false
-                }
-                && cache.Decrement(It.IsAny<string>()) == false);
+        //[Test]
+        //public void Throttle_Ip_Overlimit()
+        //{
+        //    IMorpherCache morpherCache =
+        //        Mock.Of<IMorpherCache>(cache => cache.Get(It.IsAny<string>(), null) == new CacheObject()
+        //        {
+        //            DailyLimit = 0,
+        //            Unlimited = false
+        //        }
+        //        && cache.Decrement(It.IsAny<string>()) == false);
 
-            IApiThrottler apiThrottler = new ApiThrottler(null, morpherCache);
+        //    IApiThrottler apiThrottler = new ApiThrottler(null, morpherCache);
 
-            ApiThrottlingResult result = apiThrottler.Throttle("any ip");
+        //    ApiThrottlingResult result = apiThrottler.Throttle("any ip");
 
-            Assert.AreEqual(ApiThrottlingResult.Overlimit, result);
-        }
+        //    Assert.AreEqual(ApiThrottlingResult.Overlimit, result);
+        //}
 
         [Test]
         public void Throttle_Ip_Success()

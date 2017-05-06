@@ -14,16 +14,18 @@
         {
         }
 
-        public bool Decrement(string key)
-        {
-            CacheObject cacheObject = (CacheObject)this.Get(key);
-
-            return Interlocked.Decrement(ref cacheObject.DailyLimit) > 0;
-        }
-
         public bool Decrement(CacheObject cacheObject)
         {
-            return Interlocked.Decrement(ref cacheObject.DailyLimit) > 0;
+            lock (cacheObject)
+            {
+                if (cacheObject.DailyLimit > 0)
+                {
+                    cacheObject.DailyLimit--;
+                    return true;
+                }
+
+                return false;
+            }
         }
     }
 }

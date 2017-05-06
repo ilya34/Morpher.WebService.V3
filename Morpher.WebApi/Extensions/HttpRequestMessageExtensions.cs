@@ -94,7 +94,7 @@
         {
             if (message.Properties.ContainsKey("MS_HttpContext"))
             {
-                return ((HttpContextWrapper)message.Properties["MS_HttpContext"]).Request.UserHostAddress;
+                return ((dynamic)message.Properties["MS_HttpContext"]).Request.UserHostAddress;
             }
 
             if (message.Properties.ContainsKey(RemoteEndpointMessageProperty.Name))
