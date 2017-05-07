@@ -4,7 +4,7 @@
 
     using Morpher.WebApi.Models.Interfaces;
 
-    public interface ICustomDeclensions
+    public interface IUserCorrection
     {
         void SetUserDeclensions(IRussianParadigm paradigm, string lemma, bool plural, Guid token = default(Guid));
 

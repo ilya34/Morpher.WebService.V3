@@ -73,10 +73,10 @@ namespace Morpher.WebApi.App_Start
             bool isLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
 
             // Если проект запущен как Local, то использутся заглушки для тарифов, и логов.
-            // CustomDeclensions должен смотреть в файл, а не SQL бд
+            // UserCorrection должен смотреть в файл, а не SQL бд
             if (isLocal)
             {
-                kernel.Bind<ICustomDeclensions>().To<CustomDeclensionsLocal>();
+                kernel.Bind<IUserCorrection>().To<UserCorrectionLocal>();
                 kernel.Bind<IApiThrottler>().ToConstant(new ApiThrottlerLocal());
                 kernel.Bind<IMorpherLog>().ToConstant(new MorpherLogLocal());
             }
@@ -86,8 +86,8 @@ namespace Morpher.WebApi.App_Start
                 kernel.Bind<IDatabaseLog>()
                     .To<DatabaseLog>()
                     .WithConstructorArgument("connectionString", connectionString);
-                kernel.Bind<ICustomDeclensions>()
-                    .To<CustomDeclensions>()
+                kernel.Bind<IUserCorrection>()
+                    .To<UserCorrection>()
                     .WithConstructorArgument("connectionString", connectionString);
                 kernel.Bind<IMorpherDatabase>()
                     .To<MorpherDatabase>()

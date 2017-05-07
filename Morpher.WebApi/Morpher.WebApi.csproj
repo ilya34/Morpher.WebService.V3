@@ -167,16 +167,17 @@
     <Compile Include="Models\DeclensionFlags.cs" />
     <Compile Include="Services\DummyRussianAnalyzer.cs" />
     <Compile Include="Services\DummyUkrainianAnalyzer.cs" />
+    <Compile Include="Services\Interfaces\IUserCorrectionSource.cs" />
     <Compile Include="Services\MorpherLog.cs" />
     <Compile Include="Models\LogEntity.cs" />
     <Compile Include="Services\LogSyncer.cs" />
-    <Compile Include="Services\CustomDeclensions.cs" />
+    <Compile Include="Services\UserCorrection.cs" />
     <Compile Include="Services\Interfaces\IDatabaseLog.cs" />
     <Compile Include="Services\Interfaces\IMorpherCache.cs" />
     <Compile Include="Services\Interfaces\IMorpherDatabase.cs" />
     <Compile Include="Services\Interfaces\ApiThrottlerLocal.cs" />
-    <Compile Include="Services\CustomDeclensionsLocal.cs" />
-    <Compile Include="Services\Interfaces\ICustomDeclensions.cs" />
+    <Compile Include="Services\UserCorrectionLocal.cs" />
+    <Compile Include="Services\Interfaces\IUserCorrection.cs" />
     <Compile Include="Services\Interfaces\IRussianAnalyzer.cs" />
     <Compile Include="Services\Interfaces\IUkrainianAnalyzer.cs" />
     <Compile Include="Services\DatabaseLog.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="Models\ServiceErrorMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Interfaces\IMorpherLog.cs" />
+    <Compile Include="Services\UserCorrectionSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.AdjectiveGenders.datasource">
@@ -301,6 +303,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
+    <None Include="Properties\PublishProfiles\Morpher.pubxml" />
     <None Include="Web.Local.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

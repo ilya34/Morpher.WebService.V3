@@ -14,14 +14,14 @@
 
     public class RussianWebAnalyzer : IRussianAnalyzer
     {
-        private readonly ICustomDeclensions customDeclensions;
+        private readonly IUserCorrection userCorrection;
 
         private readonly Credentials credentials =
             new Credentials() { Username = "srgFilenko", Password = "morpherCorgi" };
 
-        public RussianWebAnalyzer(ICustomDeclensions customDeclensions)
+        public RussianWebAnalyzer(IUserCorrection userCorrection)
         {
-            this.customDeclensions = customDeclensions;
+            this.userCorrection = userCorrection;
         }
 
         public RussianDeclensionResult Declension(string s, Guid? token = null, DeclensionFlags? flags = null, bool paidUser = false)
@@ -84,10 +84,10 @@
 
                 if (token.HasValue)
                 {
-                    this.customDeclensions.SetUserDeclensions(declensionResult, s, false, token.Value);
+                    this.userCorrection.SetUserDeclensions(declensionResult, s, false, token.Value);
                     if (declensionResult.Plural != null)
                     {
-                        this.customDeclensions.SetUserDeclensions(declensionResult.Plural, s, true, token.Value);
+                        this.userCorrection.SetUserDeclensions(declensionResult.Plural, s, true, token.Value);
                     }
                 }
 

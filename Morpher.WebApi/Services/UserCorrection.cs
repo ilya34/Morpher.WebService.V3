@@ -1,29 +1,23 @@
 ﻿namespace Morpher.WebApi.Services
 {
     using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Data.SqlClient;
     using System.Linq;
 
-    using Dapper;
-
-    using Morpher.WebApi.Models;
     using Morpher.WebApi.Models.Interfaces;
     using Morpher.WebApi.Services.Interfaces;
 
-    public class CustomDeclensions : ICustomDeclensions
+    public class UserCorrection : IUserCorrection
     {
-        private readonly string connectionString;
+        private readonly IUserCorrectionSource correctionSource;
 
-        public CustomDeclensions(string connectionString)
+        public UserCorrection(IUserCorrectionSource correctionSource)
         {
-            this.connectionString = connectionString;
+            this.correctionSource = correctionSource;
         }
 
         public void SetUserDeclensions(IRussianParadigm paradigm, string lemma, bool plural, Guid token = new Guid())
         {
-            var nameForms = this.GetUserDeclensions(token, lemma, "RU");
+            var nameForms = this.correctionSource.GetUserCorrections(token, lemma, "RU");
             if (nameForms != null && nameForms.Any())
             {
                 foreach (var nameForm in nameForms.Where(form => form.Plural == plural))
@@ -58,7 +52,7 @@
 
         public void SetUserDeclensions(IUkrainianParadigm paradigm, string lemma, bool plural, Guid token = new Guid())
         {
-            var nameForms = this.GetUserDeclensions(token, lemma, "UK");
+            var nameForms = this.correctionSource.GetUserCorrections(token, lemma, "UK");
             if (nameForms != null)
             {
                 foreach (var nameForm in nameForms.Where(form => form.Plural == plural))
@@ -89,25 +83,6 @@
                     }
                 }
             }
-        }
-
-        private IList<NameForm> GetUserDeclensions(Guid token, string lemma, string language)
-        {
-            using (SqlConnection connection = new SqlConnection(this.connectionString))
-            {
-                IEnumerable<NameForm> forms = connection.Query<NameForm>(
-                    "sp_GetForms",
-                    new { normalizedLemma = lemma, language, token },
-                    commandType: CommandType.StoredProcedure);
-
-                if (forms == null)
-                {
-                    return null;
-                }
-
-                return forms as IList<NameForm> ?? forms.ToList();
-            }
-
         }
     }
 }

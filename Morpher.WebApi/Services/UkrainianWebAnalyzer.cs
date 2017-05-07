@@ -9,14 +9,14 @@
 
     public class UkrainianWebAnalyzer : IUkrainianAnalyzer
     {
-        private readonly ICustomDeclensions customDeclensions;
+        private readonly IUserCorrection userCorrection;
 
         private readonly Credentials credentials =
             new Credentials() { Username = "srgFilenko", Password = "morpherCorgi" };
 
-        public UkrainianWebAnalyzer(ICustomDeclensions customDeclensions)
+        public UkrainianWebAnalyzer(IUserCorrection userCorrection)
         {
-            this.customDeclensions = customDeclensions;
+            this.userCorrection = userCorrection;
         }
 
         public UkrainianDeclensionResult Declension(string s, Guid? token = null, DeclensionFlags? flags = null, bool paidUser = false)
@@ -46,7 +46,7 @@
 
             if (token.HasValue)
             {
-                this.customDeclensions.SetUserDeclensions(declensionResult, s, false, token.Value);
+                this.userCorrection.SetUserDeclensions(declensionResult, s, false, token.Value);
             }
 
             if (!paidUser)
