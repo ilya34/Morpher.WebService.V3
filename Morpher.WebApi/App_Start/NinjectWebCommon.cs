@@ -86,6 +86,8 @@ namespace Morpher.WebApi.App_Start
                 kernel.Bind<IDatabaseLog>()
                     .To<DatabaseLog>()
                     .WithConstructorArgument("connectionString", connectionString);
+                kernel.Bind<IUserCorrectionSource>().To<UserCorrectionSource>()
+                    .WithConstructorArgument("connectionString", connectionString);
                 kernel.Bind<IUserCorrection>()
                     .To<UserCorrection>()
                     .WithConstructorArgument("connectionString", connectionString);
