@@ -1,6 +1,7 @@
 ﻿namespace Morpher.WebApi.Controllers
 {
     using System;
+    using System.Configuration;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
@@ -64,16 +65,14 @@
 
         [Route("remove_client_from_cache")]
         [HttpGet]
-        public HttpResponseMessage RemoveClientFromCache(string clientToken, ResponseFormat? format = null)
+        public HttpResponseMessage RemoveClientFromCache(string clientToken, string password, ResponseFormat? format = null)
         {
-            string ip = this.Request.GetClientIp();
-
-            if (ip != "::1")
+            if (password != ConfigurationManager.AppSettings["CacheResetKey"])
             {
                 return this.Request.CreateResponse(HttpStatusCode.Forbidden, "Not today", format);
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, this.apiThrottler.RemoveFromCache(clientToken) != null, format);
+            return this.Request.CreateResponse(HttpStatusCode.OK, this.apiThrottler.RemoveFromCache(clientToken.ToLowerInvariant()) != null, format);
         }
     }
 }
