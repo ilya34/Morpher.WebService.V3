@@ -48,18 +48,26 @@
                 return Encoding.UTF8.GetString(Convert.FromBase64String(token));
             }
 
-            return "Invalid token";
+            throw new InvalidTokenFormat();
         }
 
         public static Guid? GetToken(this HttpRequestMessage message)
         {
 
-            if (Guid.TryParse(message.GetQueryString("token") ?? message.GetBasicAuthorization(), out Guid guid))
+            string token = message.GetQueryString("token") ?? message.GetBasicAuthorization();
+
+            if (token == null)
+            {
+                return null;
+            }
+
+            Guid guid;
+            if (Guid.TryParse(token, out guid))
             {
                 return guid;
             }
 
-            return null;
+            throw new InvalidTokenFormat();
         }
 
         public static Dictionary<string, string> GetQueryStrings(this HttpRequestMessage message)
@@ -82,7 +90,8 @@
 
         public static string GetHeader(this HttpRequestMessage message, string key)
         {
-            if (!message.Headers.TryGetValues(key, out IEnumerable<string> keys))
+            IEnumerable<string> keys;
+            if (!message.Headers.TryGetValues(key, out keys))
             {
                 return null;
             }

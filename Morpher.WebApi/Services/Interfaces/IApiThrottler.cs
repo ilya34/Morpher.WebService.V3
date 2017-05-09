@@ -16,8 +16,8 @@
 
         object RemoveFromCache(string key);
 
-        CacheObject GetQueryLimit(string ip);
+        MorpherCacheObject GetQueryLimit(string ip);
 
-        CacheObject GetQueryLimit(Guid guid);
+        MorpherCacheObject GetQueryLimit(Guid guid);
     }
 }

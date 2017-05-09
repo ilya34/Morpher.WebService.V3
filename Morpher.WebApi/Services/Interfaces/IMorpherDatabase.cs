@@ -12,7 +12,7 @@
 
         int GetQueryCountByToken(Guid guid);
 
-        CacheObject GetUserLimits(Guid guid);
+        MorpherCacheObject GetUserLimits(Guid guid);
 
         bool IsIpBlocked(string ip);
     }

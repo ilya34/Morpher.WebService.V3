@@ -6,7 +6,7 @@
 
     public interface IMorpherCache
     {
-        bool Decrement(CacheObject cacheObject);
+        bool Decrement(MorpherCacheObject morpherCacheObject);
 
         object Get(string key, string regionName = null);
 

@@ -29,11 +29,12 @@
 
         [Route("declension", Name = "UkrainianDeclension")]
         [HttpGet]
-        public HttpResponseMessage Declension(string s, string token = null, DeclensionFlags? flags = null, ResponseFormat? format = null)
+        public HttpResponseMessage Declension(string s, DeclensionFlags? flags = null, ResponseFormat? format = null)
         {
             try
             {
-                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out bool paidUser);
+                bool paidUser;
+                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request,out paidUser);
 
                 if (result != ApiThrottlingResult.Success)
                 {
@@ -58,11 +59,12 @@
 
         [Route("spell")]
         [HttpGet]
-        public HttpResponseMessage Spell(int n, string unit, string token = null, ResponseFormat? format = null)
+        public HttpResponseMessage Spell(int n, string unit, ResponseFormat? format = null)
         {
             try
             {
-                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out bool paidUser);
+                bool paidUser;
+                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
 
                 if (result != ApiThrottlingResult.Success)
                 {

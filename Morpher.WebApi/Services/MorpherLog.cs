@@ -46,7 +46,12 @@
             }
 
             string userAgent = message.Headers.UserAgent?.ToString();
-            Guid? token = message.GetToken();
+
+            Guid? token = null;
+            if (!(exception is InvalidTokenFormat))
+            {
+                token = message.GetToken();
+            }
 
             this.logQueue.Enqueue(
                 new LogEntity(remoteAddress, queryString, querySource, DateTime.UtcNow, token, userAgent, errorCode));

@@ -2,6 +2,7 @@
 {
     public enum ApiThrottlingResult
     {
+        TokenNotFound,
         InvalidToken,
         Overlimit,
         Success,

@@ -3,7 +3,8 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Net.Http;
-    using System.Net.Http.Headers;
+    using System.Runtime.Caching;
+    using System.Threading;
     using System.Web;
 
     using Moq;
@@ -23,15 +24,13 @@
         public void Throttle_ByIp()
         {
             int queryLimit = 10;
-            int overlimitAttempts = 10;
             int recordsInDatabase = 5;
 
             // Setup database
             Mock<IMorpherDatabase> databaseMock = new Mock<IMorpherDatabase>();
             databaseMock.Setup(database => database.IsIpBlocked(It.IsAny<string>())).Returns(false);
             databaseMock.Setup(database => database.GetDefaultDailyQueryLimit()).Returns(queryLimit);
-            databaseMock.Setup(database => database.GetQueryCountByIp(It.IsAny<string>())).Returns(recordsInDatabase)
-                .Verifiable();
+            databaseMock.Setup(database => database.GetQueryCountByIp(It.IsAny<string>())).Returns(recordsInDatabase);
 
             // Setup ApiThrottler
             IApiThrottler apiThrottler = new ApiThrottler(databaseMock.Object, new MorpherCache("Throttle_ByIp"));
@@ -53,51 +52,14 @@
             }
 
             Assert.AreEqual(queryLimit - recordsInDatabase, success);
-            Assert.AreEqual(0, apiThrottler.GetQueryLimit("::1").DailyLimit);
+            Assert.AreEqual(0, apiThrottler.GetQueryLimit("::1").QueriesLeft);
 
-            int overlimit = 0;
-            for (int i = 0; i < overlimitAttempts; i++)
             {
                 ApiThrottlingResult apiThrottlingResult = apiThrottler.Throttle(requestMessage, out paidUser);
-
-                if (apiThrottlingResult == ApiThrottlingResult.Overlimit)
-                {
-                    overlimit++;
-                }
+                Assert.AreEqual(ApiThrottlingResult.Overlimit, apiThrottlingResult);
             }
-
-            Assert.AreEqual(0, apiThrottler.GetQueryLimit("::1").DailyLimit);
-            Assert.AreEqual(overlimitAttempts, overlimit);
-
-            databaseMock.Verify(database => database.GetQueryCountByIp(It.IsAny<string>()), Times.AtLeastOnce);
         }
 
-        [Test]
-        public void Throttle_ByIp_Overlimit_InDatabase()
-        {
-            int queryLimit = 10;
-            int recordsInDatabase = 15;
-
-            // Setup database
-            Mock<IMorpherDatabase> databaseMock = new Mock<IMorpherDatabase>();
-            databaseMock.Setup(database => database.IsIpBlocked(It.IsAny<string>())).Returns(false);
-            databaseMock.Setup(database => database.GetDefaultDailyQueryLimit()).Returns(queryLimit);
-            databaseMock.Setup(database => database.GetQueryCountByIp(It.IsAny<string>())).Returns(recordsInDatabase)
-                .Verifiable();
-
-            // Setup ApiThrottler
-            IApiThrottler apiThrottler = new ApiThrottler(databaseMock.Object, new MorpherCache("Throttle_ByIp"));
-
-            // Setup HttpRequest
-            HttpRequestMessage requestMessage = this.CreateRequest("http://localhost:0/foo", HttpMethod.Get);
-
-            // Act
-            bool paidUser;
-            ApiThrottlingResult apiThrottlingResult = apiThrottler.Throttle(requestMessage, out paidUser);
-
-            Assert.AreEqual(ApiThrottlingResult.Overlimit, apiThrottlingResult);
-            Assert.AreEqual(0, apiThrottler.GetQueryLimit("::1").DailyLimit);
-        }
 
         [Test]
         public void Throttle_IpBlock()
@@ -122,65 +84,32 @@
         public void Throttle_ByToken_FromQueryString_PaidUser()
         {
             int queryLimit = 10;
-            int overlimitAttempts = 10;
             int recordsInDatabase = 5;
 
-            CacheObject cacheObject = new CacheObject() { DailyLimit = queryLimit, PaidUser = true, Unlimited = false };
+            MorpherCacheObject morpherCacheObject = new MorpherCacheObject() { QueriesLeft = queryLimit, PaidUser = true, Unlimited = false };
 
             Guid guid = Guid.NewGuid();
             HttpRequestMessage requestMessage =
                 this.CreateRequest($"http://localhost:0/foo?token={guid}", HttpMethod.Get);
 
-            this.Throttle_ByToken(cacheObject, requestMessage, queryLimit, overlimitAttempts, recordsInDatabase);
-        }
-
-        [Test]
-        public void Throttle_ByToken_FromQueryString_PaidUser_Overlimit_InDatabase()
-        {
-            int queryLimit = 10;
-            int recordsInDatabase = 15;
-
-            CacheObject cacheObject = new CacheObject() { DailyLimit = queryLimit, PaidUser = true, Unlimited = false };
-
-            Guid guid = Guid.NewGuid();
-
-            // Setup HttpRequest
-            HttpRequestMessage requestMessage =
-                this.CreateRequest($"http://localhost:0/foo?token={guid}", HttpMethod.Get);
-
-            this.Throttle_ByToken_Overlimit_InDatabase(cacheObject, requestMessage, queryLimit, recordsInDatabase);
+            this.Throttle_ByToken(morpherCacheObject, requestMessage, guid, queryLimit, recordsInDatabase);
         }
 
         [Test]
         public void Throttle_ByToken_FromHeader_PaidUser()
         {
             int queryLimit = 10;
-            int overlimitAttempts = 10;
             int recordsInDatabase = 5;
 
-            CacheObject cacheObject = new CacheObject() { DailyLimit = queryLimit, PaidUser = true, Unlimited = false };
+            MorpherCacheObject morpherCacheObject = new MorpherCacheObject() { QueriesLeft = queryLimit, PaidUser = true, Unlimited = false };
 
+            Guid guid = Guid.Parse("5397a048-3b9c-42ad-8dbe-f7ad50b3a0de");
+            string base64 = "NTM5N2EwNDgtM2I5Yy00MmFkLThkYmUtZjdhZDUwYjNhMGRlCg==";
             HttpRequestMessage requestMessage =
                 this.CreateRequest($"http://localhost:0/foo", HttpMethod.Get);
-            requestMessage.Headers.TryAddWithoutValidation("Authorization", "Basic NzE5ODRiMWItYTlhYy00NTc0LWIzZjYtNDhmNzkzMTIxMTEwCg==");
+            requestMessage.Headers.TryAddWithoutValidation("Authorization", $"Basic {base64}");
 
-            this.Throttle_ByToken(cacheObject, requestMessage, queryLimit, overlimitAttempts, recordsInDatabase);
-        }
-
-        [Test]
-        public void Throttle_ByToken_FromHeader_PaidUser_Overlimit_InDatabase()
-        {
-            int queryLimit = 10;
-            int recordsInDatabase = 15;
-
-            CacheObject cacheObject = new CacheObject() { DailyLimit = queryLimit, PaidUser = true, Unlimited = false };
-
-            // Setup HttpRequest
-            HttpRequestMessage requestMessage =
-                this.CreateRequest($"http://localhost:0/foo", HttpMethod.Get);
-            requestMessage.Headers.TryAddWithoutValidation("Authorization", "Basic NzE5ODRiMWItYTlhYy00NTc0LWIzZjYtNDhmNzkzMTIxMTEwCg==");
-
-            this.Throttle_ByToken_Overlimit_InDatabase(cacheObject, requestMessage, queryLimit, recordsInDatabase);
+            this.Throttle_ByToken(morpherCacheObject, requestMessage, guid, queryLimit, recordsInDatabase);
         }
 
         [Test]
@@ -207,7 +136,7 @@
         {
             Mock<IMorpherDatabase> databaseMock = new Mock<IMorpherDatabase>();
             databaseMock.Setup(morpherDatabase => morpherDatabase.GetUserLimits(It.IsAny<Guid>()))
-                .Returns((CacheObject)null);
+                .Returns((MorpherCacheObject)null);
 
             IApiThrottler apiThrottler = new ApiThrottler(databaseMock.Object, new MorpherCache("TestCache"));
             Guid guid = Guid.NewGuid();
@@ -216,7 +145,7 @@
             bool paidUser;
             ApiThrottlingResult apiThrottlingResult = apiThrottler.Throttle(requestMessage, out paidUser);
 
-            Assert.AreEqual(ApiThrottlingResult.InvalidToken, apiThrottlingResult);
+            Assert.AreEqual(ApiThrottlingResult.TokenNotFound, apiThrottlingResult);
 
         }
 
@@ -231,7 +160,7 @@
 
             databaseMock.Setup(database => database.GetQueryCountByToken(It.IsAny<Guid>())).Returns(recordsInDatabase);
             databaseMock.Setup(database => database.GetUserLimits(It.IsAny<Guid>())).Returns(
-                new CacheObject() { DailyLimit = queryLimit, PaidUser = true, Unlimited = true });
+                new MorpherCacheObject() { QueriesLeft = queryLimit, PaidUser = true, Unlimited = true });
 
             // Setup ApiThrottler
             IApiThrottler apiThrottler = new ApiThrottler(databaseMock.Object, new MorpherCache("TestCache"));
@@ -257,7 +186,7 @@
 
             Assert.AreEqual(queryLimit - recordsInDatabase, success);
             Assert.AreEqual(true, apiThrottler.GetQueryLimit(guid).PaidUser);
-            Assert.AreEqual(queryLimit, apiThrottler.GetQueryLimit(guid).DailyLimit);
+            Assert.AreEqual(queryLimit, apiThrottler.GetQueryLimit(guid).QueriesLeft);
         }
 
         [Test]
@@ -265,7 +194,7 @@
         {
             Mock<IMorpherDatabase> databaseMock = new Mock<IMorpherDatabase>();
             databaseMock.Setup(database => database.GetUserLimits(It.IsAny<Guid>())).Returns(
-                new CacheObject() { DailyLimit = 1000, PaidUser = true, Unlimited = true });
+                new MorpherCacheObject() { QueriesLeft = 1000, PaidUser = true, Unlimited = true });
 
             IApiThrottler apiThrottler = new ApiThrottler(databaseMock.Object, new MorpherCache("Test"));
             Guid guid = Guid.NewGuid();
@@ -275,51 +204,45 @@
 
             Assert.NotNull(obj);
         }
-
-        // NOT TESTS
-        public void Throttle_ByToken_Overlimit_InDatabase(
-            CacheObject cacheObject,
-            HttpRequestMessage requestMessage,
-            int queryLimit,
-            int recordsInDatabase)
+        
+        [Test]
+        public void CacheExpiration()
         {
-            // Setup database
+            IMorpherCache morpherCache = new MorpherCacheMock(new MemoryCache("Teset"));
+
             Mock<IMorpherDatabase> databaseMock = new Mock<IMorpherDatabase>();
+            databaseMock.Setup(database => database.GetDefaultDailyQueryLimit()).Returns(1000).Verifiable();
+            databaseMock.Setup(database => database.GetQueryCountByIp(It.IsAny<string>())).Returns(0).Verifiable();
+            databaseMock.Setup(database => database.IsIpBlocked(It.IsAny<string>())).Returns(false).Verifiable();
 
-            databaseMock.Setup(database => database.GetQueryCountByToken(It.IsAny<Guid>())).Returns(recordsInDatabase);
-            databaseMock.Setup(database => database.GetUserLimits(It.IsAny<Guid>())).Returns(cacheObject);
+            IApiThrottler apiThrottler = new ApiThrottler(databaseMock.Object, morpherCache);
 
-            // Setup ApiThrottler
-            IApiThrottler apiThrottler = new ApiThrottler(databaseMock.Object, new MorpherCache("TestCache"));
+            apiThrottler.GetQueryLimit("::1");
+            apiThrottler.GetQueryLimit("::1");
+            Thread.Sleep(60);
+            apiThrottler.GetQueryLimit("::1");
 
-            Guid guid = Guid.NewGuid();
-
-            // Act
-            bool paidUser;
-            ApiThrottlingResult apiThrottlingResult = apiThrottler.Throttle(requestMessage, out paidUser);
-
-            Assert.AreEqual(0, apiThrottler.GetQueryLimit(guid).DailyLimit);
-            Assert.AreEqual(true, apiThrottler.GetQueryLimit(guid).PaidUser);
-            Assert.AreEqual(ApiThrottlingResult.Overlimit, apiThrottlingResult);
+            databaseMock.Verify(database => database.GetDefaultDailyQueryLimit(), Times.Exactly(2));
+            databaseMock.Verify(database => database.GetQueryCountByIp(It.IsAny<string>()), Times.Exactly(2));
+            databaseMock.Verify(database => database.IsIpBlocked(It.IsAny<string>()), Times.Exactly(2));
         }
 
+        // NOT TESTS
         public void Throttle_ByToken(
-            CacheObject cacheObject,
+            MorpherCacheObject morpherCacheObject,
             HttpRequestMessage requestMessage,
+            Guid guid,
             int queryLimit,
-            int overlimitAttempts,
             int recordsInDatabase)
         {
             // Setup database
             Mock<IMorpherDatabase> databaseMock = new Mock<IMorpherDatabase>();
 
             databaseMock.Setup(database => database.GetQueryCountByToken(It.IsAny<Guid>())).Returns(recordsInDatabase);
-            databaseMock.Setup(database => database.GetUserLimits(It.IsAny<Guid>())).Returns(cacheObject);
+            databaseMock.Setup(database => database.GetUserLimits(It.IsAny<Guid>())).Returns(morpherCacheObject);
 
             // Setup ApiThrottler
             IApiThrottler apiThrottler = new ApiThrottler(databaseMock.Object, new MorpherCache("TestCache"));
-
-            Guid guid = Guid.NewGuid();
 
             // Act
             bool paidUser;
@@ -336,22 +259,8 @@
 
             Assert.AreEqual(queryLimit - recordsInDatabase, success);
             Assert.AreEqual(true, apiThrottler.GetQueryLimit(guid).PaidUser);
-            Assert.AreEqual(0, apiThrottler.GetQueryLimit(guid).DailyLimit);
-
-            int overlimit = 0;
-            for (int i = 0; i < overlimitAttempts; i++)
-            {
-                ApiThrottlingResult apiThrottlingResult = apiThrottler.Throttle(requestMessage, out paidUser);
-
-                if (apiThrottlingResult == ApiThrottlingResult.Overlimit)
-                {
-                    overlimit++;
-                }
-            }
-
-            Assert.AreEqual(0, apiThrottler.GetQueryLimit(guid).DailyLimit);
-            Assert.AreEqual(true, apiThrottler.GetQueryLimit(guid).PaidUser);
-            Assert.AreEqual(overlimitAttempts, overlimit);
+            Assert.AreEqual(0, apiThrottler.GetQueryLimit(guid).QueriesLeft);
+            Assert.AreEqual(ApiThrottlingResult.Overlimit, apiThrottler.Throttle(requestMessage, out paidUser));
         }
 
         private HttpRequestMessage CreateRequest(string url, HttpMethod method)
@@ -370,6 +279,36 @@
 
             request.Method = method;
             return request;
+        }
+
+        internal class MorpherCacheMock : IMorpherCache
+        {
+            private readonly MemoryCache memoryCache;
+
+            public MorpherCacheMock(MemoryCache memoryCache)
+            {
+                this.memoryCache = memoryCache;
+            }
+
+            public bool Decrement(MorpherCacheObject morpherCacheObject)
+            {
+                throw new NotImplementedException();
+            }
+
+            public object Get(string key, string regionName = null)
+            {
+                return this.memoryCache.Get(key);
+            }
+
+            public void Set(string key, object value, DateTimeOffset absoluteExpirationDateTimeOffset, string regionName = null)
+            {
+                this.memoryCache.Set(key, value, DateTimeOffset.UtcNow.AddMilliseconds(50));
+            }
+
+            public object Remove(string key, string regionName = null)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

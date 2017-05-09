@@ -165,6 +165,7 @@
   <ItemGroup>
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Models\DeclensionFlags.cs" />
+    <Compile Include="Models\Exceptions\InvalidTokenFormat.cs" />
     <Compile Include="Services\DummyRussianAnalyzer.cs" />
     <Compile Include="Services\DummyUkrainianAnalyzer.cs" />
     <Compile Include="Services\Interfaces\IUserCorrectionSource.cs" />
@@ -190,7 +191,7 @@
     <Compile Include="Models\NameForm.cs" />
     <Compile Include="Services\ApiThrottler.cs" />
     <Compile Include="Models\ApiThrottlingResult.cs" />
-    <Compile Include="Models\CacheObject.cs" />
+    <Compile Include="Models\MorpherCacheObject.cs" />
     <Compile Include="Services\Interfaces\IApiThrottler.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />

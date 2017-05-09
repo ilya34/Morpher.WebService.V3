@@ -30,23 +30,23 @@
             return new object();
         }
 
-        public CacheObject GetQueryLimit(string ip)
+        public MorpherCacheObject GetQueryLimit(string ip)
         {
-            return new CacheObject()
+            return new MorpherCacheObject()
                        {
                            PaidUser = true,
                            Unlimited = true,
-                           DailyLimit = 1000
+                           QueriesLeft = 1000
                        };
         }
 
-        public CacheObject GetQueryLimit(Guid guid)
+        public MorpherCacheObject GetQueryLimit(Guid guid)
         {
-            return new CacheObject()
+            return new MorpherCacheObject()
                        {
                            PaidUser = true,
                            Unlimited = true,
-                           DailyLimit = 1000
+                           QueriesLeft = 1000
                        };
         }
     }

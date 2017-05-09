@@ -30,7 +30,7 @@
 
         [Route("declension", Name = "RussianDeclension")]
         [HttpGet]
-        public HttpResponseMessage Declension(string s, string token = null, DeclensionFlags? flags = null, ResponseFormat? format = null)
+        public HttpResponseMessage Declension(string s, DeclensionFlags? flags = null, ResponseFormat? format = null)
         {
             try
             {
@@ -60,7 +60,7 @@
 
         [Route("spell")]
         [HttpGet]
-        public HttpResponseMessage Spell(int n, string unit, string token = null, ResponseFormat? format = null)
+        public HttpResponseMessage Spell(int n, string unit, ResponseFormat? format = null)
         {
             try
             {
@@ -90,7 +90,7 @@
 
         [Route("adjectivize")]
         [HttpGet]
-        public HttpResponseMessage Adjectivize(string s, string token = null, ResponseFormat? format = null)
+        public HttpResponseMessage Adjectivize(string s, ResponseFormat? format = null)
         {
             try
             {
@@ -120,7 +120,7 @@
 
         [Route("genders")]
         [HttpGet]
-        public HttpResponseMessage AdjectiveGenders(string s, string token = null, ResponseFormat? format = null)
+        public HttpResponseMessage AdjectiveGenders(string s, ResponseFormat? format = null)
         {
             try
             {

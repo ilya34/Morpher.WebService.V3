@@ -1,5 +1,7 @@
 ﻿namespace Morpher.WebApi.Extensions
 {
+    using System.Runtime.InteropServices;
+
     using Morpher.WebApi.ApiThrottler;
     using Morpher.WebApi.Models.Exceptions;
 
@@ -9,7 +11,8 @@
         {
             switch (result)
             {
-                case ApiThrottlingResult.InvalidToken: return new TokenNotFoundException();
+                case ApiThrottlingResult.TokenNotFound: return new TokenNotFoundException();
+                case ApiThrottlingResult.InvalidToken: return new InvalidTokenFormat();
                 case ApiThrottlingResult.IpBlocked: return new IpBlockedException();
                 case ApiThrottlingResult.Overlimit: return new ExceededDailyLimitException();
                 case ApiThrottlingResult.Unpaid: return new NotPayedException();

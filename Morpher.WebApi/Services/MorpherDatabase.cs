@@ -48,11 +48,11 @@
             }
         }
 
-        public CacheObject GetUserLimits(Guid guid)
+        public MorpherCacheObject GetUserLimits(Guid guid)
         {
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
-                return connection.QueryFirstOrDefault<CacheObject>(
+                return connection.QueryFirstOrDefault<MorpherCacheObject>(
                     "sp_GetLimit",
                     new { Token = guid },
                     commandType: CommandType.StoredProcedure);

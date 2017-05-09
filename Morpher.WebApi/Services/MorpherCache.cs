@@ -1,5 +1,6 @@
 ﻿namespace Morpher.WebApi.Services
 {
+    using System;
     using System.Collections.Specialized;
     using System.Runtime.Caching;
     using System.Threading;
@@ -14,18 +15,9 @@
         {
         }
 
-        public bool Decrement(CacheObject cacheObject)
+        public bool Decrement(MorpherCacheObject morpherCacheObject)
         {
-            lock (cacheObject)
-            {
-                if (cacheObject.DailyLimit > 0)
-                {
-                    cacheObject.DailyLimit--;
-                    return true;
-                }
-
-                return false;
-            }
+            return Interlocked.Decrement(ref morpherCacheObject.QueriesLeft) >= 0;
         }
     }
 }
