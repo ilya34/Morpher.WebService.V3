@@ -20,7 +20,7 @@
             this.connectionString = connectionString;
         }
 
-        public IList<NameForm> GetUserCorrections(Guid token, string lemma, string language)
+        public virtual IList<NameForm> GetUserCorrections(Guid token, string lemma, string language)
         {
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
