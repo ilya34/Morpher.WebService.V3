@@ -1,6 +1,7 @@
 ﻿namespace Morpher.WebApi
 {
     using System;
+    using System.Collections.Specialized;
     using System.Configuration;
     using System.Web.Http;
     using System.Web.Mvc;
@@ -16,10 +17,11 @@
         protected void Application_Start()
         {
             bool isLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
-           
+
             if (!isLocal)
             {
-                int everyMinutes = Convert.ToInt32(ConfigurationManager.AppSettings["SyncCacheEveryMinutes"]);
+                NameValueCollection conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
+                int everyMinutes = Convert.ToInt32(conf["SyncCacheEveryMinutes"]);
                 Registry registry = new Registry();
                 registry.Schedule<LogSyncer>().ToRunEvery(everyMinutes).Minutes();
                 JobManager.Initialize(registry);
@@ -33,8 +35,7 @@
 
         protected void Application_End()
         {
-            IMorpherLog log =
-                (IMorpherLog)DependencyResolver.Current.GetService(typeof(IMorpherLog));
+            IMorpherLog log = (IMorpherLog)DependencyResolver.Current.GetService(typeof(IMorpherLog));
             log.Sync();
         }
     }

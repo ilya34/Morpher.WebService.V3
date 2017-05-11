@@ -1,6 +1,7 @@
 ﻿namespace Morpher.WebApi.Controllers
 {
     using System;
+    using System.Collections.Specialized;
     using System.Configuration;
     using System.Net;
     using System.Net.Http;
@@ -67,7 +68,10 @@
         [HttpPost]
         public HttpResponseMessage RemoveClientFromCache([FromBody]CacheResetPostModel postModel)
         {
-            if (postModel.AdminPassword != ConfigurationManager.AppSettings["CacheResetKey"])
+
+            NameValueCollection conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
+
+            if (postModel.AdminPassword != conf["CacheResetKey"])
             {
                 return this.Request.CreateResponse(HttpStatusCode.Forbidden, "Not today", postModel.Format);
             }
