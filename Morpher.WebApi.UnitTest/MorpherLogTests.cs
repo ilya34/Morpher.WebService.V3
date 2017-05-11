@@ -76,7 +76,6 @@
             morpherLog.Log(message);
             morpherLog.Sync();
 
-
             LogEntity entity;
             log.Logs.TryDequeue(out entity);
 
