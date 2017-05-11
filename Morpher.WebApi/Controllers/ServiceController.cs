@@ -5,6 +5,7 @@
     using System.Configuration;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using System.Web.Http;
 
     using Morpher.WebApi.Extensions;
@@ -16,9 +17,12 @@
     {
         private readonly IApiThrottler apiThrottler;
 
-        public ServiceController(IApiThrottler apiThrottler)
+        private readonly IMorpherLog log;
+
+        public ServiceController(IApiThrottler apiThrottler, IMorpherLog log)
         {
             this.apiThrottler = apiThrottler;
+            this.log = log;
         }
 
         [Route("get_queries_left_for_today")]
@@ -68,13 +72,14 @@
         [HttpPost]
         public HttpResponseMessage RemoveClientFromCache([FromBody]CacheResetPostModel postModel)
         {
-
             NameValueCollection conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
 
             if (postModel.AdminPassword != conf["CacheResetKey"])
             {
                 return this.Request.CreateResponse(HttpStatusCode.Forbidden, "Not today", postModel.Format);
             }
+
+            new Task(() => this.log.Sync()).Start();
 
             return this.Request.CreateResponse(
                 HttpStatusCode.OK,
