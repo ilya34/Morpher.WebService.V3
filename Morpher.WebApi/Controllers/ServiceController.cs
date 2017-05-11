@@ -65,14 +65,17 @@
 
         [Route("remove_client_from_cache")]
         [HttpPost]
-        public HttpResponseMessage RemoveClientFromCache(string clientToken, string password, ResponseFormat? format = null)
+        public HttpResponseMessage RemoveClientFromCache([FromBody]CacheResetPostModel postModel)
         {
-            if (password != ConfigurationManager.AppSettings["CacheResetKey"])
+            if (postModel.AdminPassword != ConfigurationManager.AppSettings["CacheResetKey"])
             {
-                return this.Request.CreateResponse(HttpStatusCode.Forbidden, "Not today", format);
+                return this.Request.CreateResponse(HttpStatusCode.Forbidden, "Not today", postModel.Format);
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, this.apiThrottler.RemoveFromCache(clientToken.ToLowerInvariant()) != null, format);
+            return this.Request.CreateResponse(
+                HttpStatusCode.OK,
+                this.apiThrottler.RemoveFromCache(postModel.ClientToken.ToLowerInvariant()) != null,
+                postModel.Format);
         }
     }
 }
