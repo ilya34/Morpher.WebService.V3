@@ -64,7 +64,7 @@
         }
 
         [Route("remove_client_from_cache")]
-        [HttpGet]
+        [HttpPost]
         public HttpResponseMessage RemoveClientFromCache(string clientToken, string password, ResponseFormat? format = null)
         {
             if (password != ConfigurationManager.AppSettings["CacheResetKey"])
