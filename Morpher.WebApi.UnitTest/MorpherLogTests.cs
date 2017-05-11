@@ -5,7 +5,10 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Net.Http;
 
+    using Moq;
+
     using Morpher.WebApi.Models;
+    using Morpher.WebApi.Services;
     using Morpher.WebApi.Services.Interfaces;
 
     using NUnit.Framework;
@@ -18,7 +21,7 @@
         public void DataInserationTest_1()
         {
             MockDatabaseLog log = new MockDatabaseLog();
-            IMorpherLog morpherLog = new Services.MorpherLog(log);
+            IMorpherLog morpherLog = new Services.MorpherLog(log, new MorpherCache("Test"));
 
             HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, "http://localhost:0/test?q1=1&q2=2");
 
@@ -38,7 +41,7 @@
         public void DataInserationTest_2()
         {
             MockDatabaseLog log = new MockDatabaseLog();
-            IMorpherLog morpherLog = new Services.MorpherLog(log);
+            IMorpherLog morpherLog = new Services.MorpherLog(log, new MorpherCache("Test"));
             Guid guid = Guid.NewGuid();
             HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:0/test?q1=1&q2=2&token={guid}");
 
@@ -59,8 +62,12 @@
         public void DataInserationTest_3()
         {
             MockDatabaseLog log = new MockDatabaseLog();
-            IMorpherLog morpherLog = new Services.MorpherLog(log);
+            MorpherCache morpherCache = new MorpherCache("Test");
+
+            IMorpherLog morpherLog = new Services.MorpherLog(log, morpherCache);
             Guid guid = Guid.Parse("4736dff6-a539-4764-98a9-21d19dc1326d");
+            Guid userId = Guid.NewGuid();
+            morpherCache.Add(guid.ToString().ToLowerInvariant(), new MorpherCacheObject() {UserId = userId}, DateTimeOffset.UtcNow.AddMinutes(1));
             string basic = "Basic NDczNmRmZjYtYTUzOS00NzY0LTk4YTktMjFkMTlkYzEzMjZkCg==";
             HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:0/test?q1=1&q2=2");
 
@@ -77,6 +84,7 @@
             Assert.AreEqual($"q1=1;q2=2", entity.QueryString);
             Assert.AreEqual("/test", entity.QuerySource);
             Assert.AreEqual(guid, entity.WebServiceToken);
+            Assert.AreEqual(userId, entity.UserId);
         }
 
         [SuppressMessage("ReSharper", "StyleCop.SA1307")]

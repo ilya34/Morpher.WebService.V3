@@ -11,6 +11,7 @@
             string querySource,
             DateTime dateTime,
             Guid? webServiceToken,
+            Guid? userId,
             string userAgent,
             int errorCode)
         {
@@ -19,6 +20,7 @@
             this.QuerySource = querySource;
             this.DateTimeUTC = dateTime;
             this.WebServiceToken = webServiceToken;
+            this.UserId = userId;
             this.UserAgent = userAgent;
             this.ErrorCode = errorCode;
         }
@@ -31,6 +33,8 @@
 
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         public DateTime DateTimeUTC { get; set; }
+
+        public Guid? UserId { get; set; }
 
         public Guid? WebServiceToken { get; set; }
 

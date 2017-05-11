@@ -16,11 +16,14 @@
     {
         private readonly IDatabaseLog database;
 
+        private readonly IMorpherCache morpherCache;
+
         private readonly ConcurrentQueue<LogEntity> logQueue = new ConcurrentQueue<LogEntity>();
 
-        public MorpherLog(IDatabaseLog database)
+        public MorpherLog(IDatabaseLog database, IMorpherCache morpherCache)
         {
             this.database = database;
+            this.morpherCache = morpherCache;
         }
 
 
@@ -48,13 +51,19 @@
             string userAgent = message.Headers.UserAgent?.ToString();
 
             Guid? token = null;
+            MorpherCacheObject cacheObject = null;
             if (!(exception is InvalidTokenFormat))
             {
                 token = message.GetToken();
+
+                if (token != null)
+                {
+                    cacheObject = (MorpherCacheObject)this.morpherCache.Get(token.ToString().ToLowerInvariant());
+                }
             }
 
             this.logQueue.Enqueue(
-                new LogEntity(remoteAddress, queryString, querySource, DateTime.UtcNow, token, userAgent, errorCode));
+                new LogEntity(remoteAddress, queryString, querySource, DateTime.UtcNow, token, cacheObject?.UserId, userAgent, errorCode));
         }
 
         public void Sync()

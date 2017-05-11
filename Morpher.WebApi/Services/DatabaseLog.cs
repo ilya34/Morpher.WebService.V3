@@ -29,6 +29,7 @@
             dataTable.Columns.Add("WebServiceToken", typeof(Guid));
             dataTable.Columns.Add("UserAgent", typeof(string));
             dataTable.Columns.Add("ErrorCode", typeof(int));
+            dataTable.Columns.Add("UserId", typeof(Guid));
 
             LogEntity logEntity;
             while (logs.TryDequeue(out logEntity))
@@ -40,7 +41,8 @@
                     logEntity.DateTimeUTC,
                     logEntity.WebServiceToken,
                     logEntity.UserAgent,
-                    logEntity.ErrorCode);
+                    logEntity.ErrorCode,
+                    logEntity.UserId);
             }
 
             using (SqlConnection connection = new SqlConnection(this.connectionString))
