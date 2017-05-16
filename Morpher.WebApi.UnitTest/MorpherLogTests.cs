@@ -1,11 +1,9 @@
-﻿namespace Morpher.WebApi.UnitTest
+﻿namespace Morpher.WebService.V3.UnitTests
 {
     using System;
     using System.Collections.Concurrent;
     using System.Diagnostics.CodeAnalysis;
     using System.Net.Http;
-
-    using Moq;
 
     using Morpher.WebService.V3.Models;
     using Morpher.WebService.V3.Services;

@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebApi.Controllers
+﻿namespace Morpher.WebService.V3.Controllers
 {
     using System;
     using System.Web.Mvc;
@@ -13,7 +13,7 @@
                 this.ViewBag.Url = requestUrl.GetComponents(UriComponents.SchemeAndServer, UriFormat.Unescaped);
             }
 
-            return View();
+            return this.View();
         }
     }
 }

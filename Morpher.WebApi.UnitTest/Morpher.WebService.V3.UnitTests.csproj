@@ -7,7 +7,7 @@
     <ProjectGuid>{B83C032A-318C-4538-95E9-3499DACA4DB8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Morpher.WebApi.UnitTest</RootNamespace>
+    <RootNamespace>Morpher.WebService.V3.UnitTests</RootNamespace>
     <AssemblyName>Morpher.WebApi.UnitTest</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -1,7 +1,6 @@
-﻿namespace Morpher.WebApi.UnitTest
+﻿namespace Morpher.WebService.V3.UnitTests
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
 
     using Moq;

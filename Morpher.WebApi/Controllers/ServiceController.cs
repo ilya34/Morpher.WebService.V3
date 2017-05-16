@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebApi.Controllers
+﻿namespace Morpher.WebService.V3.Controllers
 {
     using System;
     using System.Collections.Specialized;
@@ -8,10 +8,10 @@
     using System.Threading.Tasks;
     using System.Web.Http;
 
-    using Morpher.WebApi.Extensions;
-    using Morpher.WebApi.Models;
-    using Morpher.WebApi.Models.Exceptions;
-    using Morpher.WebApi.Services.Interfaces;
+    using Morpher.WebService.V3.Extensions;
+    using Morpher.WebService.V3.Models;
+    using Morpher.WebService.V3.Models.Exceptions;
+    using Morpher.WebService.V3.Services.Interfaces;
 
     public class ServiceController : ApiController
     {

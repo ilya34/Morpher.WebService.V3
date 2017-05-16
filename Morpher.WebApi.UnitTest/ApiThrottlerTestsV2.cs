@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebApi.UnitTest
+﻿namespace Morpher.WebService.V3.UnitTests
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
