@@ -30,7 +30,7 @@
                 RequestCreater.CreateRequest($"http://localhost:0/foo?token={guid}", HttpMethod.Get, "::1");
             requestMessage.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
-            ServiceController serviceController = new ServiceController(apiThrottlerMock.Object) { Request = requestMessage };
+            ServiceController serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
             HttpResponseMessage responseMessage = serviceController.QueriesLeftToday();
 
             ServiceErrorMessage errorMessage;
@@ -48,7 +48,7 @@
                 RequestCreater.CreateRequest($"http://localhost:0/foo?token=invalid_token", HttpMethod.Get, "::1");
             requestMessage.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
-            ServiceController serviceController = new ServiceController(apiThrottlerMock.Object) { Request = requestMessage };
+            ServiceController serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
             HttpResponseMessage responseMessage = serviceController.QueriesLeftToday();
 
             ServiceErrorMessage errorMessage;
@@ -68,7 +68,7 @@
                 RequestCreater.CreateRequest($"http://localhost:0/foo?token={guid}", HttpMethod.Get, "::1");
             requestMessage.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
-            ServiceController serviceController = new ServiceController(apiThrottlerMock.Object) { Request = requestMessage };
+            ServiceController serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
             HttpResponseMessage responseMessage = serviceController.QueriesLeftToday();
 
             int value;
@@ -88,7 +88,7 @@
                 RequestCreater.CreateRequest($"http://localhost:0/foo?token={guid}", HttpMethod.Get, "::1");
             requestMessage.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
-            ServiceController serviceController = new ServiceController(apiThrottlerMock.Object) { Request = requestMessage };
+            ServiceController serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
             HttpResponseMessage responseMessage = serviceController.QueriesLeftToday();
 
             int value;
@@ -108,7 +108,7 @@
                 RequestCreater.CreateRequest($"http://localhost:0/foo", HttpMethod.Get, "::1");
             requestMessage.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
-            ServiceController serviceController = new ServiceController(apiThrottlerMock.Object) { Request = requestMessage };
+            ServiceController serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
             HttpResponseMessage responseMessage = serviceController.QueriesLeftToday();
 
             ServiceErrorMessage errorMessage;

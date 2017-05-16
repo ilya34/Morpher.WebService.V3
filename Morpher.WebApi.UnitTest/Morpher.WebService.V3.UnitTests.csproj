@@ -82,9 +82,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Morpher.WebApi\Morpher.WebApi.csproj">
+    <ProjectReference Include="..\Morpher.WebApi\Morpher.WebService.V3.csproj">
       <Project>{296f6937-c604-4ac5-ab04-957f957db011}</Project>
-      <Name>Morpher.WebApi</Name>
+      <Name>Morpher.WebService.V3</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

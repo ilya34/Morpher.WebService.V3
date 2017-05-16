@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Morpher.WebApi", "Morpher.WebApi\Morpher.WebApi.csproj", "{296F6937-C604-4AC5-AB04-957F957DB011}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Morpher.WebService.V3", "Morpher.WebApi\Morpher.WebService.V3.csproj", "{296F6937-C604-4AC5-AB04-957F957DB011}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Morpher.WebApi.UnitTest", "Morpher.WebApi.UnitTest\Morpher.WebApi.UnitTest.csproj", "{B83C032A-318C-4538-95E9-3499DACA4DB8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Morpher.WebService.V3.UnitTests", "Morpher.WebApi.UnitTest\Morpher.WebService.V3.UnitTests.csproj", "{B83C032A-318C-4538-95E9-3499DACA4DB8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
