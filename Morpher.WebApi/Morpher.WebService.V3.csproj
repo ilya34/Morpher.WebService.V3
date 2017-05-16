@@ -13,7 +13,7 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Morpher.WebApi</RootNamespace>
+    <RootNamespace>Morpher.WebService.V3</RootNamespace>
     <AssemblyName>Morpher.WebApi</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
@@ -239,46 +239,46 @@
     <Compile Include="Services\UserCorrectionSource.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.AdjectiveGenders.datasource">
+    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.AdjectiveGenders.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.GetAccountStatusResponse.datasource">
+    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetAccountStatusResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.GetAdjectiveGendersResponse.datasource">
+    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetAdjectiveGendersResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.GetAdjectivesResponse.datasource">
+    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetAdjectivesResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.GetDeclensionResponse.datasource">
+    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetDeclensionResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.GetXmlResponse.datasource">
+    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetXmlResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.GetXmlResult.datasource">
+    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetXmlResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.GetXmlUkrResponse.datasource">
+    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetXmlUkrResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.GetXmlUkrResult.datasource">
+    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetXmlUkrResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.PropisResponse.datasource">
+    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.PropisResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.PropisResult.datasource">
+    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.PropisResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.PropisUkrResponse.datasource">
+    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.PropisUkrResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.PropisUkrResult.datasource">
+    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.PropisUkrResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebApi.MorpherSoap.SubmitCorrectionResponse.datasource">
+    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.SubmitCorrectionResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Connected Services\MorpherSoap\WebService.disco" />

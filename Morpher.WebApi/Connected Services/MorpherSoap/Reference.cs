@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Morpher.WebApi.MorpherSoap {
+namespace Morpher.WebService.V3.Connected_Services.MorpherSoap {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -18,58 +18,58 @@ namespace Morpher.WebApi.MorpherSoap {
         // CODEGEN: Generating message contract since message GetAdjectivesRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/GetAdjectives", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        Morpher.WebApi.MorpherSoap.GetAdjectivesResponse GetAdjectives(Morpher.WebApi.MorpherSoap.GetAdjectivesRequest request);
+        GetAdjectivesResponse GetAdjectives(GetAdjectivesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/GetAdjectives", ReplyAction="*")]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetAdjectivesResponse> GetAdjectivesAsync(Morpher.WebApi.MorpherSoap.GetAdjectivesRequest request);
+        System.Threading.Tasks.Task<GetAdjectivesResponse> GetAdjectivesAsync(GetAdjectivesRequest request);
         
         // CODEGEN: Generating message contract since message GetAdjectiveGendersRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/GetAdjectiveGenders", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        Morpher.WebApi.MorpherSoap.GetAdjectiveGendersResponse GetAdjectiveGenders(Morpher.WebApi.MorpherSoap.GetAdjectiveGendersRequest request);
+        GetAdjectiveGendersResponse GetAdjectiveGenders(GetAdjectiveGendersRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/GetAdjectiveGenders", ReplyAction="*")]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetAdjectiveGendersResponse> GetAdjectiveGendersAsync(Morpher.WebApi.MorpherSoap.GetAdjectiveGendersRequest request);
+        System.Threading.Tasks.Task<GetAdjectiveGendersResponse> GetAdjectiveGendersAsync(GetAdjectiveGendersRequest request);
         
         // CODEGEN: Generating message contract since message SubmitCorrectionRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/SubmitCorrection", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        Morpher.WebApi.MorpherSoap.SubmitCorrectionResponse SubmitCorrection(Morpher.WebApi.MorpherSoap.SubmitCorrectionRequest request);
+        SubmitCorrectionResponse SubmitCorrection(SubmitCorrectionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/SubmitCorrection", ReplyAction="*")]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.SubmitCorrectionResponse> SubmitCorrectionAsync(Morpher.WebApi.MorpherSoap.SubmitCorrectionRequest request);
+        System.Threading.Tasks.Task<SubmitCorrectionResponse> SubmitCorrectionAsync(SubmitCorrectionRequest request);
         
         // CODEGEN: Generating message contract since message GetAccountStatusRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/GetAccountStatus", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        Morpher.WebApi.MorpherSoap.GetAccountStatusResponse GetAccountStatus(Morpher.WebApi.MorpherSoap.GetAccountStatusRequest request);
+        GetAccountStatusResponse GetAccountStatus(GetAccountStatusRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/GetAccountStatus", ReplyAction="*")]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetAccountStatusResponse> GetAccountStatusAsync(Morpher.WebApi.MorpherSoap.GetAccountStatusRequest request);
+        System.Threading.Tasks.Task<GetAccountStatusResponse> GetAccountStatusAsync(GetAccountStatusRequest request);
         
         // CODEGEN: Generating message contract since message GetDeclensionRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/GetDeclension", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        Morpher.WebApi.MorpherSoap.GetDeclensionResponse GetDeclension(Morpher.WebApi.MorpherSoap.GetDeclensionRequest request);
+        GetDeclensionResponse GetDeclension(GetDeclensionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/GetDeclension", ReplyAction="*")]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetDeclensionResponse> GetDeclensionAsync(Morpher.WebApi.MorpherSoap.GetDeclensionRequest request);
+        System.Threading.Tasks.Task<GetDeclensionResponse> GetDeclensionAsync(GetDeclensionRequest request);
         
         // CODEGEN: Generating message contract since message GetXmlUkrRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/GetXmlUkr", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        Morpher.WebApi.MorpherSoap.GetXmlUkrResponse GetXmlUkr(Morpher.WebApi.MorpherSoap.GetXmlUkrRequest request);
+        GetXmlUkrResponse GetXmlUkr(GetXmlUkrRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/GetXmlUkr", ReplyAction="*")]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetXmlUkrResponse> GetXmlUkrAsync(Morpher.WebApi.MorpherSoap.GetXmlUkrRequest request);
+        System.Threading.Tasks.Task<GetXmlUkrResponse> GetXmlUkrAsync(GetXmlUkrRequest request);
         
         // CODEGEN: Generating message contract since message PropisUkrRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/PropisUkr", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        Morpher.WebApi.MorpherSoap.PropisUkrResponse PropisUkr(Morpher.WebApi.MorpherSoap.PropisUkrRequest request);
+        PropisUkrResponse PropisUkr(PropisUkrRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/PropisUkr", ReplyAction="*")]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.PropisUkrResponse> PropisUkrAsync(Morpher.WebApi.MorpherSoap.PropisUkrRequest request);
+        System.Threading.Tasks.Task<PropisUkrResponse> PropisUkrAsync(PropisUkrRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/GetDailyQueryLimit", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -88,18 +88,18 @@ namespace Morpher.WebApi.MorpherSoap {
         // CODEGEN: Generating message contract since message GetXmlRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/GetXml", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        Morpher.WebApi.MorpherSoap.GetXmlResponse GetXml(Morpher.WebApi.MorpherSoap.GetXmlRequest request);
+        GetXmlResponse GetXml(GetXmlRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/GetXml", ReplyAction="*")]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetXmlResponse> GetXmlAsync(Morpher.WebApi.MorpherSoap.GetXmlRequest request);
+        System.Threading.Tasks.Task<GetXmlResponse> GetXmlAsync(GetXmlRequest request);
         
         // CODEGEN: Generating message contract since message PropisRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/Propis", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        Morpher.WebApi.MorpherSoap.PropisResponse Propis(Morpher.WebApi.MorpherSoap.PropisRequest request);
+        PropisResponse Propis(PropisRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://morpher.ru/Propis", ReplyAction="*")]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.PropisResponse> PropisAsync(Morpher.WebApi.MorpherSoap.PropisRequest request);
+        System.Threading.Tasks.Task<PropisResponse> PropisAsync(PropisRequest request);
     }
     
     /// <remarks/>
@@ -745,7 +745,7 @@ namespace Morpher.WebApi.MorpherSoap {
     public partial class GetAdjectivesRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://morpher.ru/")]
-        public Morpher.WebApi.MorpherSoap.Credentials Credentials;
+        public Credentials Credentials;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://morpher.ru/", Order=0)]
         public string s;
@@ -753,7 +753,7 @@ namespace Morpher.WebApi.MorpherSoap {
         public GetAdjectivesRequest() {
         }
         
-        public GetAdjectivesRequest(Morpher.WebApi.MorpherSoap.Credentials Credentials, string s) {
+        public GetAdjectivesRequest(Credentials Credentials, string s) {
             this.Credentials = Credentials;
             this.s = s;
         }
@@ -783,7 +783,7 @@ namespace Morpher.WebApi.MorpherSoap {
     public partial class GetAdjectiveGendersRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://morpher.ru/")]
-        public Morpher.WebApi.MorpherSoap.Credentials Credentials;
+        public Credentials Credentials;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://morpher.ru/", Order=0)]
         public string s;
@@ -791,7 +791,7 @@ namespace Morpher.WebApi.MorpherSoap {
         public GetAdjectiveGendersRequest() {
         }
         
-        public GetAdjectiveGendersRequest(Morpher.WebApi.MorpherSoap.Credentials Credentials, string s) {
+        public GetAdjectiveGendersRequest(Credentials Credentials, string s) {
             this.Credentials = Credentials;
             this.s = s;
         }
@@ -804,12 +804,12 @@ namespace Morpher.WebApi.MorpherSoap {
     public partial class GetAdjectiveGendersResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://morpher.ru/", Order=0)]
-        public Morpher.WebApi.MorpherSoap.AdjectiveGenders GetAdjectiveGendersResult;
+        public AdjectiveGenders GetAdjectiveGendersResult;
         
         public GetAdjectiveGendersResponse() {
         }
         
-        public GetAdjectiveGendersResponse(Morpher.WebApi.MorpherSoap.AdjectiveGenders GetAdjectiveGendersResult) {
+        public GetAdjectiveGendersResponse(AdjectiveGenders GetAdjectiveGendersResult) {
             this.GetAdjectiveGendersResult = GetAdjectiveGendersResult;
         }
     }
@@ -821,10 +821,10 @@ namespace Morpher.WebApi.MorpherSoap {
     public partial class SubmitCorrectionRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://morpher.ru/")]
-        public Morpher.WebApi.MorpherSoap.Credentials Credentials;
+        public Credentials Credentials;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://morpher.ru/", Order=0)]
-        public Morpher.WebApi.MorpherSoap.GetXmlResult correction;
+        public GetXmlResult correction;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://morpher.ru/", Order=1)]
         public string comment;
@@ -832,7 +832,7 @@ namespace Morpher.WebApi.MorpherSoap {
         public SubmitCorrectionRequest() {
         }
         
-        public SubmitCorrectionRequest(Morpher.WebApi.MorpherSoap.Credentials Credentials, Morpher.WebApi.MorpherSoap.GetXmlResult correction, string comment) {
+        public SubmitCorrectionRequest(Credentials Credentials, GetXmlResult correction, string comment) {
             this.Credentials = Credentials;
             this.correction = correction;
             this.comment = comment;
@@ -856,12 +856,12 @@ namespace Morpher.WebApi.MorpherSoap {
     public partial class GetAccountStatusRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://morpher.ru/")]
-        public Morpher.WebApi.MorpherSoap.Credentials Credentials;
+        public Credentials Credentials;
         
         public GetAccountStatusRequest() {
         }
         
-        public GetAccountStatusRequest(Morpher.WebApi.MorpherSoap.Credentials Credentials) {
+        public GetAccountStatusRequest(Credentials Credentials) {
             this.Credentials = Credentials;
         }
     }
@@ -890,7 +890,7 @@ namespace Morpher.WebApi.MorpherSoap {
     public partial class GetDeclensionRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://morpher.ru/")]
-        public Morpher.WebApi.MorpherSoap.Credentials Credentials;
+        public Credentials Credentials;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://morpher.ru/", Order=0)]
         public string s;
@@ -898,7 +898,7 @@ namespace Morpher.WebApi.MorpherSoap {
         public GetDeclensionRequest() {
         }
         
-        public GetDeclensionRequest(Morpher.WebApi.MorpherSoap.Credentials Credentials, string s) {
+        public GetDeclensionRequest(Credentials Credentials, string s) {
             this.Credentials = Credentials;
             this.s = s;
         }
@@ -911,12 +911,12 @@ namespace Morpher.WebApi.MorpherSoap {
     public partial class GetDeclensionResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://morpher.ru/", Order=0)]
-        public Morpher.WebApi.MorpherSoap.GetXmlResult GetDeclensionResult;
+        public GetXmlResult GetDeclensionResult;
         
         public GetDeclensionResponse() {
         }
         
-        public GetDeclensionResponse(Morpher.WebApi.MorpherSoap.GetXmlResult GetDeclensionResult) {
+        public GetDeclensionResponse(GetXmlResult GetDeclensionResult) {
             this.GetDeclensionResult = GetDeclensionResult;
         }
     }
@@ -928,7 +928,7 @@ namespace Morpher.WebApi.MorpherSoap {
     public partial class GetXmlUkrRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://morpher.ru/")]
-        public Morpher.WebApi.MorpherSoap.Credentials Credentials;
+        public Credentials Credentials;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://morpher.ru/", Order=0)]
         public string s;
@@ -936,7 +936,7 @@ namespace Morpher.WebApi.MorpherSoap {
         public GetXmlUkrRequest() {
         }
         
-        public GetXmlUkrRequest(Morpher.WebApi.MorpherSoap.Credentials Credentials, string s) {
+        public GetXmlUkrRequest(Credentials Credentials, string s) {
             this.Credentials = Credentials;
             this.s = s;
         }
@@ -949,12 +949,12 @@ namespace Morpher.WebApi.MorpherSoap {
     public partial class GetXmlUkrResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://morpher.ru/", Order=0)]
-        public Morpher.WebApi.MorpherSoap.GetXmlUkrResult GetXmlUkrResult;
+        public GetXmlUkrResult GetXmlUkrResult;
         
         public GetXmlUkrResponse() {
         }
         
-        public GetXmlUkrResponse(Morpher.WebApi.MorpherSoap.GetXmlUkrResult GetXmlUkrResult) {
+        public GetXmlUkrResponse(GetXmlUkrResult GetXmlUkrResult) {
             this.GetXmlUkrResult = GetXmlUkrResult;
         }
     }
@@ -966,7 +966,7 @@ namespace Morpher.WebApi.MorpherSoap {
     public partial class PropisUkrRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://morpher.ru/")]
-        public Morpher.WebApi.MorpherSoap.Credentials Credentials;
+        public Credentials Credentials;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://morpher.ru/", Order=0)]
         public uint n;
@@ -977,7 +977,7 @@ namespace Morpher.WebApi.MorpherSoap {
         public PropisUkrRequest() {
         }
         
-        public PropisUkrRequest(Morpher.WebApi.MorpherSoap.Credentials Credentials, uint n, string unit) {
+        public PropisUkrRequest(Credentials Credentials, uint n, string unit) {
             this.Credentials = Credentials;
             this.n = n;
             this.unit = unit;
@@ -991,12 +991,12 @@ namespace Morpher.WebApi.MorpherSoap {
     public partial class PropisUkrResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://morpher.ru/", Order=0)]
-        public Morpher.WebApi.MorpherSoap.PropisUkrResult PropisUkrResult;
+        public PropisUkrResult PropisUkrResult;
         
         public PropisUkrResponse() {
         }
         
-        public PropisUkrResponse(Morpher.WebApi.MorpherSoap.PropisUkrResult PropisUkrResult) {
+        public PropisUkrResponse(PropisUkrResult PropisUkrResult) {
             this.PropisUkrResult = PropisUkrResult;
         }
     }
@@ -1008,7 +1008,7 @@ namespace Morpher.WebApi.MorpherSoap {
     public partial class GetXmlRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://morpher.ru/")]
-        public Morpher.WebApi.MorpherSoap.Credentials Credentials;
+        public Credentials Credentials;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://morpher.ru/", Order=0)]
         public string s;
@@ -1016,7 +1016,7 @@ namespace Morpher.WebApi.MorpherSoap {
         public GetXmlRequest() {
         }
         
-        public GetXmlRequest(Morpher.WebApi.MorpherSoap.Credentials Credentials, string s) {
+        public GetXmlRequest(Credentials Credentials, string s) {
             this.Credentials = Credentials;
             this.s = s;
         }
@@ -1029,12 +1029,12 @@ namespace Morpher.WebApi.MorpherSoap {
     public partial class GetXmlResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://morpher.ru/", Order=0)]
-        public Morpher.WebApi.MorpherSoap.GetXmlResult GetXmlResult;
+        public GetXmlResult GetXmlResult;
         
         public GetXmlResponse() {
         }
         
-        public GetXmlResponse(Morpher.WebApi.MorpherSoap.GetXmlResult GetXmlResult) {
+        public GetXmlResponse(GetXmlResult GetXmlResult) {
             this.GetXmlResult = GetXmlResult;
         }
     }
@@ -1046,7 +1046,7 @@ namespace Morpher.WebApi.MorpherSoap {
     public partial class PropisRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://morpher.ru/")]
-        public Morpher.WebApi.MorpherSoap.Credentials Credentials;
+        public Credentials Credentials;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://morpher.ru/", Order=0)]
         public uint n;
@@ -1057,7 +1057,7 @@ namespace Morpher.WebApi.MorpherSoap {
         public PropisRequest() {
         }
         
-        public PropisRequest(Morpher.WebApi.MorpherSoap.Credentials Credentials, uint n, string unit) {
+        public PropisRequest(Credentials Credentials, uint n, string unit) {
             this.Credentials = Credentials;
             this.n = n;
             this.unit = unit;
@@ -1071,23 +1071,23 @@ namespace Morpher.WebApi.MorpherSoap {
     public partial class PropisResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://morpher.ru/", Order=0)]
-        public Morpher.WebApi.MorpherSoap.PropisResult PropisResult;
+        public PropisResult PropisResult;
         
         public PropisResponse() {
         }
         
-        public PropisResponse(Morpher.WebApi.MorpherSoap.PropisResult PropisResult) {
+        public PropisResponse(PropisResult PropisResult) {
             this.PropisResult = PropisResult;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface WebServiceSoapChannel : Morpher.WebApi.MorpherSoap.WebServiceSoap, System.ServiceModel.IClientChannel {
+    public interface WebServiceSoapChannel : WebServiceSoap, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class WebServiceSoapClient : System.ServiceModel.ClientBase<Morpher.WebApi.MorpherSoap.WebServiceSoap>, Morpher.WebApi.MorpherSoap.WebServiceSoap {
+    public partial class WebServiceSoapClient : System.ServiceModel.ClientBase<WebServiceSoap>, WebServiceSoap {
         
         public WebServiceSoapClient() {
         }
@@ -1109,179 +1109,179 @@ namespace Morpher.WebApi.MorpherSoap {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Morpher.WebApi.MorpherSoap.GetAdjectivesResponse Morpher.WebApi.MorpherSoap.WebServiceSoap.GetAdjectives(Morpher.WebApi.MorpherSoap.GetAdjectivesRequest request) {
+        GetAdjectivesResponse WebServiceSoap.GetAdjectives(GetAdjectivesRequest request) {
             return base.Channel.GetAdjectives(request);
         }
         
-        public string[] GetAdjectives(Morpher.WebApi.MorpherSoap.Credentials Credentials, string s) {
-            Morpher.WebApi.MorpherSoap.GetAdjectivesRequest inValue = new Morpher.WebApi.MorpherSoap.GetAdjectivesRequest();
+        public string[] GetAdjectives(Credentials Credentials, string s) {
+            GetAdjectivesRequest inValue = new GetAdjectivesRequest();
             inValue.Credentials = Credentials;
             inValue.s = s;
-            Morpher.WebApi.MorpherSoap.GetAdjectivesResponse retVal = ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).GetAdjectives(inValue);
+            GetAdjectivesResponse retVal = ((WebServiceSoap)(this)).GetAdjectives(inValue);
             return retVal.GetAdjectivesResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetAdjectivesResponse> Morpher.WebApi.MorpherSoap.WebServiceSoap.GetAdjectivesAsync(Morpher.WebApi.MorpherSoap.GetAdjectivesRequest request) {
+        System.Threading.Tasks.Task<GetAdjectivesResponse> WebServiceSoap.GetAdjectivesAsync(GetAdjectivesRequest request) {
             return base.Channel.GetAdjectivesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetAdjectivesResponse> GetAdjectivesAsync(Morpher.WebApi.MorpherSoap.Credentials Credentials, string s) {
-            Morpher.WebApi.MorpherSoap.GetAdjectivesRequest inValue = new Morpher.WebApi.MorpherSoap.GetAdjectivesRequest();
+        public System.Threading.Tasks.Task<GetAdjectivesResponse> GetAdjectivesAsync(Credentials Credentials, string s) {
+            GetAdjectivesRequest inValue = new GetAdjectivesRequest();
             inValue.Credentials = Credentials;
             inValue.s = s;
-            return ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).GetAdjectivesAsync(inValue);
+            return ((WebServiceSoap)(this)).GetAdjectivesAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Morpher.WebApi.MorpherSoap.GetAdjectiveGendersResponse Morpher.WebApi.MorpherSoap.WebServiceSoap.GetAdjectiveGenders(Morpher.WebApi.MorpherSoap.GetAdjectiveGendersRequest request) {
+        GetAdjectiveGendersResponse WebServiceSoap.GetAdjectiveGenders(GetAdjectiveGendersRequest request) {
             return base.Channel.GetAdjectiveGenders(request);
         }
         
-        public Morpher.WebApi.MorpherSoap.AdjectiveGenders GetAdjectiveGenders(Morpher.WebApi.MorpherSoap.Credentials Credentials, string s) {
-            Morpher.WebApi.MorpherSoap.GetAdjectiveGendersRequest inValue = new Morpher.WebApi.MorpherSoap.GetAdjectiveGendersRequest();
+        public AdjectiveGenders GetAdjectiveGenders(Credentials Credentials, string s) {
+            GetAdjectiveGendersRequest inValue = new GetAdjectiveGendersRequest();
             inValue.Credentials = Credentials;
             inValue.s = s;
-            Morpher.WebApi.MorpherSoap.GetAdjectiveGendersResponse retVal = ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).GetAdjectiveGenders(inValue);
+            GetAdjectiveGendersResponse retVal = ((WebServiceSoap)(this)).GetAdjectiveGenders(inValue);
             return retVal.GetAdjectiveGendersResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetAdjectiveGendersResponse> Morpher.WebApi.MorpherSoap.WebServiceSoap.GetAdjectiveGendersAsync(Morpher.WebApi.MorpherSoap.GetAdjectiveGendersRequest request) {
+        System.Threading.Tasks.Task<GetAdjectiveGendersResponse> WebServiceSoap.GetAdjectiveGendersAsync(GetAdjectiveGendersRequest request) {
             return base.Channel.GetAdjectiveGendersAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetAdjectiveGendersResponse> GetAdjectiveGendersAsync(Morpher.WebApi.MorpherSoap.Credentials Credentials, string s) {
-            Morpher.WebApi.MorpherSoap.GetAdjectiveGendersRequest inValue = new Morpher.WebApi.MorpherSoap.GetAdjectiveGendersRequest();
+        public System.Threading.Tasks.Task<GetAdjectiveGendersResponse> GetAdjectiveGendersAsync(Credentials Credentials, string s) {
+            GetAdjectiveGendersRequest inValue = new GetAdjectiveGendersRequest();
             inValue.Credentials = Credentials;
             inValue.s = s;
-            return ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).GetAdjectiveGendersAsync(inValue);
+            return ((WebServiceSoap)(this)).GetAdjectiveGendersAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Morpher.WebApi.MorpherSoap.SubmitCorrectionResponse Morpher.WebApi.MorpherSoap.WebServiceSoap.SubmitCorrection(Morpher.WebApi.MorpherSoap.SubmitCorrectionRequest request) {
+        SubmitCorrectionResponse WebServiceSoap.SubmitCorrection(SubmitCorrectionRequest request) {
             return base.Channel.SubmitCorrection(request);
         }
         
-        public void SubmitCorrection(Morpher.WebApi.MorpherSoap.Credentials Credentials, Morpher.WebApi.MorpherSoap.GetXmlResult correction, string comment) {
-            Morpher.WebApi.MorpherSoap.SubmitCorrectionRequest inValue = new Morpher.WebApi.MorpherSoap.SubmitCorrectionRequest();
+        public void SubmitCorrection(Credentials Credentials, GetXmlResult correction, string comment) {
+            SubmitCorrectionRequest inValue = new SubmitCorrectionRequest();
             inValue.Credentials = Credentials;
             inValue.correction = correction;
             inValue.comment = comment;
-            Morpher.WebApi.MorpherSoap.SubmitCorrectionResponse retVal = ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).SubmitCorrection(inValue);
+            SubmitCorrectionResponse retVal = ((WebServiceSoap)(this)).SubmitCorrection(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.SubmitCorrectionResponse> Morpher.WebApi.MorpherSoap.WebServiceSoap.SubmitCorrectionAsync(Morpher.WebApi.MorpherSoap.SubmitCorrectionRequest request) {
+        System.Threading.Tasks.Task<SubmitCorrectionResponse> WebServiceSoap.SubmitCorrectionAsync(SubmitCorrectionRequest request) {
             return base.Channel.SubmitCorrectionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.SubmitCorrectionResponse> SubmitCorrectionAsync(Morpher.WebApi.MorpherSoap.Credentials Credentials, Morpher.WebApi.MorpherSoap.GetXmlResult correction, string comment) {
-            Morpher.WebApi.MorpherSoap.SubmitCorrectionRequest inValue = new Morpher.WebApi.MorpherSoap.SubmitCorrectionRequest();
+        public System.Threading.Tasks.Task<SubmitCorrectionResponse> SubmitCorrectionAsync(Credentials Credentials, GetXmlResult correction, string comment) {
+            SubmitCorrectionRequest inValue = new SubmitCorrectionRequest();
             inValue.Credentials = Credentials;
             inValue.correction = correction;
             inValue.comment = comment;
-            return ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).SubmitCorrectionAsync(inValue);
+            return ((WebServiceSoap)(this)).SubmitCorrectionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Morpher.WebApi.MorpherSoap.GetAccountStatusResponse Morpher.WebApi.MorpherSoap.WebServiceSoap.GetAccountStatus(Morpher.WebApi.MorpherSoap.GetAccountStatusRequest request) {
+        GetAccountStatusResponse WebServiceSoap.GetAccountStatus(GetAccountStatusRequest request) {
             return base.Channel.GetAccountStatus(request);
         }
         
-        public string GetAccountStatus(Morpher.WebApi.MorpherSoap.Credentials Credentials) {
-            Morpher.WebApi.MorpherSoap.GetAccountStatusRequest inValue = new Morpher.WebApi.MorpherSoap.GetAccountStatusRequest();
+        public string GetAccountStatus(Credentials Credentials) {
+            GetAccountStatusRequest inValue = new GetAccountStatusRequest();
             inValue.Credentials = Credentials;
-            Morpher.WebApi.MorpherSoap.GetAccountStatusResponse retVal = ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).GetAccountStatus(inValue);
+            GetAccountStatusResponse retVal = ((WebServiceSoap)(this)).GetAccountStatus(inValue);
             return retVal.GetAccountStatusResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetAccountStatusResponse> Morpher.WebApi.MorpherSoap.WebServiceSoap.GetAccountStatusAsync(Morpher.WebApi.MorpherSoap.GetAccountStatusRequest request) {
+        System.Threading.Tasks.Task<GetAccountStatusResponse> WebServiceSoap.GetAccountStatusAsync(GetAccountStatusRequest request) {
             return base.Channel.GetAccountStatusAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetAccountStatusResponse> GetAccountStatusAsync(Morpher.WebApi.MorpherSoap.Credentials Credentials) {
-            Morpher.WebApi.MorpherSoap.GetAccountStatusRequest inValue = new Morpher.WebApi.MorpherSoap.GetAccountStatusRequest();
+        public System.Threading.Tasks.Task<GetAccountStatusResponse> GetAccountStatusAsync(Credentials Credentials) {
+            GetAccountStatusRequest inValue = new GetAccountStatusRequest();
             inValue.Credentials = Credentials;
-            return ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).GetAccountStatusAsync(inValue);
+            return ((WebServiceSoap)(this)).GetAccountStatusAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Morpher.WebApi.MorpherSoap.GetDeclensionResponse Morpher.WebApi.MorpherSoap.WebServiceSoap.GetDeclension(Morpher.WebApi.MorpherSoap.GetDeclensionRequest request) {
+        GetDeclensionResponse WebServiceSoap.GetDeclension(GetDeclensionRequest request) {
             return base.Channel.GetDeclension(request);
         }
         
-        public Morpher.WebApi.MorpherSoap.GetXmlResult GetDeclension(Morpher.WebApi.MorpherSoap.Credentials Credentials, string s) {
-            Morpher.WebApi.MorpherSoap.GetDeclensionRequest inValue = new Morpher.WebApi.MorpherSoap.GetDeclensionRequest();
+        public GetXmlResult GetDeclension(Credentials Credentials, string s) {
+            GetDeclensionRequest inValue = new GetDeclensionRequest();
             inValue.Credentials = Credentials;
             inValue.s = s;
-            Morpher.WebApi.MorpherSoap.GetDeclensionResponse retVal = ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).GetDeclension(inValue);
+            GetDeclensionResponse retVal = ((WebServiceSoap)(this)).GetDeclension(inValue);
             return retVal.GetDeclensionResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetDeclensionResponse> Morpher.WebApi.MorpherSoap.WebServiceSoap.GetDeclensionAsync(Morpher.WebApi.MorpherSoap.GetDeclensionRequest request) {
+        System.Threading.Tasks.Task<GetDeclensionResponse> WebServiceSoap.GetDeclensionAsync(GetDeclensionRequest request) {
             return base.Channel.GetDeclensionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetDeclensionResponse> GetDeclensionAsync(Morpher.WebApi.MorpherSoap.Credentials Credentials, string s) {
-            Morpher.WebApi.MorpherSoap.GetDeclensionRequest inValue = new Morpher.WebApi.MorpherSoap.GetDeclensionRequest();
+        public System.Threading.Tasks.Task<GetDeclensionResponse> GetDeclensionAsync(Credentials Credentials, string s) {
+            GetDeclensionRequest inValue = new GetDeclensionRequest();
             inValue.Credentials = Credentials;
             inValue.s = s;
-            return ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).GetDeclensionAsync(inValue);
+            return ((WebServiceSoap)(this)).GetDeclensionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Morpher.WebApi.MorpherSoap.GetXmlUkrResponse Morpher.WebApi.MorpherSoap.WebServiceSoap.GetXmlUkr(Morpher.WebApi.MorpherSoap.GetXmlUkrRequest request) {
+        GetXmlUkrResponse WebServiceSoap.GetXmlUkr(GetXmlUkrRequest request) {
             return base.Channel.GetXmlUkr(request);
         }
         
-        public Morpher.WebApi.MorpherSoap.GetXmlUkrResult GetXmlUkr(Morpher.WebApi.MorpherSoap.Credentials Credentials, string s) {
-            Morpher.WebApi.MorpherSoap.GetXmlUkrRequest inValue = new Morpher.WebApi.MorpherSoap.GetXmlUkrRequest();
+        public GetXmlUkrResult GetXmlUkr(Credentials Credentials, string s) {
+            GetXmlUkrRequest inValue = new GetXmlUkrRequest();
             inValue.Credentials = Credentials;
             inValue.s = s;
-            Morpher.WebApi.MorpherSoap.GetXmlUkrResponse retVal = ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).GetXmlUkr(inValue);
+            GetXmlUkrResponse retVal = ((WebServiceSoap)(this)).GetXmlUkr(inValue);
             return retVal.GetXmlUkrResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetXmlUkrResponse> Morpher.WebApi.MorpherSoap.WebServiceSoap.GetXmlUkrAsync(Morpher.WebApi.MorpherSoap.GetXmlUkrRequest request) {
+        System.Threading.Tasks.Task<GetXmlUkrResponse> WebServiceSoap.GetXmlUkrAsync(GetXmlUkrRequest request) {
             return base.Channel.GetXmlUkrAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetXmlUkrResponse> GetXmlUkrAsync(Morpher.WebApi.MorpherSoap.Credentials Credentials, string s) {
-            Morpher.WebApi.MorpherSoap.GetXmlUkrRequest inValue = new Morpher.WebApi.MorpherSoap.GetXmlUkrRequest();
+        public System.Threading.Tasks.Task<GetXmlUkrResponse> GetXmlUkrAsync(Credentials Credentials, string s) {
+            GetXmlUkrRequest inValue = new GetXmlUkrRequest();
             inValue.Credentials = Credentials;
             inValue.s = s;
-            return ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).GetXmlUkrAsync(inValue);
+            return ((WebServiceSoap)(this)).GetXmlUkrAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Morpher.WebApi.MorpherSoap.PropisUkrResponse Morpher.WebApi.MorpherSoap.WebServiceSoap.PropisUkr(Morpher.WebApi.MorpherSoap.PropisUkrRequest request) {
+        PropisUkrResponse WebServiceSoap.PropisUkr(PropisUkrRequest request) {
             return base.Channel.PropisUkr(request);
         }
         
-        public Morpher.WebApi.MorpherSoap.PropisUkrResult PropisUkr(Morpher.WebApi.MorpherSoap.Credentials Credentials, uint n, string unit) {
-            Morpher.WebApi.MorpherSoap.PropisUkrRequest inValue = new Morpher.WebApi.MorpherSoap.PropisUkrRequest();
+        public PropisUkrResult PropisUkr(Credentials Credentials, uint n, string unit) {
+            PropisUkrRequest inValue = new PropisUkrRequest();
             inValue.Credentials = Credentials;
             inValue.n = n;
             inValue.unit = unit;
-            Morpher.WebApi.MorpherSoap.PropisUkrResponse retVal = ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).PropisUkr(inValue);
+            PropisUkrResponse retVal = ((WebServiceSoap)(this)).PropisUkr(inValue);
             return retVal.PropisUkrResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.PropisUkrResponse> Morpher.WebApi.MorpherSoap.WebServiceSoap.PropisUkrAsync(Morpher.WebApi.MorpherSoap.PropisUkrRequest request) {
+        System.Threading.Tasks.Task<PropisUkrResponse> WebServiceSoap.PropisUkrAsync(PropisUkrRequest request) {
             return base.Channel.PropisUkrAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.PropisUkrResponse> PropisUkrAsync(Morpher.WebApi.MorpherSoap.Credentials Credentials, uint n, string unit) {
-            Morpher.WebApi.MorpherSoap.PropisUkrRequest inValue = new Morpher.WebApi.MorpherSoap.PropisUkrRequest();
+        public System.Threading.Tasks.Task<PropisUkrResponse> PropisUkrAsync(Credentials Credentials, uint n, string unit) {
+            PropisUkrRequest inValue = new PropisUkrRequest();
             inValue.Credentials = Credentials;
             inValue.n = n;
             inValue.unit = unit;
-            return ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).PropisUkrAsync(inValue);
+            return ((WebServiceSoap)(this)).PropisUkrAsync(inValue);
         }
         
         public int GetDailyQueryLimit() {
@@ -1301,55 +1301,55 @@ namespace Morpher.WebApi.MorpherSoap {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Morpher.WebApi.MorpherSoap.GetXmlResponse Morpher.WebApi.MorpherSoap.WebServiceSoap.GetXml(Morpher.WebApi.MorpherSoap.GetXmlRequest request) {
+        GetXmlResponse WebServiceSoap.GetXml(GetXmlRequest request) {
             return base.Channel.GetXml(request);
         }
         
-        public Morpher.WebApi.MorpherSoap.GetXmlResult GetXml(Morpher.WebApi.MorpherSoap.Credentials Credentials, string s) {
-            Morpher.WebApi.MorpherSoap.GetXmlRequest inValue = new Morpher.WebApi.MorpherSoap.GetXmlRequest();
+        public GetXmlResult GetXml(Credentials Credentials, string s) {
+            GetXmlRequest inValue = new GetXmlRequest();
             inValue.Credentials = Credentials;
             inValue.s = s;
-            Morpher.WebApi.MorpherSoap.GetXmlResponse retVal = ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).GetXml(inValue);
+            GetXmlResponse retVal = ((WebServiceSoap)(this)).GetXml(inValue);
             return retVal.GetXmlResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetXmlResponse> Morpher.WebApi.MorpherSoap.WebServiceSoap.GetXmlAsync(Morpher.WebApi.MorpherSoap.GetXmlRequest request) {
+        System.Threading.Tasks.Task<GetXmlResponse> WebServiceSoap.GetXmlAsync(GetXmlRequest request) {
             return base.Channel.GetXmlAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.GetXmlResponse> GetXmlAsync(Morpher.WebApi.MorpherSoap.Credentials Credentials, string s) {
-            Morpher.WebApi.MorpherSoap.GetXmlRequest inValue = new Morpher.WebApi.MorpherSoap.GetXmlRequest();
+        public System.Threading.Tasks.Task<GetXmlResponse> GetXmlAsync(Credentials Credentials, string s) {
+            GetXmlRequest inValue = new GetXmlRequest();
             inValue.Credentials = Credentials;
             inValue.s = s;
-            return ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).GetXmlAsync(inValue);
+            return ((WebServiceSoap)(this)).GetXmlAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Morpher.WebApi.MorpherSoap.PropisResponse Morpher.WebApi.MorpherSoap.WebServiceSoap.Propis(Morpher.WebApi.MorpherSoap.PropisRequest request) {
+        PropisResponse WebServiceSoap.Propis(PropisRequest request) {
             return base.Channel.Propis(request);
         }
         
-        public Morpher.WebApi.MorpherSoap.PropisResult Propis(Morpher.WebApi.MorpherSoap.Credentials Credentials, uint n, string unit) {
-            Morpher.WebApi.MorpherSoap.PropisRequest inValue = new Morpher.WebApi.MorpherSoap.PropisRequest();
+        public PropisResult Propis(Credentials Credentials, uint n, string unit) {
+            PropisRequest inValue = new PropisRequest();
             inValue.Credentials = Credentials;
             inValue.n = n;
             inValue.unit = unit;
-            Morpher.WebApi.MorpherSoap.PropisResponse retVal = ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).Propis(inValue);
+            PropisResponse retVal = ((WebServiceSoap)(this)).Propis(inValue);
             return retVal.PropisResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.PropisResponse> Morpher.WebApi.MorpherSoap.WebServiceSoap.PropisAsync(Morpher.WebApi.MorpherSoap.PropisRequest request) {
+        System.Threading.Tasks.Task<PropisResponse> WebServiceSoap.PropisAsync(PropisRequest request) {
             return base.Channel.PropisAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Morpher.WebApi.MorpherSoap.PropisResponse> PropisAsync(Morpher.WebApi.MorpherSoap.Credentials Credentials, uint n, string unit) {
-            Morpher.WebApi.MorpherSoap.PropisRequest inValue = new Morpher.WebApi.MorpherSoap.PropisRequest();
+        public System.Threading.Tasks.Task<PropisResponse> PropisAsync(Credentials Credentials, uint n, string unit) {
+            PropisRequest inValue = new PropisRequest();
             inValue.Credentials = Credentials;
             inValue.n = n;
             inValue.unit = unit;
-            return ((Morpher.WebApi.MorpherSoap.WebServiceSoap)(this)).PropisAsync(inValue);
+            return ((WebServiceSoap)(this)).PropisAsync(inValue);
         }
     }
 }

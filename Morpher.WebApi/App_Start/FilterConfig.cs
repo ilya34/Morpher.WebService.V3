@@ -1,6 +1,5 @@
-﻿namespace Morpher.WebApi
+﻿namespace Morpher.WebService.V3
 {
-    using System.Web;
     using System.Web.Mvc;
 
     public class FilterConfig

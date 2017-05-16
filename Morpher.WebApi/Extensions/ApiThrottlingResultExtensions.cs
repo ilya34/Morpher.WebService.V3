@@ -1,9 +1,7 @@
-﻿namespace Morpher.WebApi.Extensions
+﻿namespace Morpher.WebService.V3.Extensions
 {
-    using System.Runtime.InteropServices;
-
-    using Morpher.WebApi.ApiThrottler;
-    using Morpher.WebApi.Models.Exceptions;
+    using Morpher.WebService.V3.Models;
+    using Morpher.WebService.V3.Models.Exceptions;
 
     public static class ApiThrottlingResultExtensions
     {

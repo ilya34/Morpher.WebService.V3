@@ -10,10 +10,8 @@ namespace Morpher.WebApi.App_Start
 
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
-    using Morpher.WebApi.ApiThrottler;
-    using Morpher.WebApi.Models;
-    using Morpher.WebApi.Services;
-    using Morpher.WebApi.Services.Interfaces;
+    using Morpher.WebService.V3.Services;
+    using Morpher.WebService.V3.Services.Interfaces;
 
     using Ninject;
     using Ninject.Web.Common;

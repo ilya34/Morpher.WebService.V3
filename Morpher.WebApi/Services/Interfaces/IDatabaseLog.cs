@@ -1,9 +1,8 @@
-﻿namespace Morpher.WebApi.Services.Interfaces
+﻿namespace Morpher.WebService.V3.Services.Interfaces
 {
     using System.Collections.Concurrent;
-    using System.Data;
 
-    using Morpher.WebApi.Models;
+    using Morpher.WebService.V3.Models;
 
     public interface IDatabaseLog
     {

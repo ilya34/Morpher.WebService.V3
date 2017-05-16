@@ -1,13 +1,13 @@
-﻿namespace Morpher.WebApi.Services
+﻿namespace Morpher.WebService.V3.Services
 {
     using System;
     using System.Collections.Concurrent;
     using System.Data;
     using System.Data.SqlClient;
 
-    using Morpher.WebApi.Extensions;
-    using Morpher.WebApi.Models;
-    using Morpher.WebApi.Services.Interfaces;
+    using Morpher.WebService.V3.Extensions;
+    using Morpher.WebService.V3.Models;
+    using Morpher.WebService.V3.Services.Interfaces;
 
     public class DatabaseLog : IDatabaseLog
     {

@@ -1,10 +1,10 @@
-﻿namespace Morpher.WebApi.Models
+﻿namespace Morpher.WebService.V3.Models
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
 
-    using Morpher.WebApi.Models.Interfaces;
+    using Morpher.WebService.V3.Models.Interfaces;
 
     [DataContract]
     public class RussianDeclensionForms : IRussianParadigm, IEquatable<RussianDeclensionForms>
@@ -65,7 +65,7 @@
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((RussianDeclensionForms)obj);
+            return this.Equals((RussianDeclensionForms)obj);
         }
 
         [SuppressMessage("ReSharper", "StyleCop.SA1119")]

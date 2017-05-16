@@ -9,10 +9,9 @@
 
     using Moq;
 
-    using Morpher.WebApi.ApiThrottler;
-    using Morpher.WebApi.Models;
-    using Morpher.WebApi.Services;
-    using Morpher.WebApi.Services.Interfaces;
+    using Morpher.WebService.V3.Models;
+    using Morpher.WebService.V3.Services;
+    using Morpher.WebService.V3.Services.Interfaces;
 
     using NUnit.Framework;
 

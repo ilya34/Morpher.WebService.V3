@@ -1,10 +1,8 @@
-﻿namespace Morpher.WebApi.Services.Interfaces
+﻿namespace Morpher.WebService.V3.Services.Interfaces
 {
-    using System.Collections.Concurrent;
     using System.Net.Http;
 
-    using Morpher.WebApi.Models;
-    using Morpher.WebApi.Models.Exceptions;
+    using Morpher.WebService.V3.Models.Exceptions;
 
     public interface IMorpherLog
     {

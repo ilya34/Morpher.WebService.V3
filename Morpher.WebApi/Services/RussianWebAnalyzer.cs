@@ -1,16 +1,14 @@
-﻿namespace Morpher.WebApi.Services
+﻿namespace Morpher.WebService.V3.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.ServiceModel;
 
-    using Morpher.WebApi.Models;
-    using Morpher.WebApi.Models.Exceptions;
-    using Morpher.WebApi.MorpherSoap;
-    using Morpher.WebApi.Services.Interfaces;
+    using Morpher.WebService.V3.Models;
+    using Morpher.WebService.V3.Models.Exceptions;
+    using Morpher.WebService.V3.Services.Interfaces;
 
-    using AdjectiveGenders = Morpher.WebApi.Models.AdjectiveGenders;
+    using AdjectiveGenders = Morpher.WebService.V3.Models.AdjectiveGenders;
 
     public class RussianWebAnalyzer : IRussianAnalyzer
     {

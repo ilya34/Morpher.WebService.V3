@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebApi.Extensions
+﻿namespace Morpher.WebService.V3.Extensions
 {
     using System;
     using System.Collections.Generic;
@@ -8,10 +8,9 @@
     using System.Net.Http.Formatting;
     using System.ServiceModel.Channels;
     using System.Text;
-    using System.Web;
 
-    using Morpher.WebApi.Models;
-    using Morpher.WebApi.Models.Exceptions;
+    using Morpher.WebService.V3.Models;
+    using Morpher.WebService.V3.Models.Exceptions;
 
     public static class HttpRequestMessageExtensions
     {

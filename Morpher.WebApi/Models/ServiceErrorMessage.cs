@@ -1,10 +1,10 @@
-﻿namespace Morpher.WebApi.Models
+﻿namespace Morpher.WebService.V3.Models
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
 
-    using Morpher.WebApi.Models.Exceptions;
+    using Morpher.WebService.V3.Models.Exceptions;
 
     [DataContract(Name = "error")]
     public class ServiceErrorMessage : IEquatable<ServiceErrorMessage>
@@ -49,7 +49,7 @@
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((ServiceErrorMessage)obj);
+            return this.Equals((ServiceErrorMessage)obj);
         }
 
         [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]

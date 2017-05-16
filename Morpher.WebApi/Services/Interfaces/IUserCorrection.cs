@@ -1,8 +1,8 @@
-﻿namespace Morpher.WebApi.Services.Interfaces
+﻿namespace Morpher.WebService.V3.Services.Interfaces
 {
     using System;
 
-    using Morpher.WebApi.Models.Interfaces;
+    using Morpher.WebService.V3.Models.Interfaces;
 
     public interface IUserCorrection
     {

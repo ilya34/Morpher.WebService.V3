@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebApi.Models
+﻿namespace Morpher.WebService.V3.Models
 {
     public class CacheResetPostModel
     {

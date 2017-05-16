@@ -1,12 +1,11 @@
-﻿namespace Morpher.WebApi.Services
+﻿namespace Morpher.WebService.V3.Services
 {
-    using System;
     using System.Collections.Specialized;
     using System.Runtime.Caching;
     using System.Threading;
 
-    using Morpher.WebApi.Models;
-    using Morpher.WebApi.Services.Interfaces;
+    using Morpher.WebService.V3.Models;
+    using Morpher.WebService.V3.Services.Interfaces;
 
     public class MorpherCache : MemoryCache, IMorpherCache
     {

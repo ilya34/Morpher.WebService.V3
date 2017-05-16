@@ -1,7 +1,6 @@
-﻿namespace Morpher.WebApi.Models.Exceptions
+﻿namespace Morpher.WebService.V3.Models.Exceptions
 {
     using System;
-    using System.Web.SessionState;
 
     public class RequiredParameterIsNotSpecified : MorpherException
     {

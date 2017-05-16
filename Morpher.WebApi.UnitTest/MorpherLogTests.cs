@@ -7,9 +7,9 @@
 
     using Moq;
 
-    using Morpher.WebApi.Models;
-    using Morpher.WebApi.Services;
-    using Morpher.WebApi.Services.Interfaces;
+    using Morpher.WebService.V3.Models;
+    using Morpher.WebService.V3.Services;
+    using Morpher.WebService.V3.Services.Interfaces;
 
     using NUnit.Framework;
 
@@ -21,7 +21,7 @@
         public void DataInserationTest_1()
         {
             MockDatabaseLog log = new MockDatabaseLog();
-            IMorpherLog morpherLog = new Services.MorpherLog(log, new MorpherCache("Test"));
+            IMorpherLog morpherLog = new MorpherLog(log, new MorpherCache("Test"));
 
             HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, "http://localhost:0/test?q1=1&q2=2");
 
@@ -41,7 +41,7 @@
         public void DataInserationTest_2()
         {
             MockDatabaseLog log = new MockDatabaseLog();
-            IMorpherLog morpherLog = new Services.MorpherLog(log, new MorpherCache("Test"));
+            IMorpherLog morpherLog = new MorpherLog(log, new MorpherCache("Test"));
             Guid guid = Guid.NewGuid();
             HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:0/test?q1=1&q2=2&token={guid}");
 
@@ -64,7 +64,7 @@
             MockDatabaseLog log = new MockDatabaseLog();
             MorpherCache morpherCache = new MorpherCache("Test");
 
-            IMorpherLog morpherLog = new Services.MorpherLog(log, morpherCache);
+            IMorpherLog morpherLog = new MorpherLog(log, morpherCache);
             Guid guid = Guid.Parse("4736dff6-a539-4764-98a9-21d19dc1326d");
             Guid userId = Guid.NewGuid();
             morpherCache.Add(guid.ToString().ToLowerInvariant(), new MorpherCacheObject() {UserId = userId}, DateTimeOffset.UtcNow.AddMinutes(1));

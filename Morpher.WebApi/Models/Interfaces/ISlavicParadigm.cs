@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebApi.Models.Interfaces
+﻿namespace Morpher.WebService.V3.Models.Interfaces
 {
     public interface ISlavicParadigm
     {

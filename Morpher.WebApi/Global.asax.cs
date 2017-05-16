@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebApi
+﻿namespace Morpher.WebService.V3
 {
     using System;
     using System.Collections.Specialized;
@@ -9,8 +9,8 @@
 
     using FluentScheduler;
 
-    using Morpher.WebApi.Services;
-    using Morpher.WebApi.Services.Interfaces;
+    using Morpher.WebService.V3.Services;
+    using Morpher.WebService.V3.Services.Interfaces;
 
     public class WebApiApplication : System.Web.HttpApplication
     {

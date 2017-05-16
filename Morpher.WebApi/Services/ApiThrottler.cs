@@ -1,13 +1,12 @@
-﻿namespace Morpher.WebApi.Services
+﻿namespace Morpher.WebService.V3.Services
 {
     using System;
     using System.Net.Http;
 
-    using Morpher.WebApi.ApiThrottler;
-    using Morpher.WebApi.Extensions;
-    using Morpher.WebApi.Models;
-    using Morpher.WebApi.Models.Exceptions;
-    using Morpher.WebApi.Services.Interfaces;
+    using Morpher.WebService.V3.Extensions;
+    using Morpher.WebService.V3.Models;
+    using Morpher.WebService.V3.Models.Exceptions;
+    using Morpher.WebService.V3.Services.Interfaces;
 
     public class ApiThrottler : IApiThrottler
     {
