@@ -3,6 +3,7 @@
     using System;
 
     using Morpher.WebService.V3.Models;
+    using Morpher.WebService.V3.MorpherSoap;
     using Morpher.WebService.V3.Services.Interfaces;
 
     public class UkrainianWebAnalyzer : IUkrainianAnalyzer

@@ -2,10 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.ServiceModel;
 
     using Morpher.WebService.V3.Models;
     using Morpher.WebService.V3.Models.Exceptions;
+    using Morpher.WebService.V3.MorpherSoap;
     using Morpher.WebService.V3.Services.Interfaces;
 
     using AdjectiveGenders = Morpher.WebService.V3.Models.AdjectiveGenders;
