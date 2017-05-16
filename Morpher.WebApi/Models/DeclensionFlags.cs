@@ -11,7 +11,9 @@
         Common = 1 << 1,
         Feminine = 1 << 2,
         Masculine = 1 << 3,
-        Animate = 1 << 4,
-        Inanimate = 1 << 5
+        Neuter = 1 << 4,
+        Animate = 1 << 5,
+        Inanimate = 1 << 6,
+        Plural = 1 << 7
     }
 }

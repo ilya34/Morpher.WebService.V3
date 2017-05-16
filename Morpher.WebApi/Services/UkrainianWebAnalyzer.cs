@@ -21,11 +21,6 @@
 
         public UkrainianDeclensionResult Declension(string s, Guid? token = null, DeclensionFlags? flags = null, bool paidUser = false)
         {
-            if (string.IsNullOrWhiteSpace(s))
-            {
-                throw new WordsNotFoundException();
-            }
-
             GetXmlUkrResult result;
             using (WebServiceSoapClient client = new WebServiceSoapClient("WebServiceSoap"))
             {
@@ -59,11 +54,6 @@
 
         public UkrainianNumberSpelling Spell(int n, string unit)
         {
-            if (string.IsNullOrWhiteSpace(unit))
-            {
-                throw new WordsNotFoundException();
-            }
-
             PropisUkrResult result;
             using (WebServiceSoapClient client = new WebServiceSoapClient("WebServiceSoap"))
             {

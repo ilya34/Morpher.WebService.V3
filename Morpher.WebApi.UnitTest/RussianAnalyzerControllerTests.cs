@@ -99,7 +99,7 @@
                         It.IsAny<Guid>(),
                         It.IsAny<DeclensionFlags>(),
                         It.IsAny<bool>()))
-                .Throws(new WordsNotFoundException());
+                .Throws(new RussianWordsNotFound());
 
             IRussianAnalyzer analyzer = mock.Object;
 
@@ -162,7 +162,7 @@
             Mock<IRussianAnalyzer> mock = new Mock<IRussianAnalyzer>();
             mock.Setup(
                     russianAnalyzer => russianAnalyzer.Spell(It.IsAny<int>(), It.IsAny<string>()))
-                .Throws(new WordsNotFoundException());
+                .Throws(new RussianWordsNotFound());
 
             IRussianAnalyzer analyzer = mock.Object;
 
@@ -179,7 +179,7 @@
             ServiceErrorMessage serviceErrorMessage;
             httpResponseMessage.TryGetContentValue(out serviceErrorMessage);
 
-            Assert.AreEqual(new ServiceErrorMessage(new WordsNotFoundException()), serviceErrorMessage);
+            Assert.AreEqual(new ServiceErrorMessage(new RussianWordsNotFound()), serviceErrorMessage);
         }
 
         [Test]
@@ -278,7 +278,7 @@
             Mock<IRussianAnalyzer> mock = new Mock<IRussianAnalyzer>();
             mock.Setup(
                     russianAnalyzer => russianAnalyzer.Adjectives(It.IsAny<string>()))
-                .Throws(new WordsNotFoundException());
+                .Throws(new RussianWordsNotFound());
 
             IRussianAnalyzer analyzer = mock.Object;
 
@@ -295,7 +295,7 @@
             ServiceErrorMessage serviceErrorMessage;
             responseMessage.TryGetContentValue(out serviceErrorMessage);
 
-            Assert.AreEqual(new ServiceErrorMessage(new WordsNotFoundException()), serviceErrorMessage);
+            Assert.AreEqual(new ServiceErrorMessage(new RussianWordsNotFound()), serviceErrorMessage);
         }
     }
 }

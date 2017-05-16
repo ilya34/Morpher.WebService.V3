@@ -168,6 +168,7 @@
     <Compile Include="Models\CacheResetPostModel.cs" />
     <Compile Include="Models\DeclensionFlags.cs" />
     <Compile Include="Models\Exceptions\InvalidTokenFormat.cs" />
+    <Compile Include="Models\Exceptions\RequiredParameterIsNotSpecified.cs" />
     <Compile Include="Services\DummyRussianAnalyzer.cs" />
     <Compile Include="Services\DummyUkrainianAnalyzer.cs" />
     <Compile Include="Services\Interfaces\IUserCorrectionSource.cs" />
@@ -219,7 +220,7 @@
     <Compile Include="Models\Exceptions\MorpherException.cs" />
     <Compile Include="Models\Exceptions\NotPayedException.cs" />
     <Compile Include="Models\Exceptions\NumeralsDeclensionNotSupportedException.cs" />
-    <Compile Include="Models\Exceptions\WordsNotFoundException.cs" />
+    <Compile Include="Models\Exceptions\RussianWordsNotFound.cs" />
     <Compile Include="Models\Exceptions\TokenNotFoundException.cs" />
     <Compile Include="Models\FullName.cs" />
     <Compile Include="Models\Interfaces\IRussianParadigm.cs" />

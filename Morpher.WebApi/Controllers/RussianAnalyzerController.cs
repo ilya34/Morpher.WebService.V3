@@ -34,6 +34,11 @@
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(s))
+                {
+                    throw new RequiredParameterIsNotSpecified(nameof(s));
+                }
+
                 bool paidUser;
                 ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
 
@@ -64,6 +69,11 @@
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(unit))
+                {
+                    throw new RequiredParameterIsNotSpecified(nameof(unit));
+                }
+
                 bool paidUser;
                 ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
 
@@ -94,6 +104,11 @@
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(s))
+                {
+                    throw new RequiredParameterIsNotSpecified(nameof(s));
+                }
+
                 bool paidUser;
                 ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
 
@@ -124,6 +139,11 @@
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(s))
+                {
+                    throw new RequiredParameterIsNotSpecified(nameof(s));
+                }
+
                 bool paidUser;
                 ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
 

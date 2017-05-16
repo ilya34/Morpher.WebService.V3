@@ -26,11 +26,6 @@
 
         public RussianDeclensionResult Declension(string s, Guid? token = null, DeclensionFlags? flags = null, bool paidUser = false)
         {
-            if (string.IsNullOrWhiteSpace(s))
-            {
-                throw new WordsNotFoundException();
-            }
-
             try
             {
                 GetXmlResult result;
@@ -111,7 +106,7 @@
                 // BEST EXCEPTION HANDLING EVER. 11/10
                 if (exception.Message.Contains("Не найдено русских слов"))
                 {
-                    throw new WordsNotFoundException();
+                    throw new RussianWordsNotFound();
                 }
 
                 if (exception.Message.Contains("Склонение числительных, заданных строкой, не поддерживается."))
@@ -125,11 +120,6 @@
 
         public RussianNumberSpelling Spell(int n, string unit)
         {
-            if (string.IsNullOrWhiteSpace(unit))
-            {
-                throw new WordsNotFoundException();
-            }
-
             PropisResult result;
             using (WebServiceSoapClient client = new WebServiceSoapClient("WebServiceSoap"))
             {
@@ -165,11 +155,6 @@
 
         public AdjectiveGenders AdjectiveGenders(string s)
         {
-            if (string.IsNullOrWhiteSpace(s))
-            {
-                throw new WordsNotFoundException();
-            }
-
             MorpherSoap.AdjectiveGenders result;
             using (WebServiceSoapClient client = new WebServiceSoapClient("WebServiceSoap"))
             {
@@ -181,11 +166,6 @@
 
         public List<string> Adjectives(string s)
         {
-            if (string.IsNullOrWhiteSpace(s))
-            {
-                throw new WordsNotFoundException();
-            }
-
             using (WebServiceSoapClient client = new WebServiceSoapClient("WebServiceSoap"))
             {
                 return client.GetAdjectives(this.credentials, s).ToList();
