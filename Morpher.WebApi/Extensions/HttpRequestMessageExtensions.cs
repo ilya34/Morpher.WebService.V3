@@ -23,11 +23,8 @@
         static HttpRequestMessageExtensions()
         {
             JsonMediaTypeFormatter = new JsonMediaTypeFormatter { SerializerSettings = { Formatting = Formatting.Indented } };
-
             XmlMediaTypeFormatter = new XmlMediaTypeFormatter();
         }
-
-
 
         public static HttpResponseMessage CreateResponse<T>(
             this HttpRequestMessage message,
@@ -38,8 +35,6 @@
             switch (format)
             {
                 case ResponseFormat.Json:
-                    var json = new JsonMediaTypeFormatter();
-                    
                     return message.CreateResponse(statusCode, value, JsonMediaTypeFormatter);
                 case ResponseFormat.Xml:
                     return message.CreateResponse(statusCode, value, XmlMediaTypeFormatter);
@@ -51,8 +46,6 @@
         public static string GetBasicAuthorization(this HttpRequestMessage message)
         {
             string auth = message.GetHeader("Authorization");
-
-
             if (auth == null)
             {
                 return null;
@@ -69,7 +62,6 @@
 
         public static Guid? GetToken(this HttpRequestMessage message)
         {
-
             string token = message.GetQueryString("token") ?? message.GetBasicAuthorization();
 
             if (token == null)
