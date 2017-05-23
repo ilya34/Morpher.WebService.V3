@@ -12,8 +12,23 @@
     using Morpher.WebService.V3.Models;
     using Morpher.WebService.V3.Models.Exceptions;
 
+    using Newtonsoft.Json;
+
     public static class HttpRequestMessageExtensions
     {
+        private static readonly JsonMediaTypeFormatter JsonMediaTypeFormatter;
+
+        private static readonly XmlMediaTypeFormatter XmlMediaTypeFormatter;
+
+        static HttpRequestMessageExtensions()
+        {
+            JsonMediaTypeFormatter = new JsonMediaTypeFormatter { SerializerSettings = { Formatting = Formatting.Indented } };
+
+            XmlMediaTypeFormatter = new XmlMediaTypeFormatter();
+        }
+
+
+
         public static HttpResponseMessage CreateResponse<T>(
             this HttpRequestMessage message,
             HttpStatusCode statusCode,
@@ -23,9 +38,11 @@
             switch (format)
             {
                 case ResponseFormat.Json:
-                    return message.CreateResponse(statusCode, value, new JsonMediaTypeFormatter());
+                    var json = new JsonMediaTypeFormatter();
+                    
+                    return message.CreateResponse(statusCode, value, JsonMediaTypeFormatter);
                 case ResponseFormat.Xml:
-                    return message.CreateResponse(statusCode, value, new XmlMediaTypeFormatter());
+                    return message.CreateResponse(statusCode, value, XmlMediaTypeFormatter);
                 default:
                     return message.CreateResponse(statusCode, value);
             }
