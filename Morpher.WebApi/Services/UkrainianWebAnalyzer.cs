@@ -1,6 +1,8 @@
 ﻿namespace Morpher.WebService.V3.Services
 {
     using System;
+    using System.Collections.Specialized;
+    using System.Configuration;
 
     using Morpher.WebService.V3.Models;
     using Morpher.WebService.V3.MorpherSoap;
@@ -10,11 +12,17 @@
     {
         private readonly IUserCorrection userCorrection;
 
-        private readonly Credentials credentials =
-            new Credentials() { Username = "srgFilenko", Password = "morpherCorgi" };
+        private readonly Credentials credentials;
 
         public UkrainianWebAnalyzer(IUserCorrection userCorrection)
         {
+            NameValueCollection conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
+            this.credentials = new Credentials()
+                                   {
+                                       Username = conf["WebServiceV2Login"],
+                                       Password = conf["WebServiceV2Password"]
+                                   };
+
             this.userCorrection = userCorrection;
         }
 

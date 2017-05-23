@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Configuration;
     using System.Linq;
     using System.ServiceModel;
 
@@ -16,11 +18,16 @@
     {
         private readonly IUserCorrection userCorrection;
 
-        private readonly Credentials credentials =
-            new Credentials() { Username = "srgFilenko", Password = "morpherCorgi" };
+        private readonly Credentials credentials;
 
         public RussianWebAnalyzer(IUserCorrection userCorrection)
         {
+            NameValueCollection conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
+            this.credentials = new Credentials()
+                                   {
+                                       Username = conf["WebServiceV2Login"], Password = conf["WebServiceV2Password"]
+                                   };
+
             this.userCorrection = userCorrection;
         }
 
