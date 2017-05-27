@@ -27,7 +27,7 @@
         [DataMember(Order = 5, Name = "П", EmitDefaultValue = false)]
         public string Prepositional { get; set; }
 
-        [DataMember(Order = 6, Name = "П-о", EmitDefaultValue = false)]
+        [DataMember(Order = 6, Name = "П_о", EmitDefaultValue = false)]
         public string Locative { get; set; }
 
 

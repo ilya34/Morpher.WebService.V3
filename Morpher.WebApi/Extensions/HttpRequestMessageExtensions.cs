@@ -31,7 +31,7 @@
             HttpStatusCode statusCode,
             T value,
             ResponseFormat? format)
-        {
+        {           
             switch (format)
             {
                 case ResponseFormat.Json:
@@ -39,7 +39,9 @@
                 case ResponseFormat.Xml:
                     return message.CreateResponse(statusCode, value, XmlMediaTypeFormatter);
                 default:
-                    return message.CreateResponse(statusCode, value);
+                    return message.Headers.Accept.ToString() == "application/json" ? 
+                        message.CreateResponse(statusCode, value, JsonMediaTypeFormatter) : 
+                        message.CreateResponse(statusCode, value, XmlMediaTypeFormatter);
             }
         }
 
