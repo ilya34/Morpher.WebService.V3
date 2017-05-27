@@ -28,7 +28,7 @@
         public string Prepositional { get; set; }
 
         [DataMember(Order = 6, Name = "П_о", EmitDefaultValue = false)]
-        public string Locative { get; set; }
+        public string PrepositionalWithPre { get; set; }
 
 
         [SuppressMessage("ReSharper", "StyleCop.SA1126")]
@@ -54,7 +54,7 @@
                 string.Equals(this.Accusative, other.Accusative) &&
                 string.Equals(this.Instrumental, other.Instrumental) &&
                 string.Equals(this.Prepositional, other.Prepositional) &&
-                string.Equals(this.Locative, other.Locative);
+                string.Equals(this.PrepositionalWithPre, other.PrepositionalWithPre);
         }
 
         [SuppressMessage("ReSharper", "StyleCop.SA1503")]
@@ -80,7 +80,7 @@
                 hashCode = (hashCode * 397) ^ (this.Accusative != null ? this.Accusative.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (this.Instrumental != null ? this.Instrumental.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (this.Prepositional != null ? this.Prepositional.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (this.Locative != null ? this.Locative.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (this.PrepositionalWithPre != null ? this.PrepositionalWithPre.GetHashCode() : 0);
                 return hashCode;
             }
         }

@@ -50,7 +50,7 @@
                         Accusative = result.В,
                         Instrumental = result.Т,
                         Prepositional = result.П,
-                        Locative = result.По,
+                        PrepositionalWithPre = result.По,
                         Where = result.где,
                         To = result.куда,
                         From = result.откуда,
@@ -68,7 +68,7 @@
                             Accusative = result.множественное.В,
                             Instrumental = result.множественное.Т,
                             Prepositional = result.множественное.П,
-                            Locative = result.множественное.По
+                            PrepositionalWithPre = result.множественное.По
                         };
                     declensionResult.Plural = declensionForms;
                 }
@@ -95,14 +95,14 @@
 
                 if (!paidUser)
                 {
-                    declensionResult.Locative = null;
+                    declensionResult.PrepositionalWithPre = null;
                     declensionResult.Gender = null;
                     declensionResult.Where = null;
                     declensionResult.From = null;
                     declensionResult.To = null;
                     if (declensionResult.Plural != null)
                     {
-                        declensionResult.Plural.Locative = null;
+                        declensionResult.Plural.PrepositionalWithPre = null;
                     }
                 }
 
@@ -144,7 +144,7 @@
                                    Accusative = result.n.В,
                                    Instrumental = result.n.Т,
                                    Prepositional = result.n.П,
-                                   Locative = result.n.По
+                                   PrepositionalWithPre = result.n.По
                                },
                 UnitDeclension =
                                new RussianDeclensionForms()
@@ -155,7 +155,7 @@
                                    Accusative = result.unit.В,
                                    Instrumental = result.unit.Т,
                                    Prepositional = result.unit.П,
-                                   Locative = result.unit.По
+                                   PrepositionalWithPre = result.unit.По
                                }
             };
         }

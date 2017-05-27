@@ -94,7 +94,7 @@
                                                        Accusative = "вн",
                                                        Instrumental = "тв",
                                                        Prepositional = "пр",
-                                                       Locative = "м"
+                                                       PrepositionalWithPre = "м"
                                                    };
             userCorrection.SetUserDeclensions(testParadigm, "тест", false, Guid.NewGuid());
             

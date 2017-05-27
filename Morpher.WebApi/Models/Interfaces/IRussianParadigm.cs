@@ -2,6 +2,6 @@
 {
     public interface IRussianParadigm : ISlavicParadigm
     {
-        string Locative { get; set; }
+        string PrepositionalWithPre { get; set; }
     }
 }

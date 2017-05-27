@@ -43,7 +43,7 @@
                             paradigm.Prepositional = nameForm.AccentedText;
                             break;
                         case "М":
-                            paradigm.Locative = nameForm.AccentedText;
+                            paradigm.PrepositionalWithPre = nameForm.AccentedText;
                             break;
                     }
                 }
