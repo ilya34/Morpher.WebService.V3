@@ -7,8 +7,8 @@
     <ProjectGuid>{70F040CB-5848-4E9F-BECB-2013355F4086}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Morpher.WebSerivce.V3.Shared</RootNamespace>
-    <AssemblyName>Morpher.WebSerivce.V3.Shared</AssemblyName>
+    <RootNamespace>Morpher.WebService.V3.Shared</RootNamespace>
+    <AssemblyName>Morpher.WebService.V3.Shared</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

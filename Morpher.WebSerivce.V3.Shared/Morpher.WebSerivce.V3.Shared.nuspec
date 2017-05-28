@@ -13,7 +13,7 @@
     <tags>morpher webservice webservice.v3</tags>
   </metadata>
   <files>
-   <file src="bin\Release\Morpher.WebSerivce.V3.Shared.dll" 
-   target="lib\Morpher.WebSerivce.V3.Shared.dll" />
+   <file src="bin\Release\Morpher.WebService.V3.Shared.dll" 
+   target="lib\Morpher.WebService.V3.Shared.dll" />
   </files>
 </package>

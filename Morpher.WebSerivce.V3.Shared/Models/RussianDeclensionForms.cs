@@ -1,8 +1,7 @@
-﻿namespace Morpher.WebSerivce.V3.Shared.Models
+﻿namespace Morpher.WebService.V3.Shared.Models
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
-
 
     [DataContract]
     public class RussianDeclensionForms

@@ -2,8 +2,9 @@
 {
     using System;
 
-    using Morpher.WebSerivce.V3.Shared.Models;
     using Morpher.WebService.V3.Services.Interfaces;
+    using Morpher.WebService.V3.Shared.Interfaces;
+    using Morpher.WebService.V3.Shared.Models;
 
     public class DummyUkrainianAnalyzer : IUkrainianAnalyzer
     {

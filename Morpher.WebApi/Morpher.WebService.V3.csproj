@@ -300,9 +300,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Morpher.WebSerivce.V3.Shared\Morpher.WebSerivce.V3.Shared.csproj">
+    <ProjectReference Include="..\Morpher.WebSerivce.V3.Shared\Morpher.WebService.V3.Shared.csproj">
       <Project>{70f040cb-5848-4e9f-becb-2013355f4086}</Project>
-      <Name>Morpher.WebSerivce.V3.Shared</Name>
+      <Name>Morpher.WebService.V3.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

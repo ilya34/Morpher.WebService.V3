@@ -7,12 +7,13 @@
     using System.Linq;
     using System.ServiceModel;
 
-    using Morpher.WebSerivce.V3.Shared.Models;
+    using Morpher.WebService.V3.Connected_Services.MorpherSoap;
     using Morpher.WebService.V3.Models.Exceptions;
-    using Morpher.WebService.V3.MorpherSoap;
     using Morpher.WebService.V3.Services.Interfaces;
+    using Morpher.WebService.V3.Shared.Interfaces;
+    using Morpher.WebService.V3.Shared.Models;
 
-    using AdjectiveGenders = Morpher.WebSerivce.V3.Shared.Models.AdjectiveGenders;
+    using AdjectiveGenders = Morpher.WebService.V3.Shared.Models.AdjectiveGenders;
 
 
     public class RussianWebAnalyzer : IRussianAnalyzer
@@ -163,7 +164,7 @@
 
         public AdjectiveGenders AdjectiveGenders(string s)
         {
-            MorpherSoap.AdjectiveGenders result;
+            Connected_Services.MorpherSoap.AdjectiveGenders result;
             using (WebServiceSoapClient client = new WebServiceSoapClient("WebServiceSoap"))
             {
                 result = client.GetAdjectiveGenders(this.credentials, s);

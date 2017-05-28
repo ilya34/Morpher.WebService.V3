@@ -1,9 +1,9 @@
-﻿namespace Morpher.WebService.V3.Services.Interfaces
+﻿namespace Morpher.WebService.V3.Shared.Interfaces
 {
     using System;
     using System.Collections.Generic;
 
-    using Morpher.WebSerivce.V3.Shared.Models;
+    using Morpher.WebService.V3.Shared.Models;
 
     public interface IRussianAnalyzer
     {
