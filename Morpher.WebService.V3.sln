@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Morpher.WebService.V3", "Mo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Morpher.WebService.V3.UnitTests", "Morpher.WebApi.UnitTest\Morpher.WebService.V3.UnitTests.csproj", "{B83C032A-318C-4538-95E9-3499DACA4DB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Morpher.WebService.V3.Shared", "Morpher.WebSerivce.V3.Shared\Morpher.WebService.V3.Shared.csproj", "{70F040CB-5848-4E9F-BECB-2013355F4086}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Morpher.WebService.V3.Shared", "Morpher.WebService.V3.Shared\Morpher.WebService.V3.Shared.csproj", "{70F040CB-5848-4E9F-BECB-2013355F4086}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
