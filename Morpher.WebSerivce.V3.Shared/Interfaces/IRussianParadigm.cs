@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebService.V3.Models.Interfaces
+﻿namespace Morpher.WebSerivce.V3.Shared.Interfaces
 {
     public interface IRussianParadigm : ISlavicParadigm
     {

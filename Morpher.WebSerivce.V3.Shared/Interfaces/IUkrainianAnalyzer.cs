@@ -2,7 +2,7 @@
 {
     using System;
 
-    using Morpher.WebService.V3.Models;
+    using Morpher.WebSerivce.V3.Shared.Models;
 
     public interface IUkrainianAnalyzer
     {

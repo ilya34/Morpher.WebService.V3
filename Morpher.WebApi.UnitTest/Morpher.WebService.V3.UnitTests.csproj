@@ -87,6 +87,10 @@
       <Project>{296f6937-c604-4ac5-ab04-957f957db011}</Project>
       <Name>Morpher.WebService.V3</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Morpher.WebSerivce.V3.Shared\Morpher.WebSerivce.V3.Shared.csproj">
+      <Project>{70f040cb-5848-4e9f-becb-2013355f4086}</Project>
+      <Name>Morpher.WebSerivce.V3.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

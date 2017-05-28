@@ -167,7 +167,6 @@
   <ItemGroup>
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Models\CacheResetPostModel.cs" />
-    <Compile Include="Models\DeclensionFlags.cs" />
     <Compile Include="Models\Exceptions\InvalidTokenFormat.cs" />
     <Compile Include="Models\Exceptions\RequiredParameterIsNotSpecified.cs" />
     <Compile Include="Services\DummyRussianAnalyzer.cs" />
@@ -215,7 +214,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AdjectiveGenders.cs" />
     <Compile Include="Models\Exceptions\ExceededDailyLimitException.cs" />
     <Compile Include="Models\Exceptions\IpBlockedException.cs" />
     <Compile Include="Models\Exceptions\MorpherException.cs" />
@@ -223,17 +221,7 @@
     <Compile Include="Models\Exceptions\NumeralsDeclensionNotSupportedException.cs" />
     <Compile Include="Models\Exceptions\RussianWordsNotFound.cs" />
     <Compile Include="Models\Exceptions\TokenNotFoundException.cs" />
-    <Compile Include="Models\FullName.cs" />
-    <Compile Include="Models\Interfaces\IRussianParadigm.cs" />
-    <Compile Include="Models\Interfaces\ISlavicParadigm.cs" />
-    <Compile Include="Models\Interfaces\IUkrainianParadigm.cs" />
     <Compile Include="Models\ResponseFormat.cs" />
-    <Compile Include="Models\RussianDeclensionForms.cs" />
-    <Compile Include="Models\RussianDeclensionResult.cs" />
-    <Compile Include="Models\RussianNumberSpelling.cs" />
-    <Compile Include="Models\UkrainianDeclensionForms.cs" />
-    <Compile Include="Models\UkrainianDeclensionResult.cs" />
-    <Compile Include="Models\UkrainianNumberSpelling.cs" />
     <Compile Include="Models\ServiceErrorMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Interfaces\IMorpherLog.cs" />
@@ -313,7 +301,12 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Morpher.WebSerivce.V3.Shared\Morpher.WebSerivce.V3.Shared.csproj">
+      <Project>{70f040cb-5848-4e9f-becb-2013355f4086}</Project>
+      <Name>Morpher.WebSerivce.V3.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

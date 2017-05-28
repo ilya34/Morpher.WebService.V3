@@ -1,10 +1,10 @@
-﻿namespace Morpher.WebService.V3.Models
+﻿namespace Morpher.WebSerivce.V3.Shared.Models
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
 
-    using Morpher.WebService.V3.Models.Interfaces;
+    using Morpher.WebSerivce.V3.Shared.Interfaces;
 
     [DataContract]
     public class RussianDeclensionForms : IRussianParadigm, IEquatable<RussianDeclensionForms>

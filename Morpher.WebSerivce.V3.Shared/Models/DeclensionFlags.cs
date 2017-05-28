@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebService.V3.Models
+﻿namespace Morpher.WebSerivce.V3.Shared.Models
 {
     using System;
     using System.Diagnostics.CodeAnalysis;

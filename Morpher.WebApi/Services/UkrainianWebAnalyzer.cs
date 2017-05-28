@@ -4,7 +4,7 @@
     using System.Collections.Specialized;
     using System.Configuration;
 
-    using Morpher.WebService.V3.Models;
+    using Morpher.WebSerivce.V3.Shared.Models;
     using Morpher.WebService.V3.MorpherSoap;
     using Morpher.WebService.V3.Services.Interfaces;
 

@@ -2,7 +2,7 @@
 {
     using System;
 
-    using Morpher.WebService.V3.Models.Interfaces;
+    using Morpher.WebSerivce.V3.Shared.Interfaces;
 
     public interface IUserCorrection
     {

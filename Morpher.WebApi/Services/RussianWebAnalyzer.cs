@@ -7,12 +7,13 @@
     using System.Linq;
     using System.ServiceModel;
 
-    using Morpher.WebService.V3.Models;
+    using Morpher.WebSerivce.V3.Shared.Models;
     using Morpher.WebService.V3.Models.Exceptions;
     using Morpher.WebService.V3.MorpherSoap;
     using Morpher.WebService.V3.Services.Interfaces;
 
-    using AdjectiveGenders = Morpher.WebService.V3.Models.AdjectiveGenders;
+    using AdjectiveGenders = Morpher.WebSerivce.V3.Shared.Models.AdjectiveGenders;
+
 
     public class RussianWebAnalyzer : IRussianAnalyzer
     {

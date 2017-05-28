@@ -1,9 +1,10 @@
-﻿namespace Morpher.WebService.V3.Services.Interfaces
+﻿namespace Morpher.WebService.V3.Services
 {
     using System;
     using System.Net.Http;
 
     using Morpher.WebService.V3.Models;
+    using Morpher.WebService.V3.Services.Interfaces;
 
     public class ApiThrottlerLocal : IApiThrottler
     {
