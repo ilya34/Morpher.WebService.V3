@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebService.V3.Services.Interfaces
+﻿namespace Morpher.WebService.V3.Shared.Interfaces
 {
     using System;
 

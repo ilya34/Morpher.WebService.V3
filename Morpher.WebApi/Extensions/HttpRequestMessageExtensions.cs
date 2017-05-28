@@ -10,7 +10,7 @@
     using System.Text;
 
     using Morpher.WebService.V3.Models;
-    using Morpher.WebService.V3.Models.Exceptions;
+    using Morpher.WebService.V3.Shared.Models.Exceptions;
 
     using Newtonsoft.Json;
 

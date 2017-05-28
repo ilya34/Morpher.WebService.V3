@@ -39,9 +39,21 @@
   <ItemGroup>
     <Compile Include="Interfaces\IRussianAnalyzer.cs" />
     <Compile Include="Interfaces\IUkrainianAnalyzer.cs" />
+    <Compile Include="Interfaces\IUserCorrection.cs" />
+    <Compile Include="Interfaces\IUserCorrectionSource.cs" />
     <Compile Include="Models\AdjectiveGenders.cs" />
     <Compile Include="Models\DeclensionFlags.cs" />
+    <Compile Include="Models\Exceptions\ExceededDailyLimitException.cs" />
+    <Compile Include="Models\Exceptions\InvalidTokenFormat.cs" />
+    <Compile Include="Models\Exceptions\IpBlockedException.cs" />
+    <Compile Include="Models\Exceptions\MorpherException.cs" />
+    <Compile Include="Models\Exceptions\NotPayedException.cs" />
+    <Compile Include="Models\Exceptions\NumeralsDeclensionNotSupportedException.cs" />
+    <Compile Include="Models\Exceptions\RequiredParameterIsNotSpecified.cs" />
+    <Compile Include="Models\Exceptions\RussianWordsNotFound.cs" />
+    <Compile Include="Models\Exceptions\TokenNotFoundException.cs" />
     <Compile Include="Models\FullName.cs" />
+    <Compile Include="Models\NameForm.cs" />
     <Compile Include="Models\RussianDeclensionForms.cs" />
     <Compile Include="Models\RussianDeclensionResult.cs" />
     <Compile Include="Models\RussianNumberSpelling.cs" />

@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebService.V3.Models.Exceptions
+﻿namespace Morpher.WebService.V3.Shared.Models.Exceptions
 {
     using System;
 

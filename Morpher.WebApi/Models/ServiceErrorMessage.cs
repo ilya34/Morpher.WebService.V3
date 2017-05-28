@@ -4,7 +4,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
 
-    using Morpher.WebService.V3.Models.Exceptions;
+    using Morpher.WebService.V3.Shared.Models.Exceptions;
 
     [DataContract(Name = "error")]
     public class ServiceErrorMessage : IEquatable<ServiceErrorMessage>

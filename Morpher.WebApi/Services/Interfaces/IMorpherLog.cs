@@ -2,7 +2,7 @@
 {
     using System.Net.Http;
 
-    using Morpher.WebService.V3.Models.Exceptions;
+    using Morpher.WebService.V3.Shared.Models.Exceptions;
 
     public interface IMorpherLog
     {

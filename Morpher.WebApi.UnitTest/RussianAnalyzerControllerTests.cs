@@ -11,10 +11,10 @@
 
     using Morpher.WebService.V3.Controllers;
     using Morpher.WebService.V3.Models;
-    using Morpher.WebService.V3.Models.Exceptions;
     using Morpher.WebService.V3.Services.Interfaces;
     using Morpher.WebService.V3.Shared.Interfaces;
     using Morpher.WebService.V3.Shared.Models;
+    using Morpher.WebService.V3.Shared.Models.Exceptions;
 
     using NUnit.Framework;
 

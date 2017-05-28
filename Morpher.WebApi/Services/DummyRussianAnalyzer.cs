@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
 
-    using Morpher.WebService.V3.Services.Interfaces;
     using Morpher.WebService.V3.Shared.Interfaces;
     using Morpher.WebService.V3.Shared.Models;
 
