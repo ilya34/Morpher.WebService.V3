@@ -179,11 +179,9 @@
     <Compile Include="Services\Interfaces\IDatabaseLog.cs" />
     <Compile Include="Services\Interfaces\IMorpherCache.cs" />
     <Compile Include="Services\Interfaces\IMorpherDatabase.cs" />
-    <Compile Include="Services\Interfaces\ApiThrottlerLocal.cs" />
+    <Compile Include="Services\ApiThrottlerLocal.cs" />
     <Compile Include="Services\UserCorrectionLocal.cs" />
     <Compile Include="Services\Interfaces\IUserCorrection.cs" />
-    <Compile Include="Services\Interfaces\IRussianAnalyzer.cs" />
-    <Compile Include="Services\Interfaces\IUkrainianAnalyzer.cs" />
     <Compile Include="Services\DatabaseLog.cs" />
     <Compile Include="Services\MorpherCache.cs" />
     <Compile Include="Services\MorpherDatabase.cs" />

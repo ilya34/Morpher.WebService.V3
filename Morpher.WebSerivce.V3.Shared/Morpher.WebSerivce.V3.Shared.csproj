@@ -42,9 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IRussianParadigm.cs" />
-    <Compile Include="Interfaces\ISlavicParadigm.cs" />
-    <Compile Include="Interfaces\IUkrainianParadigm.cs" />
+    <Compile Include="Interfaces\IRussianAnalyzer.cs" />
+    <Compile Include="Interfaces\IUkrainianAnalyzer.cs" />
     <Compile Include="Models\AdjectiveGenders.cs" />
     <Compile Include="Models\DeclensionFlags.cs" />
     <Compile Include="Models\FullName.cs" />

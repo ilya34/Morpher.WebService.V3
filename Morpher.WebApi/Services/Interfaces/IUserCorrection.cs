@@ -2,12 +2,12 @@
 {
     using System;
 
-    using Morpher.WebSerivce.V3.Shared.Interfaces;
+    using Morpher.WebSerivce.V3.Shared.Models;
 
     public interface IUserCorrection
     {
-        void SetUserDeclensions(IRussianParadigm paradigm, string lemma, bool plural, Guid token = default(Guid));
+        void SetUserDeclensions(RussianDeclensionForms paradigm, string lemma, bool plural, Guid token = default(Guid));
 
-        void SetUserDeclensions(IUkrainianParadigm paradigm, string lemma, bool plural, Guid token = default(Guid));
+        void SetUserDeclensions(UkrainianDeclensionForms paradigm, string lemma, bool plural, Guid token = default(Guid));
     }
 }

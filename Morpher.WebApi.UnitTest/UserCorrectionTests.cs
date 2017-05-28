@@ -5,7 +5,6 @@
 
     using Moq;
 
-    using Morpher.WebSerivce.V3.Shared.Interfaces;
     using Morpher.WebSerivce.V3.Shared.Models;
     using Morpher.WebService.V3.Models;
     using Morpher.WebService.V3.Services;
@@ -86,8 +85,8 @@
                         });
 
             IUserCorrection userCorrection = new UserCorrection(mock.Object);
-            IRussianParadigm testParadigm = new RussianDeclensionForms();
-            IRussianParadigm russianParadigm = new RussianDeclensionForms()
+            var testParadigm = new RussianDeclensionForms();
+            var russianParadigm = new RussianDeclensionForms()
                                                    {
                                                        Nominative = "им",
                                                        Genitive = "рд",
@@ -118,8 +117,8 @@
                             }
                     });
 
-            IRussianParadigm testParadigm = new RussianDeclensionForms();
-            IRussianParadigm russianParadigm = new RussianDeclensionForms()
+            var testParadigm = new RussianDeclensionForms();
+            var russianParadigm = new RussianDeclensionForms()
                                                    {
                                                        Nominative = "тест"
                                                    };
@@ -201,9 +200,9 @@
 
             IUserCorrection userCorrection = new UserCorrection(mock.Object);
 
-            IUkrainianParadigm testParadigm = new UkrainianDeclensionForms();
+            var testParadigm = new UkrainianDeclensionForms();
 
-            IUkrainianParadigm ukrainianParadigm = new UkrainianDeclensionForms()
+            var ukrainianParadigm = new UkrainianDeclensionForms()
                                                    {
                                                        Nominative = "им",
                                                        Genitive = "рд",
@@ -234,8 +233,8 @@
                             }
                     });
 
-            IUkrainianParadigm testParadigm = new UkrainianDeclensionForms();
-            IUkrainianParadigm ukrainianParadigm = new UkrainianDeclensionForms()
+            var testParadigm = new UkrainianDeclensionForms();
+            var ukrainianParadigm = new UkrainianDeclensionForms()
                                                    {
                                                        Nominative = "тест"
                                                    };

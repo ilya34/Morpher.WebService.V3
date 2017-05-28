@@ -1,13 +1,11 @@
 ﻿namespace Morpher.WebSerivce.V3.Shared.Models
 {
-    using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
 
-    using Morpher.WebSerivce.V3.Shared.Interfaces;
 
     [DataContract]
-    public class RussianDeclensionForms : IRussianParadigm, IEquatable<RussianDeclensionForms>
+    public class RussianDeclensionForms
     {
         [DataMember(Order = 0, Name = "И", EmitDefaultValue = false)]
         public string Nominative { get; set; }
@@ -29,19 +27,6 @@
 
         [DataMember(Order = 6, Name = "П_о", EmitDefaultValue = false)]
         public string PrepositionalWithPre { get; set; }
-
-
-        [SuppressMessage("ReSharper", "StyleCop.SA1126")]
-        public static bool operator ==(RussianDeclensionForms left, RussianDeclensionForms right)
-        {
-            return Equals(left, right);
-        }
-
-        [SuppressMessage("ReSharper", "StyleCop.SA1126")]
-        public static bool operator !=(RussianDeclensionForms left, RussianDeclensionForms right)
-        {
-            return !Equals(left, right);
-        }
 
         [SuppressMessage("ReSharper", "StyleCop.SA1503")]
         public bool Equals(RussianDeclensionForms other)

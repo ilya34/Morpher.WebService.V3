@@ -2,17 +2,17 @@
 {
     using System;
 
-    using Morpher.WebSerivce.V3.Shared.Interfaces;
+    using Morpher.WebSerivce.V3.Shared.Models;
     using Morpher.WebService.V3.Services.Interfaces;
 
     public class UserCorrectionLocal : IUserCorrection
     {
-        public void SetUserDeclensions(IRussianParadigm paradigm, string lemma, bool plural, Guid token = new Guid())
+        public void SetUserDeclensions(RussianDeclensionForms paradigm, string lemma, bool plural, Guid token = new Guid())
         {
             return;
         }
 
-        public void SetUserDeclensions(IUkrainianParadigm paradigm, string lemma, bool plural, Guid token = new Guid())
+        public void SetUserDeclensions(UkrainianDeclensionForms paradigm, string lemma, bool plural, Guid token = new Guid())
         {
             return;
         }

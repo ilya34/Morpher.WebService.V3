@@ -1,13 +1,10 @@
 ﻿namespace Morpher.WebSerivce.V3.Shared.Models
 {
-    using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
 
-    using Morpher.WebSerivce.V3.Shared.Interfaces;
-
     [DataContract]
-    public class UkrainianDeclensionForms : IUkrainianParadigm, IEquatable<UkrainianDeclensionForms>
+    public class UkrainianDeclensionForms
     {
         [DataMember(Order = 0, Name = "Н", EmitDefaultValue = false)]
         public string Nominative { get; set; }
@@ -29,18 +26,6 @@
 
         [DataMember(Order = 6, Name = "К", EmitDefaultValue = false)]
         public string Vocative { get; set; }
-
-        [SuppressMessage("ReSharper", "StyleCop.SA1126")]
-        public static bool operator ==(UkrainianDeclensionForms left, UkrainianDeclensionForms right)
-        {
-            return Equals(left, right);
-        }
-
-        [SuppressMessage("ReSharper", "StyleCop.SA1126")]
-        public static bool operator !=(UkrainianDeclensionForms left, UkrainianDeclensionForms right)
-        {
-            return !Equals(left, right);
-        }
 
         [SuppressMessage("ReSharper", "StyleCop.SA1503")]
         public bool Equals(UkrainianDeclensionForms other)
