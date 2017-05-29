@@ -5,8 +5,11 @@ namespace Morpher.WebApi.App_Start
 {
     using System;
     using System.Configuration;
+    using System.IO;
+    using System.Reflection;
     using System.Web;
     using System.Web.Http;
+    using System.Linq;
 
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
@@ -99,10 +102,30 @@ namespace Morpher.WebApi.App_Start
 
             }
 
+            bool customInflector = Convert.ToBoolean(ConfigurationManager.AppSettings["CustomInflector"]);
 
-            kernel.Bind<IRussianAnalyzer>().To<RussianWebAnalyzer>();
-            kernel.Bind<IUkrainianAnalyzer>().To<UkrainianWebAnalyzer>();
+            if (!customInflector)
+            {
+                kernel.Bind<IRussianAnalyzer>().To<RussianWebAnalyzer>();
+                kernel.Bind<IUkrainianAnalyzer>().To<UkrainianWebAnalyzer>();
+            }
+            else
+            {
+                string path = Path.Combine(
+                    AppDomain.CurrentDomain.BaseDirectory,
+                    "bin",
+                    ConfigurationManager.AppSettings["Inflector"]);
+                Assembly assembly = Assembly.LoadFile(path);
+                Type russianInflector = assembly.GetTypes()
+                    .Single(type => typeof(IRussianAnalyzer).IsAssignableFrom(type));
+                Type ukrainianInflector = assembly.GetTypes()
+                    .Single(type => typeof(IUkrainianAnalyzer).IsAssignableFrom(type));
 
+                kernel.Bind<IRussianAnalyzer>().To(russianInflector).InSingletonScope()
+                    .WithConstructorArgument("isLocalService", isLocal);
+                kernel.Bind<IUkrainianAnalyzer>().To(ukrainianInflector).InSingletonScope()
+                    .WithConstructorArgument("isLocalService", isLocal);
+            }
         }
     }
 }
