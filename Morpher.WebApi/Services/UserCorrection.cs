@@ -15,9 +15,9 @@
             this.correctionSource = correctionSource;
         }
 
-        public void SetUserDeclensions(RussianDeclensionForms paradigm, string lemma, bool plural, Guid token = new Guid())
+        public void SetUserDeclensions(RussianDeclensionForms paradigm, string lemma, bool plural, Guid? token)
         {
-            var nameForms = this.correctionSource.GetUserCorrections(token, lemma, "RU");
+            var nameForms = this.correctionSource.GetUserCorrections(token.Value, lemma, "RU");
             if (nameForms != null && nameForms.Any())
             {
                 foreach (var nameForm in nameForms.Where(form => form.Plural == plural))
@@ -50,9 +50,9 @@
             }
         }
 
-        public void SetUserDeclensions(UkrainianDeclensionForms paradigm, string lemma, bool plural, Guid token = new Guid())
+        public void SetUserDeclensions(UkrainianDeclensionForms paradigm, string lemma, bool plural, Guid? token)
         {
-            var nameForms = this.correctionSource.GetUserCorrections(token, lemma, "UK");
+            var nameForms = this.correctionSource.GetUserCorrections(token.Value, lemma, "UK");
             if (nameForms != null)
             {
                 foreach (var nameForm in nameForms.Where(form => form.Plural == plural))

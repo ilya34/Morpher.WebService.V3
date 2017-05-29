@@ -7,12 +7,12 @@
 
     public class UserCorrectionLocal : IUserCorrection
     {
-        public void SetUserDeclensions(RussianDeclensionForms paradigm, string lemma, bool plural, Guid token = new Guid())
+        public void SetUserDeclensions(RussianDeclensionForms paradigm, string lemma, bool plural, Guid? token)
         {
             return;
         }
 
-        public void SetUserDeclensions(UkrainianDeclensionForms paradigm, string lemma, bool plural, Guid token = new Guid())
+        public void SetUserDeclensions(UkrainianDeclensionForms paradigm, string lemma, bool plural, Guid? token)
         {
             return;
         }
