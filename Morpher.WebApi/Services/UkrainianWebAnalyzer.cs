@@ -12,9 +12,11 @@
     {
         private readonly IUserCorrection userCorrection;
 
+        private readonly bool isLocalService;
+
         private readonly Credentials credentials;
 
-        public UkrainianWebAnalyzer(IUserCorrection userCorrection)
+        public UkrainianWebAnalyzer(IUserCorrection userCorrection, bool isLocalService)
         {
             NameValueCollection conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
             this.credentials = new Credentials()
@@ -24,6 +26,7 @@
                                    };
 
             this.userCorrection = userCorrection;
+            this.isLocalService = isLocalService;
         }
 
         public UkrainianDeclensionResult Declension(string s, Guid? token = null, DeclensionFlags? flags = null, bool paidUser = false)
@@ -46,9 +49,9 @@
                                                                  Gender = result.рід
                                                              };
 
-            if (token.HasValue)
+            if (token != null || this.isLocalService)
             {
-                this.userCorrection.SetUserDeclensions(declensionResult, s, false, token.Value);
+                this.userCorrection.SetUserDeclensions(declensionResult, s, false, token);
             }
 
             if (!paidUser)

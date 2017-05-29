@@ -19,9 +19,11 @@
     {
         private readonly IUserCorrection userCorrection;
 
+        private readonly bool isLocalService;
+
         private readonly Credentials credentials;
 
-        public RussianWebAnalyzer(IUserCorrection userCorrection)
+        public RussianWebAnalyzer(IUserCorrection userCorrection, bool isLocalService)
         {
             NameValueCollection conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
             this.credentials = new Credentials()
@@ -30,6 +32,7 @@
                                    };
 
             this.userCorrection = userCorrection;
+            this.isLocalService = isLocalService;
         }
 
         public RussianDeclensionResult Declension(string s, Guid? token = null, DeclensionFlags? flags = null, bool paidUser = false)
@@ -85,12 +88,12 @@
                     declensionResult.FullName = fullName;
                 }
 
-                if (token.HasValue)
+                if (token != null || this.isLocalService)
                 {
-                    this.userCorrection.SetUserDeclensions(declensionResult, s, false, token.Value);
+                    this.userCorrection.SetUserDeclensions(declensionResult, s, false, token);
                     if (declensionResult.Plural != null)
                     {
-                        this.userCorrection.SetUserDeclensions(declensionResult.Plural, s, true, token.Value);
+                        this.userCorrection.SetUserDeclensions(declensionResult.Plural, s, true, token);
                     }
                 }
 

@@ -106,8 +106,10 @@ namespace Morpher.WebApi.App_Start
 
             if (!customInflector)
             {
-                kernel.Bind<IRussianAnalyzer>().To<RussianWebAnalyzer>();
-                kernel.Bind<IUkrainianAnalyzer>().To<UkrainianWebAnalyzer>();
+                kernel.Bind<IRussianAnalyzer>().To<RussianWebAnalyzer>().InSingletonScope()
+                    .WithConstructorArgument("isLocalService", isLocal);
+                kernel.Bind<IUkrainianAnalyzer>().To<UkrainianWebAnalyzer>().InSingletonScope()
+                    .WithConstructorArgument("isLocalService", isLocal);
             }
             else
             {
