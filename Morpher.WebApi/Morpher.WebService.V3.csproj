@@ -158,6 +158,8 @@
   <ItemGroup>
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Models\CacheResetPostModel.cs" />
+    <Compile Include="Models\Correction.cs" />
+    <Compile Include="Models\UserCorrectionPostModel.cs" />
     <Compile Include="Services\DummyRussianAnalyzer.cs" />
     <Compile Include="Services\DummyUkrainianAnalyzer.cs" />
     <Compile Include="Services\MorpherLog.cs" />
