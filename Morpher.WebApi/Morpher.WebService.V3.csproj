@@ -49,6 +49,14 @@
     <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.2\lib\net45\Dapper.dll</HintPath>
     </Reference>
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elmah.Contrib.WebApi, Version=1.0.10.25, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elmah.Contrib.WebApi.1.0.10.25\lib\net45\Elmah.Contrib.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="FluentScheduler, Version=5.2.0.0, Culture=neutral, PublicKeyToken=b76503528a14ebd1, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentScheduler.5.2.0\lib\net40\FluentScheduler.dll</HintPath>
       <Private>True</Private>
@@ -205,6 +213,7 @@
     <Compile Include="Services\UserCorrectionSource.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.AdjectiveGenders.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -274,6 +283,7 @@
     <None Include="Properties\PublishProfiles\Morpher.pubxml" />
     <Content Include="SecretConfigs\connectionStrings.config" />
     <Content Include="SecretConfigs\webServiceSettings.config" />
+    <Content Include="SecretConfigs\smtp.config" />
     <None Include="Web.Local.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

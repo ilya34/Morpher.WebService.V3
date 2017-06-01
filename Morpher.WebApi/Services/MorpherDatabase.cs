@@ -63,7 +63,7 @@
         {
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
-                return connection.QuerySingleOrDefault<bool>(
+                return connection.QueryFirstOrDefault<bool>(
                     "SELECT Blocked FROM RemoteAddresses WHERE REMOTE_ADDR = @ip",
                     new { ip });
             }
