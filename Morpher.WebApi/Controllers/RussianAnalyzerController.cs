@@ -1,6 +1,5 @@
 ﻿namespace Morpher.WebService.V3.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
@@ -167,30 +166,6 @@
                     new ServiceErrorMessage(exception),
                     format);
             }
-        }
-
-        [Route("set_correction")]
-        [HttpPost]
-        public HttpResponseMessage SetCorrection([FromBody] UserCorrectionPostModel postModel, ResponseFormat? format = null)
-        {
-            Guid? guid = this.Request.GetToken();
-
-            if (guid != null)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.Forbidden, 
-                    new MorpherException(), format);
-            }
-
-            try
-            {
-            }
-            catch (MorpherException)
-            {
-                
-            }
-            
-
-            return this.Request.CreateResponse(HttpStatusCode.OK, postModel, ResponseFormat.Xml);
         }
     }
 }
