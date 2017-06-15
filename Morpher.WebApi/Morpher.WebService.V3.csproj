@@ -213,7 +213,6 @@
     <Compile Include="Services\UserCorrectionSource.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.AdjectiveGenders.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
