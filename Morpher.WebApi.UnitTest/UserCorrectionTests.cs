@@ -17,7 +17,7 @@
         [Test]
         public void RussianSetUserDeclensions()
         {
-            Mock<UserCorrectionSource> mock = new Mock<UserCorrectionSource>("connectionString");
+            Mock<UserCorrectionSourceDatabase> mock = new Mock<UserCorrectionSourceDatabase>("connectionString");
 
 
             mock.Setup(source => source.GetUserCorrections(It.IsAny<Guid>(), It.IsAny<string>(), "RU"))
@@ -83,7 +83,7 @@
                             #endregion
                         });
 
-            IUserCorrection userCorrection = new UserCorrection(mock.Object);
+            IUserCorrection userCorrection = new UserCorrectionService(mock.Object);
             var testParadigm = new RussianDeclensionForms();
             var russianParadigm = new RussianDeclensionForms()
                                                    {
@@ -103,7 +103,7 @@
         [Test]
         public void RussianPluralTest()
         {
-            Mock<UserCorrectionSource> mock = new Mock<UserCorrectionSource>("connectionString");
+            Mock<UserCorrectionSourceDatabase> mock = new Mock<UserCorrectionSourceDatabase>("connectionString");
             mock.Setup(source => source.GetUserCorrections(It.IsAny<Guid>(), It.IsAny<string>(), "RU")).Returns(
                 new List<NameForm>()
                     {
@@ -122,7 +122,7 @@
                                                        Nominative = "тест"
                                                    };
 
-            IUserCorrection userCorrection = new UserCorrection(mock.Object);
+            IUserCorrection userCorrection = new UserCorrectionService(mock.Object);
             userCorrection.SetUserDeclensions(testParadigm, "test", true, Guid.Empty);
 
             Assert.AreEqual(russianParadigm, testParadigm);
@@ -131,7 +131,7 @@
         [Test]
         public void UkrainianSetUserDeclensions()
         {
-            Mock<UserCorrectionSource> mock = new Mock<UserCorrectionSource>("connectionString");
+            Mock<UserCorrectionSourceDatabase> mock = new Mock<UserCorrectionSourceDatabase>("connectionString");
 
 
             mock.Setup(source => source.GetUserCorrections(It.IsAny<Guid>(), It.IsAny<string>(), "UK"))
@@ -197,7 +197,7 @@
                             #endregion
                         });
 
-            IUserCorrection userCorrection = new UserCorrection(mock.Object);
+            IUserCorrection userCorrection = new UserCorrectionService(mock.Object);
 
             var testParadigm = new UkrainianDeclensionForms();
 
@@ -219,7 +219,7 @@
         [Test]
         public void UkrainianPluralTest()
         {
-            Mock<UserCorrectionSource> mock = new Mock<UserCorrectionSource>("connectionString");
+            Mock<UserCorrectionSourceDatabase> mock = new Mock<UserCorrectionSourceDatabase>("connectionString");
             mock.Setup(source => source.GetUserCorrections(It.IsAny<Guid>(), It.IsAny<string>(), "UK")).Returns(
                 new List<NameForm>()
                     {
@@ -238,7 +238,7 @@
                                                        Nominative = "тест"
                                                    };
 
-            IUserCorrection userCorrection = new UserCorrection(mock.Object);
+            IUserCorrection userCorrection = new UserCorrectionService(mock.Object);
             userCorrection.SetUserDeclensions(testParadigm, "test", true, Guid.Empty);
 
             Assert.AreEqual(ukrainianParadigm, testParadigm);

@@ -299,7 +299,7 @@
                 return this.memoryCache.Get(key);
             }
 
-            public void Set(string key, object value, DateTimeOffset absoluteExpirationDateTimeOffset, string regionName = null)
+            public void Set(string key, object value, DateTimeOffset absoluteExpirationDateTime, string regionName = null)
             {
                 this.memoryCache.Set(key, value, DateTimeOffset.UtcNow.AddMilliseconds(50));
             }

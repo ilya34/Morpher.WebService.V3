@@ -8,6 +8,8 @@
     using Morpher.WebService.V3.Services.Interfaces;
     using Morpher.WebService.V3.Shared.Models.Exceptions;
 
+    using Ninject;
+
     public class ApiThrottler : IApiThrottler
     {
         private readonly IMorpherDatabase morpherDatabase;
@@ -16,7 +18,7 @@
 
         private readonly DateTimeOffset absoluteExpiration = new DateTimeOffset(DateTime.Today.AddDays(1));
 
-        public ApiThrottler(IMorpherDatabase morpherDatabase, IMorpherCache morpherCache)
+        public ApiThrottler(IMorpherDatabase morpherDatabase, [Named("ApiThrottler")] IMorpherCache morpherCache)
         {
             this.morpherDatabase = morpherDatabase;
             this.morpherCache = morpherCache;

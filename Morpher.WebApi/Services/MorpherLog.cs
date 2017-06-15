@@ -11,6 +11,8 @@
     using Morpher.WebService.V3.Services.Interfaces;
     using Morpher.WebService.V3.Shared.Models.Exceptions;
 
+    using Ninject;
+
     public class MorpherLog : IMorpherLog
     {
         private readonly IDatabaseLog database;
@@ -19,7 +21,7 @@
 
         private readonly ConcurrentQueue<LogEntity> logQueue = new ConcurrentQueue<LogEntity>();
 
-        public MorpherLog(IDatabaseLog database, IMorpherCache morpherCache)
+        public MorpherLog(IDatabaseLog database, [Named("ApiThrottler")]IMorpherCache morpherCache)
         {
             this.database = database;
             this.morpherCache = morpherCache;

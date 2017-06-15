@@ -6,44 +6,44 @@
     using Morpher.WebService.V3.Shared.Interfaces;
     using Morpher.WebService.V3.Shared.Models;
 
-    public class UserCorrection : IUserCorrection
+    public class UserCorrectionService : IUserCorrection
     {
         private readonly IUserCorrectionSource correctionSource;
 
-        public UserCorrection(IUserCorrectionSource correctionSource)
+        public UserCorrectionService(IUserCorrectionSource correctionSource)
         {
             this.correctionSource = correctionSource;
         }
 
         public void SetUserDeclensions(RussianDeclensionForms paradigm, string lemma, bool plural, Guid? token)
         {
-            var nameForms = this.correctionSource.GetUserCorrections(token.Value, lemma, "RU");
-            if (nameForms != null && nameForms.Any())
+            var corrections = this.correctionSource.GetUserCorrections(token, lemma, "RU");
+            if (corrections != null && corrections.Any())
             {
-                foreach (var nameForm in nameForms.Where(form => form.Plural == plural))
+                foreach (var correction in corrections.Where(form => form.Plural == plural))
                 {
-                    switch (nameForm.FormID)
+                    switch (correction.Form)
                     {
                         case "И":
-                            paradigm.Nominative = nameForm.AccentedText;
+                            paradigm.Nominative = correction.Lemma;
                             break;
                         case "Р":
-                            paradigm.Genitive = nameForm.AccentedText;
+                            paradigm.Genitive = correction.Lemma;
                             break;
                         case "Д":
-                            paradigm.Dative = nameForm.AccentedText;
+                            paradigm.Dative = correction.Lemma;
                             break;
                         case "В":
-                            paradigm.Accusative = nameForm.AccentedText;
+                            paradigm.Accusative = correction.Lemma;
                             break;
                         case "Т":
-                            paradigm.Instrumental = nameForm.AccentedText;
+                            paradigm.Instrumental = correction.Lemma;
                             break;
                         case "П":
-                            paradigm.Prepositional = nameForm.AccentedText;
+                            paradigm.Prepositional = correction.Lemma;
                             break;
                         case "М":
-                            paradigm.PrepositionalWithPre = nameForm.AccentedText;
+                            paradigm.PrepositionalWithPre = correction.Lemma;
                             break;
                     }
                 }
@@ -52,33 +52,33 @@
 
         public void SetUserDeclensions(UkrainianDeclensionForms paradigm, string lemma, bool plural, Guid? token)
         {
-            var nameForms = this.correctionSource.GetUserCorrections(token.Value, lemma, "UK");
-            if (nameForms != null)
+            var corrections = this.correctionSource.GetUserCorrections(token, lemma, "UK");
+            if (corrections != null)
             {
-                foreach (var nameForm in nameForms.Where(form => form.Plural == plural))
+                foreach (var correction in corrections.Where(form => form.Plural == plural))
                 {
-                    switch (nameForm.FormID)
+                    switch (correction.Form)
                     {
                         case "Н":
-                            paradigm.Nominative = nameForm.AccentedText;
+                            paradigm.Nominative = correction.Lemma;
                             break;
                         case "Р":
-                            paradigm.Genitive = nameForm.AccentedText;
+                            paradigm.Genitive = correction.Lemma;
                             break;
                         case "Д":
-                            paradigm.Dative = nameForm.AccentedText;
+                            paradigm.Dative = correction.Lemma;
                             break;
                         case "З":
-                            paradigm.Accusative = nameForm.AccentedText;
+                            paradigm.Accusative = correction.Lemma;
                             break;
                         case "О":
-                            paradigm.Instrumental = nameForm.AccentedText;
+                            paradigm.Instrumental = correction.Lemma;
                             break;
                         case "М":
-                            paradigm.Prepositional = nameForm.AccentedText;
+                            paradigm.Prepositional = correction.Lemma;
                             break;
                         case "К":
-                            paradigm.Vocative = nameForm.AccentedText;
+                            paradigm.Vocative = correction.Lemma;
                             break;
                     }
                 }
