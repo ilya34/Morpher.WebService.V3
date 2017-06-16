@@ -70,6 +70,17 @@
             }
         }
 
+        protected void Application_End()
+        {
+            IMorpherLog log = (IMorpherLog)DependencyResolver.Current.GetService(typeof(IMorpherLog));
+            log.Sync();
+        }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            Exception exception = Server.GetLastError();
+        }
+
         private void LoadUserCorrectionsFromDatabase(IMorpherCache morpherCache)
         {
             using (UserCorrectionDataContext context = new UserCorrectionDataContext())
@@ -103,17 +114,6 @@
                     morpherCache.Set(userId.Key.ToString().ToLowerInvariant(), entities, new CacheItemPolicy());
                 }
             }
-        }
-
-        protected void Application_End()
-        {
-            IMorpherLog log = (IMorpherLog)DependencyResolver.Current.GetService(typeof(IMorpherLog));
-            log.Sync();
-        }
-
-        protected void Application_Error(object sender, EventArgs e)
-        {
-            Exception exception = Server.GetLastError();
         }
     }
 }

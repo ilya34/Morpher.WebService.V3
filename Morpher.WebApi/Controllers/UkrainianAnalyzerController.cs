@@ -1,5 +1,6 @@
 ﻿namespace Morpher.WebService.V3.Controllers
 {
+    using System;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
@@ -20,11 +21,18 @@
 
         private readonly IMorpherLog morpherLog;
 
-        public UkrainianAnalyzerController(IUkrainianAnalyzer analyzer, IApiThrottler apiThrottler, IMorpherLog morpherLog)
+        private readonly IUserCorrection correction;
+
+        public UkrainianAnalyzerController(
+            IUkrainianAnalyzer analyzer,
+            IApiThrottler apiThrottler,
+            IMorpherLog morpherLog,
+            IUserCorrection correction)
         {
             this.analyzer = analyzer;
             this.apiThrottler = apiThrottler;
             this.morpherLog = morpherLog;
+            this.correction = correction;
         }
 
         [Route("declension", Name = "UkrainianDeclension")]
@@ -62,30 +70,28 @@
             }
         }
 
-        [Route("spell")]
-        [HttpGet]
-        public HttpResponseMessage Spell(int n, string unit, ResponseFormat? format = null)
+        [Route("set_correction")]
+        [HttpPost]
+        public HttpResponseMessage AddOrUpdateUserCorrection(
+            [FromBody] UserCorrectionEntity entity,
+            ResponseFormat? format = null,
+            bool? morpherRequest = false)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(unit))
+                Guid? guid = this.Request.GetToken();
+
+                if (entity?.Corrections == null)
                 {
-                    throw new RequiredParameterIsNotSpecified(nameof(unit));
+                    throw new ModelNotValid("Неверный формат модели");
                 }
 
-                bool paidUser;
-                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
+                entity.Language = "UK";
+                entity.NominativeForm = entity.NominativeForm?.ToUpperInvariant();
 
-                if (result != ApiThrottlingResult.Success)
-                {
-                    throw result.GenerateMorpherException();
-                }
+                this.correction.NewCorrection(entity, guid);
 
-                UkrainianNumberSpelling numberSpelling =
-                    this.analyzer.Spell(n, unit);
-
-                this.morpherLog.Log(this.Request);
-                return this.Request.CreateResponse(HttpStatusCode.OK, numberSpelling, format);
+                return this.Request.CreateResponse(HttpStatusCode.OK, true, ResponseFormat.Xml);
             }
             catch (MorpherException exception)
             {

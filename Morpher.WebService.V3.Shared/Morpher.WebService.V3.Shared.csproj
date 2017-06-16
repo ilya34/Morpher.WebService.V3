@@ -51,7 +51,7 @@
     <Compile Include="Models\Exceptions\NotPayedException.cs" />
     <Compile Include="Models\Exceptions\NumeralsDeclensionNotSupportedException.cs" />
     <Compile Include="Models\Exceptions\RequiredParameterIsNotSpecified.cs" />
-    <Compile Include="Models\Exceptions\RequiredTagMissed.cs" />
+    <Compile Include="Models\Exceptions\ModelNotValid.cs" />
     <Compile Include="Models\Exceptions\RussianWordsNotFound.cs" />
     <Compile Include="Models\Exceptions\TokenNotFoundException.cs" />
     <Compile Include="Models\FullName.cs" />

@@ -8,7 +8,7 @@
             "Ошибка исправления: ";
 
         public ModelNotValid(string parameterName)
-            : base(ErrorMessage, 11)
+            : base(ErrorMessage + parameterName, 11)
         {
             this.Code = 11;
         }

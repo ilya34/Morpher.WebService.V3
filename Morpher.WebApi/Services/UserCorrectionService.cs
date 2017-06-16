@@ -16,6 +16,8 @@
     {
         private static readonly List<string> RussianAllowedForms = new List<string>() { "В", "Д", "И", "М", "П", "Р", "Т" };
 
+        private static readonly List<string> UkrainianAllowedForms = new List<string>() { "Д", "З", "К", "М", "Н", "О", "Р" };
+
         private readonly IUserCorrectionSource correctionSource;
 
         public UserCorrectionService(IUserCorrectionSource correctionSource)
@@ -99,6 +101,8 @@
             {
                 case "RU": this.NewCorrectionRu(entity, token);
                     break;
+                case "UK": this.NewCorrectionUk(entity, token);
+                    break;
                 default: throw new ArgumentOutOfRangeException(nameof(entity.Language));
             }
         }
@@ -111,7 +115,8 @@
 
         private void NewCorrectionUk(UserCorrectionEntity entity, Guid? token)
         {
-            throw new NotImplementedException();
+            this.ValidateModel(entity, UkrainianAllowedForms);
+            this.correctionSource.AssignNewCorrection(token, entity);
         }
 
         private void ValidateModel(UserCorrectionEntity entity, List<string> allowedForms)
