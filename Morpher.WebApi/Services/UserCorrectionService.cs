@@ -1,13 +1,21 @@
 ﻿namespace Morpher.WebService.V3.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
 
+    using Microsoft.Ajax.Utilities;
+
+    using Morpher.WebService.V3.Models;
     using Morpher.WebService.V3.Shared.Interfaces;
     using Morpher.WebService.V3.Shared.Models;
+    using Morpher.WebService.V3.Shared.Models.Exceptions;
 
     public class UserCorrectionService : IUserCorrection
     {
+        private static readonly List<string> RussianAllowedForms = new List<string>() { "В", "Д", "И", "М", "П", "Р", "Т" };
+
         private readonly IUserCorrectionSource correctionSource;
 
         public UserCorrectionService(IUserCorrectionSource correctionSource)
@@ -82,6 +90,66 @@
                             break;
                     }
                 }
+            }
+        }
+
+        public void NewCorrection(UserCorrectionEntity entity, Guid? token)
+        {
+            switch (entity.Language)
+            {
+                case "RU": this.NewCorrectionRu(entity, token);
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(entity.Language));
+            }
+        }
+
+        private void NewCorrectionRu(UserCorrectionEntity entity, Guid? token)
+        {
+            this.ValidateModel(entity, RussianAllowedForms);
+            this.correctionSource.AssignNewCorrection(token, entity);
+        }
+
+        private void NewCorrectionUk(UserCorrectionEntity entity, Guid? token)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ValidateModel(UserCorrectionEntity entity, List<string> allowedForms)
+        {
+            if (string.IsNullOrWhiteSpace(entity?.NominativeForm))
+            {
+                throw new ModelNotValid("Лемма не должна быть null или пустой");
+            }
+
+            // падежи должны быть уникальными
+            bool isSinglularFormsUnique =
+                entity.Corrections.Where(correction => correction.Plural == false)
+                    .DistinctBy(correction => correction.Lemma).Count()
+                == entity.Corrections.Count(correction => correction.Plural == false);
+
+            bool isPluralFormsUnique =
+                entity.Corrections.Where(correction => correction.Plural == true)
+                    .DistinctBy(correction => correction.Lemma).Count()
+                == entity.Corrections.Count(correction => correction.Plural == true);
+
+            if (!(isSinglularFormsUnique && isPluralFormsUnique))
+            {
+                throw new ModelNotValid("Падежи не должны повторяться");
+            }
+
+            bool isAllFormsCorrect =
+                entity
+                    .Corrections
+                    .Aggregate(true, (current, correction) => current & allowedForms.Contains(correction.Form.ToUpperInvariant()));
+
+            if (!isAllFormsCorrect)
+            {
+                throw new ModelNotValid("Неизвестный падеж");
+            }
+
+            if (entity.Corrections.Any(correction => string.IsNullOrWhiteSpace(correction.Lemma)))
+            {
+                throw new ModelNotValid("Массив исправлений соддержит пустую строку в поле Лемма");
             }
         }
     }

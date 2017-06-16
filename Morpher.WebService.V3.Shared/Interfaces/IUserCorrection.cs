@@ -9,5 +9,7 @@
         void SetUserDeclensions(RussianDeclensionForms paradigm, string lemma, bool plural, Guid? token);
 
         void SetUserDeclensions(UkrainianDeclensionForms paradigm, string lemma, bool plural, Guid? token);
+
+        void NewCorrection(UserCorrectionEntity entity, Guid? token);
     }
 }

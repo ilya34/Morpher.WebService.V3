@@ -8,5 +8,7 @@
     public interface IUserCorrectionSource
     {
         IList<Correction> GetUserCorrections(Guid? token, string lemma, string language);
+
+        void AssignNewCorrection(Guid? token, UserCorrectionEntity entity);
     }
 }

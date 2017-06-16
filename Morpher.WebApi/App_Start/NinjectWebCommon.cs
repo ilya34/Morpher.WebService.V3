@@ -77,6 +77,8 @@ namespace Morpher.WebApi.App_Start
             // Если проект запущен как Local, то использутся заглушки для тарифов, и логов.
             // UserCorrection должен смотреть в файл, а не SQL бд
             kernel.Bind<IUserCorrection>().To<UserCorrectionService>();
+            kernel.Bind<IMorpherCache>().ToConstant(new MorpherCache("UserCorrection")).Named("UserCorrection");
+            kernel.Bind<IMorpherCache>().ToConstant(new MorpherCache("ApiTrottler")).Named("ApiThrottler");
 
             if (isLocal)
             {
@@ -93,8 +95,6 @@ namespace Morpher.WebApi.App_Start
                 kernel.Bind<IMorpherDatabase>()
                     .To<MorpherDatabase>()
                     .WithConstructorArgument("connectionString", connectionString);
-                kernel.Bind<IMorpherCache>().ToConstant(new MorpherCache("ApiTrottler")).Named("ApiThrottler");
-                kernel.Bind<IMorpherCache>().ToConstant(new MorpherCache("UserCorrection")).Named("UserCorrection");
                 kernel.Bind<IUserCorrectionSource>().To<UserCorrectionSourceDatabase>();
                 kernel.Bind<IApiThrottler>().To<ApiThrottler>();
                 kernel.Bind<IMorpherLog>().To<MorpherLog>().InSingletonScope();

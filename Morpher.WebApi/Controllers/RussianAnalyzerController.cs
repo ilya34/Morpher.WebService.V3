@@ -1,9 +1,13 @@
 ﻿namespace Morpher.WebService.V3.Controllers
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+
+    using Microsoft.Ajax.Utilities;
 
     using Morpher.WebService.V3.Extensions;
     using Morpher.WebService.V3.Models;
@@ -21,11 +25,14 @@
 
         private readonly IMorpherLog morpherLog;
 
-        public RussianAnalyzerController(IRussianAnalyzer analyzer, IApiThrottler apiThrottler, IMorpherLog morpherLog)
+        private readonly IUserCorrection correction;
+
+        public RussianAnalyzerController(IRussianAnalyzer analyzer, IApiThrottler apiThrottler, IMorpherLog morpherLog, IUserCorrection correction)
         {
             this.analyzer = analyzer;
             this.apiThrottler = apiThrottler;
             this.morpherLog = morpherLog;
+            this.correction = correction;
         }
 
         [Route("declension", Name = "RussianDeclension")]
@@ -82,8 +89,7 @@
                     throw result.GenerateMorpherException();
                 }
 
-                RussianNumberSpelling numberSpelling =
-                    this.analyzer.Spell(n, unit);
+                RussianNumberSpelling numberSpelling = this.analyzer.Spell(n, unit);
 
                 this.morpherLog.Log(this.Request);
                 return this.Request.CreateResponse(HttpStatusCode.OK, numberSpelling, format);
@@ -117,8 +123,7 @@
                     throw result.GenerateMorpherException();
                 }
 
-                List<string> adjectives =
-                    this.analyzer.Adjectives(s);
+                List<string> adjectives = this.analyzer.Adjectives(s);
 
                 this.morpherLog.Log(this.Request);
                 return this.Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
@@ -152,11 +157,43 @@
                     throw result.GenerateMorpherException();
                 }
 
-                AdjectiveGenders adjectives =
-                    this.analyzer.AdjectiveGenders(s);
+                AdjectiveGenders adjectives = this.analyzer.AdjectiveGenders(s);
 
                 this.morpherLog.Log(this.Request);
                 return this.Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
+            }
+            catch (MorpherException exception)
+            {
+                this.morpherLog.Log(this.Request, exception);
+                return this.Request.CreateResponse(
+                    HttpStatusCode.BadRequest,
+                    new ServiceErrorMessage(exception),
+                    format);
+            }
+        }
+
+        [Route("set_correction")]
+        [HttpPost]
+        public HttpResponseMessage AddOrUpdateUserCorrection(
+            [FromBody] UserCorrectionEntity entity,
+            ResponseFormat? format = null,
+            bool? morpherRequest = false)
+        {
+            try
+            {
+                Guid? guid = this.Request.GetToken();
+
+                if (entity?.Corrections == null)
+                {
+                    throw new ModelNotValid("Неверный формат модели");
+                }
+
+                entity.Language = "RU";
+                entity.NominativeForm = entity.NominativeForm?.ToUpperInvariant();
+
+                this.correction.NewCorrection(entity, guid);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, true, ResponseFormat.Xml);
             }
             catch (MorpherException exception)
             {

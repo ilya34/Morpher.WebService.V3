@@ -33,5 +33,10 @@
 
             return userCorrectionEntities?.SingleOrDefault(entity => entity.NominativeForm == lemma.ToUpperInvariant() && entity.Language == language)?.Corrections.ToList();
         }
+
+        public void AssignNewCorrection(Guid? token, UserCorrectionEntity entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

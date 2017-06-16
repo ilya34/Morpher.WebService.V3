@@ -6,8 +6,10 @@
     using System.Collections.Specialized;
     using System.Configuration;
     using System.Data.SqlClient;
+    using System.IO;
     using System.Linq;
     using System.Runtime.Caching;
+    using System.Text;
     using System.Web.Http;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -21,6 +23,8 @@
     using Morpher.WebService.V3.Services;
     using Morpher.WebService.V3.Services.Interfaces;
     using Morpher.WebService.V3.Shared.Models;
+
+    using Newtonsoft.Json;
 
     using Ninject;
 
@@ -48,7 +52,17 @@
             IMorpherCache userCorrectCache = kernel.Get<IMorpherCache>("UserCorrection");
             if (isLocal)
             {
-                // TODO: Load from file
+                string filePath = $"{UserCorrectionSourceFile.AppDataFolder}/UserDict.json";
+                if (File.Exists(filePath))
+                {
+                    string json = File.ReadAllText(filePath, Encoding.UTF8);
+                    var list = JsonConvert.DeserializeObject<List<UserCorrectionEntity>>(json);
+                    userCorrectCache.Set("local", list, new CacheItemPolicy());
+                }
+                else
+                {
+                    userCorrectCache.Set("local", new List<UserCorrectionEntity>(), new CacheItemPolicy());
+                }
             }
             else
             {
