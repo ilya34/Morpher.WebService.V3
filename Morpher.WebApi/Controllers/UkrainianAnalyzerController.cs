@@ -102,5 +102,32 @@
                     format);
             }
         }
+
+        [Route("remove_correction")]
+        [HttpPost]
+        public HttpResponseMessage RemoveCorrection(string lemma, ResponseFormat? format = null)
+        {
+            try
+            {
+                Guid? guid = this.Request.GetToken();
+
+                if (string.IsNullOrWhiteSpace(lemma))
+                {
+                    throw new RequiredParameterIsNotSpecified(nameof(lemma));
+                }
+
+                bool result = this.correction.RemoveCorrection(lemma, "UK", guid);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, result, format);
+            }
+            catch (MorpherException exception)
+            {
+                this.morpherLog.Log(this.Request, exception);
+                return this.Request.CreateResponse(
+                    HttpStatusCode.BadRequest,
+                    new ServiceErrorMessage(exception),
+                    format);
+            }
+        }
     }
 }

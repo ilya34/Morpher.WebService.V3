@@ -40,7 +40,7 @@
             List<UserCorrectionEntity> entities = (List<UserCorrectionEntity>)this.morpherCache.Get("local");
 
             UserCorrectionEntity cacheEntity =
-                entities.SingleOrDefault(correctionEntity => correctionEntity.NominativeForm == entity.NominativeForm);
+                entities.SingleOrDefault(correctionEntity => correctionEntity.NominativeForm == entity.NominativeForm && correctionEntity.Language == entity.Language);
 
             if (cacheEntity != null)
             {
@@ -53,6 +53,24 @@
 
             string json = JsonConvert.SerializeObject(entities, Formatting.Indented);
             File.WriteAllText($"{AppDataFolder}/UserDict.json", json, Encoding.UTF8);
+        }
+
+        public bool RemoveCorrection(Guid? token, string language, string lemma)
+        {
+            List<UserCorrectionEntity> entities = (List<UserCorrectionEntity>)this.morpherCache.Get("local");
+
+            UserCorrectionEntity entity =
+                entities.SingleOrDefault(correctionEntity => correctionEntity.NominativeForm == lemma && correctionEntity.Language == language);
+
+            if (entity != null)
+            {
+                entities.Remove(entity);
+                string json = JsonConvert.SerializeObject(entities, Formatting.Indented);
+                File.WriteAllText($"{AppDataFolder}/UserDict.json", json, Encoding.UTF8);
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -304,6 +304,11 @@
                 this.memoryCache.Set(key, value, DateTimeOffset.UtcNow.AddMilliseconds(50));
             }
 
+            public void Set(string key, object value, CacheItemPolicy cacheItemPolicy, string regioName = null)
+            {
+                throw new NotImplementedException();
+            }
+
             public object Remove(string key, string regionName = null)
             {
                 throw new NotImplementedException();

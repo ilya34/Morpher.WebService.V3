@@ -107,6 +107,11 @@
             }
         }
 
+        public bool RemoveCorrection(string lemma, string language, Guid? token)
+        {
+            return this.correctionSource.RemoveCorrection(token, language, lemma.ToUpperInvariant());
+        }
+
         private void NewCorrectionRu(UserCorrectionEntity entity, Guid? token)
         {
             this.ValidateModel(entity, RussianAllowedForms);

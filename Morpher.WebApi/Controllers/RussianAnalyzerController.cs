@@ -176,8 +176,7 @@
         [HttpPost]
         public HttpResponseMessage AddOrUpdateUserCorrection(
             [FromBody] UserCorrectionEntity entity,
-            ResponseFormat? format = null,
-            bool? morpherRequest = false)
+            ResponseFormat? format = null)
         {
             try
             {
@@ -194,6 +193,33 @@
                 this.correction.NewCorrection(entity, guid);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, true, ResponseFormat.Xml);
+            }
+            catch (MorpherException exception)
+            {
+                this.morpherLog.Log(this.Request, exception);
+                return this.Request.CreateResponse(
+                    HttpStatusCode.BadRequest,
+                    new ServiceErrorMessage(exception),
+                    format);
+            }
+        }
+
+        [Route("remove_correction")]
+        [HttpPost]
+        public HttpResponseMessage RemoveCorrection(string lemma, ResponseFormat? format = null)
+        {
+            try
+            {
+                Guid? guid = this.Request.GetToken();
+
+                if (string.IsNullOrWhiteSpace(lemma))
+                {
+                    throw new RequiredParameterIsNotSpecified(nameof(lemma));
+                }
+
+                bool result = this.correction.RemoveCorrection(lemma, "RU", guid);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, result, format);
             }
             catch (MorpherException exception)
             {

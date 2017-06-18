@@ -38,5 +38,10 @@
         {
             throw new NotImplementedException();
         }
+
+        public bool RemoveCorrection(Guid? token, string language, string lemma)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

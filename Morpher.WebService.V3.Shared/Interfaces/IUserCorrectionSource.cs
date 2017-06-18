@@ -10,5 +10,7 @@
         IList<Correction> GetUserCorrections(Guid? token, string lemma, string language);
 
         void AssignNewCorrection(Guid? token, UserCorrectionEntity entity);
+
+        bool RemoveCorrection(Guid? token, string language, string lemma);
     }
 }
