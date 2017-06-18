@@ -82,8 +82,7 @@ namespace Morpher.WebApi.App_Start
 
             if (isLocal)
             {
-                kernel.Bind<IUserCorrectionSource>().To<UserCorrectionSourceFile>()
-                    .WithConstructorArgument("appDataFolder", HttpContext.Current.Server.MapPath("~/App_Data/"));
+                kernel.Bind<IUserCorrectionSource>().To<UserCorrectionSourceFile>();
                 kernel.Bind<IApiThrottler>().ToConstant(new ApiThrottlerLocal());
                 kernel.Bind<IMorpherLog>().ToConstant(new MorpherLogLocal());
             }
