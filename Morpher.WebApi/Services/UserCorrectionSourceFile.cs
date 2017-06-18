@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -16,9 +17,12 @@
 
     using Ninject;
 
+    [SuppressMessage("ReSharper", "StyleCop.SA1401")]
     public class UserCorrectionSourceFile : IUserCorrectionSource
     {
-        public static readonly string AppDataFolder = HttpContext.Current.Server.MapPath("~/App_Data/");
+        // HttpContext null в юнит тестах.
+        public static string AppDataFolder = 
+            HttpContext.Current?.Server.MapPath("~/App_Data/") ?? Directory.GetCurrentDirectory();
 
         private readonly IMorpherCache morpherCache;
 

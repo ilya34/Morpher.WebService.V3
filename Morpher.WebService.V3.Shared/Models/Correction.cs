@@ -19,6 +19,30 @@
         [DataMember(Name = "Множественное")]
         public bool Plural { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Correction)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = this.Lemma != null ? this.Lemma.GetHashCode() : 0;
+                hashCode = (hashCode * 397) ^ (this.Form != null ? this.Form.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ this.Plural.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        protected bool Equals(Correction other)
+        {
+            return string.Equals(this.Lemma, other.Lemma) && string.Equals(this.Form, other.Form) && this.Plural == other.Plural;
+        }
+
         private sealed class FormPluralEqualityComparer : IEqualityComparer<Correction>
         {
             public bool Equals(Correction x, Correction y)

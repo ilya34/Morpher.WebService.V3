@@ -52,6 +52,7 @@
             IMorpherCache userCorrectCache = kernel.Get<IMorpherCache>("UserCorrection");
             if (isLocal)
             {
+                
                 string filePath = $"{UserCorrectionSourceFile.AppDataFolder}/UserDict.json";
                 if (File.Exists(filePath))
                 {
