@@ -15,17 +15,17 @@
     {
         private readonly IMorpherCache morpherCache;
 
-        private readonly IMorpherCache apiThrottler;
+        private readonly IMorpherCache apiThrottlerCache;
 
-        public UserCorrectionSourceDatabase([Named("UserCorrection")] IMorpherCache morpherCache, [Named("ApiThrottler")]IMorpherCache apiThrottler)
+        public UserCorrectionSourceDatabase([Named("UserCorrection")] IMorpherCache morpherCache, [Named("ApiThrottler")]IMorpherCache apiThrottlerCache)
         {
             this.morpherCache = morpherCache;
-            this.apiThrottler = apiThrottler;
+            this.apiThrottlerCache = apiThrottlerCache;
         }
 
         public virtual IList<Correction> GetUserCorrections(Guid? userId, string lemma, string language)
         {
-            MorpherCacheObject cacheObject = (MorpherCacheObject)this.apiThrottler.Get(userId.ToString().ToLowerInvariant());
+            MorpherCacheObject cacheObject = (MorpherCacheObject)this.apiThrottlerCache.Get(userId.ToString().ToLowerInvariant());
             
 
             List<UserCorrectionEntity> userCorrectionEntities =

@@ -37,7 +37,7 @@
         }
 
         A:hover {
-            color: cc3300;
+            color: #cc3300;
             font-weight: bold;
             text-decoration: underline;
         }
@@ -55,17 +55,17 @@
 
         font.value {
             color: darkblue;
-            font: bold;
+            font-weight: bold;
         }
 
         font.key {
             color: darkgreen;
-            font: bold;
+            font-weight: bold;
         }
 
         font.error {
             color: darkred;
-            font: bold;
+            font-weight: bold;
         }
 
         .heading1 {
@@ -97,10 +97,10 @@
         <blockquote><a href="http://morpher.ru/ws3/">Онлайн-документация</a></blockquote>
         <p>Примеры вызова функций склонения через HTTP GET:</p>
         <ul>
-            <li><a href="/russian/declension?s=Пользователь">@(ViewBag.Url + "/russian/declension?s=Пользователь")</a></li>
-            <li><a href="/ukrainian/declension?s=Користувач">@(ViewBag.Url + "/ukrainian/declension?s=Користувач")</a></li>
-            <li><a href="/russian/spell?n=10&unit=рубль">@(ViewBag.Url + "/russian/spell?n=10&unit=рубль")</a></li>
-            <li><a href="/russian/genders?s=уважаемый&format=json">@(ViewBag.Url + "/russian/gender?s=Уважаемый&format=json")</a></li>
+            <li><a href="~/russian/declension?s=Пользователь">@(ViewBag.Url + "russian/declension?s=Пользователь")</a></li>
+            <li><a href="~/ukrainian/declension?s=Користувач">@(ViewBag.Url + "ukrainian/declension?s=Користувач")</a></li>
+            <li><a href="~/russian/spell?n=10&unit=рубль">@(ViewBag.Url + "russian/spell?n=10&unit=рубль")</a></li>
+            <li><a href="~/russian/genders?s=уважаемый&format=json">@(ViewBag.Url + "russian/gender?s=Уважаемый&format=json")</a></li>
         </ul>
     </div>
 </body>

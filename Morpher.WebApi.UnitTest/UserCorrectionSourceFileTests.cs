@@ -99,7 +99,6 @@
             Assert.AreEqual(2, list.Count);
             Assert.AreEqual(newCorrection, list[0]);
             Assert.AreEqual(newCorrection2, list[1]);
-
         }
 
         [Test]
