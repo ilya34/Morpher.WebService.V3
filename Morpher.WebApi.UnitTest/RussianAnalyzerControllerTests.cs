@@ -37,7 +37,7 @@
                                    == new RussianDeclensionResult());
 
             RussianAnalyzerController analyzerController =
-                new RussianAnalyzerController(analyzer, apiThrottler, log)
+                new RussianAnalyzerController(analyzer, apiThrottler, log, null)
                 {
                     Request = new HttpRequestMessage(
                             HttpMethod.Get,
@@ -68,7 +68,7 @@
                                    == new RussianDeclensionResult());
 
             RussianAnalyzerController analyzerController =
-                new RussianAnalyzerController(analyzer, apiThrottler, log)
+                new RussianAnalyzerController(analyzer, apiThrottler, log, null)
                 {
                     Request = new HttpRequestMessage(
                             HttpMethod.Get,
@@ -105,7 +105,7 @@
             IRussianAnalyzer analyzer = mock.Object;
 
             RussianAnalyzerController analyzerController =
-                new RussianAnalyzerController(analyzer, apiThrottler, log)
+                new RussianAnalyzerController(analyzer, apiThrottler, log, null)
                 {
                     Request = new HttpRequestMessage(
                             HttpMethod.Get,
@@ -136,7 +136,7 @@
                                    == new RussianNumberSpelling());
 
             RussianAnalyzerController analyzerController =
-                new RussianAnalyzerController(analyzer, apiThrottler, log)
+                new RussianAnalyzerController(analyzer, apiThrottler, log, null)
                 {
                     Request = new HttpRequestMessage(
                             HttpMethod.Get,
@@ -168,7 +168,7 @@
             IRussianAnalyzer analyzer = mock.Object;
 
             RussianAnalyzerController analyzerController =
-                new RussianAnalyzerController(analyzer, apiThrottler, log)
+                new RussianAnalyzerController(analyzer, apiThrottler, log, null)
                 {
                     Request = new HttpRequestMessage(
                             HttpMethod.Get,
@@ -195,7 +195,7 @@
 
 
             RussianAnalyzerController analyzerController =
-                new RussianAnalyzerController(null, apiThrottler, log)
+                new RussianAnalyzerController(null, apiThrottler, log, null)
                 {
                     Request = new HttpRequestMessage(
                             HttpMethod.Get,
@@ -225,7 +225,7 @@
                                    == new List<string>());
 
             RussianAnalyzerController analyzerController =
-                new RussianAnalyzerController(analyzer, apiThrottler, log)
+                new RussianAnalyzerController(analyzer, apiThrottler, log, null)
                 {
                     Request = new HttpRequestMessage(
                             HttpMethod.Get,
@@ -251,7 +251,7 @@
             IMorpherLog log = Mock.Of<IMorpherLog>();
 
             RussianAnalyzerController analyzerController =
-                new RussianAnalyzerController(null, apiThrottler, log)
+                new RussianAnalyzerController(null, apiThrottler, log, null)
                 {
                     Request = new HttpRequestMessage(
                             HttpMethod.Get,
@@ -284,7 +284,7 @@
             IRussianAnalyzer analyzer = mock.Object;
 
             RussianAnalyzerController analyzerController =
-                new RussianAnalyzerController(analyzer, apiThrottler, log)
+                new RussianAnalyzerController(analyzer, apiThrottler, log, null)
                 {
                     Request = new HttpRequestMessage(
                             HttpMethod.Get,

@@ -76,9 +76,13 @@ namespace Morpher.WebApi.App_Start
 
             // Если проект запущен как Local, то использутся заглушки для тарифов, и логов.
             // UserCorrection должен смотреть в файл, а не SQL бд
+            kernel.Bind<IUserCorrection>().To<UserCorrectionService>();
+            kernel.Bind<IMorpherCache>().ToConstant(new MorpherCache("UserCorrection")).Named("UserCorrection");
+            kernel.Bind<IMorpherCache>().ToConstant(new MorpherCache("ApiTrottler")).Named("ApiThrottler");
+
             if (isLocal)
             {
-                kernel.Bind<IUserCorrection>().To<UserCorrectionLocal>();
+                kernel.Bind<IUserCorrectionSource>().To<UserCorrectionSourceFile>();
                 kernel.Bind<IApiThrottler>().ToConstant(new ApiThrottlerLocal());
                 kernel.Bind<IMorpherLog>().ToConstant(new MorpherLogLocal());
             }
@@ -88,18 +92,12 @@ namespace Morpher.WebApi.App_Start
                 kernel.Bind<IDatabaseLog>()
                     .To<DatabaseLog>()
                     .WithConstructorArgument("connectionString", connectionString);
-                kernel.Bind<IUserCorrectionSource>().To<UserCorrectionSource>()
-                    .WithConstructorArgument("connectionString", connectionString);
-                kernel.Bind<IUserCorrection>()
-                    .To<UserCorrection>()
-                    .WithConstructorArgument("connectionString", connectionString);
                 kernel.Bind<IMorpherDatabase>()
                     .To<MorpherDatabase>()
                     .WithConstructorArgument("connectionString", connectionString);
-                kernel.Bind<IMorpherCache>().ToConstant(new MorpherCache("MorpherCache"));
+                kernel.Bind<IUserCorrectionSource>().To<UserCorrectionSourceDatabase>();
                 kernel.Bind<IApiThrottler>().To<ApiThrottler>();
                 kernel.Bind<IMorpherLog>().To<MorpherLog>().InSingletonScope();
-
             }
 
             bool customInflector = Convert.ToBoolean(ConfigurationManager.AppSettings["CustomInflector"]);

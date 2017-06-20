@@ -8,7 +8,7 @@
             "Не указан обязательный параметр: ";
 
         public RequiredParameterIsNotSpecified(string parameterName)
-            : base(ErrorMessage, 6)
+            : base(ErrorMessage + parameterName, 6)
         {
             this.Code = 6;
         }

@@ -1,5 +1,7 @@
 ﻿namespace Morpher.WebService.V3.Controllers
 {
+    using System;
+    using System.Configuration;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
@@ -20,11 +22,21 @@
 
         private readonly IMorpherLog morpherLog;
 
-        public UkrainianAnalyzerController(IUkrainianAnalyzer analyzer, IApiThrottler apiThrottler, IMorpherLog morpherLog)
+        private readonly IUserCorrection correction;
+
+        private readonly bool isLocalService;
+
+        public UkrainianAnalyzerController(
+            IUkrainianAnalyzer analyzer,
+            IApiThrottler apiThrottler,
+            IMorpherLog morpherLog,
+            IUserCorrection correction)
         {
             this.analyzer = analyzer;
             this.apiThrottler = apiThrottler;
             this.morpherLog = morpherLog;
+            this.correction = correction;
+            this.isLocalService = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
         }
 
         [Route("declension", Name = "UkrainianDeclension")]
@@ -62,30 +74,61 @@
             }
         }
 
-        [Route("spell")]
-        [HttpGet]
-        public HttpResponseMessage Spell(int n, string unit, ResponseFormat? format = null)
+        [Route("set_correction")]
+        [HttpPost]
+        public HttpResponseMessage AddOrUpdateUserCorrection(
+            [FromBody] UserCorrectionEntity entity,
+            ResponseFormat? format = null,
+            bool? morpherRequest = false)
         {
+            if (!this.isLocalService)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, ResponseFormat.Xml);
+            }
+
             try
             {
-                if (string.IsNullOrWhiteSpace(unit))
+                if (entity?.Corrections == null)
                 {
-                    throw new RequiredParameterIsNotSpecified(nameof(unit));
+                    throw new ModelNotValid("Неверный формат модели");
                 }
 
-                bool paidUser;
-                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
+                entity.Language = "UK";
+                entity.NominativeForm = entity.NominativeForm?.ToUpperInvariant();
 
-                if (result != ApiThrottlingResult.Success)
+                this.correction.NewCorrection(entity, null);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, true, ResponseFormat.Xml);
+            }
+            catch (MorpherException exception)
+            {
+                this.morpherLog.Log(this.Request, exception);
+                return this.Request.CreateResponse(
+                    HttpStatusCode.BadRequest,
+                    new ServiceErrorMessage(exception),
+                    format);
+            }
+        }
+
+        [Route("remove_correction")]
+        [HttpPost]
+        public HttpResponseMessage RemoveCorrection(string lemma, ResponseFormat? format = null)
+        {
+            if (!this.isLocalService)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, ResponseFormat.Xml);
+            }
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(lemma))
                 {
-                    throw result.GenerateMorpherException();
+                    throw new RequiredParameterIsNotSpecified(nameof(lemma));
                 }
 
-                UkrainianNumberSpelling numberSpelling =
-                    this.analyzer.Spell(n, unit);
+                bool result = this.correction.RemoveCorrection(lemma, "UK", null);
 
-                this.morpherLog.Log(this.Request);
-                return this.Request.CreateResponse(HttpStatusCode.OK, numberSpelling, format);
+                return this.Request.CreateResponse(HttpStatusCode.OK, result, format);
             }
             catch (MorpherException exception)
             {

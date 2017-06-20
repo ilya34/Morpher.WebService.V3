@@ -1,9 +1,14 @@
 ﻿namespace Morpher.WebService.V3.Controllers
 {
+    using System;
     using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+
+    using Microsoft.Ajax.Utilities;
 
     using Morpher.WebService.V3.Extensions;
     using Morpher.WebService.V3.Models;
@@ -21,11 +26,17 @@
 
         private readonly IMorpherLog morpherLog;
 
-        public RussianAnalyzerController(IRussianAnalyzer analyzer, IApiThrottler apiThrottler, IMorpherLog morpherLog)
+        private readonly IUserCorrection correction;
+
+        private readonly bool isLocalService;
+
+        public RussianAnalyzerController(IRussianAnalyzer analyzer, IApiThrottler apiThrottler, IMorpherLog morpherLog, IUserCorrection correction)
         {
             this.analyzer = analyzer;
             this.apiThrottler = apiThrottler;
             this.morpherLog = morpherLog;
+            this.correction = correction;
+            this.isLocalService = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
         }
 
         [Route("declension", Name = "RussianDeclension")]
@@ -82,8 +93,7 @@
                     throw result.GenerateMorpherException();
                 }
 
-                RussianNumberSpelling numberSpelling =
-                    this.analyzer.Spell(n, unit);
+                RussianNumberSpelling numberSpelling = this.analyzer.Spell(n, unit);
 
                 this.morpherLog.Log(this.Request);
                 return this.Request.CreateResponse(HttpStatusCode.OK, numberSpelling, format);
@@ -117,8 +127,7 @@
                     throw result.GenerateMorpherException();
                 }
 
-                List<string> adjectives =
-                    this.analyzer.Adjectives(s);
+                List<string> adjectives = this.analyzer.Adjectives(s);
 
                 this.morpherLog.Log(this.Request);
                 return this.Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
@@ -152,11 +161,75 @@
                     throw result.GenerateMorpherException();
                 }
 
-                AdjectiveGenders adjectives =
-                    this.analyzer.AdjectiveGenders(s);
+                AdjectiveGenders adjectives = this.analyzer.AdjectiveGenders(s);
 
                 this.morpherLog.Log(this.Request);
                 return this.Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
+            }
+            catch (MorpherException exception)
+            {
+                this.morpherLog.Log(this.Request, exception);
+                return this.Request.CreateResponse(
+                    HttpStatusCode.BadRequest,
+                    new ServiceErrorMessage(exception),
+                    format);
+            }
+        }
+
+        [Route("set_correction")]
+        [HttpPost]
+        public HttpResponseMessage AddOrUpdateUserCorrection(
+            [FromBody] UserCorrectionEntity entity,
+            ResponseFormat? format = null)
+        {
+            if (!this.isLocalService)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, ResponseFormat.Xml);
+            }
+
+            try
+            {
+                if (entity?.Corrections == null)
+                {
+                    throw new ModelNotValid("Неверный формат модели");
+                }
+
+                entity.Language = "RU";
+                entity.NominativeForm = entity.NominativeForm?.ToUpperInvariant();
+
+                this.correction.NewCorrection(entity, null);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, true, ResponseFormat.Xml);
+            }
+            catch (MorpherException exception)
+            {
+                this.morpherLog.Log(this.Request, exception);
+                return this.Request.CreateResponse(
+                    HttpStatusCode.BadRequest,
+                    new ServiceErrorMessage(exception),
+                    format);
+            }
+        }
+
+        [Route("remove_correction")]
+        [HttpPost]
+        public HttpResponseMessage RemoveCorrection(string lemma, ResponseFormat? format = null)
+        {
+            if (!this.isLocalService)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, ResponseFormat.Xml);
+            }
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(lemma))
+                {
+                    throw new RequiredParameterIsNotSpecified(nameof(lemma));
+                }
+
+                bool result = this.correction.RemoveCorrection(lemma, "RU", null);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, result, format);
             }
             catch (MorpherException exception)
             {

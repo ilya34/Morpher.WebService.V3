@@ -299,9 +299,14 @@
                 return this.memoryCache.Get(key);
             }
 
-            public void Set(string key, object value, DateTimeOffset absoluteExpirationDateTimeOffset, string regionName = null)
+            public void Set(string key, object value, DateTimeOffset absoluteExpirationDateTime, string regionName = null)
             {
                 this.memoryCache.Set(key, value, DateTimeOffset.UtcNow.AddMilliseconds(50));
+            }
+
+            public void Set(string key, object value, CacheItemPolicy cacheItemPolicy, string regioName = null)
+            {
+                throw new NotImplementedException();
             }
 
             public object Remove(string key, string regionName = null)

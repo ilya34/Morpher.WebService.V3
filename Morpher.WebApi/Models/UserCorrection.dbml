@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="slepov_v5rpj" Class="UserCorrectionDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=SSQL-12R2WEB01.client.parking.ru;Initial Catalog=slepov_v5rpj;User ID=slepov_v5rpj" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="slepov_v5rpjConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.UserVotes" Member="UserVotes">
+    <Type Name="UserVote">
+      <Column Name="UserID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NameID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SubmittedUTC" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="Name_UserVote" Member="Name" ThisKey="NameID" OtherKey="ID" Type="Name" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NameForms" Member="NameForms">
+    <Type Name="NameForm">
+      <Column Name="NameID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FormID" Type="System.Char" DbType="NChar(1) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Plural" Type="System.Boolean" DbType="Bit NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.String" DbType="Char(2) NOT NULL" CanBeNull="false" />
+      <Column Name="AccentedText" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Association Name="Name_NameForm" Member="Name" ThisKey="NameID" OtherKey="ID" Type="Name" IsForeignKey="true" />
+      <Association Name="Name_NameForm1" Member="Name1" ThisKey="NameID,LanguageID" OtherKey="ID,LanguageID" Type="Name" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Names" Member="Names">
+    <Type Name="Name">
+      <Column Name="ID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Lemma" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Verified" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.String" DbType="Char(2) NOT NULL" CanBeNull="false" />
+      <Association Name="Name_UserVote" Member="UserVotes" ThisKey="ID" OtherKey="NameID" Type="UserVote" />
+      <Association Name="Name_NameForm" Member="NameForms" ThisKey="ID" OtherKey="NameID" Type="NameForm" />
+      <Association Name="Name_NameForm1" Member="NameForms1" ThisKey="ID,LanguageID" OtherKey="NameID,LanguageID" Type="NameForm" />
+    </Type>
+  </Table>
+  <Function Name="dbo.sp_GetForms" Method="sp_GetForms">
+    <Parameter Name="normalizedLemma" Type="System.String" DbType="NVarChar(200)" />
+    <Parameter Name="language" Type="System.String" DbType="Char(2)" />
+    <Parameter Name="token" Type="System.Guid" DbType="UniqueIdentifier" />
+    <ElementType Name="sp_GetFormsResult">
+      <Column Name="NameID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="FormID" Type="System.Char" DbType="NChar(1) NOT NULL" CanBeNull="false" />
+      <Column Name="Plural" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.String" DbType="Char(2) NOT NULL" CanBeNull="false" />
+      <Column Name="AccentedText" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+</Database>

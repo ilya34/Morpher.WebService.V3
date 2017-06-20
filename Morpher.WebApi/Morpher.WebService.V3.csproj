@@ -61,27 +61,6 @@
       <HintPath>..\packages\FluentScheduler.5.2.0\lib\net40\FluentScheduler.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.7\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.3.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.3.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.3.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AI.Web, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.3.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AI.WindowsServer, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.3.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ApplicationInsights, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.2.3.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -100,6 +79,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.ServiceModel" />
@@ -164,19 +144,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\NameForms.cs" />
+    <Compile Include="Database\Names.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Models\CacheResetPostModel.cs" />
+    <Compile Include="Models\UserCorrection.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserCorrection.dbml</DependentUpon>
+    </Compile>
     <Compile Include="Services\DummyRussianAnalyzer.cs" />
     <Compile Include="Services\DummyUkrainianAnalyzer.cs" />
     <Compile Include="Services\MorpherLog.cs" />
     <Compile Include="Models\LogEntity.cs" />
     <Compile Include="Services\LogSyncer.cs" />
-    <Compile Include="Services\UserCorrection.cs" />
+    <Compile Include="Services\UserCorrectionService.cs" />
     <Compile Include="Services\Interfaces\IDatabaseLog.cs" />
     <Compile Include="Services\Interfaces\IMorpherCache.cs" />
     <Compile Include="Services\Interfaces\IMorpherDatabase.cs" />
     <Compile Include="Services\ApiThrottlerLocal.cs" />
-    <Compile Include="Services\UserCorrectionLocal.cs" />
     <Compile Include="Services\DatabaseLog.cs" />
     <Compile Include="Services\MorpherCache.cs" />
     <Compile Include="Services\MorpherDatabase.cs" />
@@ -210,7 +196,9 @@
     <Compile Include="Models\ServiceErrorMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Interfaces\IMorpherLog.cs" />
-    <Compile Include="Services\UserCorrectionSource.cs" />
+    <Compile Include="Services\UserCorrectionSourceDatabase.cs" />
+    <Compile Include="Database\UserVotes.cs" />
+    <Compile Include="Services\UserCorrectionSourceFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.AdjectiveGenders.datasource">
@@ -264,9 +252,6 @@
     </None>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Connected Services\MorpherSoap\WebService.wsdl" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -276,15 +261,22 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Models\UserCorrection.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>UserCorrection.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\PublishProfiles\Morpher.pubxml" />
     <Content Include="SecretConfigs\connectionStrings.config" />
     <Content Include="SecretConfigs\webServiceSettings.config" />
     <Content Include="SecretConfigs\smtp.config" />
     <None Include="Web.Local.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +293,14 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\MorpherSoap\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Models\UserCorrection.dbml.layout">
+      <DependentUpon>UserCorrection.dbml</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -76,7 +76,7 @@
     <Compile Include="RussianAnalyzerControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceControllerTests.cs" />
-    <Compile Include="UserCorrectionTests.cs" />
+    <Compile Include="UserCorrectionSourceFileTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
