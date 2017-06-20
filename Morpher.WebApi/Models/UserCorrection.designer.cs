@@ -94,6 +94,13 @@ namespace Morpher.WebService.V3.Models
 				return this.GetTable<Name>();
 			}
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_GetForms")]
+		public ISingleResult<sp_GetFormsResult> sp_GetForms([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(200)")] string normalizedLemma, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Char(2)")] string language, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="UniqueIdentifier")] System.Nullable<System.Guid> token)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), normalizedLemma, language, token);
+			return ((ISingleResult<sp_GetFormsResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserVotes")]
@@ -728,6 +735,104 @@ namespace Morpher.WebService.V3.Models
 		{
 			this.SendPropertyChanging();
 			entity.Name1 = null;
+		}
+	}
+	
+	public partial class sp_GetFormsResult
+	{
+		
+		private System.Guid _NameID;
+		
+		private char _FormID;
+		
+		private bool _Plural;
+		
+		private string _LanguageID;
+		
+		private string _AccentedText;
+		
+		public sp_GetFormsResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NameID", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid NameID
+		{
+			get
+			{
+				return this._NameID;
+			}
+			set
+			{
+				if ((this._NameID != value))
+				{
+					this._NameID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FormID", DbType="NChar(1) NOT NULL")]
+		public char FormID
+		{
+			get
+			{
+				return this._FormID;
+			}
+			set
+			{
+				if ((this._FormID != value))
+				{
+					this._FormID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Plural", DbType="Bit NOT NULL")]
+		public bool Plural
+		{
+			get
+			{
+				return this._Plural;
+			}
+			set
+			{
+				if ((this._Plural != value))
+				{
+					this._Plural = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LanguageID", DbType="Char(2) NOT NULL", CanBeNull=false)]
+		public string LanguageID
+		{
+			get
+			{
+				return this._LanguageID;
+			}
+			set
+			{
+				if ((this._LanguageID != value))
+				{
+					this._LanguageID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccentedText", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string AccentedText
+		{
+			get
+			{
+				return this._AccentedText;
+			}
+			set
+			{
+				if ((this._AccentedText != value))
+				{
+					this._AccentedText = value;
+				}
+			}
 		}
 	}
 }

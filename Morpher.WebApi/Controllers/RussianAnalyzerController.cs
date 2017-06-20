@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -27,12 +28,15 @@
 
         private readonly IUserCorrection correction;
 
+        private readonly bool isLocalService;
+
         public RussianAnalyzerController(IRussianAnalyzer analyzer, IApiThrottler apiThrottler, IMorpherLog morpherLog, IUserCorrection correction)
         {
             this.analyzer = analyzer;
             this.apiThrottler = apiThrottler;
             this.morpherLog = morpherLog;
             this.correction = correction;
+            this.isLocalService = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
         }
 
         [Route("declension", Name = "RussianDeclension")]
@@ -178,10 +182,13 @@
             [FromBody] UserCorrectionEntity entity,
             ResponseFormat? format = null)
         {
+            if (!this.isLocalService)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, ResponseFormat.Xml);
+            }
+
             try
             {
-                Guid? guid = this.Request.GetToken();
-
                 if (entity?.Corrections == null)
                 {
                     throw new ModelNotValid("Неверный формат модели");
@@ -190,7 +197,7 @@
                 entity.Language = "RU";
                 entity.NominativeForm = entity.NominativeForm?.ToUpperInvariant();
 
-                this.correction.NewCorrection(entity, guid);
+                this.correction.NewCorrection(entity, null);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, true, ResponseFormat.Xml);
             }
@@ -208,16 +215,19 @@
         [HttpPost]
         public HttpResponseMessage RemoveCorrection(string lemma, ResponseFormat? format = null)
         {
+            if (!this.isLocalService)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, ResponseFormat.Xml);
+            }
+
             try
             {
-                Guid? guid = this.Request.GetToken();
-
                 if (string.IsNullOrWhiteSpace(lemma))
                 {
                     throw new RequiredParameterIsNotSpecified(nameof(lemma));
                 }
 
-                bool result = this.correction.RemoveCorrection(lemma, "RU", guid);
+                bool result = this.correction.RemoveCorrection(lemma, "RU", null);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, result, format);
             }

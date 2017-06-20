@@ -13,25 +13,23 @@
 
     public class UserCorrectionSourceDatabase : IUserCorrectionSource
     {
-        private readonly IMorpherCache morpherCache;
-
-        private readonly IMorpherCache apiThrottlerCache;
-
-        public UserCorrectionSourceDatabase([Named("UserCorrection")] IMorpherCache morpherCache, [Named("ApiThrottler")]IMorpherCache apiThrottlerCache)
+        public UserCorrectionSourceDatabase()
         {
-            this.morpherCache = morpherCache;
-            this.apiThrottlerCache = apiThrottlerCache;
         }
 
         public virtual IList<Correction> GetUserCorrections(Guid? userId, string lemma, string language)
         {
-            MorpherCacheObject cacheObject = (MorpherCacheObject)this.apiThrottlerCache.Get(userId.ToString().ToLowerInvariant());
-            
+            using (UserCorrectionDataContext dataContext = new UserCorrectionDataContext())
+            {
+                var result = dataContext.sp_GetForms(lemma, language, userId.Value);
 
-            List<UserCorrectionEntity> userCorrectionEntities =
-                (List<UserCorrectionEntity>)this.morpherCache.Get(cacheObject.UserId.ToString().ToLowerInvariant());
-
-            return userCorrectionEntities?.SingleOrDefault(entity => entity.NominativeForm == lemma.ToUpperInvariant() && entity.Language == language)?.Corrections.ToList();
+                return result.Select(formsResult => new Correction()
+                {
+                    Lemma = formsResult.AccentedText,
+                    Plural = formsResult.Plural,
+                    Form = formsResult.FormID.ToString()
+                }).ToList();
+            }
         }
 
         public void AssignNewCorrection(Guid? token, UserCorrectionEntity entity)
@@ -43,5 +41,6 @@
         {
             throw new NotImplementedException();
         }
+
     }
 }

@@ -31,4 +31,16 @@
       <Association Name="Name_NameForm1" Member="NameForms1" ThisKey="ID,LanguageID" OtherKey="NameID,LanguageID" Type="NameForm" />
     </Type>
   </Table>
+  <Function Name="dbo.sp_GetForms" Method="sp_GetForms">
+    <Parameter Name="normalizedLemma" Type="System.String" DbType="NVarChar(200)" />
+    <Parameter Name="language" Type="System.String" DbType="Char(2)" />
+    <Parameter Name="token" Type="System.Guid" DbType="UniqueIdentifier" />
+    <ElementType Name="sp_GetFormsResult">
+      <Column Name="NameID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="FormID" Type="System.Char" DbType="NChar(1) NOT NULL" CanBeNull="false" />
+      <Column Name="Plural" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.String" DbType="Char(2) NOT NULL" CanBeNull="false" />
+      <Column Name="AccentedText" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
 </Database>
