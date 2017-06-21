@@ -40,10 +40,10 @@
     <Compile Include="Interfaces\IRussianAnalyzer.cs" />
     <Compile Include="Interfaces\IUkrainianAnalyzer.cs" />
     <Compile Include="Interfaces\IUserCorrection.cs" />
-    <Compile Include="Interfaces\IUserCorrectionSource.cs" />
     <Compile Include="Models\AdjectiveGenders.cs" />
     <Compile Include="Models\Correction.cs" />
     <Compile Include="Models\DeclensionFlags.cs" />
+    <Compile Include="Models\RussianEntry.cs" />
     <Compile Include="Models\Exceptions\ExceededDailyLimitException.cs" />
     <Compile Include="Models\Exceptions\InvalidTokenFormat.cs" />
     <Compile Include="Models\Exceptions\IpBlockedException.cs" />
@@ -61,6 +61,7 @@
     <Compile Include="Models\RussianNumberSpelling.cs" />
     <Compile Include="Models\UkrainianDeclensionForms.cs" />
     <Compile Include="Models\UkrainianDeclensionResult.cs" />
+    <Compile Include="Models\UkrainianEntry.cs" />
     <Compile Include="Models\UkrainianNumberSpelling.cs" />
     <Compile Include="Models\UserCorrectionEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

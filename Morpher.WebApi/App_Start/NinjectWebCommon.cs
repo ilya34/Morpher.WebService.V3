@@ -16,6 +16,7 @@ namespace Morpher.WebApi.App_Start
     using Morpher.WebService.V3.Services;
     using Morpher.WebService.V3.Services.Interfaces;
     using Morpher.WebService.V3.Shared.Interfaces;
+    using Morpher.WebService.V3.Shared.Models;
 
     using Ninject;
     using Ninject.Web.Common;
@@ -76,26 +77,25 @@ namespace Morpher.WebApi.App_Start
 
             // Если проект запущен как Local, то использутся заглушки для тарифов, и логов.
             // UserCorrection должен смотреть в файл, а не SQL бд
-            kernel.Bind<IUserCorrection>().To<UserCorrectionService>();
-            kernel.Bind<IMorpherCache>().ToConstant(new MorpherCache("UserCorrection")).Named("UserCorrection");
             kernel.Bind<IMorpherCache>().ToConstant(new MorpherCache("ApiTrottler")).Named("ApiThrottler");
-
+            kernel.Bind<IRussianDictService>().To<RussianDictService>().InSingletonScope();
+            kernel.Bind<IUkrainianDictService>().To<UkrainianDictService>().InSingletonScope();
             if (isLocal)
             {
-                kernel.Bind<IUserCorrectionSource>().To<UserCorrectionSourceFile>();
+                kernel.Bind<IUserCorrection>().To<UserCorrectionFileService>();
                 kernel.Bind<IApiThrottler>().ToConstant(new ApiThrottlerLocal());
                 kernel.Bind<IMorpherLog>().ToConstant(new MorpherLogLocal());
             }
             else
             {
                 string connectionString = ConfigurationManager.ConnectionStrings["MorpherDatabase"].ConnectionString;
+                kernel.Bind<IUserCorrection>().To<UserCorrectionDatabaseService>();
                 kernel.Bind<IDatabaseLog>()
                     .To<DatabaseLog>()
                     .WithConstructorArgument("connectionString", connectionString);
                 kernel.Bind<IMorpherDatabase>()
                     .To<MorpherDatabase>()
                     .WithConstructorArgument("connectionString", connectionString);
-                kernel.Bind<IUserCorrectionSource>().To<UserCorrectionSourceDatabase>();
                 kernel.Bind<IApiThrottler>().To<ApiThrottler>();
                 kernel.Bind<IMorpherLog>().To<MorpherLog>().InSingletonScope();
             }

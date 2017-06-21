@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -26,16 +27,20 @@
 
         private readonly IMorpherLog morpherLog;
 
-        private readonly IUserCorrection correction;
+        private readonly IRussianDictService russianDictService;
 
         private readonly bool isLocalService;
 
-        public RussianAnalyzerController(IRussianAnalyzer analyzer, IApiThrottler apiThrottler, IMorpherLog morpherLog, IUserCorrection correction)
+        public RussianAnalyzerController(
+            IRussianAnalyzer analyzer,
+            IApiThrottler apiThrottler,
+            IMorpherLog morpherLog,
+            IRussianDictService russianDictService)
         {
             this.analyzer = analyzer;
             this.apiThrottler = apiThrottler;
             this.morpherLog = morpherLog;
-            this.correction = correction;
+            this.russianDictService = russianDictService;
             this.isLocalService = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
         }
 
@@ -178,67 +183,89 @@
 
         [Route("set_correction")]
         [HttpPost]
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
         public HttpResponseMessage AddOrUpdateUserCorrection(
-            [FromBody] UserCorrectionEntity entity,
+            string и,
+            string р = null,
+            string д = null,
+            string в = null,
+            string т = null,
+            string п = null,
+            string п_о = null,
+            string и_м = null,
+            string р_м = null,
+            string д_м = null,
+            string в_м = null,
+            string т_м = null,
+            string п_м = null,
+            string п_о_м = null,
             ResponseFormat? format = null)
         {
             if (!this.isLocalService)
             {
-                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, ResponseFormat.Xml);
+                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
             }
 
-            try
+            if (string.IsNullOrWhiteSpace(и))
             {
-                if (entity?.Corrections == null)
-                {
-                    throw new ModelNotValid("Неверный формат модели");
-                }
-
-                entity.Language = "RU";
-                entity.NominativeForm = entity.NominativeForm?.ToUpperInvariant();
-
-                this.correction.NewCorrection(entity, null);
-
-                return this.Request.CreateResponse(HttpStatusCode.OK, true, ResponseFormat.Xml);
-            }
-            catch (MorpherException exception)
-            {
-                this.morpherLog.Log(this.Request, exception);
                 return this.Request.CreateResponse(
                     HttpStatusCode.BadRequest,
-                    new ServiceErrorMessage(exception),
+                    new ServiceErrorMessage(new RequiredParameterIsNotSpecified(nameof(и))),
                     format);
             }
+
+            RussianEntry russianEntry = new RussianEntry()
+            {
+                Singular = new RussianDeclensionForms()
+                {
+                    Nominative = и,
+                    Dative = д,
+                    Genitive = р,
+                    Instrumental = т,
+                    Accusative = в,
+                    Prepositional = п,
+                    PrepositionalWithPre = п_о
+                },
+                Plural = new RussianDeclensionForms()
+                {
+                    Nominative = и,
+                    Dative = д_м,
+                    Genitive = р_м,
+                    Instrumental = т_м,
+                    Accusative = в_м,
+                    Prepositional = п_м,
+                    PrepositionalWithPre = п_о_м
+                }
+            };
+
+            this.russianDictService.AddOrUpdate(russianEntry);
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, true, format);
         }
 
         [Route("remove_correction")]
         [HttpPost]
-        public HttpResponseMessage RemoveCorrection(string lemma, ResponseFormat? format = null)
+        public HttpResponseMessage RemoveCorrection(string s, ResponseFormat? format = null)
         {
             if (!this.isLocalService)
             {
-                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, ResponseFormat.Xml);
+                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
             }
 
-            try
+            this.russianDictService.Remove(s);
+            return this.Request.CreateResponse(HttpStatusCode.Forbidden, true, format);
+        }
+
+        [Route("get_all_corrections")]
+        [HttpGet]
+        public HttpResponseMessage GetAllCorrections(ResponseFormat? format = null)
+        {
+            if (!this.isLocalService)
             {
-                if (string.IsNullOrWhiteSpace(lemma))
-                {
-                    throw new RequiredParameterIsNotSpecified(nameof(lemma));
-                }
-
-                bool result = this.correction.RemoveCorrection(lemma, "RU", null);
-
-                return this.Request.CreateResponse(HttpStatusCode.OK, result, format);
+                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
             }
-            catch (MorpherException exception)
-            {
-                this.morpherLog.Log(this.Request, exception);
-                return this.Request.CreateResponse(
-                    HttpStatusCode.BadRequest,
-                    new ServiceErrorMessage(exception),
-                    format);
-            }
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, this.russianDictService.GetAll(), format);
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Morpher.WebService.V3.Models
     #endregion
 		
 		public UserCorrectionDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["slepov_v5rpjConnectionString"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["MorpherDatabase"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
