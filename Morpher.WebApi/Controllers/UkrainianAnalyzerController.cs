@@ -2,6 +2,7 @@
 {
     using System;
     using System.Configuration;
+    using System.Diagnostics.CodeAnalysis;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
@@ -22,7 +23,7 @@
 
         private readonly IMorpherLog morpherLog;
 
-        private readonly IUserCorrection correction;
+        private readonly IUkrainianDictService ukrainianDictService;
 
         private readonly bool isLocalService;
 
@@ -30,12 +31,12 @@
             IUkrainianAnalyzer analyzer,
             IApiThrottler apiThrottler,
             IMorpherLog morpherLog,
-            IUserCorrection correction)
+            IUkrainianDictService ukrainianDictService)
         {
             this.analyzer = analyzer;
             this.apiThrottler = apiThrottler;
             this.morpherLog = morpherLog;
-            this.correction = correction;
+            this.ukrainianDictService = ukrainianDictService;
             this.isLocalService = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
         }
 
@@ -51,7 +52,7 @@
                 }
 
                 bool paidUser;
-                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request,out paidUser);
+                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
 
                 if (result != ApiThrottlingResult.Success)
                 {
@@ -76,68 +77,89 @@
 
         [Route("set_correction")]
         [HttpPost]
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
         public HttpResponseMessage AddOrUpdateUserCorrection(
-            [FromBody] UserCorrectionEntity entity,
-            ResponseFormat? format = null,
-            bool? morpherRequest = false)
+            string н,
+            string р = null,
+            string д = null,
+            string з = null,
+            string о = null,
+            string м = null,
+            string к = null,
+            string н_м = null,
+            string р_м = null,
+            string д_м = null,
+            string з_м = null,
+            string о_м = null,
+            string м_м = null,
+            string к_м = null,
+            ResponseFormat? format = null)
         {
             if (!this.isLocalService)
             {
-                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, ResponseFormat.Xml);
+                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
             }
 
-            try
+            if (string.IsNullOrWhiteSpace(н))
             {
-                if (entity?.Corrections == null)
-                {
-                    throw new ModelNotValid("Неверный формат модели");
-                }
-
-                entity.Language = "UK";
-                entity.NominativeForm = entity.NominativeForm?.ToUpperInvariant();
-
-                this.correction.NewCorrection(entity, null);
-
-                return this.Request.CreateResponse(HttpStatusCode.OK, true, ResponseFormat.Xml);
-            }
-            catch (MorpherException exception)
-            {
-                this.morpherLog.Log(this.Request, exception);
                 return this.Request.CreateResponse(
                     HttpStatusCode.BadRequest,
-                    new ServiceErrorMessage(exception),
+                    new ServiceErrorMessage(new RequiredParameterIsNotSpecified(nameof(н))),
                     format);
             }
+
+            UkrainianEntry ukrainianEntry = new UkrainianEntry()
+            {
+                Singular = new UkrainianDeclensionForms()
+                {
+                    Nominative = н,
+                    Dative = д,
+                    Genitive = р,
+                    Instrumental = о,
+                    Accusative = з,
+                    Prepositional = м,
+                    Vocative = к
+                },
+                Plural = new UkrainianDeclensionForms()
+                {
+                    Nominative = н_м,
+                    Dative = д_м,
+                    Genitive = р_м,
+                    Instrumental = о_м,
+                    Accusative = з_м,
+                    Prepositional = м_м,
+                    Vocative = к_м
+                }
+            };
+
+            this.ukrainianDictService.AddOrUpdate(ukrainianEntry);
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, true, format);
         }
 
         [Route("remove_correction")]
         [HttpPost]
-        public HttpResponseMessage RemoveCorrection(string lemma, ResponseFormat? format = null)
+        public HttpResponseMessage RemoveCorrection(string s, ResponseFormat? format = null)
         {
             if (!this.isLocalService)
             {
-                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, ResponseFormat.Xml);
+                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
             }
 
-            try
+            this.ukrainianDictService.Remove(s);
+            return this.Request.CreateResponse(HttpStatusCode.Forbidden, true, format);
+        }
+
+        [Route("get_all_corrections")]
+        [HttpGet]
+        public HttpResponseMessage GetAllCorrections(ResponseFormat? format = null)
+        {
+            if (!this.isLocalService)
             {
-                if (string.IsNullOrWhiteSpace(lemma))
-                {
-                    throw new RequiredParameterIsNotSpecified(nameof(lemma));
-                }
-
-                bool result = this.correction.RemoveCorrection(lemma, "UK", null);
-
-                return this.Request.CreateResponse(HttpStatusCode.OK, result, format);
+                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
             }
-            catch (MorpherException exception)
-            {
-                this.morpherLog.Log(this.Request, exception);
-                return this.Request.CreateResponse(
-                    HttpStatusCode.BadRequest,
-                    new ServiceErrorMessage(exception),
-                    format);
-            }
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, this.ukrainianDictService.GetAll(), format);
         }
     }
 }
