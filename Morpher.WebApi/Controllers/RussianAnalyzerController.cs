@@ -228,7 +228,7 @@
                 },
                 Plural = new RussianDeclensionForms()
                 {
-                    Nominative = и,
+                    Nominative = и_м,
                     Dative = д_м,
                     Genitive = р_м,
                     Instrumental = т_м,

@@ -26,6 +26,11 @@
                 return;
             }
 
+            if (!plural)
+            {
+                correctedForms.Nominative = null;
+            }
+
             paradigm.AddOrUpdate(correctedForms);
         }
 
@@ -37,6 +42,12 @@
                 return;
             }
 
+            if (!plural)
+            {
+                correctedForms.Nominative = null;
+            }
+
+            correctedForms.Nominative = null;
             paradigm.AddOrUpdate(correctedForms);
         }
     }
