@@ -144,8 +144,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\NameForms.cs" />
-    <Compile Include="Database\Names.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Models\CacheResetPostModel.cs" />
     <Compile Include="Models\UserCorrection.designer.cs">
@@ -200,7 +198,6 @@
     <Compile Include="Models\ServiceErrorMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Interfaces\IMorpherLog.cs" />
-    <Compile Include="Database\UserVotes.cs" />
     <Compile Include="Services\RussianDictService.cs" />
   </ItemGroup>
   <ItemGroup>
