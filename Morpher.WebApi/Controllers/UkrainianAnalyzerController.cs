@@ -75,6 +75,41 @@
             }
         }
 
+        [Route("spell")]
+        [HttpGet]
+        public HttpResponseMessage Spell(int n, string unit, ResponseFormat? format = null)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(unit))
+                {
+                    throw new RequiredParameterIsNotSpecified(nameof(unit));
+                }
+
+                bool paidUser;
+                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
+
+                if (result != ApiThrottlingResult.Success)
+                {
+                    throw result.GenerateMorpherException();
+                }
+
+                UkrainianNumberSpelling numberSpelling =
+                    this.analyzer.Spell(n, unit);
+
+                this.morpherLog.Log(this.Request);
+                return this.Request.CreateResponse(HttpStatusCode.OK, numberSpelling, format);
+            }
+            catch (MorpherException exception)
+            {
+                this.morpherLog.Log(this.Request, exception);
+                return this.Request.CreateResponse(
+                    HttpStatusCode.BadRequest,
+                    new ServiceErrorMessage(exception),
+                    format);
+            }
+        }
+
         [Route("set_correction")]
         [HttpPost]
         [SuppressMessage("ReSharper", "InconsistentNaming")]
