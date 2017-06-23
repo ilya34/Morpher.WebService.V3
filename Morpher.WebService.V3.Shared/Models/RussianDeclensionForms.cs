@@ -1,7 +1,6 @@
 ﻿namespace Morpher.WebService.V3.Shared.Models
 {
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml.Serialization;
 

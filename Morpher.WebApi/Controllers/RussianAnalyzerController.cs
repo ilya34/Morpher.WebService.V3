@@ -4,13 +4,9 @@
     using System.Collections.Generic;
     using System.Configuration;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
-
-    using Microsoft.Ajax.Utilities;
-
     using Morpher.WebService.V3.Extensions;
     using Morpher.WebService.V3.Models;
     using Morpher.WebService.V3.Services.Interfaces;
