@@ -103,7 +103,6 @@
             Mock<IApiThrottler> apiThrottlerMock = new Mock<IApiThrottler>();
             apiThrottlerMock.Setup(throttler => throttler.GetQueryLimit(It.IsAny<string>())).Returns((MorpherCacheObject)null);
 
-            Guid guid = Guid.NewGuid();
             HttpRequestMessage requestMessage =
                 RequestCreater.CreateRequest($"http://localhost:0/foo", HttpMethod.Get, "::1");
             requestMessage.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
