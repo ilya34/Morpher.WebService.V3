@@ -104,7 +104,7 @@
             apiThrottlerMock.Setup(throttler => throttler.GetQueryLimit(It.IsAny<string>())).Returns((MorpherCacheObject)null);
 
             HttpRequestMessage requestMessage =
-                RequestCreater.CreateRequest($"http://localhost:0/foo", HttpMethod.Get, "::1");
+                RequestCreater.CreateRequest("http://localhost:0/foo", HttpMethod.Get, "::1");
             requestMessage.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             ServiceController serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
