@@ -26,13 +26,13 @@
             int recordsInDatabase = 5;
 
             // Setup database
-            Mock<IMorpherDatabase> databaseMock = new Mock<IMorpherDatabase>();
+            var databaseMock = new Mock<IMorpherDatabase>();
             databaseMock.Setup(database => database.IsIpBlocked(It.IsAny<string>())).Returns(false);
             databaseMock.Setup(database => database.GetDefaultDailyQueryLimit()).Returns(queryLimit);
             databaseMock.Setup(database => database.GetQueryCountByIp(It.IsAny<string>())).Returns(recordsInDatabase);
 
             // Setup ApiThrottler
-            IApiThrottler apiThrottler = new ApiThrottler(databaseMock.Object, new MorpherCache("Throttle_ByIp"));
+            var apiThrottler = new ApiThrottler(databaseMock.Object, new MorpherCache("Throttle_ByIp"));
 
             // Setup HttpRequest
             HttpRequestMessage requestMessage = this.CreateRequest("http://localhost:0/foo", HttpMethod.Get);
@@ -64,11 +64,11 @@
         public void Throttle_IpBlock()
         {
             // Setup database
-            Mock<IMorpherDatabase> databaseMock = new Mock<IMorpherDatabase>();
+            var databaseMock = new Mock<IMorpherDatabase>();
             databaseMock.Setup(database => database.IsIpBlocked(It.IsAny<string>())).Returns(true);
 
             // Setup ApiThrottler
-            IApiThrottler apiThrottler = new ApiThrottler(databaseMock.Object, new MorpherCache("Throttle_IpBlock"));
+            var apiThrottler = new ApiThrottler(databaseMock.Object, new MorpherCache("Throttle_IpBlock"));
 
             // Setup HttpRequest
             HttpRequestMessage requestMessage = this.CreateRequest("http://localhost:0/foo", HttpMethod.Get);
@@ -85,7 +85,7 @@
             int queryLimit = 10;
             int recordsInDatabase = 5;
 
-            MorpherCacheObject morpherCacheObject = new MorpherCacheObject() { QueriesLeft = queryLimit, PaidUser = true, Unlimited = false };
+            var morpherCacheObject = new MorpherCacheObject() { QueriesLeft = queryLimit, PaidUser = true, Unlimited = false };
 
             Guid guid = Guid.NewGuid();
             HttpRequestMessage requestMessage =
@@ -209,7 +209,7 @@
         {
             IMorpherCache morpherCache = new MorpherCacheMock(new MemoryCache("Teset"));
 
-            Mock<IMorpherDatabase> databaseMock = new Mock<IMorpherDatabase>();
+            var databaseMock = new Mock<IMorpherDatabase>();
             databaseMock.Setup(database => database.GetDefaultDailyQueryLimit()).Returns(1000).Verifiable();
             databaseMock.Setup(database => database.GetQueryCountByIp(It.IsAny<string>())).Returns(0).Verifiable();
             databaseMock.Setup(database => database.IsIpBlocked(It.IsAny<string>())).Returns(false).Verifiable();
@@ -235,7 +235,7 @@
             int recordsInDatabase)
         {
             // Setup database
-            Mock<IMorpherDatabase> databaseMock = new Mock<IMorpherDatabase>();
+            var databaseMock = new Mock<IMorpherDatabase>();
 
             databaseMock.Setup(database => database.GetQueryCountByToken(It.IsAny<Guid>())).Returns(recordsInDatabase);
             databaseMock.Setup(database => database.GetUserLimits(It.IsAny<Guid>())).Returns(morpherCacheObject);
