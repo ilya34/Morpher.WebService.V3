@@ -88,7 +88,7 @@
         public ApiThrottlingResult Throttle(HttpRequestMessage httpRequest, out bool paidUser)
         {
             paidUser = false;
-            Guid? guid = null;
+            Guid? guid;
             try
             {
                 guid = httpRequest.GetToken();
