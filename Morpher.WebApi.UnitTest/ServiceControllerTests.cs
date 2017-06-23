@@ -22,7 +22,7 @@
         [Test]
         public void QueriesLeftToday_TokenNotFound()
         {
-            Mock<IApiThrottler> apiThrottlerMock = new Mock<IApiThrottler>();
+            var apiThrottlerMock = new Mock<IApiThrottler>();
             apiThrottlerMock.Setup(throttler => throttler.GetQueryLimit(It.IsAny<Guid>())).Returns((MorpherCacheObject)null);
 
             Guid guid = Guid.NewGuid();
@@ -30,7 +30,7 @@
                 RequestCreater.CreateRequest($"http://localhost:0/foo?token={guid}", HttpMethod.Get, "::1");
             requestMessage.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
-            ServiceController serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
+            var serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
             HttpResponseMessage responseMessage = serviceController.QueriesLeftToday();
 
             ServiceErrorMessage errorMessage;
@@ -42,13 +42,13 @@
         [Test]
         public void QueriesLeftToday_TokenFormatException()
         {
-            Mock<IApiThrottler> apiThrottlerMock = new Mock<IApiThrottler>();
+            var apiThrottlerMock = new Mock<IApiThrottler>();
             apiThrottlerMock.Setup(throttler => throttler.GetQueryLimit(It.IsAny<Guid>())).Returns((MorpherCacheObject)null);
             HttpRequestMessage requestMessage =
                 RequestCreater.CreateRequest("http://localhost:0/foo?token=invalid_token", HttpMethod.Get, "::1");
             requestMessage.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
-            ServiceController serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
+            var serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
             HttpResponseMessage responseMessage = serviceController.QueriesLeftToday();
 
             ServiceErrorMessage errorMessage;
@@ -60,7 +60,7 @@
         [Test]
         public void QueriesLeftToday_Token_NegativeValue()
         {
-            Mock<IApiThrottler> apiThrottlerMock = new Mock<IApiThrottler>();
+            var apiThrottlerMock = new Mock<IApiThrottler>();
             apiThrottlerMock.Setup(throttler => throttler.GetQueryLimit(It.IsAny<Guid>())).Returns(new MorpherCacheObject() { QueriesLeft = -1 });
 
             Guid guid = Guid.NewGuid();
@@ -68,7 +68,7 @@
                 RequestCreater.CreateRequest($"http://localhost:0/foo?token={guid}", HttpMethod.Get, "::1");
             requestMessage.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
-            ServiceController serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
+            var serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
             HttpResponseMessage responseMessage = serviceController.QueriesLeftToday();
 
             int value;
@@ -80,7 +80,7 @@
         [Test]
         public void QueriesLeftToday_Token_PositiveValue()
         {
-            Mock<IApiThrottler> apiThrottlerMock = new Mock<IApiThrottler>();
+            var apiThrottlerMock = new Mock<IApiThrottler>();
             apiThrottlerMock.Setup(throttler => throttler.GetQueryLimit(It.IsAny<Guid>())).Returns(new MorpherCacheObject() { QueriesLeft = 5 });
 
             Guid guid = Guid.NewGuid();
@@ -88,7 +88,7 @@
                 RequestCreater.CreateRequest($"http://localhost:0/foo?token={guid}", HttpMethod.Get, "::1");
             requestMessage.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
-            ServiceController serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
+            var serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
             HttpResponseMessage responseMessage = serviceController.QueriesLeftToday();
 
             int value;
@@ -100,14 +100,14 @@
         [Test]
         public void QueriesLeftToday_IpBlocked()
         {
-            Mock<IApiThrottler> apiThrottlerMock = new Mock<IApiThrottler>();
+            var apiThrottlerMock = new Mock<IApiThrottler>();
             apiThrottlerMock.Setup(throttler => throttler.GetQueryLimit(It.IsAny<string>())).Returns((MorpherCacheObject)null);
 
             HttpRequestMessage requestMessage =
                 RequestCreater.CreateRequest("http://localhost:0/foo", HttpMethod.Get, "::1");
             requestMessage.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
-            ServiceController serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
+            var serviceController = new ServiceController(apiThrottlerMock.Object, null) { Request = requestMessage };
             HttpResponseMessage responseMessage = serviceController.QueriesLeftToday();
 
             ServiceErrorMessage errorMessage;
