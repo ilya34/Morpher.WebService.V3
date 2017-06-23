@@ -13,10 +13,5 @@
             : base(name, config)
         {
         }
-
-        public bool Decrement(MorpherCacheObject morpherCacheObject)
-        {
-            return Interlocked.Decrement(ref morpherCacheObject.QueriesLeft) >= 0;
-        }
     }
 }

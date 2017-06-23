@@ -7,8 +7,6 @@
 
     public interface IMorpherCache
     {
-        bool Decrement(MorpherCacheObject morpherCacheObject);
-
         object Get(string key, string regionName = null);
 
         void Set(string key, object value, DateTimeOffset absoluteExpirationDateTime, string regionName = null);

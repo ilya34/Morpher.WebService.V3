@@ -1,4 +1,6 @@
-﻿namespace Morpher.WebService.V3.Services
+﻿using System.Threading;
+
+namespace Morpher.WebService.V3.Services
 {
     using System;
     using System.Net.Http;
@@ -39,12 +41,14 @@
                 return ApiThrottlingResult.IpBlocked;
             }
 
-            if (this.morpherCache.Decrement(morpherCacheObject))
-            {
-                return ApiThrottlingResult.Success;
-            }
+            return Decrement(morpherCacheObject);
+        }
 
-            return ApiThrottlingResult.Overlimit;
+        static ApiThrottlingResult Decrement(MorpherCacheObject morpherCacheObject)
+        {
+            return Interlocked.Decrement(ref morpherCacheObject.QueriesLeft) >= 0 
+                ? ApiThrottlingResult.Success 
+                : ApiThrottlingResult.Overlimit;
         }
 
         /// <summary>
@@ -71,12 +75,7 @@
                 return ApiThrottlingResult.Success;
             }
 
-            if (this.morpherCache.Decrement(morpherCacheObject))
-            {
-                return ApiThrottlingResult.Success;
-            }
-
-            return ApiThrottlingResult.Overlimit;
+            return Decrement(morpherCacheObject);
         }
 
         /// <summary>

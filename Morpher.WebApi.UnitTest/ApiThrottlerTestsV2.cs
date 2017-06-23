@@ -289,11 +289,6 @@
                 this.memoryCache = memoryCache;
             }
 
-            public bool Decrement(MorpherCacheObject morpherCacheObject)
-            {
-                throw new NotImplementedException();
-            }
-
             public object Get(string key, string regionName = null)
             {
                 return this.memoryCache.Get(key);
