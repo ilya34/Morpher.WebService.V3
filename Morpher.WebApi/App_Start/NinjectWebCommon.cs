@@ -1,4 +1,6 @@
-﻿[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Morpher.WebApi.App_Start.NinjectWebCommon), "Start")]
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Morpher.WebApi.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Morpher.WebApi.App_Start.NinjectWebCommon), "Stop")]
 
 namespace Morpher.WebApi.App_Start
