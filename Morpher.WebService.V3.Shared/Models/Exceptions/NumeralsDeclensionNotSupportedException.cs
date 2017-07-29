@@ -1,4 +1,6 @@
-﻿namespace Morpher.WebService.V3.Shared.Models.Exceptions
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+namespace Morpher.WebService.V3.Shared.Models.Exceptions
 {
     using System;
 
@@ -13,14 +15,14 @@
             this.Code = 4;
         }
 
-        public NumeralsDeclensionNotSupportedException(string mesage, int code)
-            : base(ErrorMessage, code)
+        public NumeralsDeclensionNotSupportedException(string message, int code)
+            : base(message, code)
         {
             this.Code = code;
         }
 
         public NumeralsDeclensionNotSupportedException(string message, int code, Exception innerException)
-            : base(ErrorMessage, code, innerException)
+            : base(message, code, innerException)
         {
             this.Code = code;
         }
