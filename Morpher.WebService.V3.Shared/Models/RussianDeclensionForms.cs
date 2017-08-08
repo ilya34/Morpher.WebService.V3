@@ -75,7 +75,6 @@
         }
 
         [SuppressMessage("ReSharper", "StyleCop.SA1119")]
-        [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
         public override int GetHashCode()
         {
             unchecked
