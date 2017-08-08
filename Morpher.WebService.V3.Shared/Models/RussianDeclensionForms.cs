@@ -39,12 +39,12 @@
         public void AddOrUpdate(RussianDeclensionForms form)
         {
             var props = typeof(RussianDeclensionForms).GetProperties();
-            foreach (var firstProp in props)
+            foreach (var prop in props)
             {
-                var obj = firstProp.GetValue(form);
-                if (obj != null)
+                object value = prop.GetValue(form);
+                if (value != null)
                 {
-                    firstProp.SetValue(this, obj);
+                    prop.SetValue(this, value);
                 }
             }
         }

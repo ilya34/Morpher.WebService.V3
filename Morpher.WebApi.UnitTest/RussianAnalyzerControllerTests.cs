@@ -122,7 +122,7 @@
         }
 
         [Test]
-        public void Spell_ShouldSuccess()
+        public void Spell_ShouldSucceed()
         {
             bool paidUser;
             IApiThrottler apiThrottler = Mock.Of<IApiThrottler>(
