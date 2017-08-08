@@ -50,33 +50,33 @@
             using (UserCorrectionDataContext context = new UserCorrectionDataContext())
             {
                 var corrections = context.sp_GetForms(lemma.ToUpperInvariant(), "UK", token.Value).ToList();
-                    foreach (var correction in corrections.Where(form => form.Plural == plural))
+                foreach (var correction in corrections.Where(form => form.Plural == plural))
+                {
+                    switch (correction.FormID.ToString())
                     {
-                        switch (correction.FormID.ToString())
-                        {
-                            case "Н":
-                                paradigm.Nominative = correction.AccentedText;
-                                break;
-                            case "Р":
-                                paradigm.Genitive = correction.AccentedText;
-                                break;
-                            case "Д":
-                                paradigm.Dative = correction.AccentedText;
-                                break;
-                            case "З":
-                                paradigm.Accusative = correction.AccentedText;
-                                break;
-                            case "О":
-                                paradigm.Instrumental = correction.AccentedText;
-                                break;
-                            case "М":
-                                paradigm.Prepositional = correction.AccentedText;
-                                break;
-                            case "К":
-                                paradigm.Vocative = correction.AccentedText;
-                                break;
-                        }
+                        case "Н":
+                            paradigm.Nominative = correction.AccentedText;
+                            break;
+                        case "Р":
+                            paradigm.Genitive = correction.AccentedText;
+                            break;
+                        case "Д":
+                            paradigm.Dative = correction.AccentedText;
+                            break;
+                        case "З":
+                            paradigm.Accusative = correction.AccentedText;
+                            break;
+                        case "О":
+                            paradigm.Instrumental = correction.AccentedText;
+                            break;
+                        case "М":
+                            paradigm.Prepositional = correction.AccentedText;
+                            break;
+                        case "К":
+                            paradigm.Vocative = correction.AccentedText;
+                            break;
                     }
+                }
             }
         }
     }
