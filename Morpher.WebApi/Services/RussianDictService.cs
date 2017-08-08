@@ -32,7 +32,7 @@
         {
             RussianEntry russianEntry;
             this.russianDictionary.TryGetValue(nominativeSingular.ToUpperInvariant(), out russianEntry);
-            return !plural ? russianEntry?.Singular : russianEntry?.Plural;
+            return plural ? russianEntry?.Plural : russianEntry?.Singular;
         }
 
         public List<RussianEntry> GetAll()
