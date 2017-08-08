@@ -16,28 +16,29 @@
                 var corrections = context.sp_GetForms(lemma.ToUpperInvariant(), "RU", token.Value).ToList();
                 foreach (var correction in corrections.Where(form => form.Plural == plural))
                 {
+                    string text = correction.AccentedText;
                     switch (correction.FormID.ToString())
                     {
                         case "И":
-                            paradigm.Nominative = correction.AccentedText;
+                            paradigm.Nominative = text;
                             break;
                         case "Р":
-                            paradigm.Genitive = correction.AccentedText;
+                            paradigm.Genitive = text;
                             break;
                         case "Д":
-                            paradigm.Dative = correction.AccentedText;
+                            paradigm.Dative = text;
                             break;
                         case "В":
-                            paradigm.Accusative = correction.AccentedText;
+                            paradigm.Accusative = text;
                             break;
                         case "Т":
-                            paradigm.Instrumental = correction.AccentedText;
+                            paradigm.Instrumental = text;
                             break;
                         case "П":
-                            paradigm.Prepositional = correction.AccentedText;
+                            paradigm.Prepositional = text;
                             break;
                         case "М":
-                            paradigm.PrepositionalWithPre = correction.AccentedText;
+                            paradigm.PrepositionalWithPre = text;
                             break;
                     }
                 }
@@ -52,28 +53,29 @@
                 var corrections = context.sp_GetForms(lemma.ToUpperInvariant(), "UK", token.Value).ToList();
                 foreach (var correction in corrections.Where(form => form.Plural == plural))
                 {
+                    string text = correction.AccentedText;
                     switch (correction.FormID.ToString())
                     {
                         case "Н":
-                            paradigm.Nominative = correction.AccentedText;
+                            paradigm.Nominative = text;
                             break;
                         case "Р":
-                            paradigm.Genitive = correction.AccentedText;
+                            paradigm.Genitive = text;
                             break;
                         case "Д":
-                            paradigm.Dative = correction.AccentedText;
+                            paradigm.Dative = text;
                             break;
                         case "З":
-                            paradigm.Accusative = correction.AccentedText;
+                            paradigm.Accusative = text;
                             break;
                         case "О":
-                            paradigm.Instrumental = correction.AccentedText;
+                            paradigm.Instrumental = text;
                             break;
                         case "М":
-                            paradigm.Prepositional = correction.AccentedText;
+                            paradigm.Prepositional = text;
                             break;
                         case "К":
-                            paradigm.Vocative = correction.AccentedText;
+                            paradigm.Vocative = text;
                             break;
                     }
                 }
