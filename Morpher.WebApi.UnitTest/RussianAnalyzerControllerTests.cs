@@ -23,7 +23,7 @@
     public class RussianAnalyzerControllerTests
     {
         [Test]
-        public void Declension_ShouldSuccess()
+        public void Declension_ShouldSucceed()
         {
             bool paidUser;
             IApiThrottler apiThrottler = Mock.Of<IApiThrottler>(
