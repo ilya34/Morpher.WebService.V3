@@ -32,11 +32,12 @@
 
             IMorpherLog log = Mock.Of<IMorpherLog>();
 
+            var expectedDeclensionResult = new RussianDeclensionResult();
             IRussianAnalyzer analyzer = Mock.Of<IRussianAnalyzer>(
                 russianAnalyzer => russianAnalyzer.Declension(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<DeclensionFlags?>(), It.IsAny<bool>())
-                                   == new RussianDeclensionResult());
+                                   == expectedDeclensionResult);
 
-            RussianAnalyzerController analyzerController =
+            var analyzerController =
                 new RussianAnalyzerController(analyzer, apiThrottler, log, null)
                 {
                     Request = new HttpRequestMessage(
@@ -50,7 +51,7 @@
             RussianDeclensionResult declensionResult;
             responseMessage.TryGetContentValue(out declensionResult);
 
-            Assert.NotNull(declensionResult);
+            Assert.AreEqual(declensionResult, expectedDeclensionResult);
         }
 
         [Test]
