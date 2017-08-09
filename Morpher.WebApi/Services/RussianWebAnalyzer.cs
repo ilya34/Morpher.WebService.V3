@@ -79,13 +79,12 @@
 
                 if (result.ФИО != null)
                 {
-                    FullName fullName = new FullName()
+                    declensionResult.FullName = new FullName()
                     {
                         Name = result.ФИО.И,
                         Surname = result.ФИО.Ф,
                         Pantronymic = result.ФИО.О
                     };
-                    declensionResult.FullName = fullName;
                 }
 
                 if (token != null || this.isLocalService)
