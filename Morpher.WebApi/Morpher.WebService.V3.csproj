@@ -151,8 +151,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UserCorrection.dbml</DependentUpon>
     </Compile>
-    <Compile Include="Services\DummyRussianAnalyzer.cs" />
-    <Compile Include="Services\DummyUkrainianAnalyzer.cs" />
     <Compile Include="Services\Interfaces\IRussianDictService.cs" />
     <Compile Include="Services\Interfaces\IUkrainianDictService.cs" />
     <Compile Include="Services\MorpherLog.cs" />
