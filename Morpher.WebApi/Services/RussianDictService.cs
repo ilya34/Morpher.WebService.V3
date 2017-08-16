@@ -14,9 +14,19 @@
         private static readonly XmlSerializer XmlSerializer =
             new XmlSerializer(typeof(List<RussianEntry>), new XmlRootAttribute("dictionary"));
 
-        private readonly string filePath = HttpContext.Current.Server.MapPath("~/App_Data/UserDict.xml");
+        private readonly string filePath;
 
         private readonly Dictionary<string, RussianEntry> russianDictionary = new Dictionary<string, RussianEntry>();
+
+        public RussianDictService()
+        {
+            this.filePath = HttpContext.Current.Server.MapPath("~/App_Data/UserDict.xml");
+        }
+
+        public RussianDictService(string filePath)
+        {
+            this.filePath = filePath;
+        }
 
         public static List<RussianEntry> LoadFromXml(TextReader reader)
         {
