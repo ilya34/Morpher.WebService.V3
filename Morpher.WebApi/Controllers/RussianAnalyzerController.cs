@@ -25,8 +25,6 @@
 
         private readonly IRussianDictService russianDictService;
 
-        private readonly bool isLocalService;
-
         public RussianAnalyzerController(
             IRussianAnalyzer analyzer,
             IApiThrottler apiThrottler,
@@ -37,8 +35,10 @@
             this.apiThrottler = apiThrottler;
             this.morpherLog = morpherLog;
             this.russianDictService = russianDictService;
-            this.isLocalService = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
+            this.IsLocalService = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
         }
+
+        public bool IsLocalService { get; set; }
 
         [Route("declension", Name = "RussianDeclension")]
         [HttpGet]
@@ -197,7 +197,7 @@
             string п_о_м = null,
             ResponseFormat? format = null)
         {
-            if (!this.isLocalService)
+            if (!this.IsLocalService)
             {
                 return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
             }
@@ -243,7 +243,7 @@
         [HttpPost]
         public HttpResponseMessage RemoveCorrection(string s, ResponseFormat? format = null)
         {
-            if (!this.isLocalService)
+            if (!this.IsLocalService)
             {
                 return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
             }
@@ -256,7 +256,7 @@
         [HttpGet]
         public HttpResponseMessage GetAllCorrections(ResponseFormat? format = null)
         {
-            if (!this.isLocalService)
+            if (!this.IsLocalService)
             {
                 return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
             }
