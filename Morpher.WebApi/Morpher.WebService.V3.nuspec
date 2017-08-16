@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Morpher.WebService.V3</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Sergey Filenko</authors>
+    <owners>Morpher.ru</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Реализация веб-сервиса для юнит тестов</description>
+    <releaseNotes>Init</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>morpher webservice webservice.v3</tags>
+  </metadata>
+  <files>
+   <file src="bin\Release\Morpher.WebService.V3.dll" 
+   target="lib\Morpher.WebService.V3.dll" />
+  </files>
+</package>
