@@ -177,7 +177,8 @@
             }
         }
 
-        [Route("set_correction")]
+
+        [Route("userdict")]
         [HttpPost]
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         public HttpResponseMessage AddOrUpdateUserCorrection(
@@ -239,8 +240,8 @@
             return this.Request.CreateResponse(HttpStatusCode.OK, true, format);
         }
 
-        [Route("remove_correction")]
-        [HttpPost]
+        [Route("userdict")]
+        [HttpDelete]
         public HttpResponseMessage RemoveCorrection(string s, ResponseFormat? format = null)
         {
             if (!this.IsLocalService)
@@ -252,7 +253,7 @@
             return this.Request.CreateResponse(HttpStatusCode.Forbidden, true, format);
         }
 
-        [Route("get_all_corrections")]
+        [Route("userdict")]
         [HttpGet]
         public HttpResponseMessage GetAllCorrections(ResponseFormat? format = null)
         {
