@@ -151,8 +151,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UserCorrection.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Services\DatabaseUserDictionary.cs" />
+    <Compile Include="Services\Interfaces\IExceptionDictionary.cs" />
     <Compile Include="Services\Interfaces\IRussianDictService.cs" />
     <Compile Include="Services\Interfaces\IUkrainianDictService.cs" />
+    <Compile Include="Services\Interfaces\IUserDictionaryLookup.cs" />
     <Compile Include="Services\MorpherLog.cs" />
     <Compile Include="Models\LogEntity.cs" />
     <Compile Include="Services\LogSyncer.cs" />
