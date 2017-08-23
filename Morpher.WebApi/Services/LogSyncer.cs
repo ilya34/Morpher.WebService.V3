@@ -28,9 +28,9 @@
                     return;
                 }
 
-                IMorpherLog log =
-                    (IMorpherLog)System.Web.Mvc.DependencyResolver.Current.GetService(typeof(IMorpherLog));
-                log.Sync();
+                //IMorpherLog log =
+                //    (IMorpherLog)System.Web.Mvc.DependencyResolver.Current.GetService(typeof(IMorpherLog));
+                //log.Sync();
             }
         }
 
