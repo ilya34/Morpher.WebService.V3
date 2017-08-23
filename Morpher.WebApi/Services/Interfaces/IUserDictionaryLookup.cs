@@ -1,7 +1,7 @@
 ﻿namespace Morpher.WebService.V3.Services.Interfaces
 {
     using System;
-    using Shared.Models;
+    using Models;
 
     public interface IUserDictionaryLookup
     {

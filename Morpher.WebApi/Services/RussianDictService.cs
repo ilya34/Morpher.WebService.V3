@@ -5,9 +5,8 @@
     using System.Linq;
     using System.Web;
     using System.Xml.Serialization;
-
+    using Models;
     using Morpher.WebService.V3.Services.Interfaces;
-    using Morpher.WebService.V3.Shared.Models;
 
     public class RussianDictService : IRussianDictService
     {

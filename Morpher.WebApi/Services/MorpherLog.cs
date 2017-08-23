@@ -5,12 +5,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
-
+    using Models.Exceptions;
     using Morpher.WebService.V3.Extensions;
     using Morpher.WebService.V3.Models;
     using Morpher.WebService.V3.Services.Interfaces;
-    using Morpher.WebService.V3.Shared.Models.Exceptions;
-
     using Ninject;
 
     public class MorpherLog : IMorpherLog

@@ -7,12 +7,10 @@
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+    using Models.Exceptions;
     using Morpher.WebService.V3.Extensions;
     using Morpher.WebService.V3.Models;
     using Morpher.WebService.V3.Services.Interfaces;
-    using Morpher.WebService.V3.Shared.Interfaces;
-    using Morpher.WebService.V3.Shared.Models;
-    using Morpher.WebService.V3.Shared.Models.Exceptions;
 
     [RoutePrefix("russian")]
     public class RussianAnalyzerController : ApiController

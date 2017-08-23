@@ -1,10 +1,8 @@
 ﻿namespace Morpher.WebService.V3.Services
 {
     using System;
-
+    using Models;
     using Morpher.WebService.V3.Services.Interfaces;
-    using Morpher.WebService.V3.Shared.Interfaces;
-    using Morpher.WebService.V3.Shared.Models;
 
     public class UserCorrectionFileService : IUserCorrection
     {

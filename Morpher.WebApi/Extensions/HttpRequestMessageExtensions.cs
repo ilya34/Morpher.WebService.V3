@@ -8,10 +8,8 @@
     using System.Net.Http.Formatting;
     using System.ServiceModel.Channels;
     using System.Text;
-
+    using Models.Exceptions;
     using Morpher.WebService.V3.Models;
-    using Morpher.WebService.V3.Shared.Models.Exceptions;
-
     using Newtonsoft.Json;
 
     public static class HttpRequestMessageExtensions

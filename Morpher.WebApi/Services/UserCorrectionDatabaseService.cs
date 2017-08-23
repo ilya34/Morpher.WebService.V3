@@ -2,10 +2,8 @@
 {
     using System;
     using System.Linq;
-
+    using Interfaces;
     using Morpher.WebService.V3.Models;
-    using Morpher.WebService.V3.Shared.Interfaces;
-    using Morpher.WebService.V3.Shared.Models;
 
     public class UserCorrectionDatabaseService : IUserCorrection
     {

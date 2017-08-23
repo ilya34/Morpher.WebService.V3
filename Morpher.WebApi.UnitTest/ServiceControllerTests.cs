@@ -5,14 +5,12 @@
     using System.Net.Http;
     using System.Web.Http;
     using System.Web.Http.Hosting;
-
+    using Models.Exceptions;
     using Moq;
 
     using Morpher.WebService.V3.Controllers;
     using Morpher.WebService.V3.Models;
     using Morpher.WebService.V3.Services.Interfaces;
-    using Morpher.WebService.V3.Shared.Models.Exceptions;
-
     using NUnit.Framework;
 
     [TestFixture]

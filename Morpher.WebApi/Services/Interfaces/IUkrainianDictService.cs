@@ -1,8 +1,7 @@
 ﻿namespace Morpher.WebService.V3.Services.Interfaces
 {
     using System.Collections.Generic;
-
-    using Morpher.WebService.V3.Shared.Models;
+    using Models;
 
     public interface IUkrainianDictService
     {

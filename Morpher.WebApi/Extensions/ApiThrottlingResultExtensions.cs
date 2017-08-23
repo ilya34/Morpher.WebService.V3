@@ -1,7 +1,7 @@
 ﻿namespace Morpher.WebService.V3.Extensions
 {
+    using Models.Exceptions;
     using Morpher.WebService.V3.Models;
-    using Morpher.WebService.V3.Shared.Models.Exceptions;
 
     public static class ApiThrottlingResultExtensions
     {

@@ -1,7 +1,7 @@
 ﻿namespace Morpher.WebService.V3.Services.Interfaces
 {
     using System.Collections.Generic;
-    using Shared.Models;
+    using Models;
 
     public interface IExceptionDictionary
     {

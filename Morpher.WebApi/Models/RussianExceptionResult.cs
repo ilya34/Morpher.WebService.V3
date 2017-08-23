@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebService.V3.Shared.Models
+﻿namespace Morpher.WebService.V3.Models
 {
     class RussianExceptionResult
     {

@@ -3,10 +3,9 @@
     using System;
     using System.Collections.Specialized;
     using System.Configuration;
-
+    using Interfaces;
+    using Models;
     using Morpher.WebService.V3.Connected_Services.MorpherSoap;
-    using Morpher.WebService.V3.Shared.Interfaces;
-    using Morpher.WebService.V3.Shared.Models;
 
     public class UkrainianWebAnalyzer : IUkrainianAnalyzer
     {

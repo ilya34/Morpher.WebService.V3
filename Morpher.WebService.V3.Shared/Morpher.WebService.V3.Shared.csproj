@@ -58,6 +58,7 @@
     <Compile Include="Models\NameForm.cs" />
     <Compile Include="Models\RussianDeclensionForms.cs" />
     <Compile Include="Models\RussianDeclensionResult.cs" />
+    <Compile Include="Models\RussianExceptionResult.cs" />
     <Compile Include="Models\RussianNumberSpelling.cs" />
     <Compile Include="Models\UkrainianDeclensionForms.cs" />
     <Compile Include="Models\UkrainianDeclensionResult.cs" />

@@ -15,9 +15,6 @@ namespace Morpher.WebApi.App_Start
 
     using Morpher.WebService.V3.Services;
     using Morpher.WebService.V3.Services.Interfaces;
-    using Morpher.WebService.V3.Shared.Interfaces;
-    using Morpher.WebService.V3.Shared.Models;
-
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Web.WebApi;

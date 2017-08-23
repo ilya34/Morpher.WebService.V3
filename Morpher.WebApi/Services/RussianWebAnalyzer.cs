@@ -6,13 +6,11 @@
     using System.Configuration;
     using System.Linq;
     using System.ServiceModel;
-
+    using Interfaces;
+    using Models;
+    using Models.Exceptions;
     using Morpher.WebService.V3.Connected_Services.MorpherSoap;
-    using Morpher.WebService.V3.Shared.Interfaces;
-    using Morpher.WebService.V3.Shared.Models;
-    using Morpher.WebService.V3.Shared.Models.Exceptions;
-
-    using AdjectiveGenders = Morpher.WebService.V3.Shared.Models.AdjectiveGenders;
+    using AdjectiveGenders = Models.AdjectiveGenders;
 
 
     public class RussianWebAnalyzer : IRussianAnalyzer

@@ -5,7 +5,6 @@
     using System.Linq;
     using Interfaces;
     using Models;
-    using Shared.Models;
 
     public class DatabaseUserDictionary : IUserDictionaryLookup, IExceptionDictionary
     {
