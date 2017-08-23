@@ -7,6 +7,7 @@
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+    using Helpers;
     using Morpher.WebService.V3.Extensions;
     using Morpher.WebService.V3.Models;
     using Morpher.WebService.V3.Services.Interfaces;
@@ -42,6 +43,7 @@
 
         [Route("declension", Name = "RussianDeclension")]
         [HttpGet]
+        [ThrottleThis]
         public HttpResponseMessage Declension(string s, DeclensionFlags? flags = null, ResponseFormat? format = null)
         {
             try
@@ -77,6 +79,7 @@
 
         [Route("spell")]
         [HttpGet]
+        [ThrottleThis]
         public HttpResponseMessage Spell(int n, string unit, ResponseFormat? format = null)
         {
             try
@@ -111,6 +114,7 @@
 
         [Route("adjectivize")]
         [HttpGet]
+        [ThrottleThis]
         public HttpResponseMessage Adjectivize(string s, ResponseFormat? format = null)
         {
             try
@@ -145,6 +149,7 @@
 
         [Route("genders")]
         [HttpGet]
+        [ThrottleThis]
         public HttpResponseMessage AdjectiveGenders(string s, ResponseFormat? format = null)
         {
             try

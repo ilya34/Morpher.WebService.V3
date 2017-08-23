@@ -9,7 +9,7 @@
     using System.Web.Routing;
 
     using FluentScheduler;
-
+    using Helpers;
     using Morpher.WebService.V3.Services;
     using Morpher.WebService.V3.Services.Interfaces;
 
@@ -19,6 +19,7 @@
     {
         protected void Application_Start()
         {
+            var urls = ThrottleUrls.Urls;
             bool isLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
 
             if (!isLocal)
