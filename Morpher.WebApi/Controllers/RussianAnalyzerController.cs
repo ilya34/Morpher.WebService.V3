@@ -7,6 +7,7 @@
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+    using Helpers;
     using Models.Exceptions;
     using Morpher.WebService.V3.Extensions;
     using Morpher.WebService.V3.Models;
@@ -15,37 +16,19 @@
     [RoutePrefix("russian")]
     public class RussianAnalyzerController : ApiController
     {
-        private readonly IRussianAnalyzer analyzer;
-
-        private readonly IApiThrottler apiThrottler;
-
-        private readonly IMorpherLog morpherLog;
-
-        private readonly IRussianDictService russianDictService;
-        private readonly IUserDictionaryLookup _dictionaryLookup;
-        private readonly IMorpherCache _morpherCache;
+        private readonly IRussianAnalyzer _analyzer;
 
         public RussianAnalyzerController(
-            IRussianAnalyzer analyzer,
-            IApiThrottler apiThrottler,
-            IMorpherLog morpherLog,
-            IRussianDictService russianDictService,
-            IUserDictionaryLookup dictionaryLookup,
-            IMorpherCache morpherCache)
+            IRussianAnalyzer analyzer)
         {
-            this.analyzer = analyzer;
-            this.apiThrottler = apiThrottler;
-            this.morpherLog = morpherLog;
-            this.russianDictService = russianDictService;
-            _dictionaryLookup = dictionaryLookup;
-            _morpherCache = morpherCache;
-            this.IsLocalService = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
+            this._analyzer = analyzer;
         }
 
         public bool IsLocalService { get; set; }
 
         [Route("declension", Name = "RussianDeclension")]
         [HttpGet]
+        [ThrottleThis]
         public HttpResponseMessage Declension(string s, DeclensionFlags? flags = null, ResponseFormat? format = null)
         {
             try
@@ -55,37 +38,13 @@
                     throw new RequiredParameterIsNotSpecified(nameof(s));
                 }
 
-                bool paidUser;
-                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
-
-                if (result != ApiThrottlingResult.Success)
-                {
-                    throw result.GenerateMorpherException();
-                }
-
                 RussianDeclensionResult declensionResult =
-                    this.analyzer.Declension(s, flags);
+                    _analyzer.Declension(s, flags);
 
-                var token = this.Request.GetToken();
-                if (token != null)
-                {
-                    var user = _morpherCache.Get(token.ToString());
-                    if (user != null)
-                    {
-                        var userCorrection = _dictionaryLookup.Lookup(s, ((MorpherCacheObject) user).UserId);
-                        if (userCorrection != null)
-                        {
-                            declensionResult = new RussianExceptionResult(userCorrection, declensionResult);
-                        }
-                    }
-                }
-
-                this.morpherLog.Log(this.Request);
                 return this.Request.CreateResponse(HttpStatusCode.OK, declensionResult, format);
             }
             catch (MorpherException exception)
             {
-                this.morpherLog.Log(this.Request, exception);
                 return this.Request.CreateResponse(
                     HttpStatusCode.BadRequest,
                     new ServiceErrorMessage(exception),
@@ -95,104 +54,110 @@
 
         [Route("spell")]
         [HttpGet]
+        [ThrottleThis]
         public HttpResponseMessage Spell(int n, string unit, ResponseFormat? format = null)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(unit))
-                {
-                    throw new RequiredParameterIsNotSpecified(nameof(unit));
-                }
+            throw new NotImplementedException();
+            //try
+            //{
+            //    if (string.IsNullOrWhiteSpace(unit))
+            //    {
+            //        throw new RequiredParameterIsNotSpecified(nameof(unit));
+            //    }
 
-                bool paidUser;
-                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
+            //    bool paidUser;
+            //    ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
 
-                if (result != ApiThrottlingResult.Success)
-                {
-                    throw result.GenerateMorpherException();
-                }
+            //    if (result != ApiThrottlingResult.Success)
+            //    {
+            //        throw result.GenerateMorpherException();
+            //    }
 
-                RussianNumberSpelling numberSpelling = this.analyzer.Spell(n, unit);
+            //    RussianNumberSpelling numberSpelling = this.analyzer.Spell(n, unit);
 
-                this.morpherLog.Log(this.Request);
-                return this.Request.CreateResponse(HttpStatusCode.OK, numberSpelling, format);
-            }
-            catch (MorpherException exception)
-            {
-                this.morpherLog.Log(this.Request, exception);
-                return this.Request.CreateResponse(
-                    HttpStatusCode.BadRequest,
-                    new ServiceErrorMessage(exception),
-                    format);
-            }
+            //    this.morpherLog.Log(this.Request);
+            //    return this.Request.CreateResponse(HttpStatusCode.OK, numberSpelling, format);
+            //}
+            //catch (MorpherException exception)
+            //{
+            //    this.morpherLog.Log(this.Request, exception);
+            //    return this.Request.CreateResponse(
+            //        HttpStatusCode.BadRequest,
+            //        new ServiceErrorMessage(exception),
+            //        format);
+            //}
         }
 
         [Route("adjectivize")]
         [HttpGet]
+        [ThrottleThis]
         public HttpResponseMessage Adjectivize(string s, ResponseFormat? format = null)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(s))
-                {
-                    throw new RequiredParameterIsNotSpecified(nameof(s));
-                }
+            throw new NotImplementedException();
+            //try
+            //{
+            //    if (string.IsNullOrWhiteSpace(s))
+            //    {
+            //        throw new RequiredParameterIsNotSpecified(nameof(s));
+            //    }
 
-                bool paidUser;
-                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
+            //    bool paidUser;
+            //    ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
 
-                if (result != ApiThrottlingResult.Success)
-                {
-                    throw result.GenerateMorpherException();
-                }
+            //    if (result != ApiThrottlingResult.Success)
+            //    {
+            //        throw result.GenerateMorpherException();
+            //    }
 
-                List<string> adjectives = this.analyzer.Adjectives(s);
+            //    List<string> adjectives = this.analyzer.Adjectives(s);
 
-                this.morpherLog.Log(this.Request);
-                return this.Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
-            }
-            catch (MorpherException exception)
-            {
-                this.morpherLog.Log(this.Request, exception);
-                return this.Request.CreateResponse(
-                    HttpStatusCode.BadRequest,
-                    new ServiceErrorMessage(exception),
-                    format);
-            }
+            //    this.morpherLog.Log(this.Request);
+            //    return this.Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
+            //}
+            //catch (MorpherException exception)
+            //{
+            //    this.morpherLog.Log(this.Request, exception);
+            //    return this.Request.CreateResponse(
+            //        HttpStatusCode.BadRequest,
+            //        new ServiceErrorMessage(exception),
+            //        format);
+            //}
         }
 
         [Route("genders")]
         [HttpGet]
+        [ThrottleThis]
         public HttpResponseMessage AdjectiveGenders(string s, ResponseFormat? format = null)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(s))
-                {
-                    throw new RequiredParameterIsNotSpecified(nameof(s));
-                }
+            throw new NotImplementedException();
+            //try
+            //{
+            //    if (string.IsNullOrWhiteSpace(s))
+            //    {
+            //        throw new RequiredParameterIsNotSpecified(nameof(s));
+            //    }
 
-                bool paidUser;
-                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
+            //    bool paidUser;
+            //    ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
 
-                if (result != ApiThrottlingResult.Success)
-                {
-                    throw result.GenerateMorpherException();
-                }
+            //    if (result != ApiThrottlingResult.Success)
+            //    {
+            //        throw result.GenerateMorpherException();
+            //    }
 
-                AdjectiveGenders adjectives = this.analyzer.AdjectiveGenders(s);
+            //    AdjectiveGenders adjectives = this.analyzer.AdjectiveGenders(s);
 
-                this.morpherLog.Log(this.Request);
-                return this.Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
-            }
-            catch (MorpherException exception)
-            {
-                this.morpherLog.Log(this.Request, exception);
-                return this.Request.CreateResponse(
-                    HttpStatusCode.BadRequest,
-                    new ServiceErrorMessage(exception),
-                    format);
-            }
+            //    this.morpherLog.Log(this.Request);
+            //    return this.Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
+            //}
+            //catch (MorpherException exception)
+            //{
+            //    this.morpherLog.Log(this.Request, exception);
+            //    return this.Request.CreateResponse(
+            //        HttpStatusCode.BadRequest,
+            //        new ServiceErrorMessage(exception),
+            //        format);
+            //}
         }
 
 
@@ -216,71 +181,74 @@
             string п_о_м = null,
             ResponseFormat? format = null)
         {
-            if (!this.IsLocalService)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
-            }
+            throw new NotImplementedException();
+            //if (!this.IsLocalService)
+            //{
+            //    return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
+            //}
 
-            if (string.IsNullOrWhiteSpace(и))
-            {
-                return this.Request.CreateResponse(
-                    HttpStatusCode.BadRequest,
-                    new ServiceErrorMessage(new RequiredParameterIsNotSpecified(nameof(и))),
-                    format);
-            }
+            //if (string.IsNullOrWhiteSpace(и))
+            //{
+            //    return this.Request.CreateResponse(
+            //        HttpStatusCode.BadRequest,
+            //        new ServiceErrorMessage(new RequiredParameterIsNotSpecified(nameof(и))),
+            //        format);
+            //}
 
-            RussianEntry russianEntry = new RussianEntry()
-            {
-                Singular = new RussianDeclensionForms()
-                {
-                    Nominative = и,
-                    Dative = д,
-                    Genitive = р,
-                    Instrumental = т,
-                    Accusative = в,
-                    Prepositional = п,
-                    PrepositionalWithPre = п_о
-                },
-                Plural = new RussianDeclensionForms()
-                {
-                    Nominative = и_м,
-                    Dative = д_м,
-                    Genitive = р_м,
-                    Instrumental = т_м,
-                    Accusative = в_м,
-                    Prepositional = п_м,
-                    PrepositionalWithPre = п_о_м
-                }
-            };
+            //RussianEntry russianEntry = new RussianEntry()
+            //{
+            //    Singular = new RussianDeclensionForms()
+            //    {
+            //        Nominative = и,
+            //        Dative = д,
+            //        Genitive = р,
+            //        Instrumental = т,
+            //        Accusative = в,
+            //        Prepositional = п,
+            //        PrepositionalWithPre = п_о
+            //    },
+            //    Plural = new RussianDeclensionForms()
+            //    {
+            //        Nominative = и_м,
+            //        Dative = д_м,
+            //        Genitive = р_м,
+            //        Instrumental = т_м,
+            //        Accusative = в_м,
+            //        Prepositional = п_м,
+            //        PrepositionalWithPre = п_о_м
+            //    }
+            //};
 
-            this.russianDictService.AddOrUpdate(russianEntry);
+            //this.russianDictService.AddOrUpdate(russianEntry);
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, true, format);
+            //return this.Request.CreateResponse(HttpStatusCode.OK, true, format);
         }
 
         [Route("userdict")]
         [HttpDelete]
         public HttpResponseMessage RemoveCorrection(string s, ResponseFormat? format = null)
         {
-            if (!this.IsLocalService)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
-            }
+            throw new NotImplementedException();
+            //if (!this.IsLocalService)
+            //{
+            //    return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
+            //}
 
-            this.russianDictService.Remove(s);
-            return this.Request.CreateResponse(HttpStatusCode.Forbidden, true, format);
+            //this.russianDictService.Remove(s);
+            //return this.Request.CreateResponse(HttpStatusCode.Forbidden, true, format);
         }
 
         [Route("userdict")]
         [HttpGet]
         public HttpResponseMessage GetAllCorrections(ResponseFormat? format = null)
         {
-            if (!this.IsLocalService)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
-            }
+            throw new NotImplementedException();
+            //if (!this.IsLocalService)
+            //{
+            //    return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
+            //}
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, this.russianDictService.GetAll(), format);
+            //return this.Request.CreateResponse(HttpStatusCode.OK, this.russianDictService.GetAll(), format);
         }
     }
 }
