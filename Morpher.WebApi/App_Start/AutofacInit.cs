@@ -33,7 +33,7 @@
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MorpherDatabase"].ConnectionString;
 
-            builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>();
+            builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>().WithParameter("client", new MorpherClient());
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
             builder.RegisterType<MorpherCache>().As<IMorpherCache>().WithParameter("name", "ApiThrottler");
             builder.RegisterType<MorpherDatabase>().As<IMorpherDatabase>()

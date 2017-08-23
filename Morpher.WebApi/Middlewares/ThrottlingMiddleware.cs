@@ -1,6 +1,9 @@
 ﻿namespace Morpher.WebService.V3.Middlewares
 {
+    using System.IO;
     using System.Net;
+    using System.Net.Http.Formatting;
+    using System.Runtime.Serialization;
     using System.Threading.Tasks;
     using Extensions;
     using Helpers;
@@ -28,8 +31,40 @@
                 {
                     var response = new ServiceErrorMessage(result.GenerateMorpherException());
                     context.Response.StatusCode = (int)HttpStatusCode.PaymentRequired;
-                    context.Response.ContentType = "application/json";
-                    context.Response.Write(JsonConvert.SerializeObject(response));
+
+                    var format = context.Request.Query.Get("format");
+                    if (format == null)
+                    {
+                        format = context.Request.Headers.Get("ContentType");
+
+                        if (format.Contains("application/json"))
+                        {
+                            format = "json";
+                        }
+                        else if (format.Contains("application/xml"))
+                        {
+                            format = "xml";
+                        }
+                    }
+
+                    switch (format)
+                    {
+                        case "json":
+                            context.Response.ContentType = "application/json; charset=utf-8";
+                            context.Response.Write(JsonConvert.SerializeObject(response, Formatting.Indented));
+                            break;
+                        case "xml":
+                        default:
+                            context.Response.ContentType = "application/xml; charset=utf-8";
+                            DataContractSerializer contractSerializer = new DataContractSerializer(typeof(ServiceErrorMessage));
+                            using (MemoryStream memoryStream = new MemoryStream())
+                            {
+                                contractSerializer.WriteObject(memoryStream, response);
+                                context.Response.Write(memoryStream.ToArray());
+                            }
+                            break;
+                    }
+                    return;
                 }
             }
 
