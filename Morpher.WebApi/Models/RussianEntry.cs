@@ -7,6 +7,16 @@
     [DataContract]
     public class RussianEntry
     {
+        public RussianEntry(RussianDeclensionForms singular, RussianDeclensionForms plural)
+        {
+            Singular = singular;
+            Plural = plural;
+        }
+
+        public RussianEntry()
+        {
+        }
+
         [XmlElement("singular")]
         [DataMember(Name = "singular", EmitDefaultValue = false)]
         public RussianDeclensionForms Singular { get; set; }

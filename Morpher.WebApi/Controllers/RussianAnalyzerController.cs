@@ -22,17 +22,23 @@
         private readonly IMorpherLog morpherLog;
 
         private readonly IRussianDictService russianDictService;
+        private readonly IUserDictionaryLookup _dictionaryLookup;
+        private readonly IMorpherCache _morpherCache;
 
         public RussianAnalyzerController(
             IRussianAnalyzer analyzer,
             IApiThrottler apiThrottler,
             IMorpherLog morpherLog,
-            IRussianDictService russianDictService)
+            IRussianDictService russianDictService,
+            IUserDictionaryLookup dictionaryLookup,
+            IMorpherCache morpherCache)
         {
             this.analyzer = analyzer;
             this.apiThrottler = apiThrottler;
             this.morpherLog = morpherLog;
             this.russianDictService = russianDictService;
+            _dictionaryLookup = dictionaryLookup;
+            _morpherCache = morpherCache;
             this.IsLocalService = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
         }
 
@@ -58,7 +64,21 @@
                 }
 
                 RussianDeclensionResult declensionResult =
-                    this.analyzer.Declension(s, this.Request.GetToken(), flags, paidUser);
+                    this.analyzer.Declension(s, flags);
+
+                var token = this.Request.GetToken();
+                if (token != null)
+                {
+                    var user = _morpherCache.Get(token.ToString());
+                    if (user != null)
+                    {
+                        var userCorrection = _dictionaryLookup.Lookup(s, ((MorpherCacheObject) user).UserId);
+                        if (userCorrection != null)
+                        {
+                            declensionResult = new RussianExceptionResult(userCorrection, declensionResult);
+                        }
+                    }
+                }
 
                 this.morpherLog.Log(this.Request);
                 return this.Request.CreateResponse(HttpStatusCode.OK, declensionResult, format);

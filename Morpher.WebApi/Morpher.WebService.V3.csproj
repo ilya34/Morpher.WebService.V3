@@ -62,6 +62,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Morpher.WebService.V3.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Morpher.WebService.V3.Client.1.0.33\lib\Morpher.WebService.V3.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -144,6 +148,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\DeclensionFlagsExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Models\AdjectiveGenders.cs" />
     <Compile Include="Models\CacheResetPostModel.cs" />
@@ -163,6 +168,7 @@
     <Compile Include="Models\RussianDeclensionForms.cs" />
     <Compile Include="Models\RussianDeclensionResult.cs" />
     <Compile Include="Models\RussianEntry.cs" />
+    <Compile Include="Models\RussianExceptionForms.cs" />
     <Compile Include="Models\RussianExceptionResult.cs" />
     <Compile Include="Models\RussianNumberSpelling.cs" />
     <Compile Include="Models\UkrainianDeclensionForms.cs" />
@@ -186,6 +192,7 @@
     <Compile Include="Services\MorpherLog.cs" />
     <Compile Include="Models\LogEntity.cs" />
     <Compile Include="Services\LogSyncer.cs" />
+    <Compile Include="Services\RussianWebAnalyzer.cs" />
     <Compile Include="Services\UkrainianDictService.cs" />
     <Compile Include="Services\UserCorrectionFileService.cs" />
     <Compile Include="Services\UserCorrectionDatabaseService.cs" />
@@ -197,8 +204,6 @@
     <Compile Include="Services\MorpherCache.cs" />
     <Compile Include="Services\MorpherDatabase.cs" />
     <Compile Include="Services\MorpherLogLocal.cs" />
-    <Compile Include="Services\RussianWebAnalyzer.cs" />
-    <Compile Include="Services\UkrainianWebAnalyzer.cs" />
     <Compile Include="Controllers\UkrainianAnalyzerController.cs" />
     <Compile Include="Services\ApiThrottler.cs" />
     <Compile Include="Models\ApiThrottlingResult.cs" />

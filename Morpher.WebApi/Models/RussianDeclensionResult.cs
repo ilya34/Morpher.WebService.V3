@@ -1,26 +1,52 @@
 ﻿namespace Morpher.WebService.V3.Models
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
 
     [DataContract(Name = "xml")]
     public class RussianDeclensionResult : RussianDeclensionForms
     {
+        public RussianDeclensionResult()
+        {
+        }
+
+        [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor")]
+        public RussianDeclensionResult(Russian.DeclensionResult serviceResult)
+            : base(serviceResult)
+        {
+            if (serviceResult.Plural != null)
+            {
+                Plural = new RussianDeclensionForms(serviceResult.Plural);
+            }
+
+            Gender = serviceResult.Gender;
+
+            if (serviceResult.FullName != null)
+            {
+                FullName = new FullName(serviceResult.FullName);
+            }
+
+            Where = serviceResult.Where;
+            To = serviceResult.To;
+            From = serviceResult.From;
+        }
+
         [DataMember(Name = "род", EmitDefaultValue = false, Order = 7)]
-        public string Gender { get; set; }
+        public virtual string Gender { get; set; }
 
         [DataMember(Name = "множественное", EmitDefaultValue = false, Order = 8)]
-        public RussianDeclensionForms Plural { get; set; }
+        public virtual RussianDeclensionForms Plural { get; set; }
 
         [DataMember(Name = "ФИО", EmitDefaultValue = false, Order = 13)]
-        public FullName FullName { get; set; }
+        public virtual FullName FullName { get; set; }
 
         [DataMember(Order = 10, Name = "где", EmitDefaultValue = false)]
-        public string Where { get; set; }
+        public virtual string Where { get; set; }
 
         [DataMember(Order = 11, Name = "куда", EmitDefaultValue = false)]
-        public string To { get; set; }
+        public virtual string To { get; set; }
 
         [DataMember(Order = 12, Name = "откуда", EmitDefaultValue = false)]
-        public string From { get; set; }
+        public virtual string From { get; set; }
     }
 }

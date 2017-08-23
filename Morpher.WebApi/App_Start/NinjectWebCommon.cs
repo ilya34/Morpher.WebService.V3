@@ -18,6 +18,7 @@ namespace Morpher.WebApi.App_Start
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Web.WebApi;
+    using WebService.V3;
 
     public static class NinjectWebCommon
     {
@@ -77,6 +78,7 @@ namespace Morpher.WebApi.App_Start
             kernel.Bind<IMorpherCache>().ToConstant(new MorpherCache("ApiTrottler")).Named("ApiThrottler");
             kernel.Bind<IRussianDictService>().To<RussianDictService>().InSingletonScope();
             kernel.Bind<IUkrainianDictService>().To<UkrainianDictService>().InSingletonScope();
+            kernel.Bind<IUserDictionaryLookup>().To<DatabaseUserDictionary>();
             if (isLocal)
             {
                 kernel.Bind<IUserCorrection>().To<UserCorrectionFileService>();
@@ -101,10 +103,12 @@ namespace Morpher.WebApi.App_Start
 
             if (!customInflector)
             {
-                kernel.Bind<IRussianAnalyzer>().To<RussianWebAnalyzer>().InSingletonScope()
-                    .WithConstructorArgument("isLocalService", isLocal);
-                kernel.Bind<IUkrainianAnalyzer>().To<UkrainianWebAnalyzer>().InSingletonScope()
-                    .WithConstructorArgument("isLocalService", isLocal);
+                kernel.Bind<IRussianAnalyzer>().To<RussianWebAnalyzer>()
+                    .WithConstructorArgument("client", new MorpherClient(Guid.Parse("afbb2784-6c02-43fe-93e6-5874e39a3cfd")));
+                //kernel.Bind<IRussianAnalyzer>().To<RussianWebAnalyzer>().InSingletonScope()
+                //    .WithConstructorArgument("isLocalService", isLocal);
+                //kernel.Bind<IUkrainianAnalyzer>().To<UkrainianWebAnalyzer>().InSingletonScope()
+                //    .WithConstructorArgument("isLocalService", isLocal);
             }
             else
             {

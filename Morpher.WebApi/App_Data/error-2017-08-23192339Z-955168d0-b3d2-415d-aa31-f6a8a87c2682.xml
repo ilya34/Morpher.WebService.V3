@@ -1,0 +1,162 @@
+﻿<error errorId="955168d0-b3d2-415d-aa31-f6a8a87c2682" application="/LM/W3SVC/2/ROOT" host="DESKTOP-PHU13B6" type="Ninject.ActivationException" message="Error activating IUserDictionaryLookup&#xD;&#xA;No matching bindings are available, and the type is not self-bindable.&#xD;&#xA;Activation path:&#xD;&#xA;  2) Injection of dependency IUserDictionaryLookup into parameter dictionaryLookup of constructor of type RussianAnalyzerController&#xD;&#xA;  1) Request for RussianAnalyzerController&#xD;&#xA;&#xD;&#xA;Suggestions:&#xD;&#xA;  1) Ensure that you have defined a binding for IUserDictionaryLookup.&#xD;&#xA;  2) If the binding was defined in a module, ensure that the module has been loaded into the kernel.&#xD;&#xA;  3) Ensure you have not accidentally created more than one kernel.&#xD;&#xA;  4) If you are using constructor arguments, ensure that the parameter name matches the constructors parameter name.&#xD;&#xA;  5) If you are using automatic module loading, ensure the search path and filters are correct.&#xD;&#xA;" source="Ninject" detail="System.Web.HttpUnhandledException (0x80004005): An error occurred when trying to create a controller of type 'RussianAnalyzerController'. Make sure that the controller has a parameterless public constructor. ---&gt; System.InvalidOperationException: An error occurred when trying to create a controller of type 'RussianAnalyzerController'. Make sure that the controller has a parameterless public constructor. ---&gt; Ninject.ActivationException: Error activating IUserDictionaryLookup&#xD;&#xA;No matching bindings are available, and the type is not self-bindable.&#xD;&#xA;Activation path:&#xD;&#xA;  2) Injection of dependency IUserDictionaryLookup into parameter dictionaryLookup of constructor of type RussianAnalyzerController&#xD;&#xA;  1) Request for RussianAnalyzerController&#xD;&#xA;&#xD;&#xA;Suggestions:&#xD;&#xA;  1) Ensure that you have defined a binding for IUserDictionaryLookup.&#xD;&#xA;  2) If the binding was defined in a module, ensure that the module has been loaded into the kernel.&#xD;&#xA;  3) Ensure you have not accidentally created more than one kernel.&#xD;&#xA;  4) If you are using constructor arguments, ensure that the parameter name matches the constructors parameter name.&#xD;&#xA;  5) If you are using automatic module loading, ensure the search path and filters are correct.&#xD;&#xA;&#xD;&#xA;   at Ninject.KernelBase.Resolve(IRequest request)&#xD;&#xA;   at Ninject.Planning.Targets.Target`1.GetValue(Type service, IContext parent)&#xD;&#xA;   at Ninject.Planning.Targets.Target`1.ResolveWithin(IContext parent)&#xD;&#xA;   at Ninject.Activation.Providers.StandardProvider.GetValue(IContext context, ITarget target)&#xD;&#xA;   at Ninject.Activation.Providers.StandardProvider.&lt;&gt;c__DisplayClass4.&lt;Create&gt;b__2(ITarget target)&#xD;&#xA;   at System.Linq.Enumerable.WhereSelectArrayIterator`2.MoveNext()&#xD;&#xA;   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)&#xD;&#xA;   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)&#xD;&#xA;   at Ninject.Activation.Providers.StandardProvider.Create(IContext context)&#xD;&#xA;   at Ninject.Activation.Context.ResolveInternal(Object scope)&#xD;&#xA;   at Ninject.Activation.Context.Resolve()&#xD;&#xA;   at Ninject.KernelBase.&lt;&gt;c__DisplayClass15.&lt;Resolve&gt;b__f(IBinding binding)&#xD;&#xA;   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()&#xD;&#xA;   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)&#xD;&#xA;   at Ninject.Web.WebApi.NinjectDependencyScope.GetService(Type serviceType)&#xD;&#xA;   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1&amp; activator)&#xD;&#xA;   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)&#xD;&#xA;   --- End of inner exception stack trace ---&#xD;&#xA;   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)&#xD;&#xA;   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)&#xD;&#xA;   at System.Web.Http.Dispatcher.HttpControllerDispatcher.&lt;SendAsync&gt;d__1.MoveNext()" time="2017-08-23T19:23:39.1697110Z" statusCode="500" webHostHtmlMessage="&lt;!DOCTYPE html&gt;&#xD;&#xA;&lt;html&gt;&#xD;&#xA;    &lt;head&gt;&#xD;&#xA;        &lt;title&gt;Error activating IUserDictionaryLookup&lt;br&gt;No matching bindings are available, and the type is not self-bindable.&lt;br&gt;Activation path:&lt;br&gt; &amp;nbsp;2) Injection of dependency IUserDictionaryLookup into parameter dictionaryLookup of constructor of type RussianAnalyzerController&lt;br&gt; &amp;nbsp;1) Request for RussianAnalyzerController&lt;br&gt;&lt;br&gt;Suggestions:&lt;br&gt; &amp;nbsp;1) Ensure that you have defined a binding for IUserDictionaryLookup.&lt;br&gt; &amp;nbsp;2) If the binding was defined in a module, ensure that the module has been loaded into the kernel.&lt;br&gt; &amp;nbsp;3) Ensure you have not accidentally created more than one kernel.&lt;br&gt; &amp;nbsp;4) If you are using constructor arguments, ensure that the parameter name matches the constructors parameter name.&lt;br&gt; &amp;nbsp;5) If you are using automatic module loading, ensure the search path and filters are correct.&lt;br&gt;&lt;/title&gt;&#xD;&#xA;        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;&#xD;&#xA;        &lt;style&gt;&#xD;&#xA;         body {font-family:&quot;Verdana&quot;;font-weight:normal;font-size: .7em;color:black;} &#xD;&#xA;         p {font-family:&quot;Verdana&quot;;font-weight:normal;color:black;margin-top: -5px}&#xD;&#xA;         b {font-family:&quot;Verdana&quot;;font-weight:bold;color:black;margin-top: -5px}&#xD;&#xA;         H1 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:18pt;color:red }&#xD;&#xA;         H2 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:14pt;color:maroon }&#xD;&#xA;         pre {font-family:&quot;Consolas&quot;,&quot;Lucida Console&quot;,Monospace;font-size:11pt;margin:0;padding:0.5em;line-height:14pt}&#xD;&#xA;         .marker {font-weight: bold; color: black;text-decoration: none;}&#xD;&#xA;         .version {color: gray;}&#xD;&#xA;         .error {margin-bottom: 10px;}&#xD;&#xA;         .expandable { text-decoration:underline; font-weight:bold; color:navy; cursor:hand; }&#xD;&#xA;         @media screen and (max-width: 639px) {&#xD;&#xA;          pre { width: 440px; overflow: auto; white-space: pre-wrap; word-wrap: break-word; }&#xD;&#xA;         }&#xD;&#xA;         @media screen and (max-width: 479px) {&#xD;&#xA;          pre { width: 280px; }&#xD;&#xA;         }&#xD;&#xA;        &lt;/style&gt;&#xD;&#xA;    &lt;/head&gt;&#xD;&#xA;&#xD;&#xA;    &lt;body bgcolor=&quot;white&quot;&gt;&#xD;&#xA;&#xD;&#xA;            &lt;span&gt;&lt;H1&gt;Server Error in '/' Application.&lt;hr width=100% size=1 color=silver&gt;&lt;/H1&gt;&#xD;&#xA;&#xD;&#xA;            &lt;h2&gt; &lt;i&gt;Error activating IUserDictionaryLookup&lt;br&gt;No matching bindings are available, and the type is not self-bindable.&lt;br&gt;Activation path:&lt;br&gt; &amp;nbsp;2) Injection of dependency IUserDictionaryLookup into parameter dictionaryLookup of constructor of type RussianAnalyzerController&lt;br&gt; &amp;nbsp;1) Request for RussianAnalyzerController&lt;br&gt;&lt;br&gt;Suggestions:&lt;br&gt; &amp;nbsp;1) Ensure that you have defined a binding for IUserDictionaryLookup.&lt;br&gt; &amp;nbsp;2) If the binding was defined in a module, ensure that the module has been loaded into the kernel.&lt;br&gt; &amp;nbsp;3) Ensure you have not accidentally created more than one kernel.&lt;br&gt; &amp;nbsp;4) If you are using constructor arguments, ensure that the parameter name matches the constructors parameter name.&lt;br&gt; &amp;nbsp;5) If you are using automatic module loading, ensure the search path and filters are correct.&lt;br&gt;&lt;/i&gt; &lt;/h2&gt;&lt;/span&gt;&#xD;&#xA;&#xD;&#xA;            &lt;font face=&quot;Arial, Helvetica, Geneva, SunSans-Regular, sans-serif &quot;&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Description: &lt;/b&gt;An error occurred when trying to create a controller of type 'RussianAnalyzerController'. Make sure that the controller has a parameterless public constructor.&#xD;&#xA;            &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Exception Details: &lt;/b&gt;Ninject.ActivationException: Error activating IUserDictionaryLookup&lt;br&gt;No matching bindings are available, and the type is not self-bindable.&lt;br&gt;Activation path:&lt;br&gt; &amp;nbsp;2) Injection of dependency IUserDictionaryLookup into parameter dictionaryLookup of constructor of type RussianAnalyzerController&lt;br&gt; &amp;nbsp;1) Request for RussianAnalyzerController&lt;br&gt;&lt;br&gt;Suggestions:&lt;br&gt; &amp;nbsp;1) Ensure that you have defined a binding for IUserDictionaryLookup.&lt;br&gt; &amp;nbsp;2) If the binding was defined in a module, ensure that the module has been loaded into the kernel.&lt;br&gt; &amp;nbsp;3) Ensure you have not accidentally created more than one kernel.&lt;br&gt; &amp;nbsp;4) If you are using constructor arguments, ensure that the parameter name matches the constructors parameter name.&lt;br&gt; &amp;nbsp;5) If you are using automatic module loading, ensure the search path and filters are correct.&lt;br&gt;&lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt;Source Error:&lt;/b&gt; &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;table width=100% bgcolor=&quot;#ffffcc&quot;&gt;&#xD;&#xA;               &lt;tr&gt;&#xD;&#xA;                  &lt;td&gt;&#xD;&#xA;                      &lt;code&gt;&#xD;&#xA;&#xD;&#xA;An unhandled exception was generated during the execution of the current web request. Information regarding the origin and location of the exception can be identified using the exception stack trace below.&lt;/code&gt;&#xD;&#xA;&#xD;&#xA;                  &lt;/td&gt;&#xD;&#xA;               &lt;/tr&gt;&#xD;&#xA;            &lt;/table&gt;&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt;Stack Trace:&lt;/b&gt; &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;table width=100% bgcolor=&quot;#ffffcc&quot;&gt;&#xD;&#xA;               &lt;tr&gt;&#xD;&#xA;                  &lt;td&gt;&#xD;&#xA;                      &lt;code&gt;&lt;pre&gt;&#xD;&#xA;&#xD;&#xA;[ActivationException: Error activating IUserDictionaryLookup&#xD;&#xA;No matching bindings are available, and the type is not self-bindable.&#xD;&#xA;Activation path:&#xD;&#xA;  2) Injection of dependency IUserDictionaryLookup into parameter dictionaryLookup of constructor of type RussianAnalyzerController&#xD;&#xA;  1) Request for RussianAnalyzerController&#xD;&#xA;&#xD;&#xA;Suggestions:&#xD;&#xA;  1) Ensure that you have defined a binding for IUserDictionaryLookup.&#xD;&#xA;  2) If the binding was defined in a module, ensure that the module has been loaded into the kernel.&#xD;&#xA;  3) Ensure you have not accidentally created more than one kernel.&#xD;&#xA;  4) If you are using constructor arguments, ensure that the parameter name matches the constructors parameter name.&#xD;&#xA;  5) If you are using automatic module loading, ensure the search path and filters are correct.&#xD;&#xA;]&#xD;&#xA;   Ninject.KernelBase.Resolve(IRequest request) +474&#xD;&#xA;   Ninject.Planning.Targets.Target`1.GetValue(Type service, IContext parent) +153&#xD;&#xA;   Ninject.Planning.Targets.Target`1.ResolveWithin(IContext parent) +746&#xD;&#xA;   Ninject.Activation.Providers.StandardProvider.GetValue(IContext context, ITarget target) +269&#xD;&#xA;   Ninject.Activation.Providers.&amp;lt;&amp;gt;c__DisplayClass4.&amp;lt;Create&amp;gt;b__2(ITarget target) +69&#xD;&#xA;   System.Linq.WhereSelectArrayIterator`2.MoveNext() +58&#xD;&#xA;   System.Linq.Buffer`1..ctor(IEnumerable`1 source) +200&#xD;&#xA;   System.Linq.Enumerable.ToArray(IEnumerable`1 source) +77&#xD;&#xA;   Ninject.Activation.Providers.StandardProvider.Create(IContext context) +847&#xD;&#xA;   Ninject.Activation.Context.ResolveInternal(Object scope) +218&#xD;&#xA;   Ninject.Activation.Context.Resolve() +277&#xD;&#xA;   Ninject.&amp;lt;&amp;gt;c__DisplayClass15.&amp;lt;Resolve&amp;gt;b__f(IBinding binding) +86&#xD;&#xA;   System.Linq.WhereSelectEnumerableIterator`2.MoveNext() +164&#xD;&#xA;   System.Linq.Enumerable.SingleOrDefault(IEnumerable`1 source) +164&#xD;&#xA;   Ninject.Web.WebApi.NinjectDependencyScope.GetService(Type serviceType) +157&#xD;&#xA;   System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1&amp;amp; activator) +68&#xD;&#xA;   System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType) +255&#xD;&#xA;&#xD;&#xA;[InvalidOperationException: An error occurred when trying to create a controller of type &amp;#39;RussianAnalyzerController&amp;#39;. Make sure that the controller has a parameterless public constructor.]&#xD;&#xA;   System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType) +725&#xD;&#xA;   System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request) +182&#xD;&#xA;   System.Web.Http.Dispatcher.&amp;lt;SendAsync&amp;gt;d__1.MoveNext() +547&#xD;&#xA;&lt;/pre&gt;&lt;/code&gt;&#xD;&#xA;&#xD;&#xA;                  &lt;/td&gt;&#xD;&#xA;               &lt;/tr&gt;&#xD;&#xA;            &lt;/table&gt;&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&#xD;&#xA;&#xD;&#xA;    &lt;/body&gt;&#xD;&#xA;&lt;/html&gt;&#xD;&#xA;">
+  <serverVariables>
+    <item name="ALL_HTTP">
+      <value string="HTTP_CONNECTION:keep-alive&#xD;&#xA;HTTP_ACCEPT:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8&#xD;&#xA;HTTP_ACCEPT_ENCODING:gzip, deflate, br&#xD;&#xA;HTTP_ACCEPT_LANGUAGE:en-US,en;q=0.8,ru;q=0.6&#xD;&#xA;HTTP_HOST:localhost:61414&#xD;&#xA;HTTP_REFERER:http://localhost:61414/&#xD;&#xA;HTTP_USER_AGENT:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36&#xD;&#xA;HTTP_UPGRADE_INSECURE_REQUESTS:1&#xD;&#xA;" />
+    </item>
+    <item name="ALL_RAW">
+      <value string="Connection: keep-alive&#xD;&#xA;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8&#xD;&#xA;Accept-Encoding: gzip, deflate, br&#xD;&#xA;Accept-Language: en-US,en;q=0.8,ru;q=0.6&#xD;&#xA;Host: localhost:61414&#xD;&#xA;Referer: http://localhost:61414/&#xD;&#xA;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36&#xD;&#xA;Upgrade-Insecure-Requests: 1&#xD;&#xA;" />
+    </item>
+    <item name="APPL_MD_PATH">
+      <value string="/LM/W3SVC/2/ROOT" />
+    </item>
+    <item name="APPL_PHYSICAL_PATH">
+      <value string="C:\Users\noahe\Documents\Work\WebService\Morpher.WebApi\" />
+    </item>
+    <item name="AUTH_TYPE">
+      <value string="" />
+    </item>
+    <item name="AUTH_USER">
+      <value string="" />
+    </item>
+    <item name="AUTH_PASSWORD">
+      <value string="*****" />
+    </item>
+    <item name="LOGON_USER">
+      <value string="" />
+    </item>
+    <item name="REMOTE_USER">
+      <value string="" />
+    </item>
+    <item name="CERT_COOKIE">
+      <value string="" />
+    </item>
+    <item name="CERT_FLAGS">
+      <value string="" />
+    </item>
+    <item name="CERT_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="CERT_SERIALNUMBER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CERT_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CONTENT_LENGTH">
+      <value string="0" />
+    </item>
+    <item name="CONTENT_TYPE">
+      <value string="" />
+    </item>
+    <item name="GATEWAY_INTERFACE">
+      <value string="CGI/1.1" />
+    </item>
+    <item name="HTTPS">
+      <value string="off" />
+    </item>
+    <item name="HTTPS_KEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SECRETKEYSIZE">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_ISSUER">
+      <value string="" />
+    </item>
+    <item name="HTTPS_SERVER_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="INSTANCE_ID">
+      <value string="2" />
+    </item>
+    <item name="INSTANCE_META_PATH">
+      <value string="/LM/W3SVC/2" />
+    </item>
+    <item name="LOCAL_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="PATH_INFO">
+      <value string="/russian/declension" />
+    </item>
+    <item name="PATH_TRANSLATED">
+      <value string="C:\Users\noahe\Documents\Work\WebService\Morpher.WebApi\russian\declension" />
+    </item>
+    <item name="QUERY_STRING">
+      <value string="s=%D0%9F%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8C" />
+    </item>
+    <item name="REMOTE_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_HOST">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_PORT">
+      <value string="54592" />
+    </item>
+    <item name="REQUEST_METHOD">
+      <value string="GET" />
+    </item>
+    <item name="SCRIPT_NAME">
+      <value string="/russian/declension" />
+    </item>
+    <item name="SERVER_NAME">
+      <value string="localhost" />
+    </item>
+    <item name="SERVER_PORT">
+      <value string="61414" />
+    </item>
+    <item name="SERVER_PORT_SECURE">
+      <value string="0" />
+    </item>
+    <item name="SERVER_PROTOCOL">
+      <value string="HTTP/1.1" />
+    </item>
+    <item name="SERVER_SOFTWARE">
+      <value string="Microsoft-IIS/10.0" />
+    </item>
+    <item name="URL">
+      <value string="/russian/declension" />
+    </item>
+    <item name="HTTP_CONNECTION">
+      <value string="keep-alive" />
+    </item>
+    <item name="HTTP_ACCEPT">
+      <value string="text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8" />
+    </item>
+    <item name="HTTP_ACCEPT_ENCODING">
+      <value string="gzip, deflate, br" />
+    </item>
+    <item name="HTTP_ACCEPT_LANGUAGE">
+      <value string="en-US,en;q=0.8,ru;q=0.6" />
+    </item>
+    <item name="HTTP_HOST">
+      <value string="localhost:61414" />
+    </item>
+    <item name="HTTP_REFERER">
+      <value string="http://localhost:61414/" />
+    </item>
+    <item name="HTTP_USER_AGENT">
+      <value string="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36" />
+    </item>
+    <item name="HTTP_UPGRADE_INSECURE_REQUESTS">
+      <value string="1" />
+    </item>
+  </serverVariables>
+  <queryString>
+    <item name="s">
+      <value string="Пользователь" />
+    </item>
+  </queryString>
+</error>

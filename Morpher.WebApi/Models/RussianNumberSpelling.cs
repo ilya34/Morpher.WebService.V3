@@ -5,6 +5,12 @@
     [DataContract(Name = "PropisResult")]
     public class RussianNumberSpelling
     {
+        public RussianNumberSpelling(RussianDeclensionForms number, RussianDeclensionForms unit)
+        {
+            NumberDeclension = number;
+            UnitDeclension = unit;
+        }
+
         [DataMember(Name = "n", Order = 0)]
         public RussianDeclensionForms NumberDeclension { get; set; }
 
