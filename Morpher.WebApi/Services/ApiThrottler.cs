@@ -4,13 +4,11 @@ namespace Morpher.WebService.V3.Services
 {
     using System;
     using System.Net.Http;
-
+    using Microsoft.Owin;
     using Morpher.WebService.V3.Extensions;
     using Morpher.WebService.V3.Models;
     using Morpher.WebService.V3.Services.Interfaces;
     using Morpher.WebService.V3.Shared.Models.Exceptions;
-
-    using Ninject;
 
     public class ApiThrottler : IApiThrottler
     {
@@ -20,7 +18,7 @@ namespace Morpher.WebService.V3.Services
 
         private readonly DateTimeOffset absoluteExpiration = new DateTimeOffset(DateTime.Today.AddDays(1));
 
-        public ApiThrottler(IMorpherDatabase morpherDatabase, [Named("ApiThrottler")] IMorpherCache morpherCache)
+        public ApiThrottler(IMorpherDatabase morpherDatabase, IMorpherCache morpherCache)
         {
             this.morpherDatabase = morpherDatabase;
             this.morpherCache = morpherCache;
@@ -76,6 +74,22 @@ namespace Morpher.WebService.V3.Services
             }
 
             return Decrement(morpherCacheObject);
+        }
+
+        public ApiThrottlingResult Throttle(IOwinRequest request)
+        {        
+            Guid token;
+            if (Guid.TryParse(request.Get<string>("token"), out token))
+            {
+                //TODO: remove this;
+                bool temp;
+                return Throttle(token, out temp);
+            }
+            else
+            {
+                string ip = request.RemoteIpAddress;
+                return Throttle(ip);
+            }
         }
 
         /// <summary>

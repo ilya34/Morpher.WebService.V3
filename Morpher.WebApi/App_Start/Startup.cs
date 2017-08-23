@@ -5,13 +5,12 @@ using Owin;
 
 namespace Morpher.WebService.V3.App_Start
 {
-    using Middlewares;
 
     public class Startup
     {
         public void Configuration(IAppBuilder app)
         {
-            app.Use<ThrottlingMiddleware>();
+            app.UseAutofacMiddleware(AutofacInit.Container);
         }
     }
 }

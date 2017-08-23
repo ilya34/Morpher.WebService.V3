@@ -2,7 +2,7 @@
 {
     using System;
     using System.Net.Http;
-
+    using Microsoft.Owin;
     using Morpher.WebService.V3.Models;
     using Morpher.WebService.V3.Services.Interfaces;
 
@@ -17,6 +17,11 @@
         {
             paidUser = true;
             return ApiThrottlingResult.Success;
+        }
+
+        public ApiThrottlingResult Throttle(IOwinRequest request)
+        {
+            throw new NotImplementedException();
         }
 
         public ApiThrottlingResult Throttle(HttpRequestMessage httpRequest, out bool paidUser)
