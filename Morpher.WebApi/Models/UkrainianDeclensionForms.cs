@@ -7,6 +7,21 @@
     [XmlType("single-number-forms")]
     public class UkrainianDeclensionForms
     {
+        public UkrainianDeclensionForms()
+        {
+        }
+
+        public UkrainianDeclensionForms(Ukrainian.DeclensionForms serviceResult)
+        {
+            Nominative = serviceResult.Nominative;
+            Genitive = serviceResult.Genitive;
+            Dative = serviceResult.Dative;
+            Accusative = serviceResult.Accusative;
+            Instrumental = serviceResult.Instrumental;
+            Prepositional = serviceResult.Prepositional;
+            Vocative = serviceResult.Vocative;
+        }
+
         [DataMember(Order = 0, Name = "Н", EmitDefaultValue = false)]
         [XmlElement("И")]
         public string Nominative { get; set; }
@@ -34,18 +49,5 @@
         [DataMember(Order = 6, Name = "К", EmitDefaultValue = false)]
         [XmlElement("К")]
         public string Vocative { get; set; }
-
-        public void AddOrUpdate(UkrainianDeclensionForms form)
-        {
-            var props = typeof(UkrainianDeclensionForms).GetProperties();
-            foreach (var firstProp in props)
-            {
-                var obj = firstProp.GetValue(form);
-                if (obj != null)
-                {
-                    firstProp.SetValue(this, obj);
-                }
-            }
-        }
     }
 }

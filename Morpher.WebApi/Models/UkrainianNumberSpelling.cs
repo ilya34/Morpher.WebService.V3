@@ -5,6 +5,16 @@
     [DataContract(Name = "PropisUkrResult")]
     public class UkrainianNumberSpelling
     {
+        public UkrainianNumberSpelling()
+        {
+        }
+
+        public UkrainianNumberSpelling(UkrainianDeclensionForms number, UkrainianDeclensionForms unit)
+        {
+            NumberDeclension = number;
+            UnitDeclension = unit;
+        }
+
         [DataMember(Name = "n", Order = 0)]
         public UkrainianDeclensionForms NumberDeclension { get; set; }
 

@@ -6,12 +6,15 @@
     using Interfaces;
     using Models;
     using Models.Exceptions;
+    using Russian;
+    using AdjectiveGenders = Models.AdjectiveGenders;
+    using DeclensionFlags = Models.DeclensionFlags;
 
     public class RussianWebAnalyzer : IRussianAnalyzer
     {
-        private readonly MorpherClient _client;
+        private readonly Client _client;
 
-        public RussianWebAnalyzer(MorpherClient client)
+        public RussianWebAnalyzer(Russian.Client client)
         {
             _client = client;
         }
@@ -20,7 +23,7 @@
         {
             try
             {
-                return new RussianDeclensionResult(_client.Russian.Parse(s, flags.ToServiceFlags()));
+                return new RussianDeclensionResult(_client.Parse(s, flags.ToServiceFlags()));
             }
             catch (Exception exc)
             {
@@ -33,7 +36,7 @@
             try
             {
                 //TODO: привести к одному типу
-                var result = _client.Russian.Spell((uint) n, unit);
+                var result = _client.Spell((uint) n, unit);
                 return new RussianNumberSpelling(
                     new RussianDeclensionForms(result.NumberDeclension),
                     new RussianDeclensionForms(result.UnitDeclension));
@@ -48,7 +51,7 @@
         {
             try
             {
-                return new AdjectiveGenders(_client.Russian.AdjectiveGenders(s));
+                return new AdjectiveGenders(_client.AdjectiveGenders(s));
             }
             catch (Exception exc)
             {
@@ -60,7 +63,7 @@
         {
             try
             {
-                return _client.Russian.Adjectivize(s);
+                return _client.Adjectivize(s);
             }
             catch (Exception exc)
             {

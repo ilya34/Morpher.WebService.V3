@@ -246,6 +246,7 @@
     <Compile Include="Models\ServiceErrorMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Interfaces\IMorpherLog.cs" />
+    <Compile Include="Services\UkrainianWebAnalyzer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

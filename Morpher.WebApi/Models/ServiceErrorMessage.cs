@@ -10,8 +10,8 @@
     { 
         public ServiceErrorMessage(MorpherException exception)
         {
-            this.Code = exception.Code;
-            this.Message = exception.Message;
+            Code = exception.Code;
+            Message = exception.Message;
         }
 
         [DataMember(Name = "code", Order = 0)]
@@ -37,7 +37,7 @@
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return this.Code == other.Code && string.Equals(this.Message, other.Message);
+            return Code == other.Code && string.Equals(Message, other.Message);
         }
 
         [SuppressMessage("ReSharper", "StyleCop.SA1503")]
@@ -56,7 +56,7 @@
         {
             unchecked
             {
-                return (this.Code * 397) ^ (this.Message != null ? this.Message.GetHashCode() : 0);
+                return (Code * 397) ^ (Message != null ? Message.GetHashCode() : 0);
             }
         }
     }

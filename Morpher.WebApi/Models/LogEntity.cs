@@ -15,14 +15,14 @@
             string userAgent,
             int errorCode)
         {
-            this.RemoteAddress = remoteAddress;
-            this.QueryString = queryString;
-            this.QuerySource = querySource;
-            this.DateTimeUTC = dateTime;
-            this.WebServiceToken = webServiceToken;
-            this.UserId = userId;
-            this.UserAgent = userAgent;
-            this.ErrorCode = errorCode;
+            RemoteAddress = remoteAddress;
+            QueryString = queryString;
+            QuerySource = querySource;
+            DateTimeUTC = dateTime;
+            WebServiceToken = webServiceToken;
+            UserId = userId;
+            UserAgent = userAgent;
+            ErrorCode = errorCode;
         }
 
         public string RemoteAddress { get; set; }

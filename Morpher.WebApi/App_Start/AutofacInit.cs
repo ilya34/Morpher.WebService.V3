@@ -4,8 +4,6 @@
     using System.Reflection;
     using System.Web.Http;
     using Autofac;
-    using Autofac.Core;
-    using Autofac.Features.AttributeFilters;
     using Autofac.Integration.WebApi;
     using Filters;
     using Helpers;
@@ -48,10 +46,19 @@
                 .SingleInstance()
                 .WithParameter("attributeType", typeof(LogThisAttribute));
 
+            MorpherClient client = new MorpherClient();
+
             builder.RegisterType<MorpherLog>().As<IMorpherLog>();
             builder.RegisterType<DatabaseLog>().As<IDatabaseLog>()
                 .WithParameter("connectionString", connectionString);
-            builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>().WithParameter("client", new MorpherClient());
+
+            builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>()
+                .WithParameter("client", client.Russian)
+                .SingleInstance();
+            builder.RegisterType<UkrainianWebAnalyzer>().As<IUkrainianAnalyzer>()
+                .WithParameter("client", client.Ukrainian)
+                .SingleInstance();
+
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()
