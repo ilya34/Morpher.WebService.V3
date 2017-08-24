@@ -55,7 +55,7 @@
         {
             string externalAnalyzer = ConfigurationManager.AppSettings.Get("ExternalAnalyzer");
 
-            if (externalAnalyzer != null)
+            if (externalAnalyzer == null)
             {
                 MorpherClient client = new MorpherClient();
                 builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>()
