@@ -1,5 +1,6 @@
 ﻿namespace Morpher.WebService.V3.App_Start
 {
+    using System;
     using System.Configuration;
     using System.Reflection;
     using System.Web.Http;
@@ -33,8 +34,65 @@
 
         private static void RegisterServices(ContainerBuilder builder)
         {
+
+            bool runAsLocalService = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("RunAsLocalService"));
+            
+
+            if (runAsLocalService)
+            {
+                RegisterLocalOnlyServices(builder);
+            }
+            else
+            {
+                RegisterGlobalOnlyServices(builder);
+            }
+            
+            RegisterSharedServices(builder);
+            RegisterAnalyzers(builder);       
+        }
+
+        private static void RegisterAnalyzers(ContainerBuilder builder)
+        {
+            string externalAnalyzer = ConfigurationManager.AppSettings.Get("ExternalAnalyzer");
+
+            if (externalAnalyzer != null)
+            {
+                MorpherClient client = new MorpherClient();
+                builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>()
+                    .WithParameter("client", client.Russian)
+                    .SingleInstance();
+                builder.RegisterType<UkrainianWebAnalyzer>().As<IUkrainianAnalyzer>()
+                    .WithParameter("client", client.Ukrainian)
+                    .SingleInstance();
+            }
+            else
+            {
+                // TODO: Lib load
+            }
+        }
+
+        private static void RegisterSharedServices(ContainerBuilder builder)
+        {
+            builder.RegisterType<MorpherCache>()
+                .As<IMorpherCache>()
+                .WithParameter("name", "ApiThrottler")
+                .SingleInstance();
+
+            // Filters
+            builder.Register(context => new MorpherExceptionFilterAttribute())
+                .AsWebApiExceptionFilterFor<ApiController>().SingleInstance();
+        }
+
+        private static void RegisterLocalOnlyServices(ContainerBuilder builder)
+        {
+            
+        }
+
+        private static void RegisterGlobalOnlyServices(ContainerBuilder builder)
+        {
             string connectionString = ConfigurationManager.ConnectionStrings["MorpherDatabase"].ConnectionString;
 
+            // Используются в middlewares для трэкинга нужных URL
             builder.RegisterType<AttributeUrls>()
                 .As<IAttributeUrls>()
                 .Keyed<IAttributeUrls>("ApiThrottler")
@@ -46,35 +104,19 @@
                 .SingleInstance()
                 .WithParameter("attributeType", typeof(LogThisAttribute));
 
-            MorpherClient client = new MorpherClient();
-
+            // Используется в LoggingMiddleware
             builder.RegisterType<MorpherLog>().As<IMorpherLog>();
             builder.RegisterType<DatabaseLog>().As<IDatabaseLog>()
                 .WithParameter("connectionString", connectionString);
 
-            builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>()
-                .WithParameter("client", client.Russian)
-                .SingleInstance();
-            builder.RegisterType<UkrainianWebAnalyzer>().As<IUkrainianAnalyzer>()
-                .WithParameter("client", client.Ukrainian)
-                .SingleInstance();
-
+            // Исплользуется в ThrottlingMIddleware
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
-            builder.RegisterType<MorpherCache>()
-                .As<IMorpherCache>()
-                .WithParameter("name", "ApiThrottler")
-                .SingleInstance();
             builder.RegisterType<MorpherDatabase>().As<IMorpherDatabase>()
                 .WithParameter("connectionString", connectionString);
-
 
             // Middlewares
             builder.RegisterType<ThrottlingMiddleware>();
             builder.RegisterType<LoggingMiddleware>();
-
-            // Filters
-            builder.Register(context => new MorpherExceptionFilterAttribute())
-                .AsWebApiExceptionFilterFor<ApiController>().SingleInstance();
         }
     }
 }
