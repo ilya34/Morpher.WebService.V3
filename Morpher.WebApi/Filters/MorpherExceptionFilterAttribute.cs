@@ -8,12 +8,13 @@
     using System.Text;
     using System.Web.Http.Filters;
     using System.Xml;
+    using Autofac.Integration.WebApi;
     using Extensions;
     using Models.Exceptions;
     using Newtonsoft.Json;
     using Formatting = Newtonsoft.Json.Formatting;
 
-    public class MorpherExceptionFilterAttribute : ExceptionFilterAttribute
+    public class MorpherExceptionFilterAttribute : ExceptionFilterAttribute, IAutofacExceptionFilter
     {
         public override void OnException(HttpActionExecutedContext context)
         {

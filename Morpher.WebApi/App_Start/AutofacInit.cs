@@ -5,6 +5,7 @@
     using System.Web.Http;
     using Autofac;
     using Autofac.Integration.WebApi;
+    using Filters;
     using Middlewares;
     using Services;
     using Services.Interfaces;
@@ -42,6 +43,10 @@
 
             // Middlewares
             builder.RegisterType<ThrottlingMiddleware>();
+
+            // Filters
+            builder.Register(context => new MorpherExceptionFilterAttribute())
+                .AsWebApiExceptionFilterFor<ApiController>().SingleInstance();
         }
     }
 }
