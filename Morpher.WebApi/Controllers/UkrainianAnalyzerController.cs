@@ -20,20 +20,17 @@
 
         private readonly IMorpherLog morpherLog;
 
-        private readonly IUkrainianDictService ukrainianDictService;
 
         private readonly bool isLocalService;
 
         public UkrainianAnalyzerController(
             IUkrainianAnalyzer analyzer,
             IApiThrottler apiThrottler,
-            IMorpherLog morpherLog,
-            IUkrainianDictService ukrainianDictService)
+            IMorpherLog morpherLog)
         {
             this.analyzer = analyzer;
             this.apiThrottler = apiThrottler;
             this.morpherLog = morpherLog;
-            this.ukrainianDictService = ukrainianDictService;
             this.isLocalService = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
         }
 
@@ -41,70 +38,72 @@
         [HttpGet]
         public HttpResponseMessage Declension(string s, DeclensionFlags? flags = null, ResponseFormat? format = null)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(s))
-                {
-                    throw new RequiredParameterIsNotSpecified(nameof(s));
-                }
+            throw new NotImplementedException();
+            //try
+            //{
+            //    if (string.IsNullOrWhiteSpace(s))
+            //    {
+            //        throw new RequiredParameterIsNotSpecified(nameof(s));
+            //    }
 
-                bool paidUser;
-                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
+            //    bool paidUser;
+            //    ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
 
-                if (result != ApiThrottlingResult.Success)
-                {
-                    throw result.GenerateMorpherException();
-                }
+            //    if (result != ApiThrottlingResult.Success)
+            //    {
+            //        throw result.GenerateMorpherException();
+            //    }
 
-                UkrainianDeclensionResult declensionResult =
-                    this.analyzer.Declension(s, this.Request.GetToken(), flags, paidUser);
+            //    UkrainianDeclensionResult declensionResult =
+            //        this.analyzer.Declension(s, this.Request.GetToken(), flags, paidUser);
 
-                this.morpherLog.Log(this.Request);
-                return this.Request.CreateResponse(HttpStatusCode.OK, declensionResult, format);
-            }
-            catch (MorpherException exception)
-            {
-                this.morpherLog.Log(this.Request, exception);
-                return this.Request.CreateResponse(
-                    HttpStatusCode.BadRequest,
-                    new ServiceErrorMessage(exception),
-                    format);
-            }
+            //    this.morpherLog.Log(this.Request);
+            //    return this.Request.CreateResponse(HttpStatusCode.OK, declensionResult, format);
+            //}
+            //catch (MorpherException exception)
+            //{
+            //    this.morpherLog.Log(this.Request, exception);
+            //    return this.Request.CreateResponse(
+            //        HttpStatusCode.BadRequest,
+            //        new ServiceErrorMessage(exception),
+            //        format);
+            //}
         }
 
         [Route("spell")]
         [HttpGet]
         public HttpResponseMessage Spell(int n, string unit, ResponseFormat? format = null)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(unit))
-                {
-                    throw new RequiredParameterIsNotSpecified(nameof(unit));
-                }
+            throw new NotImplementedException();
+            //try
+            //{
+            //    if (string.IsNullOrWhiteSpace(unit))
+            //    {
+            //        throw new RequiredParameterIsNotSpecified(nameof(unit));
+            //    }
 
-                bool paidUser;
-                ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
+            //    bool paidUser;
+            //    ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
 
-                if (result != ApiThrottlingResult.Success)
-                {
-                    throw result.GenerateMorpherException();
-                }
+            //    if (result != ApiThrottlingResult.Success)
+            //    {
+            //        throw result.GenerateMorpherException();
+            //    }
 
-                UkrainianNumberSpelling numberSpelling =
-                    this.analyzer.Spell(n, unit);
+            //    UkrainianNumberSpelling numberSpelling =
+            //        this.analyzer.Spell(n, unit);
 
-                this.morpherLog.Log(this.Request);
-                return this.Request.CreateResponse(HttpStatusCode.OK, numberSpelling, format);
-            }
-            catch (MorpherException exception)
-            {
-                this.morpherLog.Log(this.Request, exception);
-                return this.Request.CreateResponse(
-                    HttpStatusCode.BadRequest,
-                    new ServiceErrorMessage(exception),
-                    format);
-            }
+            //    this.morpherLog.Log(this.Request);
+            //    return this.Request.CreateResponse(HttpStatusCode.OK, numberSpelling, format);
+            //}
+            //catch (MorpherException exception)
+            //{
+            //    this.morpherLog.Log(this.Request, exception);
+            //    return this.Request.CreateResponse(
+            //        HttpStatusCode.BadRequest,
+            //        new ServiceErrorMessage(exception),
+            //        format);
+            //}
         }
 
         [Route("set_correction")]
@@ -127,71 +126,74 @@
             string к_м = null,
             ResponseFormat? format = null)
         {
-            if (!this.isLocalService)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
-            }
+            throw new NotImplementedException();
+            //if (!this.isLocalService)
+            //{
+            //    return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
+            //}
 
-            if (string.IsNullOrWhiteSpace(н))
-            {
-                return this.Request.CreateResponse(
-                    HttpStatusCode.BadRequest,
-                    new ServiceErrorMessage(new RequiredParameterIsNotSpecified(nameof(н))),
-                    format);
-            }
+            //if (string.IsNullOrWhiteSpace(н))
+            //{
+            //    return this.Request.CreateResponse(
+            //        HttpStatusCode.BadRequest,
+            //        new ServiceErrorMessage(new RequiredParameterIsNotSpecified(nameof(н))),
+            //        format);
+            //}
 
-            UkrainianEntry ukrainianEntry = new UkrainianEntry()
-            {
-                Singular = new UkrainianDeclensionForms()
-                {
-                    Nominative = н,
-                    Dative = д,
-                    Genitive = р,
-                    Instrumental = о,
-                    Accusative = з,
-                    Prepositional = м,
-                    Vocative = к
-                },
-                Plural = new UkrainianDeclensionForms()
-                {
-                    Nominative = н_м,
-                    Dative = д_м,
-                    Genitive = р_м,
-                    Instrumental = о_м,
-                    Accusative = з_м,
-                    Prepositional = м_м,
-                    Vocative = к_м
-                }
-            };
+            //UkrainianEntry ukrainianEntry = new UkrainianEntry()
+            //{
+            //    Singular = new UkrainianDeclensionForms()
+            //    {
+            //        Nominative = н,
+            //        Dative = д,
+            //        Genitive = р,
+            //        Instrumental = о,
+            //        Accusative = з,
+            //        Prepositional = м,
+            //        Vocative = к
+            //    },
+            //    Plural = new UkrainianDeclensionForms()
+            //    {
+            //        Nominative = н_м,
+            //        Dative = д_м,
+            //        Genitive = р_м,
+            //        Instrumental = о_м,
+            //        Accusative = з_м,
+            //        Prepositional = м_м,
+            //        Vocative = к_м
+            //    }
+            //};
 
-            this.ukrainianDictService.AddOrUpdate(ukrainianEntry);
+            //this.ukrainianDictService.AddOrUpdate(ukrainianEntry);
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, true, format);
+            //return this.Request.CreateResponse(HttpStatusCode.OK, true, format);
         }
 
         [Route("remove_correction")]
         [HttpPost]
         public HttpResponseMessage RemoveCorrection(string s, ResponseFormat? format = null)
         {
-            if (!this.isLocalService)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
-            }
+            throw new NotImplementedException();
+            //if (!this.isLocalService)
+            //{
+            //    return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
+            //}
 
-            this.ukrainianDictService.Remove(s);
-            return this.Request.CreateResponse(HttpStatusCode.Forbidden, true, format);
+            //this.ukrainianDictService.Remove(s);
+            //return this.Request.CreateResponse(HttpStatusCode.Forbidden, true, format);
         }
 
         [Route("get_all_corrections")]
         [HttpGet]
         public HttpResponseMessage GetAllCorrections(ResponseFormat? format = null)
         {
-            if (!this.isLocalService)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
-            }
+            throw new NotImplementedException();
+            //if (!this.isLocalService)
+            //{
+            //    return this.Request.CreateResponse(HttpStatusCode.Forbidden, false, format);
+            //}
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, this.ukrainianDictService.GetAll(), format);
+            //return this.Request.CreateResponse(HttpStatusCode.OK, this.ukrainianDictService.GetAll(), format);
         }
     }
 }

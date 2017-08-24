@@ -2,12 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.Diagnostics.CodeAnalysis;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
-    using Filters;
     using Helpers;
     using Models.Exceptions;
     using Morpher.WebService.V3.Extensions;
@@ -28,97 +26,55 @@
         public bool IsLocalService { get; set; }
 
         [Route("declension", Name = "RussianDeclension")]
-        [HttpGet]
         [ThrottleThis]
         [LogThis]
+        [HttpGet]
         public HttpResponseMessage Declension(string s, DeclensionFlags? flags = null, ResponseFormat? format = null)
         {
-                if (string.IsNullOrWhiteSpace(s))
-                {
-                    throw new RequiredParameterIsNotSpecified(nameof(s));
-                }
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                throw new RequiredParameterIsNotSpecified(nameof(s));
+            }
 
-                RussianDeclensionResult declensionResult =
-                    _analyzer.Declension(s, flags);
+            RussianDeclensionResult declensionResult =
+                _analyzer.Declension(s, flags);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, declensionResult, format);
+            return this.Request.CreateResponse(HttpStatusCode.OK, declensionResult, format);
         }
 
         [Route("spell")]
-        [HttpGet]
         [ThrottleThis]
+        [LogThis]
+        [HttpGet]
         public HttpResponseMessage Spell(int n, string unit, ResponseFormat? format = null)
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    if (string.IsNullOrWhiteSpace(unit))
-            //    {
-            //        throw new RequiredParameterIsNotSpecified(nameof(unit));
-            //    }
+            if (string.IsNullOrWhiteSpace(unit))
+            {
+                throw new RequiredParameterIsNotSpecified(nameof(unit));
+            }
 
-            //    bool paidUser;
-            //    ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
-
-            //    if (result != ApiThrottlingResult.Success)
-            //    {
-            //        throw result.GenerateMorpherException();
-            //    }
-
-            //    RussianNumberSpelling numberSpelling = this.analyzer.Spell(n, unit);
-
-            //    this.morpherLog.Log(this.Request);
-            //    return this.Request.CreateResponse(HttpStatusCode.OK, numberSpelling, format);
-            //}
-            //catch (MorpherException exception)
-            //{
-            //    this.morpherLog.Log(this.Request, exception);
-            //    return this.Request.CreateResponse(
-            //        HttpStatusCode.BadRequest,
-            //        new ServiceErrorMessage(exception),
-            //        format);
-            //}
+            return Request.CreateResponse(HttpStatusCode.OK, _analyzer.Spell(n, unit), format);
         }
 
         [Route("adjectivize")]
-        [HttpGet]
         [ThrottleThis]
+        [LogThis]
+        [HttpGet]
         public HttpResponseMessage Adjectivize(string s, ResponseFormat? format = null)
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    if (string.IsNullOrWhiteSpace(s))
-            //    {
-            //        throw new RequiredParameterIsNotSpecified(nameof(s));
-            //    }
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                throw new RequiredParameterIsNotSpecified(nameof(s));
+            }
 
-            //    bool paidUser;
-            //    ApiThrottlingResult result = this.apiThrottler.Throttle(this.Request, out paidUser);
-
-            //    if (result != ApiThrottlingResult.Success)
-            //    {
-            //        throw result.GenerateMorpherException();
-            //    }
-
-            //    List<string> adjectives = this.analyzer.Adjectives(s);
-
-            //    this.morpherLog.Log(this.Request);
-            //    return this.Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
-            //}
-            //catch (MorpherException exception)
-            //{
-            //    this.morpherLog.Log(this.Request, exception);
-            //    return this.Request.CreateResponse(
-            //        HttpStatusCode.BadRequest,
-            //        new ServiceErrorMessage(exception),
-            //        format);
-            //}
+            List<string> adjectives = _analyzer.Adjectives(s);
+            return this.Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
         }
 
         [Route("genders")]
-        [HttpGet]
         [ThrottleThis]
+        [LogThis]
+        [HttpGet]
         public HttpResponseMessage AdjectiveGenders(string s, ResponseFormat? format = null)
         {
             throw new NotImplementedException();
