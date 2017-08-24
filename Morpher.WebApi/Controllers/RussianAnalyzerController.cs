@@ -8,9 +8,9 @@
     using System.Web.Http;
     using Helpers;
     using Models.Exceptions;
-    using Morpher.WebService.V3.Extensions;
-    using Morpher.WebService.V3.Models;
-    using Morpher.WebService.V3.Services.Interfaces;
+    using Extensions;
+    using Models;
+    using Services.Interfaces;
 
     [RoutePrefix("russian")]
     public class RussianAnalyzerController : ApiController
@@ -20,7 +20,7 @@
         public RussianAnalyzerController(
             IRussianAnalyzer analyzer)
         {
-            this._analyzer = analyzer;
+            _analyzer = analyzer;
         }
 
         public bool IsLocalService { get; set; }
@@ -39,7 +39,7 @@
             RussianDeclensionResult declensionResult =
                 _analyzer.Declension(s, flags);
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, declensionResult, format);
+            return Request.CreateResponse(HttpStatusCode.OK, declensionResult, format);
         }
 
         [Route("spell")]
@@ -68,7 +68,7 @@
             }
 
             List<string> adjectives = _analyzer.Adjectives(s);
-            return this.Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
+            return Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
         }
 
         [Route("genders")]

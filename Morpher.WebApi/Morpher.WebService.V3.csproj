@@ -184,7 +184,6 @@
     <Compile Include="Helpers\AttributeUrls.cs" />
     <Compile Include="Middlewares\ThrottlingMiddleware.cs" />
     <Compile Include="Models\CacheResetPostModel.cs" />
-    <Compile Include="Models\Correction.cs" />
     <Compile Include="Models\DeclensionFlags.cs" />
     <Compile Include="Models\Exceptions\ExceededDailyLimitException.cs" />
     <Compile Include="Models\Exceptions\InvalidTokenFormat.cs" />
@@ -205,14 +204,12 @@
     <Compile Include="Models\RussianNumberSpelling.cs" />
     <Compile Include="Models\UkrainianDeclensionForms.cs" />
     <Compile Include="Models\UkrainianDeclensionResult.cs" />
-    <Compile Include="Models\UkrainianEntry.cs" />
     <Compile Include="Models\UkrainianNumberSpelling.cs" />
     <Compile Include="Models\UserCorrection.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UserCorrection.dbml</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserCorrectionEntity.cs" />
     <Compile Include="Services\DatabaseUserDictionary.cs" />
     <Compile Include="Services\Interfaces\IExceptionDictionary.cs" />
     <Compile Include="Services\Interfaces\IRussianAnalyzer.cs" />
