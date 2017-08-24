@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
+    using Microsoft.Owin;
     using Models.Exceptions;
     using Morpher.WebService.V3.Extensions;
     using Morpher.WebService.V3.Models;
@@ -12,19 +13,42 @@
 
     public class MorpherLog : IMorpherLog
     {
-        private readonly IDatabaseLog database;
+        private readonly IDatabaseLog _database;
 
-        private readonly IMorpherCache morpherCache;
+        private readonly IMorpherCache _morpherCache;
 
-        private readonly ConcurrentQueue<LogEntity> logQueue = new ConcurrentQueue<LogEntity>();
+        private readonly ConcurrentQueue<LogEntity> _logQueue = new ConcurrentQueue<LogEntity>();
 
         public MorpherLog(IDatabaseLog database, IMorpherCache morpherCache)
         {
-            this.database = database;
-            this.morpherCache = morpherCache;
+            _database = database;
+            _morpherCache = morpherCache;
         }
 
+        public void Log(IOwinContext context)
+        {
+            string remoteAddress = context.Request.RemoteIpAddress;
+            string queryString = context.Request.QueryString.ToString();
+            string urlPath = context.Request.Path.ToString();
+            string userAgent = context.Request.Headers.Get("User-Agent");
+            int errorCode;
+            int.TryParse(context.Response.Headers.Get("Error-code"), out errorCode);
 
+            Guid? token = null;
+            MorpherCacheObject cacheObject = null;
+            if (errorCode != new InvalidTokenFormat().Code)
+            {
+                token = context.Request.GetToken();
+
+                if (token != null)
+                {
+                    cacheObject = (MorpherCacheObject) _morpherCache.Get(token.ToString().ToLowerInvariant());
+                }
+            }
+
+            _logQueue.Enqueue(
+                new LogEntity(remoteAddress, queryString, urlPath, DateTime.UtcNow, token, cacheObject?.UserId, userAgent, errorCode));
+        }
 
         public void Log(HttpRequestMessage message, MorpherException exception = null)
         {
@@ -56,17 +80,17 @@
 
                 if (token != null)
                 {
-                    cacheObject = (MorpherCacheObject)this.morpherCache.Get(token.ToString().ToLowerInvariant());
+                    cacheObject = (MorpherCacheObject)this._morpherCache.Get(token.ToString().ToLowerInvariant());
                 }
             }
 
-            this.logQueue.Enqueue(
+            this._logQueue.Enqueue(
                 new LogEntity(remoteAddress, queryString, querySource, DateTime.UtcNow, token, cacheObject?.UserId, userAgent, errorCode));
         }
 
         public void Sync()
         {
-            this.database.Upload(this.logQueue);
+            this._database.Upload(this._logQueue);
         }
     }
 }

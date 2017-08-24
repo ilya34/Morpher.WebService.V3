@@ -78,17 +78,24 @@ namespace Morpher.WebService.V3.Services
 
         public ApiThrottlingResult Throttle(IOwinRequest request)
         {        
-            Guid token;
-            if (Guid.TryParse(request.Get<string>("token"), out token))
+            try
             {
-                //TODO: remove this;
-                bool temp;
-                return Throttle(token, out temp);
+                Guid? token = request.GetToken();
+                if (token != null)
+                {
+                    //TODO: remove this;
+                    bool temp;
+                    return Throttle(token.Value, out temp);
+                }
+                else
+                {
+                    string ip = request.RemoteIpAddress;
+                    return Throttle(ip);
+                }
             }
-            else
+            catch (InvalidTokenFormat)
             {
-                string ip = request.RemoteIpAddress;
-                return Throttle(ip);
+                return ApiThrottlingResult.InvalidToken;
             }
         }
 

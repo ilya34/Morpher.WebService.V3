@@ -172,9 +172,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\DeclensionFlagsExtensions.cs" />
+    <Compile Include="Extensions\IOwinRequestExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Filters\MorpherExceptionFilterAttribute.cs" />
     <Compile Include="Helpers\IAttributeUrls.cs" />
+    <Compile Include="Middlewares\LoggingMiddleware.cs" />
     <Compile Include="Models\AdjectiveGenders.cs" />
     <Compile Include="App_Start\AutofacInit.cs" />
     <Compile Include="App_Start\Startup.cs" />

@@ -42,16 +42,28 @@
                 .Keyed<IAttributeUrls>("ApiThrottler")
                 .SingleInstance()
                 .WithParameter("attributeType", typeof(ThrottleThisAttribute));
+            builder.RegisterType<AttributeUrls>()
+                .As<IAttributeUrls>()
+                .Keyed<IAttributeUrls>("Logger")
+                .SingleInstance()
+                .WithParameter("attributeType", typeof(LogThisAttribute));
 
+            builder.RegisterType<MorpherLog>().As<IMorpherLog>();
+            builder.RegisterType<DatabaseLog>().As<IDatabaseLog>()
+                .WithParameter("connectionString", connectionString);
             builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>().WithParameter("client", new MorpherClient());
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
-            builder.RegisterType<MorpherCache>().As<IMorpherCache>().WithParameter("name", "ApiThrottler");
+            builder.RegisterType<MorpherCache>()
+                .As<IMorpherCache>()
+                .WithParameter("name", "ApiThrottler")
+                .SingleInstance();
             builder.RegisterType<MorpherDatabase>().As<IMorpherDatabase>()
                 .WithParameter("connectionString", connectionString);
 
 
             // Middlewares
             builder.RegisterType<ThrottlingMiddleware>();
+            builder.RegisterType<LoggingMiddleware>();
 
             // Filters
             builder.Register(context => new MorpherExceptionFilterAttribute())

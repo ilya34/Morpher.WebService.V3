@@ -30,6 +30,7 @@
         [Route("declension", Name = "RussianDeclension")]
         [HttpGet]
         [ThrottleThis]
+        [LogThis]
         public HttpResponseMessage Declension(string s, DeclensionFlags? flags = null, ResponseFormat? format = null)
         {
                 if (string.IsNullOrWhiteSpace(s))
