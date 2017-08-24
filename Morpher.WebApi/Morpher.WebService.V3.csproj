@@ -174,11 +174,12 @@
     <Compile Include="Extensions\DeclensionFlagsExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Filters\MorpherExceptionFilterAttribute.cs" />
+    <Compile Include="Helpers\IAttributeUrls.cs" />
     <Compile Include="Models\AdjectiveGenders.cs" />
     <Compile Include="App_Start\AutofacInit.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Helpers\ServiceAttributes.cs" />
-    <Compile Include="Helpers\ThrottleUrls.cs" />
+    <Compile Include="Helpers\AttributeUrls.cs" />
     <Compile Include="Middlewares\ThrottlingMiddleware.cs" />
     <Compile Include="Models\CacheResetPostModel.cs" />
     <Compile Include="Models\Correction.cs" />

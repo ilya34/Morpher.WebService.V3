@@ -6,21 +6,20 @@
     using System.Reflection;
     using System.Web.Http;
 
-    public static class ThrottleUrls
+    public class AttributeUrls : IAttributeUrls
     {
-        public static readonly HashSet<string> Urls = new HashSet<string>();
+        public HashSet<string> Urls { get; } = new HashSet<string>();
 
-        static ThrottleUrls()
+        public AttributeUrls(Type attributeType)
         {
             var apiType = typeof(ApiController);
             var controllers = Assembly.GetExecutingAssembly().GetTypes()
-                //.SelectMany(assembly => assembly.GetTypes())
                 .Where(type => type.IsSubclassOf(apiType));
 
             foreach (var controller in controllers)
             {
                 var methods = controller.GetMethods()
-                    .Where(info => info.GetCustomAttribute<ThrottleThisAttribute>() != null);
+                    .Where(info => info.GetCustomAttribute(attributeType) != null);
 
                 var routePrefixAttribute = controller.GetCustomAttribute<RoutePrefixAttribute>();
                 var controllerRoute = routePrefixAttribute != null 

@@ -22,7 +22,6 @@
         {
             AutofacInit.Init();
 
-            var urls = ThrottleUrls.Urls;
             bool isLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
 
             if (!isLocal)

@@ -4,8 +4,11 @@
     using System.Reflection;
     using System.Web.Http;
     using Autofac;
+    using Autofac.Core;
+    using Autofac.Features.AttributeFilters;
     using Autofac.Integration.WebApi;
     using Filters;
+    using Helpers;
     using Middlewares;
     using Services;
     using Services.Interfaces;
@@ -33,6 +36,12 @@
         private static void RegisterServices(ContainerBuilder builder)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MorpherDatabase"].ConnectionString;
+
+            builder.RegisterType<AttributeUrls>()
+                .As<IAttributeUrls>()
+                .Keyed<IAttributeUrls>("ApiThrottler")
+                .SingleInstance()
+                .WithParameter("attributeType", typeof(ThrottleThisAttribute));
 
             builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>().WithParameter("client", new MorpherClient());
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();

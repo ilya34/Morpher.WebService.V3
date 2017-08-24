@@ -1,9 +1,11 @@
 ﻿namespace Morpher.WebService.V3.Middlewares
 {
+    using System.ComponentModel.DataAnnotations;
     using System.IO;
     using System.Net;
     using System.Runtime.Serialization;
     using System.Threading.Tasks;
+    using Autofac.Features.AttributeFilters;
     using Extensions;
     using Helpers;
     using Microsoft.Owin;
@@ -14,15 +16,20 @@
     public class ThrottlingMiddleware : OwinMiddleware
     {
         private readonly IApiThrottler _apiThrottler;
+        private readonly IAttributeUrls _attributeUrls;
 
-        public ThrottlingMiddleware(OwinMiddleware next, IApiThrottler apiThrottler) : base(next)
+        public ThrottlingMiddleware(
+            OwinMiddleware next,
+            IApiThrottler apiThrottler,
+            [KeyFilter("ApiThrottler")]IAttributeUrls attributeUrls) : base(next)
         {
             _apiThrottler = apiThrottler;
+            _attributeUrls = attributeUrls;
         }
 
         public override async Task Invoke(IOwinContext context)
         {
-            if (ThrottleUrls.Urls.Contains(context.Request.Path.ToString().ToLowerInvariant()))
+            if (_attributeUrls.Urls.Contains(context.Request.Path.ToString().ToLowerInvariant()))
             {
                 ApiThrottlingResult result = _apiThrottler.Throttle(context.Request);
 

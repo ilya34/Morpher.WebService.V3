@@ -7,6 +7,7 @@
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+    using Filters;
     using Helpers;
     using Models.Exceptions;
     using Morpher.WebService.V3.Extensions;
@@ -31,8 +32,6 @@
         [ThrottleThis]
         public HttpResponseMessage Declension(string s, DeclensionFlags? flags = null, ResponseFormat? format = null)
         {
-            try
-            {
                 if (string.IsNullOrWhiteSpace(s))
                 {
                     throw new RequiredParameterIsNotSpecified(nameof(s));
@@ -42,14 +41,6 @@
                     _analyzer.Declension(s, flags);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, declensionResult, format);
-            }
-            catch (MorpherException exception)
-            {
-                return this.Request.CreateResponse(
-                    HttpStatusCode.BadRequest,
-                    new ServiceErrorMessage(exception),
-                    format);
-            }
         }
 
         [Route("spell")]
