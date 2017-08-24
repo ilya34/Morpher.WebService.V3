@@ -240,11 +240,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Connected Services\MorpherSoap\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RussianAnalyzerController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
@@ -261,58 +256,8 @@
     <Compile Include="Services\RussianDictService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.AdjectiveGenders.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetAccountStatusResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetAdjectiveGendersResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetAdjectivesResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetDeclensionResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetXmlResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetXmlResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetXmlUkrResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.GetXmlUkrResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.PropisResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.PropisResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.PropisUkrResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.PropisUkrResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\MorpherSoap\Morpher.WebService.V3.MorpherSoap.SubmitCorrectionResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <None Include="Connected Services\MorpherSoap\WebService.disco" />
-    <None Include="Connected Services\MorpherSoap\configuration91.svcinfo" />
-    <None Include="Connected Services\MorpherSoap\configuration.svcinfo" />
-    <None Include="Connected Services\MorpherSoap\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <None Include="Connected Services\MorpherSoap\WebService.wsdl" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -341,12 +286,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\MorpherSoap\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

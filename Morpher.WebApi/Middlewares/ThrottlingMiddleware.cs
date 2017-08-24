@@ -2,7 +2,6 @@
 {
     using System.IO;
     using System.Net;
-    using System.Net.Http.Formatting;
     using System.Runtime.Serialization;
     using System.Threading.Tasks;
     using Extensions;
