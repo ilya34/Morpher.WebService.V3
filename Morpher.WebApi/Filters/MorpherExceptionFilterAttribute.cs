@@ -45,11 +45,13 @@
             }
 
             var response = new Models.ServiceErrorMessage(exception);
+            context.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+            context.Response.Headers.Add("Error-Code", new[] { response.Code.ToString() });
 
             switch (format)
             {
                 case "json":
-                    context.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+
                     context.Response.Content =
                         new StringContent(
                             JsonConvert.SerializeObject(response, Formatting.Indented));
@@ -66,11 +68,7 @@
                         {
                             textWriter.Formatting = System.Xml.Formatting.Indented;
                             contractSerializer.WriteObject(textWriter, response);
-                            context.Response =
-                                new HttpResponseMessage(HttpStatusCode.BadRequest)
-                                {
-                                    Content = new StringContent(stringWriter.GetStringBuilder().ToString())
-                                };
+                            context.Response.Content = new StringContent(stringWriter.GetStringBuilder().ToString());
                         }
                     }
                     break;
