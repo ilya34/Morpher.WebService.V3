@@ -10,19 +10,19 @@
         public ModelNotValid(string parameterName)
             : base(ErrorMessage + parameterName, 11)
         {
-            this.Code = 11;
+            Code = 11;
         }
 
         public ModelNotValid(string message, int code)
             : base(message, code)
         {
-            this.Code = code;
+            Code = code;
         }
 
         public ModelNotValid(string message, int code, Exception inner)
             : base(message, code, inner)
         {
-            this.Code = code;
+            Code = code;
         }
     }
 }

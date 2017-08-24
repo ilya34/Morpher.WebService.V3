@@ -9,19 +9,19 @@
         public TokenNotFoundException()
             : base(ErrorMessage, 9)
         {
-            this.Code = 9;
+            Code = 9;
         }
 
         public TokenNotFoundException(string message, int code)
             : base(message, code)
         {
-            this.Code = code;
+            Code = code;
         }
 
         public TokenNotFoundException(string mesage, int code, Exception innerException)
             : base(mesage, code, innerException)
         {
-            this.Code = code;
+            Code = code;
         }
     }
 }

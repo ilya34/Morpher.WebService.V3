@@ -9,19 +9,19 @@
         public InvalidTokenFormat()
             : base(ErrorMessage, 10)
         {
-            this.Code = 10;
+            Code = 10;
         }
 
         public InvalidTokenFormat(string message, int code)
             : base(message, code)
         {
-            this.Code = code;
+            Code = code;
         }
 
         public InvalidTokenFormat(string message, int code, Exception inner)
             : base(message, code, inner)
         {
-            this.Code = code;
+            Code = code;
         }
     }
 }

@@ -10,19 +10,19 @@
         public IpBlockedException()
             : base(ErrorMessage, 3)
         {
-            this.Code = 3;
+            Code = 3;
         }
 
         public IpBlockedException(string message, int code)
             : base(message, code)
         {
-            this.Code = code;
+            Code = code;
         }
 
         public IpBlockedException(string message, int code, Exception inner)
             : base(message, code, inner)
         {
-            this.Code = code;
+            Code = code;
         }
     }
 }

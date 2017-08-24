@@ -10,19 +10,19 @@
 
         public MorpherException(int code)
         {
-            this.Code = code;
+            Code = code;
         }
 
         public MorpherException(string message, int code)
             : base(message)
         {
-            this.Code = code;
+            Code = code;
         }
 
         public MorpherException(string message, int code, Exception innerException)
             : base(message, innerException)
         {
-            this.Code = code;
+            Code = code;
         }
 
         public int Code { get; protected set; }

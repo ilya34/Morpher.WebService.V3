@@ -10,19 +10,19 @@
         public NumeralsDeclensionNotSupportedException()
             : base(ErrorMessage, 4)
         {
-            this.Code = 4;
+            Code = 4;
         }
 
         public NumeralsDeclensionNotSupportedException(string mesage, int code)
             : base(ErrorMessage, code)
         {
-            this.Code = code;
+            Code = code;
         }
 
         public NumeralsDeclensionNotSupportedException(string message, int code, Exception innerException)
             : base(ErrorMessage, code, innerException)
         {
-            this.Code = code;
+            Code = code;
         }
     }
 }

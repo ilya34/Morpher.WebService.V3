@@ -9,19 +9,19 @@
         public RussianWordsNotFound()
             : base(ErrorMessage, 5)
         {
-            this.Code = 5;
+            Code = 5;
         }
 
         public RussianWordsNotFound(string message, int code)
             : base(message, code)
         {
-            this.Code = code;
+            Code = code;
         }
 
         public RussianWordsNotFound(string message, int code, Exception innerException)
             : base(message, code, innerException)
         {
-            this.Code = code;
+            Code = code;
         }
     }
 }

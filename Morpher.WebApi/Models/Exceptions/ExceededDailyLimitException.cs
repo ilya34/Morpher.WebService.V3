@@ -10,19 +10,19 @@
         public ExceededDailyLimitException()
             : base(ErrorMessage, 1)
         {
-            this.Code = 1;
+            Code = 1;
         }
 
         public ExceededDailyLimitException(string message, int code)
             : base(message, code)
         {
-            this.Code = code;
+            Code = code;
         }
 
         public ExceededDailyLimitException(string message, int code, Exception inner)
             : base(message, code, inner)
         {
-            this.Code = code;
+            Code = code;
         }
     }
 }
