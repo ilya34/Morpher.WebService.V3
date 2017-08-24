@@ -21,20 +21,32 @@
                 var methods = controller.GetMethods()
                     .Where(info => info.GetCustomAttribute(attributeType) != null);
 
-                var routePrefixAttribute = controller.GetCustomAttribute<RoutePrefixAttribute>();
-                var controllerRoute = routePrefixAttribute != null 
-                    ? $"/{routePrefixAttribute.Prefix}" : $"/{controller.Name}";
+                var controllerRoute = GetControllerRoute(controller);
 
                 foreach (var methodInfo in methods)
                 {
-                    var methodRouteAttribute = methodInfo.GetCustomAttribute<RoutePrefixAttribute>();
-                    var methodRoute = methodRouteAttribute != null
-                        ? methodRouteAttribute.Prefix
-                        : methodInfo.Name;
-
+                    var methodRoute = GetActionRoute(methodInfo);
                     Urls.Add($"{controllerRoute.ToLowerInvariant()}/{methodRoute.ToLowerInvariant()}");
                 }
             }
         }
+
+        public static string GetControllerRoute(Type controller)
+        {
+            var routePrefixAttribute = controller.GetCustomAttribute<RoutePrefixAttribute>();
+            var controllerRoute = routePrefixAttribute != null
+                ? $"/{routePrefixAttribute.Prefix}" : $"/{controller.Name}";
+            return controllerRoute;
+        }
+
+        public static string GetActionRoute(MethodInfo methodInfo)
+        {
+            var methodRouteAttribute = methodInfo.GetCustomAttribute<RoutePrefixAttribute>();
+            var methodRoute = methodRouteAttribute != null
+                ? methodRouteAttribute.Prefix
+                : methodInfo.Name;
+            return methodRoute;
+        }
+
     }
 }
