@@ -1,7 +1,5 @@
 ﻿namespace Morpher.WebService.V3.Middlewares
 {
-    using System.Diagnostics;
-    using System.Net;
     using System.Threading.Tasks;
     using Autofac.Features.AttributeFilters;
     using Helpers;
@@ -24,7 +22,10 @@
 
         public override async Task Invoke(IOwinContext context)
         {
-            await Next.Invoke(context);
+            if (context.Response.Headers.Get("Error-Code") == null)
+            {
+                await Next.Invoke(context);
+            }
 
             if (_attributeUrls.Urls.Contains(context.Request.Path.ToString().ToLowerInvariant()))
             {

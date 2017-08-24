@@ -31,6 +31,7 @@
         {
             if (_attributeUrls.Urls.Contains(context.Request.Path.ToString().ToLowerInvariant()))
             {
+
                 ApiThrottlingResult result = _apiThrottler.Throttle(context.Request);
 
                 if (result != ApiThrottlingResult.Success)
@@ -43,7 +44,11 @@
                     {
                         format = context.Request.Headers.Get("ContentType");
 
-                        if (format.Contains("application/json"))
+                        if (format == null)
+                        {
+                            format = "xml";
+                        }
+                        else if (format.Contains("application/json"))
                         {
                             format = "json";
                         }
@@ -70,6 +75,9 @@
                             }
                             break;
                     }
+
+                    context.Response.Headers.Add("Error-Code", new[] { response.Code.ToString() });
+                    await Next.Invoke(context);
                     return;
                 }
             }
