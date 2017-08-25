@@ -1,6 +1,9 @@
 ﻿namespace Morpher.WebService.V3.UnitTests
 {
     using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -9,8 +12,15 @@
     using App_Start;
     using Autofac;
     using Autofac.Integration.WebApi;
+    using Filters;
+    using Helpers;
+    using Microsoft.Owin;
     using Microsoft.Owin.Hosting;
     using Microsoft.Owin.Testing;
+    using Middlewares;
+    using Models;
+    using Models.Exceptions;
+    using Moq;
     using NUnit.Framework;
     using Owin;
     using Services;
@@ -19,9 +29,11 @@
     [TestFixture]
     class OwinPipilineTests
     {
+        private IContainer container;
+
         private TestServer PrepareTestServer(ContainerBuilder builder)
         {
-            
+
             HttpConfiguration configuration = new HttpConfiguration();
             TestWebApiResolver apiResolver = new TestWebApiResolver();
 
@@ -29,11 +41,11 @@
             WebApiConfig.Register(configuration);
 
             builder.RegisterApiControllers(apiResolver.GetAssemblies().First());
+            builder.RegisterWebApiFilterProvider(configuration);
             builder.RegisterWebApiModelBinderProvider();
-
-            var container = builder.Build();
+            container = builder.Build();
             configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
-            
+
             TestServer testServer = TestServer.Create(appBuilder =>
             {
                 appBuilder.UseAutofacMiddleware(container);
@@ -43,19 +55,110 @@
             return testServer;
         }
 
-        [Test]
-        public async Task LogwithoutErrors()
+
+        class DatabaseLogMock : IDatabaseLog
         {
+            public ConcurrentQueue<LogEntity> Logs { get; private set; }
+
+            public void Upload(ConcurrentQueue<LogEntity> logs)
+            {
+                Logs = logs;
+            }
+        }
+
+        [Test]
+        public async Task LogWithoutError()
+        {
+            // Arrange
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>()
                 .WithParameter("client", new MorpherClient().Russian);
+
+            // LoggingMiddleware использует два класса для работы с логами в бд.
+            DatabaseLogMock databaseLogMock = new DatabaseLogMock();
+            builder.RegisterInstance(databaseLogMock).As<IDatabaseLog>().SingleInstance();
+            builder.RegisterType<MorpherLog>().As<IMorpherLog>().SingleInstance();
+            builder.RegisterType<MorpherCache>()
+                .As<IMorpherCache>()
+                .WithParameter("name", "ApiThrottler")
+                .SingleInstance();
+
+            IAttributeUrls attributeUrls =
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new HashSet<string>()
+                {
+                    "/russian/declension"
+                });
+
+            builder.RegisterInstance(attributeUrls)
+                .As<IAttributeUrls>()
+                .Keyed<IAttributeUrls>("Logger");
+
+            builder.RegisterType<LoggingMiddleware>();
+
             using (var testServer = PrepareTestServer(builder))
             {
-                using (var client = new HttpClient(testServer.Handler))
+                // Act
+                using (var client = testServer.HttpClient)
                 {
-                    var response = await client.GetAsync("http://localhost/russian/declension?s=Пользователь");
-                    var result = await response.Content.ReadAsStringAsync();
+                    await client.GetAsync("/russian/declension?s=Пользователь");
                 }
+
+                // Assert
+                var morpheLog = container.Resolve<IMorpherLog>();
+                morpheLog.Sync();
+                Assert.AreEqual(1, databaseLogMock.Logs.Count);
+                var logEntity = databaseLogMock.Logs.First();
+                Assert.AreEqual(0, logEntity.ErrorCode);
+            }
+        }
+
+        [Test]
+        public async Task LogWithError()
+        {
+            // Arrange
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>()
+                .WithParameter("client", new MorpherClient().Russian);
+
+            // LoggingMiddleware использует два класса для работы с логами в бд.
+            DatabaseLogMock databaseLogMock = new DatabaseLogMock();
+            builder.RegisterInstance(databaseLogMock).As<IDatabaseLog>().SingleInstance();
+            builder.RegisterType<MorpherLog>().As<IMorpherLog>().SingleInstance();
+
+            builder.Register(context => new MorpherExceptionFilterAttribute())
+                .AsWebApiExceptionFilterFor<ApiController>().SingleInstance();
+
+            builder.RegisterType<MorpherCache>()
+                .As<IMorpherCache>()
+                .WithParameter("name", "ApiThrottler")
+                .SingleInstance();
+
+            IAttributeUrls attributeUrls =
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new HashSet<string>()
+                {
+                    "/russian/declension"
+                });
+
+            builder.RegisterInstance(attributeUrls)
+                .As<IAttributeUrls>()
+                .Keyed<IAttributeUrls>("Logger");
+
+            builder.RegisterType<LoggingMiddleware>();
+
+            using (var testServer = PrepareTestServer(builder))
+            {
+                // Act
+                using (var client = testServer.HttpClient)
+                {
+                    await client.GetAsync("/russian/declension?s=");
+                }
+
+                // Assert
+                var morpheLog = container.Resolve<IMorpherLog>();
+                morpheLog.Sync();
+                Assert.AreEqual(1, databaseLogMock.Logs.Count);
+                var logEntity = databaseLogMock.Logs.First();
+                Assert.AreEqual(new RequiredParameterIsNotSpecified("s").Code, logEntity.ErrorCode);
             }
         }
     }
