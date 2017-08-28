@@ -15,6 +15,18 @@
         }
 
         [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor")]
+        public RussianDeclensionForms(RussianDeclensionForms forms)
+        {
+            Nominative = forms.Nominative;
+            Genitive = forms.Genitive;
+            Dative = forms.Dative;
+            Accusative = forms.Accusative;
+            Instrumental = forms.Instrumental;
+            Prepositional = forms.Prepositional;
+            PrepositionalWithPre = forms.PrepositionalWithPre;
+        }
+
+        [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor")]
         public RussianDeclensionForms(List<NameForm> nameForms)
         {
             Nominative = nameForms.SingleOrDefault(form => form.FormID == 'И')?.AccentedText;
