@@ -14,11 +14,11 @@
 
     public class WebApiApplication : System.Web.HttpApplication
     {
+        private readonly bool isLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
+
         protected void Application_Start()
         {
             AutofacInit.Init();
-
-            bool isLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
 
             if (!isLocal)
             {
@@ -38,8 +38,12 @@
 
         protected void Application_End()
         {
-            IMorpherLog log = (IMorpherLog) AutofacInit.AutofacWebApiDependencyResolver.GetService(typeof(IMorpherLog));
-            log.Sync();
+            if (!isLocal)
+            {
+                IMorpherLog log =
+                    (IMorpherLog) AutofacInit.AutofacWebApiDependencyResolver.GetService(typeof(IMorpherLog));
+                log.Sync();
+            }
         }
 
         protected void Application_Error(object sender, EventArgs e)
