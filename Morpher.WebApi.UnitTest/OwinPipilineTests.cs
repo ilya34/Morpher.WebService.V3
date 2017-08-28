@@ -1,21 +1,17 @@
 ﻿namespace Morpher.WebService.V3.UnitTests
 {
-    using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Net.Http;
+    using System.Net;
     using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
-    using App_Start;
+
     using Autofac;
     using Autofac.Integration.WebApi;
     using Filters;
     using Helpers;
-    using Microsoft.Owin;
-    using Microsoft.Owin.Hosting;
     using Microsoft.Owin.Testing;
     using Middlewares;
     using Models;
@@ -159,6 +155,56 @@
                 Assert.AreEqual(1, databaseLogMock.Logs.Count);
                 var logEntity = databaseLogMock.Logs.First();
                 Assert.AreEqual(new RequiredParameterIsNotSpecified("s").Code, logEntity.ErrorCode);
+            }
+        }
+
+        [Test]
+        public async Task ApiThrottlerTest_ByIp()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+
+            // Fix user-agent & remote ip
+            builder.RegisterType<FixRequestTestDataMiddleware>();
+            builder.RegisterType<ThrottlingMiddleware>();
+            builder.RegisterType<MorpherCache>()
+                .As<IMorpherCache>()
+                .WithParameter("name", "ApiThrottler")
+                .SingleInstance();
+            builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>()
+                .WithParameter("client", new MorpherClient().Russian);
+            builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
+
+            IAttributeUrls attributeUrls =
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new HashSet<string>()
+                {
+                    "/russian/declension"
+                });
+
+            builder.RegisterInstance(attributeUrls)
+                .As<IAttributeUrls>()
+                .Keyed<IAttributeUrls>("ApiThrottler");
+
+            Mock<IMorpherDatabase> morpherDatabaseMock = new Mock<IMorpherDatabase>();
+            morpherDatabaseMock.Setup(database => database.IsIpBlocked("0.0.0.0")).Returns(false);
+            morpherDatabaseMock.Setup(database => database.GetQueryCountByIp("0.0.0.0")).Returns(0);
+            morpherDatabaseMock.Setup(database => database.GetDefaultDailyQueryLimit()).Returns(3);
+
+            builder.RegisterInstance(morpherDatabaseMock.Object).As<IMorpherDatabase>().SingleInstance();
+
+            using (var server = PrepareTestServer(builder))
+            {
+                using (var client = server.HttpClient)
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        var result = await client.GetAsync("/russian/declension?s=Тест");
+                        IEnumerable<string> header;
+                        Assert.AreEqual(true, result.IsSuccessStatusCode, "StatudCode != OK");
+                    }
+
+                    var errorResult = await client.GetAsync("/russian/declension?s=Тест");
+                    Assert.AreEqual(HttpStatusCode.BadRequest, errorResult.StatusCode);
+                }
             }
         }
     }

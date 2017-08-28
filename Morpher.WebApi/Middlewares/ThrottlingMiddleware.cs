@@ -37,7 +37,7 @@
                 if (result != ApiThrottlingResult.Success)
                 {
                     var response = new ServiceErrorMessage(result.GenerateMorpherException());
-                    context.Response.StatusCode = (int)HttpStatusCode.PaymentRequired;
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
                     var format = context.Request.Query.Get("format");
                     if (format == null)
