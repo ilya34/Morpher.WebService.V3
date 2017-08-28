@@ -10,6 +10,11 @@
         {
         }
 
+        public RussianDeclensionResult(RussianDeclensionForms forms)
+            : base(forms)
+        {
+        }
+
         [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor")]
         public RussianDeclensionResult(Russian.DeclensionResult serviceResult)
             : base(serviceResult)
