@@ -3,9 +3,7 @@
     using System.IO;
     using System.Net;
     using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Runtime.Serialization;
-    using System.Text;
     using System.Web.Http.Filters;
     using System.Xml;
     using Autofac.Integration.WebApi;

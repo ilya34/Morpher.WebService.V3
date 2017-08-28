@@ -3,9 +3,7 @@
     using System;
     using System.Configuration;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
-    using System.Web.Compilation;
     using System.Web.Http;
     using Autofac;
     using Autofac.Integration.Mvc;

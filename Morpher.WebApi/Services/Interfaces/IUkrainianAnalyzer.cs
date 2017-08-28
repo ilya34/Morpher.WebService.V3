@@ -1,6 +1,5 @@
 ﻿namespace Morpher.WebService.V3.Services.Interfaces
 {
-    using System;
     using Models;
 
     public interface IUkrainianAnalyzer

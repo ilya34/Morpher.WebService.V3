@@ -215,6 +215,7 @@
       <DependentUpon>UserCorrection.dbml</DependentUpon>
     </Compile>
     <Compile Include="Services\DatabaseUserDictionary.cs" />
+    <Compile Include="Services\DummyResultTrimmer.cs" />
     <Compile Include="Services\Interfaces\IExceptionDictionary.cs" />
     <Compile Include="Services\Interfaces\IRussianAnalyzer.cs" />
     <Compile Include="Services\Interfaces\IUkrainianAnalyzer.cs" />

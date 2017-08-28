@@ -2,9 +2,6 @@
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net.Http;
     using Microsoft.Owin;
     using Models.Exceptions;
     using Morpher.WebService.V3.Extensions;

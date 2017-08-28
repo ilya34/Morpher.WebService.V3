@@ -2,9 +2,6 @@
 {
     using System.Collections.Specialized;
     using System.Runtime.Caching;
-    using System.Threading;
-
-    using Morpher.WebService.V3.Models;
     using Morpher.WebService.V3.Services.Interfaces;
 
     public class MorpherCache : MemoryCache, IMorpherCache

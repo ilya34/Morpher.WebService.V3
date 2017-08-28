@@ -1,6 +1,5 @@
 ﻿namespace Morpher.WebService.V3.Extensions
 {
-    using System;
     using Models;
 
     public static class DeclensionFlagsExtensions

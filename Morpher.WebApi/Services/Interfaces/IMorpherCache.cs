@@ -3,8 +3,6 @@
     using System;
     using System.Runtime.Caching;
 
-    using Morpher.WebService.V3.Models;
-
     public interface IMorpherCache
     {
         object Get(string key, string regionName = null);
