@@ -1,5 +1,6 @@
 ﻿namespace Morpher.WebService.V3.UnitTests
 {
+    using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
@@ -51,6 +52,10 @@
             return testServer;
         }
 
+        private IRussianAnalyzer mockAnalyzer =
+            Mock.Of<IRussianAnalyzer>(
+                analyzer => analyzer.Declension(It.IsAny<string>(), It.IsAny<DeclensionFlags>()) ==
+                            new RussianDeclensionResult());
 
         class DatabaseLogMock : IDatabaseLog
         {
@@ -62,13 +67,17 @@
             }
         }
 
+        /// <summary>
+        /// Выполняется обычный запрос на склонение
+        /// В логи попадает результат без ошибки
+        /// </summary>
+        /// <returns></returns>
         [Test]
         public async Task LogWithoutError()
         {
             // Arrange
             ContainerBuilder builder = new ContainerBuilder();
-            builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>()
-                .WithParameter("client", new MorpherClient().Russian);
+            builder.RegisterInstance(mockAnalyzer).As<IRussianAnalyzer>();
 
             // LoggingMiddleware использует два класса для работы с логами в бд.
             DatabaseLogMock databaseLogMock = new DatabaseLogMock();
@@ -108,13 +117,19 @@
             }
         }
 
+        /// <summary>
+        /// Вызываем Action без передачи слова
+        /// Получаем Исключение
+        /// Исключение обрабатывает фильтр
+        /// В логах получаем код ошибки
+        /// </summary>
+        /// <returns></returns>
         [Test]
         public async Task LogWithError()
         {
             // Arrange
             ContainerBuilder builder = new ContainerBuilder();
-            builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>()
-                .WithParameter("client", new MorpherClient().Russian);
+            builder.RegisterInstance(mockAnalyzer).As<IRussianAnalyzer>();
 
             // LoggingMiddleware использует два класса для работы с логами в бд.
             DatabaseLogMock databaseLogMock = new DatabaseLogMock();
@@ -158,6 +173,11 @@
             }
         }
 
+        /// <summary>
+        /// Делается 4 запроса без ввода токена.
+        /// Первые 3 проходят.
+        /// Четвертый Overlimit
+        /// </summary>
         [Test]
         public async Task ApiThrottlerTest_ByIp()
         {
@@ -170,8 +190,7 @@
                 .As<IMorpherCache>()
                 .WithParameter("name", "ApiThrottler")
                 .SingleInstance();
-            builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>()
-                .WithParameter("client", new MorpherClient().Russian);
+            builder.RegisterInstance(mockAnalyzer).As<IRussianAnalyzer>();
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
 
             IAttributeUrls attributeUrls =
@@ -198,11 +217,122 @@
                     for (int i = 0; i < 3; i++)
                     {
                         var result = await client.GetAsync("/russian/declension?s=Тест");
-                        IEnumerable<string> header;
                         Assert.AreEqual(true, result.IsSuccessStatusCode, "StatudCode != OK");
                     }
 
                     var errorResult = await client.GetAsync("/russian/declension?s=Тест");
+                    Assert.AreEqual(HttpStatusCode.BadRequest, errorResult.StatusCode);
+                }
+            }
+        }
+
+        [Test]
+        public async Task ApiThrottlerTest_ByToken_QueryString()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+
+            // Fix user-agent & remote ip
+            builder.RegisterType<FixRequestTestDataMiddleware>();
+            builder.RegisterType<ThrottlingMiddleware>();
+            builder.RegisterType<MorpherCache>()
+                .As<IMorpherCache>()
+                .WithParameter("name", "ApiThrottler")
+                .SingleInstance();
+            builder.RegisterInstance(mockAnalyzer).As<IRussianAnalyzer>();
+            builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
+
+            IAttributeUrls attributeUrls =
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new HashSet<string>()
+                {
+                    "/russian/declension"
+                });
+
+            builder.RegisterInstance(attributeUrls)
+                .As<IAttributeUrls>()
+                .Keyed<IAttributeUrls>("ApiThrottler");
+
+            Mock<IMorpherDatabase> morpherDatabaseMock = new Mock<IMorpherDatabase>();
+            Guid testToken = Guid.NewGuid();
+            morpherDatabaseMock.Setup(database => database.GetQueryCountByToken(testToken)).Returns(0);
+            morpherDatabaseMock.Setup(database => database.GetUserLimits(testToken)).Returns(new MorpherCacheObject()
+            {
+                PaidUser = false,
+                UserId = Guid.Empty,
+                QueriesLeft = 3,
+                Unlimited = false
+            });
+
+            builder.RegisterInstance(morpherDatabaseMock.Object).As<IMorpherDatabase>().SingleInstance();
+
+            using (var server = PrepareTestServer(builder))
+            {
+                using (var client = server.HttpClient)
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        var result = await client.GetAsync($"/russian/declension?s=Тест&token={testToken}");
+                        Assert.AreEqual(true, result.IsSuccessStatusCode, "StatudCode != OK");
+                    }
+
+                    var errorResult = await client.GetAsync($"/russian/declension?s=Тест&token={testToken}");
+                    Assert.AreEqual(HttpStatusCode.BadRequest, errorResult.StatusCode);
+                }
+            }
+        }
+
+
+        [Test]
+        public async Task ApiThrottlerTest_ByToken_ViaHeader()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+
+            // Fix user-agent & remote ip
+            builder.RegisterType<FixRequestTestDataMiddleware>();
+            builder.RegisterType<ThrottlingMiddleware>();
+            builder.RegisterType<MorpherCache>()
+                .As<IMorpherCache>()
+                .WithParameter("name", "ApiThrottler")
+                .SingleInstance();
+            builder.RegisterInstance(mockAnalyzer).As<IRussianAnalyzer>();
+            builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
+
+            IAttributeUrls attributeUrls =
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new HashSet<string>()
+                {
+                    "/russian/declension"
+                });
+
+            builder.RegisterInstance(attributeUrls)
+                .As<IAttributeUrls>()
+                .Keyed<IAttributeUrls>("ApiThrottler");
+
+            Mock<IMorpherDatabase> morpherDatabaseMock = new Mock<IMorpherDatabase>();
+            Guid testToken = Guid.Parse("e4c7d4ca-8037-44fa-a314-2b1717c626d8");
+            morpherDatabaseMock.Setup(database => database.GetQueryCountByToken(testToken)).Returns(0);
+            morpherDatabaseMock.Setup(database => database.GetUserLimits(testToken)).Returns(new MorpherCacheObject()
+            {
+                PaidUser = false,
+                UserId = Guid.Empty,
+                QueriesLeft = 3,
+                Unlimited = false
+            });
+
+            builder.RegisterInstance(morpherDatabaseMock.Object).As<IMorpherDatabase>().SingleInstance();
+
+            using (var server = PrepareTestServer(builder))
+            {
+                using (var client = server.HttpClient)
+                {
+                    client.DefaultRequestHeaders.TryAddWithoutValidation(
+                        "Authorization",
+                        $"Basic ZTRjN2Q0Y2EtODAzNy00NGZhLWEzMTQtMmIxNzE3YzYyNmQ4Cg==");
+                    for (int i = 0; i < 3; i++)
+                    {
+                        var result = await client.GetAsync($"/russian/declension?s=Тест");
+                        Assert.AreEqual(true, result.IsSuccessStatusCode, "StatudCode != OK");
+                    }
+
+                    var errorResult = await client.GetAsync($"/russian/declension?s=Тест&token={testToken}");
                     Assert.AreEqual(HttpStatusCode.BadRequest, errorResult.StatusCode);
                 }
             }
