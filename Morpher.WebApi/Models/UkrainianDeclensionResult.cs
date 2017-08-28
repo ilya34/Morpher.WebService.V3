@@ -9,6 +9,11 @@
         { 
         }
 
+        public UkrainianDeclensionResult(UkrainianDeclensionForms forms)
+            : base(forms)
+        {
+        }
+
         public UkrainianDeclensionResult(Ukrainian.DeclensionResult serviceResult)
             : base(serviceResult)
         {
