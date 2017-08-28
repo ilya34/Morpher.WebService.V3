@@ -226,6 +226,11 @@
             }
         }
 
+        /// <summary>
+        /// Делается 4 запроса токен через query string.
+        /// Первые 3 проходят.
+        /// Четвертый Overlimit
+        /// </summary>
         [Test]
         public async Task ApiThrottlerTest_ByToken_QueryString()
         {
@@ -281,6 +286,11 @@
         }
 
 
+        /// <summary>
+        /// Делается 4 запроса, токен через header.
+        /// Первые 3 проходят.
+        /// Четвертый Overlimit
+        /// </summary>
         [Test]
         public async Task ApiThrottlerTest_ByToken_ViaHeader()
         {
