@@ -99,7 +99,7 @@
 
         private static void RegisterLocalOnlyServices(ContainerBuilder builder)
         {
-            // TODO: Guid middleware
+            builder.RegisterType<GuidInsertMiddleware>();
         }
 
         private static void RegisterGlobalOnlyServices(ContainerBuilder builder)
