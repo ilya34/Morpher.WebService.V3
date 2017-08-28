@@ -13,11 +13,14 @@
     public class UkrainianAnalyzerController : ApiController
     {
         private readonly IUkrainianAnalyzer _analyzer;
+        private readonly IResultTrimmer _resultTrimmer;
 
         public UkrainianAnalyzerController(
-            IUkrainianAnalyzer analyzer)
+            IUkrainianAnalyzer analyzer,
+            IResultTrimmer resultTrimmer)
         {
             _analyzer = analyzer;
+            _resultTrimmer = resultTrimmer;
         }
 
         [Route("declension", Name = "UkrainianDeclension")]
@@ -33,6 +36,9 @@
 
             UkrainianDeclensionResult declensionResult =
                 _analyzer.Declension(s, flags);
+
+            _resultTrimmer.Trim(declensionResult, Request.GetToken());
+
             return this.Request.CreateResponse(HttpStatusCode.OK, declensionResult, format);
 
         }

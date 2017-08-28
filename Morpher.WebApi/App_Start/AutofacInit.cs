@@ -105,6 +105,7 @@
         private static void RegisterLocalOnlyServices(ContainerBuilder builder)
         {
             builder.RegisterType<GuidInsertMiddleware>();
+            builder.RegisterType<DummyResultTrimmer>().As<IResultTrimmer>();
         }
 
         private static void RegisterGlobalOnlyServices(ContainerBuilder builder)

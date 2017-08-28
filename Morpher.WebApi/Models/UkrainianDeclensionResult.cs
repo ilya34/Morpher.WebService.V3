@@ -1,6 +1,7 @@
 ﻿namespace Morpher.WebService.V3.Models
 {
     using System.Runtime.Serialization;
+    using Helpers;
 
     [DataContract(Name = "GetXmlUkrResult")]
     public class UkrainianDeclensionResult : UkrainianDeclensionForms
@@ -21,6 +22,7 @@
         }
 
         [DataMember(Name = "рід", EmitDefaultValue = false, Order = 7)]
+        [OnlyForPayed]
         public string Gender { get; set; }
     }
 }
