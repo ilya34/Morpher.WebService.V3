@@ -5,6 +5,10 @@
     [DataContract(Name = "GetXmlUkrResult")]
     public class UkrainianDeclensionResult : UkrainianDeclensionForms
     {
+        public UkrainianDeclensionResult()
+        { 
+        }
+
         public UkrainianDeclensionResult(Ukrainian.DeclensionResult serviceResult)
             : base(serviceResult)
         {
