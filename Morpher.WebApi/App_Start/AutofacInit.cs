@@ -2,7 +2,10 @@
 {
     using System;
     using System.Configuration;
+    using System.IO;
+    using System.Linq;
     using System.Reflection;
+    using System.Web.Compilation;
     using System.Web.Http;
     using Autofac;
     using Autofac.Integration.WebApi;
@@ -36,7 +39,7 @@
         {
 
             bool runAsLocalService = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("RunAsLocalService"));
-            
+
 
             if (runAsLocalService)
             {
@@ -46,9 +49,9 @@
             {
                 RegisterGlobalOnlyServices(builder);
             }
-            
+
             RegisterSharedServices(builder);
-            RegisterAnalyzers(builder);       
+            RegisterAnalyzers(builder);
         }
 
         private static void RegisterAnalyzers(ContainerBuilder builder)
@@ -67,7 +70,18 @@
             }
             else
             {
-                // TODO: Lib load
+                string path = Path.Combine(
+                    AppDomain.CurrentDomain.BaseDirectory,
+                    "bin",
+                    externalAnalyzer);
+                var analyzer = Assembly.LoadFile(path);
+
+                builder.RegisterAssemblyTypes(analyzer)
+                    .Where(type => typeof(IRussianAnalyzer).IsAssignableFrom(type))
+                    .As<IRussianAnalyzer>();
+                builder.RegisterAssemblyTypes(analyzer)
+                    .Where(type => typeof(IUkrainianAnalyzer).IsAssignableFrom(type))
+                    .As<IUkrainianAnalyzer>();
             }
         }
 
@@ -85,7 +99,7 @@
 
         private static void RegisterLocalOnlyServices(ContainerBuilder builder)
         {
-            
+            // TODO: Guid middleware
         }
 
         private static void RegisterGlobalOnlyServices(ContainerBuilder builder)
