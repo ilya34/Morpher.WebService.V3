@@ -123,6 +123,9 @@
                 .SingleInstance()
                 .WithParameter("attributeType", typeof(LogThisAttribute));
 
+            builder.RegisterType<ResultTrimmer>()
+                .As<IResultTrimmer>();
+
             builder.RegisterType<LogSyncer>().AsSelf().InstancePerLifetimeScope();
 
             // Используется в LoggingMiddleware

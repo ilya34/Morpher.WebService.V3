@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml.Serialization;
+    using Helpers;
 
     [DataContract]
     [XmlType("single-number-forms")]
@@ -12,18 +13,6 @@
     {
         public RussianDeclensionForms()
         {
-        }
-
-        [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor")]
-        public RussianDeclensionForms(RussianDeclensionForms forms)
-        {
-            Nominative = forms.Nominative;
-            Genitive = forms.Genitive;
-            Dative = forms.Dative;
-            Accusative = forms.Accusative;
-            Instrumental = forms.Instrumental;
-            Prepositional = forms.Prepositional;
-            PrepositionalWithPre = forms.PrepositionalWithPre;
         }
 
         [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor")]
@@ -76,6 +65,7 @@
 
         [DataMember(Order = 6, Name = "П_о", EmitDefaultValue = false)]
         [XmlElement("М")]
+        [OnlyForPayed]
         public virtual string PrepositionalWithPre { get; set; }
 
         public void AddOrUpdate(RussianDeclensionForms form)

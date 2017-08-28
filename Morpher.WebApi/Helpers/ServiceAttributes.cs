@@ -11,4 +11,14 @@
     public class LogThisAttribute : Attribute
     {
     }
+
+    [AttributeUsage(AttributeTargets.Property, Inherited = true)]
+    public class OnlyForPayedAttribute : Attribute
+    {
+    }
+
+    [AttributeUsage(AttributeTargets.Property, Inherited = true)]
+    public class CheckForPayedAttribute : Attribute
+    {
+    }
 }

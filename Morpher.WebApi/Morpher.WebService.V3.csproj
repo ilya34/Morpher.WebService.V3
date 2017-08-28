@@ -219,9 +219,11 @@
     <Compile Include="Services\Interfaces\IRussianAnalyzer.cs" />
     <Compile Include="Services\Interfaces\IUkrainianAnalyzer.cs" />
     <Compile Include="Services\Interfaces\IUserDictionaryLookup.cs" />
+    <Compile Include="Services\Interfaces\IResultTrimmer.cs" />
     <Compile Include="Services\MorpherLog.cs" />
     <Compile Include="Models\LogEntity.cs" />
     <Compile Include="Services\LogSyncer.cs" />
+    <Compile Include="Services\ResultTrimmer.cs" />
     <Compile Include="Services\RussianWebAnalyzer.cs" />
     <Compile Include="Services\Interfaces\IDatabaseLog.cs" />
     <Compile Include="Services\Interfaces\IMorpherCache.cs" />
