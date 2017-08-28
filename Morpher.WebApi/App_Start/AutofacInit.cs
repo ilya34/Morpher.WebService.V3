@@ -8,6 +8,7 @@
     using System.Web.Compilation;
     using System.Web.Http;
     using Autofac;
+    using Autofac.Integration.Mvc;
     using Autofac.Integration.WebApi;
     using Filters;
     using Helpers;
@@ -18,6 +19,8 @@
     public static class AutofacInit
     {
         public static IContainer Container { get; private set; }
+
+        public static AutofacWebApiDependencyResolver AutofacWebApiDependencyResolver { get; private set; }
 
         public static void Init()
         {
@@ -31,8 +34,10 @@
             RegisterServices(builder);
 
             Container = builder.Build();
-            config.DependencyResolver = new AutofacWebApiDependencyResolver(Container);
-
+            AutofacWebApiDependencyResolver = new AutofacWebApiDependencyResolver(Container);
+            config.DependencyResolver = AutofacWebApiDependencyResolver;
+            
+            System.Web.Mvc.DependencyResolver.SetResolver(new AutofacDependencyResolver(Container));
         }
 
         private static void RegisterServices(ContainerBuilder builder)
@@ -118,8 +123,10 @@
                 .SingleInstance()
                 .WithParameter("attributeType", typeof(LogThisAttribute));
 
+            builder.RegisterType<LogSyncer>().AsSelf().InstancePerLifetimeScope();
+
             // Используется в LoggingMiddleware
-            builder.RegisterType<MorpherLog>().As<IMorpherLog>();
+            builder.RegisterType<MorpherLog>().As<IMorpherLog>().SingleInstance();
             builder.RegisterType<DatabaseLog>().As<IDatabaseLog>()
                 .WithParameter("connectionString", connectionString);
 

@@ -50,6 +50,10 @@
       <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Autofac.Integration.Owin, Version=4.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.Owin.4.1.0\lib\net45\Autofac.Integration.Owin.dll</HintPath>
       <Private>True</Private>
@@ -174,6 +178,8 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Filters\MorpherExceptionFilterAttribute.cs" />
     <Compile Include="Helpers\IAttributeUrls.cs" />
+    <Compile Include="Helpers\JobFactory.cs" />
+    <Compile Include="Middlewares\GuidInsertMiddleware.cs" />
     <Compile Include="Middlewares\LoggingMiddleware.cs" />
     <Compile Include="Models\AdjectiveGenders.cs" />
     <Compile Include="App_Start\AutofacInit.cs" />
@@ -236,7 +242,6 @@
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Extensions\ApiThrottlingResultExtensions.cs" />
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
-    <Compile Include="Extensions\HttpResponseMessageExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

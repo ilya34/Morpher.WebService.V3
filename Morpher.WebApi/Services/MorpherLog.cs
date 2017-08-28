@@ -27,6 +27,7 @@
 
         public void Log(IOwinContext context)
         {
+            
             string remoteAddress = context.Request.RemoteIpAddress;
             string queryString = context.Request.QueryString.ToString();
             string urlPath = context.Request.Path.ToString();

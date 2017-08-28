@@ -8,12 +8,15 @@
 
     public class LogSyncer : IJob, IRegisteredObject
     {
+        private readonly IMorpherLog _morpherLog;
+
         private readonly object lockObject = new object();
 
         private bool shuttingDown;
 
-        public LogSyncer()
+        public LogSyncer(IMorpherLog morpherLog)
         {
+            _morpherLog = morpherLog;
             // Register this job with the hosting environment.
             // Allows for a more graceful stop of the job, in the case of IIS shutting down.
             HostingEnvironment.RegisterObject(this);
@@ -28,9 +31,7 @@
                     return;
                 }
 
-                //IMorpherLog log =
-                //    (IMorpherLog)System.Web.Mvc.DependencyResolver.Current.GetService(typeof(IMorpherLog));
-                //log.Sync();
+                _morpherLog.Sync();
             }
         }
 
