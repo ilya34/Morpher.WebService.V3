@@ -28,15 +28,7 @@
         [HttpGet]
         public HttpResponseMessage QueriesLeftToday(ResponseFormat? format = null)
         {
-            Guid? guid;
-            try
-            {
-                guid = this.Request.GetToken();
-            }
-            catch (MorpherException exception)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, new ServiceErrorMessage(exception), format);
-            }
+            var guid = this.Request.GetToken();
 
             MorpherCacheObject cacheObject = null;
             if (guid == null)
