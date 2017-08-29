@@ -3,10 +3,11 @@
     using System.Collections.Generic;
     using System.Reflection;
     using System.Web.Http.Dispatcher;
+    using Russian;
 
     class TestWebApiResolver : DefaultAssembliesResolver
     {
         public override ICollection<Assembly> GetAssemblies() => new List<Assembly>()
-            { typeof(Morpher.WebService.V3.Controllers.RussianAnalyzerController).Assembly };
+            { typeof(RussianAnalyzerController).Assembly };
     }
 }

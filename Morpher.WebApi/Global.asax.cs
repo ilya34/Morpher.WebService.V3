@@ -6,11 +6,9 @@
     using System.Web.Http;
     using System.Web.Mvc;
     using System.Web.Routing;
-    using App_Start;
     using FluentScheduler;
-    using Helpers;
-    using Morpher.WebService.V3.Services;
-    using Morpher.WebService.V3.Services.Interfaces;
+    using General.Data;
+    using General.Data.Services;
 
     public class WebApiApplication : System.Web.HttpApplication
     {
@@ -48,7 +46,7 @@
 
         protected void Application_Error(object sender, EventArgs e)
         {
-            Exception exception = this.Server.GetLastError();
+            Exception exception = Server.GetLastError();
         }
     }
 }

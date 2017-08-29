@@ -11,17 +11,14 @@
 
     using Autofac;
     using Autofac.Integration.WebApi;
-    using Filters;
-    using Helpers;
+    using General.Data;
+    using General.Data.Services;
     using Microsoft.Owin.Testing;
-    using Middlewares;
-    using Models;
-    using Models.Exceptions;
     using Moq;
     using NUnit.Framework;
     using Owin;
-    using Services;
-    using Services.Interfaces;
+    using DeclensionFlags = General.Data.DeclensionFlags;
+    using DeclensionResult = Russian.Data.DeclensionResult;
 
     [TestFixture]
     class OwinPipilineTests
@@ -55,7 +52,7 @@
         private IRussianAnalyzer mockAnalyzer =
             Mock.Of<IRussianAnalyzer>(
                 analyzer => analyzer.Declension(It.IsAny<string>(), It.IsAny<DeclensionFlags>()) ==
-                            new RussianDeclensionResult());
+                            new DeclensionResult());
 
         class DatabaseLogMock : IDatabaseLog
         {
@@ -169,7 +166,7 @@
                 morpheLog.Sync();
                 Assert.AreEqual(1, databaseLogMock.Logs.Count);
                 var logEntity = databaseLogMock.Logs.First();
-                Assert.AreEqual(new RequiredParameterIsNotSpecified("s").Code, logEntity.ErrorCode);
+                Assert.AreEqual(new RequiredParameterIsNotSpecifiedException("s").Code, logEntity.ErrorCode);
             }
         }
 

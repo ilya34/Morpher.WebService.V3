@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebService.V3.App_Start
+﻿namespace Morpher.WebService.V3
 {
     using System;
     using System.Configuration;
@@ -8,11 +8,10 @@
     using Autofac;
     using Autofac.Integration.Mvc;
     using Autofac.Integration.WebApi;
-    using Filters;
-    using Helpers;
-    using Middlewares;
-    using Services;
-    using Services.Interfaces;
+    using General.Data;
+    using General.Data.Services;
+    using Russian;
+    using Ukrainian;
 
     public static class AutofacInit
     {
