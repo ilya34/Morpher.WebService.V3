@@ -43,7 +43,7 @@
              var props = obj
                 .GetType()
                 .GetProperties()
-                .Where(info => info.GetCustomAttribute(typeof(OnlyForPayedAttribute)) != null)
+                .Where(info => info.GetCustomAttribute(typeof(OnlyForPaidAttribute)) != null)
                 .ToArray();
 
             Trim(props, obj);

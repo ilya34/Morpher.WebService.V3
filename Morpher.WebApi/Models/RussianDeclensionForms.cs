@@ -11,6 +11,9 @@
     [XmlType("single-number-forms")]
     public class RussianDeclensionForms
     {
+        /// <summary>
+        /// Используется в LibAnalyzer
+        /// </summary>
         public RussianDeclensionForms()
         {
         }
@@ -65,7 +68,7 @@
 
         [DataMember(Order = 6, Name = "П_о", EmitDefaultValue = false)]
         [XmlElement("М")]
-        [OnlyForPayed]
+        [OnlyForPaid]
         public virtual string PrepositionalWithPre { get; set; }
 
         public void AddOrUpdate(RussianDeclensionForms form)

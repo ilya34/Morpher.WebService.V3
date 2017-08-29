@@ -13,7 +13,7 @@
     }
 
     [AttributeUsage(AttributeTargets.Property, Inherited = true)]
-    public class OnlyForPayedAttribute : Attribute
+    public class OnlyForPaidAttribute : Attribute
     {
     }
 

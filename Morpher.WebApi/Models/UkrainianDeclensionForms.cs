@@ -7,19 +7,12 @@
     [XmlType("single-number-forms")]
     public class UkrainianDeclensionForms
     {
+        
+        /// <summary>
+        /// Используется в LibAnalyzer
+        /// </summary>
         public UkrainianDeclensionForms()
         {
-        }
-
-        public UkrainianDeclensionForms(UkrainianDeclensionForms forms)
-        {
-            Nominative = forms.Nominative;
-            Genitive = forms.Genitive;
-            Dative = forms.Dative;
-            Accusative = forms.Accusative;
-            Instrumental = forms.Instrumental;
-            Prepositional = forms.Prepositional;
-            Vocative = forms.Vocative;
         }
 
         public UkrainianDeclensionForms(Ukrainian.DeclensionForms serviceResult)

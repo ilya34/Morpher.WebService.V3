@@ -10,11 +10,6 @@
         { 
         }
 
-        public UkrainianDeclensionResult(UkrainianDeclensionForms forms)
-            : base(forms)
-        {
-        }
-
         public UkrainianDeclensionResult(Ukrainian.DeclensionResult serviceResult)
             : base(serviceResult)
         {
@@ -22,7 +17,7 @@
         }
 
         [DataMember(Name = "рід", EmitDefaultValue = false, Order = 7)]
-        [OnlyForPayed]
+        [OnlyForPaid]
         public string Gender { get; set; }
     }
 }

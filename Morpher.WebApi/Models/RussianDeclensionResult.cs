@@ -33,7 +33,7 @@
         }
 
         [DataMember(Name = "род", EmitDefaultValue = false, Order = 7)]
-        [OnlyForPayed]
+        [OnlyForPaid]
         public virtual string Gender { get; set; }
 
         [DataMember(Name = "множественное", EmitDefaultValue = false, Order = 8)]
@@ -44,15 +44,15 @@
         public virtual FullName FullName { get; set; }
 
         [DataMember(Order = 10, Name = "где", EmitDefaultValue = false)]
-        [OnlyForPayed]
+        [OnlyForPaid]
         public virtual string Where { get; set; }
 
         [DataMember(Order = 11, Name = "куда", EmitDefaultValue = false)]
-        [OnlyForPayed]
+        [OnlyForPaid]
         public virtual string To { get; set; }
 
         [DataMember(Order = 12, Name = "откуда", EmitDefaultValue = false)]
-        [OnlyForPayed]
+        [OnlyForPaid]
         public virtual string From { get; set; }
     }
 }
