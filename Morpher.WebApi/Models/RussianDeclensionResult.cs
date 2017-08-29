@@ -5,6 +5,7 @@
     using Helpers;
 
     [DataContract(Name = "xml")]
+    [KnownType(typeof(RussianExceptionResult))]
     public class RussianDeclensionResult : RussianDeclensionForms
     {
         public RussianDeclensionResult()

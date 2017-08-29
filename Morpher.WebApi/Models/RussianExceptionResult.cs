@@ -1,5 +1,8 @@
 ﻿namespace Morpher.WebService.V3.Models
 {
+    using System.Runtime.Serialization;
+
+    [DataContract]
     public class RussianExceptionResult : RussianDeclensionResult
     {
         private readonly RussianEntry _entry;
@@ -13,7 +16,7 @@
 
             if (entry.Plural != null)
             {
-                _exceptionForms = new RussianExceptionForms(entry.Plural);
+                _exceptionForms = new RussianExceptionForms(entry.Plural, declensionResult.Plural);
             }
         }
 

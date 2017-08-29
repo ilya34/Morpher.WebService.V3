@@ -8,6 +8,7 @@
     using Helpers;
 
     [DataContract]
+    [KnownType(typeof(RussianExceptionForms))]
     [XmlType("single-number-forms")]
     public class RussianDeclensionForms
     {
@@ -22,12 +23,12 @@
         public RussianDeclensionForms(List<NameForm> nameForms)
         {
             Nominative = nameForms.SingleOrDefault(form => form.FormID == 'И')?.AccentedText;
-            Genitive = nameForms.SingleOrDefault(form => form.FormID == 'И')?.AccentedText;
-            Accusative = nameForms.SingleOrDefault(form => form.FormID == 'И')?.AccentedText;
-            Dative = nameForms.SingleOrDefault(form => form.FormID == 'И')?.AccentedText;
-            Instrumental = nameForms.SingleOrDefault(form => form.FormID == 'И')?.AccentedText;
-            Prepositional = nameForms.SingleOrDefault(form => form.FormID == 'И')?.AccentedText;
-            PrepositionalWithPre = nameForms.SingleOrDefault(form => form.FormID == 'И')?.AccentedText;
+            Genitive = nameForms.SingleOrDefault(form => form.FormID == 'Р')?.AccentedText;
+            Accusative = nameForms.SingleOrDefault(form => form.FormID == 'В')?.AccentedText;
+            Dative = nameForms.SingleOrDefault(form => form.FormID == 'Д')?.AccentedText;
+            Instrumental = nameForms.SingleOrDefault(form => form.FormID == 'Т')?.AccentedText;
+            Prepositional = nameForms.SingleOrDefault(form => form.FormID == 'П')?.AccentedText;
+            PrepositionalWithPre = nameForms.SingleOrDefault(form => form.FormID == 'М')?.AccentedText;
         }
 
         [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor")]

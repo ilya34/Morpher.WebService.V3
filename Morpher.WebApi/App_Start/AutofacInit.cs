@@ -124,6 +124,8 @@
 
             builder.RegisterType<ResultTrimmer>()
                 .As<IResultTrimmer>();
+            builder.RegisterType<DatabaseUserDictionary>()
+                .As<IUserDictionaryLookup>();
 
             builder.RegisterType<LogSyncer>().AsSelf().InstancePerLifetimeScope();
 

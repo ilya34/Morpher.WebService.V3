@@ -15,13 +15,16 @@
     {
         private readonly IRussianAnalyzer _analyzer;
         private readonly IResultTrimmer _resultTrimmer;
+        private readonly IUserDictionaryLookup _dictionaryLookup;
 
         public RussianAnalyzerController(
             IRussianAnalyzer analyzer,
-            IResultTrimmer resultTrimmer)
+            IResultTrimmer resultTrimmer,
+            IUserDictionaryLookup dictionaryLookup)
         {
             _analyzer = analyzer;
             _resultTrimmer = resultTrimmer;
+            _dictionaryLookup = dictionaryLookup;
         }
 
         [Route("declension", Name = "RussianDeclension")]
@@ -37,6 +40,13 @@
 
             RussianDeclensionResult declensionResult =
                 _analyzer.Declension(s, flags);
+
+            var corrections = _dictionaryLookup.Lookup(s);
+
+            if (corrections != null)
+            {
+                declensionResult = new RussianExceptionResult(corrections, declensionResult);
+            }
 
             _resultTrimmer.Trim(declensionResult, Request.GetToken());
 
