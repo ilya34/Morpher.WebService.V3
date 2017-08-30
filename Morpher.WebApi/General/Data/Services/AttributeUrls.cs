@@ -41,9 +41,9 @@
 
         public static string GetActionRoute(MethodInfo methodInfo)
         {
-            var methodRouteAttribute = methodInfo.GetCustomAttribute<RoutePrefixAttribute>();
+            var methodRouteAttribute = methodInfo.GetCustomAttribute<RouteAttribute>();
             var methodRoute = methodRouteAttribute != null
-                ? methodRouteAttribute.Prefix
+                ? methodRouteAttribute.Template
                 : methodInfo.Name;
             return methodRoute;
         }
