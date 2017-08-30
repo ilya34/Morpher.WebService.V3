@@ -14,15 +14,18 @@
         private readonly IRussianAnalyzer _analyzer;
         private readonly IResultTrimmer _resultTrimmer;
         private readonly IUserDictionaryLookup _dictionaryLookup;
+        private readonly IExceptionDictionary _exceptionDictionary;
 
         public RussianAnalyzerController(
             IRussianAnalyzer analyzer,
             IResultTrimmer resultTrimmer,
-            IUserDictionaryLookup dictionaryLookup)
+            IUserDictionaryLookup dictionaryLookup,
+            IExceptionDictionary exceptionDictionary)
         {
             _analyzer = analyzer;
             _resultTrimmer = resultTrimmer;
             _dictionaryLookup = dictionaryLookup;
+            _exceptionDictionary = exceptionDictionary;
         }
 
         [Route("declension", Name = "RussianDeclension")]
@@ -110,10 +113,13 @@
         }
 
         [Route("userdict")]
+        [ThrottleThis]
         [HttpGet]
-        public HttpResponseMessage UserDictGetAll()
+        public HttpResponseMessage UserDictGetAll(ResponseFormat? format = null)
         {
-            throw new NotImplementedException();
+            var result = _exceptionDictionary.GetAll();
+
+            return Request.CreateResponse(HttpStatusCode.NotFound, result, format);
         }
     }
 }
