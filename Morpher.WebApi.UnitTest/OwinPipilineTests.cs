@@ -34,6 +34,13 @@
             configuration.Services.Replace(typeof(IAssembliesResolver), apiResolver);
             WebApiConfig.Register(configuration);
 
+            builder.RegisterInstance(
+                Mock.Of<IUserDictionaryLookup>(lookup => lookup.Lookup(It.IsAny<string>()) == null))
+                .As<IUserDictionaryLookup>();
+            builder.RegisterInstance(
+                    Mock.Of<IResultTrimmer>(trimmer => true))
+                .As<IResultTrimmer>();
+
             builder.RegisterApiControllers(apiResolver.GetAssemblies().First());
             builder.RegisterWebApiFilterProvider(configuration);
             builder.RegisterWebApiModelBinderProvider();
