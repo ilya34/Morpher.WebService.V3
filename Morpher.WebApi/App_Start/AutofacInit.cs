@@ -6,6 +6,7 @@
     using System.Reflection;
     using System.Web.Http;
     using Autofac;
+    using Autofac.Core;
     using Autofac.Integration.Mvc;
     using Autofac.Integration.WebApi;
     using General.Data;
@@ -112,19 +113,23 @@
             // Используются в middlewares для трэкинга нужных URL
             builder.RegisterType<AttributeUrls>()
                 .As<IAttributeUrls>()
-                .Keyed<IAttributeUrls>("ApiThrottler")
                 .SingleInstance()
-                .WithParameter("attributeType", typeof(ThrottleThisAttribute));
+                .WithParameter("attributeType", typeof(ThrottleThisAttribute))
+                .Keyed<IAttributeUrls>("ApiThrottler");
+
             builder.RegisterType<AttributeUrls>()
                 .As<IAttributeUrls>()
-                .Keyed<IAttributeUrls>("Logger")
                 .SingleInstance()
-                .WithParameter("attributeType", typeof(LogThisAttribute));
+                .WithParameter("attributeType", typeof(LogThisAttribute))
+                .Keyed<IAttributeUrls>("Logger");
 
             builder.RegisterType<ResultTrimmer>()
                 .As<IResultTrimmer>();
             builder.RegisterType<DatabaseUserDictionary>()
                 .As<IUserDictionaryLookup>();
+            builder.RegisterType<DatabaseUserDictionary>()
+                .As<IExceptionDictionary>();
+
 
             builder.RegisterType<LogSyncer>().AsSelf().InstancePerLifetimeScope();
 
@@ -139,8 +144,15 @@
                 .WithParameter("connectionString", connectionString);
 
             // Middlewares
-            builder.RegisterType<ThrottlingMiddleware>();
-            builder.RegisterType<LoggingMiddleware>();
+            builder.RegisterType<ThrottlingMiddleware>()
+                .WithParameter(new ResolvedParameter(
+                    (pi, ctx) => pi.ParameterType == typeof(IAttributeUrls),
+                    (pi, ctx) => ctx.ResolveKeyed<IAttributeUrls>("ApiThrottler")));
+
+            builder.RegisterType<LoggingMiddleware>()
+                .WithParameter(new ResolvedParameter(
+                    (pi, ctx) => pi.ParameterType == typeof(IAttributeUrls),
+                    (pi, ctx) => ctx.ResolveKeyed<IAttributeUrls>("Logger")));
         }
     }
 }

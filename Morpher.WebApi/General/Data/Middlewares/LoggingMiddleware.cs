@@ -12,7 +12,7 @@
         public LoggingMiddleware(
             OwinMiddleware next,
             IMorpherLog morpherLog,
-            [KeyFilter("Logger")]IAttributeUrls attributeUrls) : base(next)
+            IAttributeUrls attributeUrls) : base(next)
         {
             _morpherLog = morpherLog;
             _attributeUrls = attributeUrls;

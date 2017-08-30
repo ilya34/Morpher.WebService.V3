@@ -4,7 +4,6 @@
     using System.Net;
     using System.Runtime.Serialization;
     using System.Threading.Tasks;
-    using Autofac.Features.AttributeFilters;
     using Microsoft.Owin;
     using Newtonsoft.Json;
 
@@ -16,7 +15,7 @@
         public ThrottlingMiddleware(
             OwinMiddleware next,
             IApiThrottler apiThrottler,
-            [KeyFilter("ApiThrottler")]IAttributeUrls attributeUrls) : base(next)
+            IAttributeUrls attributeUrls) : base(next)
         {
             _apiThrottler = apiThrottler;
             _attributeUrls = attributeUrls;
