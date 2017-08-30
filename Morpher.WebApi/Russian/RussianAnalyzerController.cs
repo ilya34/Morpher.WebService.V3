@@ -1,5 +1,6 @@
 ﻿namespace Morpher.WebService.V3.Russian
 {
+    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
@@ -92,6 +93,27 @@
 
             Data.AdjectiveGenders adjectives = _analyzer.AdjectiveGenders(s);
             return Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
+        }
+
+        [Route("userdict")]
+        [HttpDelete]
+        public HttpResponseMessage UserDictDelete()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Route("userdict")]
+        [HttpPost]
+        public HttpResponseMessage UserDictAdd()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Route("userdict")]
+        [HttpGet]
+        public HttpResponseMessage UserDictGetAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }
