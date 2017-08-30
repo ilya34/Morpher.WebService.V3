@@ -29,17 +29,17 @@
                 return null;
             }
 
-            var cache = (MorpherCacheObject) _morpherCache.Get(token.ToString().ToLowerInvariant());
+            var cache = (MorpherCacheObject)_morpherCache.Get(token.ToString().ToLowerInvariant());
 
             using (UserCorrectionDataContext context = new UserCorrectionDataContext())
             {
                 var result = (from correction in context.NameForms
-                             join names in context.Names on correction.NameID equals names.ID
-                             join userVote in context.UserVotes on names.ID equals userVote.NameID
-                             where userVote.UserID == cache.UserId
-                                   && nominativeSingular.ToUpperInvariant() == names.Lemma
-                                   && correction.LanguageID == "RU"
-                             select correction).ToList();
+                              join names in context.Names on correction.NameID equals names.ID
+                              join userVote in context.UserVotes on names.ID equals userVote.NameID
+                              where userVote.UserID == cache.UserId
+                                    && nominativeSingular.ToUpperInvariant() == names.Lemma
+                                    && correction.LanguageID == "RU"
+                              select correction).ToList();
 
                 if (result.Count == 0)
                 {
@@ -47,7 +47,7 @@
                 }
 
                 Entry entry = new Entry(
-                    new DeclensionForms(result.Where(form => !form.Plural).ToList()), 
+                    new DeclensionForms(result.Where(form => !form.Plural).ToList()),
                     new DeclensionForms(result.Where(form => form.Plural).ToList()));
                 return entry;
             }
@@ -65,7 +65,35 @@
 
         public List<Entry> GetAll()
         {
-            throw new System.NotImplementedException();
+            var token = HttpContext.Current.Request.GetToken();
+            if (token == null)
+            {
+                return null;
+            }
+
+            var cache = (MorpherCacheObject)_morpherCache.Get(token.ToString().ToLowerInvariant());
+
+            List<Entry> entries = new List<Entry>();
+
+            using (UserCorrectionDataContext context = new UserCorrectionDataContext())
+            {
+                var correctionIds = (from userVote in context.UserVotes
+                                    where userVote.UserID == cache.UserId
+                                    select userVote.NameID).ToList();
+
+                foreach (var id in correctionIds)
+                {
+                    var correction = (from name in context.NameForms
+                                      where name.NameID == id
+                                      select name).ToList();
+                    var entry = new Entry(
+                        new DeclensionForms(correction.Where(form => !form.Plural).ToList()),
+                        new DeclensionForms(correction.Where(form => form.Plural).ToList()));
+                    entries.Add(entry);
+                }
+            }
+
+            return entries;
         }
     }
 }
