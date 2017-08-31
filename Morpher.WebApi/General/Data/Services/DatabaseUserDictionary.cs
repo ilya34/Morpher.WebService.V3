@@ -113,7 +113,35 @@
 
         public bool Remove(string nominativeForm)
         {
-            throw new System.NotImplementedException();
+            var token = HttpContext.Current.Request.GetToken();
+            if (token == null)
+            {
+                throw new TokenNotFoundExceptionException();
+            }
+
+            var cache = (MorpherCacheObject)_morpherCache.Get(token.ToString().ToLowerInvariant());
+
+            using (UserCorrectionDataContext context = new UserCorrectionDataContext())
+            {
+                var query = (from name in context.Names
+                             join userVote in context.UserVotes on name.ID equals userVote.NameID
+                             where userVote.UserID == cache.UserId
+                             && name.Lemma == LemmaNormalizer.Normalize(nominativeForm)
+                             select new { name, userVote }).FirstOrDefault();
+                if (query == null)
+                {
+                    return false;
+                }
+
+                foreach (var form in query.name.NameForms)
+                {
+                    context.NameForms.DeleteOnSubmit(form);
+                }
+
+                context.UserVotes.DeleteOnSubmit(query.userVote);
+                context.SubmitChanges();
+                return true;
+            }
         }
 
         public List<Entry> GetAll()

@@ -100,6 +100,7 @@
         }
 
         [Route("userdict")]
+        [ThrottleThis]
         [HttpDelete]
         public HttpResponseMessage UserDictDelete(string s)
         {
