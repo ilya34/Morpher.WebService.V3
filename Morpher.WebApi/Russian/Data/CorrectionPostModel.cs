@@ -1,5 +1,9 @@
 ﻿namespace Morpher.WebService.V3.Russian.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using Models;
+
     /// <summary>
     /// Microsoft: "At most one parameter is allowed to read from the message body."
     /// Этот класс нужен что бы получать пользовательские исправление как x-form-www-urlencoded
@@ -25,19 +29,60 @@
         public bool IsEmpty()
         {
             return string.IsNullOrWhiteSpace(И)
-                   || string.IsNullOrWhiteSpace(Р)
-                   || string.IsNullOrWhiteSpace(Д)
-                   || string.IsNullOrWhiteSpace(В)
-                   || string.IsNullOrWhiteSpace(Т)
-                   || string.IsNullOrWhiteSpace(П)
-                   || string.IsNullOrWhiteSpace(П_о)
-                   || string.IsNullOrWhiteSpace(М_И)
-                   || string.IsNullOrWhiteSpace(М_Р)
-                   || string.IsNullOrWhiteSpace(М_Д)
-                   || string.IsNullOrWhiteSpace(М_В)
-                   || string.IsNullOrWhiteSpace(М_Т)
-                   || string.IsNullOrWhiteSpace(М_П)
-                   || string.IsNullOrWhiteSpace(М_П_о);
+                   && string.IsNullOrWhiteSpace(Р)
+                   && string.IsNullOrWhiteSpace(Д)
+                   && string.IsNullOrWhiteSpace(В)
+                   && string.IsNullOrWhiteSpace(Т)
+                   && string.IsNullOrWhiteSpace(П)
+                   && string.IsNullOrWhiteSpace(П_о)
+                   && string.IsNullOrWhiteSpace(М_И)
+                   && string.IsNullOrWhiteSpace(М_Р)
+                   && string.IsNullOrWhiteSpace(М_Д)
+                   && string.IsNullOrWhiteSpace(М_В)
+                   && string.IsNullOrWhiteSpace(М_Т)
+                   && string.IsNullOrWhiteSpace(М_П)
+                   && string.IsNullOrWhiteSpace(М_П_о);
+        }
+
+        public static implicit operator List<NameForm>(CorrectionPostModel model)
+        {
+            // TODO: все формы
+            List<NameForm> nameForms = new List<NameForm>();
+
+            if (!string.IsNullOrWhiteSpace(model.И))
+            {
+                nameForms.Add(new NameForm()
+                {
+                    Plural = false,
+                    AccentedText = model.И,
+                    FormID = 'И',
+                    LanguageID = "RU"
+                });
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.Р))
+            {
+                nameForms.Add(new NameForm()
+                {
+                    Plural = false,
+                    AccentedText = model.Р,
+                    FormID = 'Р',
+                    LanguageID = "RU"
+                });
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.Д))
+            {
+                nameForms.Add(new NameForm()
+                {
+                    Plural = false,
+                    AccentedText = model.Д,
+                    FormID = 'Д',
+                    LanguageID = "RU"
+                });
+            }
+
+            return nameForms;
         }
     }
 }

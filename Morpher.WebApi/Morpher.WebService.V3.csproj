@@ -173,6 +173,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="General\Data\Exceptions\CorrectionPostModelIsEmptyException.cs" />
     <Compile Include="General\Data\Extensions\DeclensionFlagsExtensions.cs" />
     <Compile Include="General\Data\Extensions\HttpRequestExtensions.cs" />
     <Compile Include="General\Data\Extensions\IOwinRequestExtensions.cs" />
@@ -182,6 +183,7 @@
     <Compile Include="General\Data\JobFactory.cs" />
     <Compile Include="General\Data\Middlewares\GuidInsertMiddleware.cs" />
     <Compile Include="General\Data\Middlewares\LoggingMiddleware.cs" />
+    <Compile Include="General\LemmaNormalizer.cs" />
     <Compile Include="Russian\Data\AdjectiveGenders.cs" />
     <Compile Include="App_Start\AutofacInit.cs" />
     <Compile Include="App_Start\Startup.cs" />
@@ -193,7 +195,6 @@
     <Compile Include="General\Data\Exceptions\ExceededDailyLimitException.cs" />
     <Compile Include="General\Data\Exceptions\InvalidTokenFormatException.cs" />
     <Compile Include="General\Data\Exceptions\IpBlockedExceptionException.cs" />
-    <Compile Include="General\Data\Exceptions\ModelNotValidException.cs" />
     <Compile Include="General\Data\Exceptions\MorpherException.cs" />
     <Compile Include="General\Data\Exceptions\NotPayedException.cs" />
     <Compile Include="General\Data\Exceptions\NumeralsDeclensionNotSupportedException.cs" />

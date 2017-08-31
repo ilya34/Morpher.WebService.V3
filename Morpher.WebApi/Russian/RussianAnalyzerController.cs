@@ -113,6 +113,7 @@
         }
 
         [Route("userdict")]
+        [ThrottleThis]
         [HttpPost]
         public HttpResponseMessage UserDictAdd([FromBody] CorrectionPostModel model)
         {
