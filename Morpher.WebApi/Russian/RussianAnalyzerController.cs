@@ -100,7 +100,6 @@
         }
 
         [Route("userdict")]
-        [ThrottleThis]
         [HttpDelete]
         public HttpResponseMessage UserDictDelete(string s)
         {
@@ -109,12 +108,16 @@
                 throw new RequiredParameterIsNotSpecifiedException(nameof(s));
             }
 
+            if (Request.GetToken() == null)
+            {
+                throw new RequiredParameterIsNotSpecifiedException("token");
+            }
+
             var result = _exceptionDictionary.Remove(s);
             return Request.CreateResponse(!result ? HttpStatusCode.NotFound : HttpStatusCode.OK);
         }
 
         [Route("userdict")]
-        [ThrottleThis]
         [HttpPost]
         public HttpResponseMessage UserDictAdd([FromBody] CorrectionPostModel model)
         {
@@ -128,16 +131,25 @@
                 throw new RequiredParameterIsNotSpecifiedException("И");
             }
 
+            if (Request.GetToken() == null)
+            {
+                throw new RequiredParameterIsNotSpecifiedException("token");
+            }
+
             _exceptionDictionary.Add(model);
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [Route("userdict")]
-        [ThrottleThis]
         [HttpGet]
         public HttpResponseMessage UserDictGetAll(ResponseFormat? format = null)
         {
+            if (Request.GetToken() == null)
+            {
+                throw new RequiredParameterIsNotSpecifiedException("token");
+            }
+
             var result = _exceptionDictionary.GetAll();
 
             return Request.CreateResponse(HttpStatusCode.OK, result, format);

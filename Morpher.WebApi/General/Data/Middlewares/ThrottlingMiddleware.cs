@@ -25,7 +25,6 @@
         {
             if (_attributeUrls.Urls.Contains(context.Request.Path.ToString().ToLowerInvariant()))
             {
-
                 ApiThrottlingResult result = _apiThrottler.Throttle(context.Request);
 
                 if (result != ApiThrottlingResult.Success)

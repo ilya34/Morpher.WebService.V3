@@ -10,6 +10,7 @@
     using Autofac.Integration.Mvc;
     using Autofac.Integration.WebApi;
     using General.Data;
+    using General.Data.Middlewares;
     using General.Data.Services;
     using Russian;
     using Ukrainian;
@@ -144,6 +145,7 @@
                 .WithParameter("connectionString", connectionString);
 
             // Middlewares
+            builder.RegisterType<UserCacheLoaderMiddleware>();
             builder.RegisterType<ThrottlingMiddleware>()
                 .WithParameter(new ResolvedParameter(
                     (pi, ctx) => pi.ParameterType == typeof(IAttributeUrls),

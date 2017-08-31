@@ -43,6 +43,25 @@
                 : ApiThrottlingResult.Overlimit;
         }
 
+        public ApiThrottlingResult LoadIntoCache(IOwinRequest request)
+        {
+            try
+            {
+                var token = request.GetToken();
+                if (token != null)
+                {
+                    GetQueryLimit(token.Value);
+                    return ApiThrottlingResult.Success;
+                }
+            }
+            catch (InvalidTokenFormatException)
+            {
+                return ApiThrottlingResult.InvalidToken;
+            }
+
+            return ApiThrottlingResult.Success;
+        }
+
         /// <summary>
         /// Выполняет тарификацию по токену
         /// </summary>

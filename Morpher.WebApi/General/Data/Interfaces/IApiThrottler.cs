@@ -7,6 +7,7 @@
     {
         ApiThrottlingResult Throttle(IOwinRequest request);
 
+        ApiThrottlingResult LoadIntoCache(IOwinRequest request);
         object RemoveFromCache(string key);
 
         MorpherCacheObject GetQueryLimit(string ip);

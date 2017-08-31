@@ -183,6 +183,7 @@
     <Compile Include="General\Data\JobFactory.cs" />
     <Compile Include="General\Data\Middlewares\GuidInsertMiddleware.cs" />
     <Compile Include="General\Data\Middlewares\LoggingMiddleware.cs" />
+    <Compile Include="General\Data\Middlewares\UserCacheLoaderMiddleware.cs" />
     <Compile Include="General\LemmaNormalizer.cs" />
     <Compile Include="Russian\Data\AdjectiveGenders.cs" />
     <Compile Include="App_Start\AutofacInit.cs" />
