@@ -5,7 +5,7 @@
 
     public interface IExceptionDictionary
     {
-        void Add(Entry entry);
+        void Add(CorrectionPostModel model);
         bool Remove(string nominativeForm);
         List<Entry> GetAll();
     }

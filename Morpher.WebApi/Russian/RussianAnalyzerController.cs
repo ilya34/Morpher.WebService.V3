@@ -7,6 +7,7 @@
     using System.Web.Http;
     using Data;
     using General.Data;
+    using General.Data.Exceptions;
 
     [RoutePrefix("russian")]
     public class RussianAnalyzerController : ApiController
@@ -100,9 +101,15 @@
 
         [Route("userdict")]
         [HttpDelete]
-        public HttpResponseMessage UserDictDelete()
+        public HttpResponseMessage UserDictDelete(string s)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                throw new RequiredParameterIsNotSpecifiedException(nameof(s));
+            }
+
+            var result = _exceptionDictionary.Remove(s);
+            return Request.CreateResponse(!result ? HttpStatusCode.NotFound : HttpStatusCode.OK);
         }
 
         [Route("userdict")]
@@ -111,9 +118,15 @@
         {
             if (model.IsEmpty())
             {
-                throw new Exception("Исключение сделай");
+                throw new CorrectionPostModelIsEmptyException();
+            }
+            
+            if (string.IsNullOrWhiteSpace(model.И))
+            {
+                throw new RequiredParameterIsNotSpecifiedException("И");
             }
 
+            _exceptionDictionary.Add(model);
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
@@ -125,7 +138,7 @@
         {
             var result = _exceptionDictionary.GetAll();
 
-            return Request.CreateResponse(HttpStatusCode.NotFound, result, format);
+            return Request.CreateResponse(HttpStatusCode.OK, result, format);
         }
     }
 }

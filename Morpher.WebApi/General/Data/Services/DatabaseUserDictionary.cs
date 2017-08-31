@@ -53,7 +53,7 @@
             }
         }
 
-        public void Add(Entry entry)
+        public void Add(CorrectionPostModel model)
         {
             throw new System.NotImplementedException();
         }
