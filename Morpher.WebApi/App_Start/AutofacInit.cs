@@ -82,12 +82,12 @@
 
                 builder.RegisterAssemblyTypes(analyzer)
                     .Where(type => typeof(IRussianAnalyzer).IsAssignableFrom(type))
-                    .As<IRussianAnalyzer>();
+                    .As<IRussianAnalyzer>().SingleInstance();
                 builder.RegisterAssemblyTypes(analyzer)
                     .Where(type => typeof(IUkrainianAnalyzer).IsAssignableFrom(type))
-                    .As<IUkrainianAnalyzer>();
+                    .As<IUkrainianAnalyzer>().SingleInstance();
             }
-        }
+        }   
 
         private static void RegisterSharedServices(ContainerBuilder builder)
         {
@@ -126,8 +126,8 @@
 
             builder.RegisterType<ResultTrimmer>()
                 .As<IResultTrimmer>();
-            builder.RegisterType<DatabaseUserDictionary>()
-                .As<IUserDictionaryLookup>();
+            builder.RegisterType<RedisUserDictionary>()
+                .As<IUserDictionaryLookup>().SingleInstance();
             builder.RegisterType<DatabaseUserDictionary>()
                 .As<IExceptionDictionary>();
 
