@@ -107,9 +107,15 @@
 
         [Route("userdict")]
         [HttpPost]
-        public HttpResponseMessage UserDictAdd()
+        public HttpResponseMessage UserDictAdd([FromBody] CorrectionPostModel model)
         {
-            throw new NotImplementedException();
+            if (model.IsEmpty())
+            {
+                throw new Exception("Исключение сделай");
+            }
+
+
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [Route("userdict")]
