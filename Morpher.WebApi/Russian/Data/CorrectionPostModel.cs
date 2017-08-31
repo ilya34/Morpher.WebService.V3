@@ -46,7 +46,6 @@
 
         public static implicit operator List<NameForm>(CorrectionPostModel model)
         {
-            // TODO: все формы
             List<NameForm> nameForms = new List<NameForm>();
 
             if (!string.IsNullOrWhiteSpace(model.И))
@@ -78,6 +77,128 @@
                     Plural = false,
                     AccentedText = model.Д,
                     FormID = 'Д',
+                    LanguageID = "RU"
+                });
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.В))
+            {
+                nameForms.Add(new NameForm()
+                {
+                    Plural = false,
+                    AccentedText = model.В,
+                    FormID = 'В',
+                    LanguageID = "RU"
+                });
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.Т))
+            {
+                nameForms.Add(new NameForm()
+                {
+                    Plural = false,
+                    AccentedText = model.Т,
+                    FormID = 'Т',
+                    LanguageID = "RU"
+                });
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.П))
+            {
+                nameForms.Add(new NameForm()
+                {
+                    Plural = false,
+                    AccentedText = model.П,
+                    FormID = 'П',
+                    LanguageID = "RU"
+                });
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.П_о))
+            {
+                nameForms.Add(new NameForm()
+                {
+                    Plural = false,
+                    AccentedText = model.П_о,
+                    FormID = 'М',
+                    LanguageID = "RU"
+                });
+            }
+
+            // Plural
+            if (!string.IsNullOrWhiteSpace(model.М_И))
+            {
+                nameForms.Add(new NameForm()
+                {
+                    Plural = true,
+                    AccentedText = model.М_И,
+                    FormID = 'И',
+                    LanguageID = "RU"
+                });
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.М_Р))
+            {
+                nameForms.Add(new NameForm()
+                {
+                    Plural = true,
+                    AccentedText = model.М_Р,
+                    FormID = 'Р',
+                    LanguageID = "RU"
+                });
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.М_Д))
+            {
+                nameForms.Add(new NameForm()
+                {
+                    Plural = true,
+                    AccentedText = model.М_Д,
+                    FormID = 'Д',
+                    LanguageID = "RU"
+                });
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.М_В))
+            {
+                nameForms.Add(new NameForm()
+                {
+                    Plural = true,
+                    AccentedText = model.М_В,
+                    FormID = 'В',
+                    LanguageID = "RU"
+                });
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.М_Т))
+            {
+                nameForms.Add(new NameForm()
+                {
+                    Plural = true,
+                    AccentedText = model.М_Т,
+                    FormID = 'Т',
+                    LanguageID = "RU"
+                });
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.М_П))
+            {
+                nameForms.Add(new NameForm()
+                {
+                    Plural = true,
+                    AccentedText = model.М_П,
+                    FormID = 'П',
+                    LanguageID = "RU"
+                });
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.М_П_о))
+            {
+                nameForms.Add(new NameForm()
+                {
+                    Plural = true,
+                    AccentedText = model.М_П_о,
+                    FormID = 'М',
                     LanguageID = "RU"
                 });
             }
