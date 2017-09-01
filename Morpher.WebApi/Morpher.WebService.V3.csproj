@@ -180,6 +180,7 @@
     <Compile Include="General\Data\Extensions\StringExtensions.cs" />
     <Compile Include="General\Data\Filters\MorpherExceptionFilterAttribute.cs" />
     <Compile Include="General\Data\Interfaces\IAttributeUrls.cs" />
+    <Compile Include="General\Data\Interfaces\ICorrectionCache.cs" />
     <Compile Include="General\Data\JobFactory.cs" />
     <Compile Include="General\Data\Middlewares\GuidInsertMiddleware.cs" />
     <Compile Include="General\Data\Middlewares\LoggingMiddleware.cs" />

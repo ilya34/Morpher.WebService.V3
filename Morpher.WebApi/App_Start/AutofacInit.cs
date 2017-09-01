@@ -10,6 +10,7 @@
     using Autofac.Integration.Mvc;
     using Autofac.Integration.WebApi;
     using General.Data;
+    using General.Data.Interfaces;
     using General.Data.Middlewares;
     using General.Data.Services;
     using Russian;
@@ -82,10 +83,10 @@
 
                 builder.RegisterAssemblyTypes(analyzer)
                     .Where(type => typeof(IRussianAnalyzer).IsAssignableFrom(type))
-                    .As<IRussianAnalyzer>();
+                    .As<IRussianAnalyzer>().SingleInstance();
                 builder.RegisterAssemblyTypes(analyzer)
                     .Where(type => typeof(IUkrainianAnalyzer).IsAssignableFrom(type))
-                    .As<IUkrainianAnalyzer>();
+                    .As<IUkrainianAnalyzer>().SingleInstance();
             }
         }
 
@@ -131,6 +132,10 @@
             builder.RegisterType<DatabaseUserDictionary>()
                 .As<IExceptionDictionary>();
 
+            builder.RegisterType<MorpherCache>()
+                .As<ICorrectionCache>()
+                .WithParameter("name", "UserCorrection")
+                .SingleInstance();
 
             builder.RegisterType<LogSyncer>().AsSelf().InstancePerLifetimeScope();
 

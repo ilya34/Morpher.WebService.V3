@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Linq;
     using System.Linq;
     using System.Web;
+    using Interfaces;
     using Models;
     using Russian.Data;
     using DeclensionForms = Russian.Data.DeclensionForms;
@@ -11,10 +13,30 @@
     public class DatabaseUserDictionary : IUserDictionaryLookup, IExceptionDictionary
     {
         private readonly IMorpherCache _morpherCache;
+        private readonly ICorrectionCache _correctionCache;
 
-        public DatabaseUserDictionary(IMorpherCache morpherCache)
+        public DatabaseUserDictionary(IMorpherCache morpherCache, ICorrectionCache correctionCache)
         {
             _morpherCache = morpherCache;
+            _correctionCache = correctionCache;
+        }
+
+        private void LoadToCache(Guid userId)
+        {
+            using (UserCorrectionDataContext context = new UserCorrectionDataContext())
+            {
+                //context.DeferredLoadingEnabled = false;
+                DataLoadOptions dataLoadOptions = new DataLoadOptions();
+                dataLoadOptions.LoadWith<Name>(name => name.NameForms);
+                context.LoadOptions = dataLoadOptions;
+                var result = context.UserVotes.Where(vote => vote.UserID == userId)
+                    .Select(vote => vote.Name).ToList();
+                
+
+
+                _correctionCache.Set(userId.ToString().ToLowerInvariant(), result,
+                    new DateTimeOffset(DateTime.Today.AddDays(1)));
+            }
         }
 
         /// <summary>
@@ -32,17 +54,15 @@
 
             var cache = (MorpherCacheObject)_morpherCache.Get(token.ToString().ToLowerInvariant());
 
-            using (UserCorrectionDataContext context = new UserCorrectionDataContext())
-            {
-                var result = (from correction in context.NameForms
-                              join names in context.Names on correction.NameID equals names.ID
-                              join userVote in context.UserVotes on names.ID equals userVote.NameID
-                              where userVote.UserID == cache.UserId
-                                    && nominativeSingular.ToUpperInvariant() == names.Lemma
-                                    && correction.LanguageID == "RU"
-                              select correction).ToList();
+            var correctionCache = (List<Name>)_correctionCache.Get(cache.UserId.ToString().ToLowerInvariant());
 
-                if (result.Count == 0)
+            if (correctionCache != null)
+            {
+                var result = correctionCache.FirstOrDefault(
+                    name => name.Lemma == LemmaNormalizer.Normalize(nominativeSingular)
+                            && name.LanguageID == "RU")?.NameForms;
+
+                if (result == null || !result.Any())
                 {
                     return null;
                 }
@@ -52,6 +72,10 @@
                     new DeclensionForms(result.Where(form => form.Plural).ToList()));
                 return entry;
             }
+
+            // load to cache
+            LoadToCache(cache.UserId.Value);
+            return Lookup(nominativeSingular);
         }
 
         public void Add(CorrectionPostModel model)
@@ -126,7 +150,7 @@
                 var query = (from name in context.Names
                              join userVote in context.UserVotes on name.ID equals userVote.NameID
                              where userVote.UserID == cache.UserId
-                             && name.Lemma == LemmaNormalizer.Normalize(nominativeForm)
+                                   && name.Lemma == LemmaNormalizer.Normalize(nominativeForm)
                              select new { name, userVote }).FirstOrDefault();
                 if (query == null)
                 {
@@ -154,24 +178,23 @@
 
             var cache = (MorpherCacheObject)_morpherCache.Get(token.ToString().ToLowerInvariant());
 
+            var correctionCache = (List<Name>)_correctionCache.Get(cache.UserId.ToString().ToLowerInvariant());
+
+            if (correctionCache == null)
+            {
+                LoadToCache(cache.UserId.Value);
+                return GetAll();
+            }
+
             List<Entry> entries = new List<Entry>();
 
-            using (UserCorrectionDataContext context = new UserCorrectionDataContext())
+            foreach (var name in correctionCache)
             {
-                var correctionIds = (from userVote in context.UserVotes
-                                     where userVote.UserID == cache.UserId
-                                     select userVote.NameID).ToList();
-
-                foreach (var id in correctionIds)
-                {
-                    var correction = (from name in context.NameForms
-                                      where name.NameID == id
-                                      select name).ToList();
-                    var entry = new Entry(
-                        new DeclensionForms(correction.Where(form => !form.Plural).ToList()),
-                        new DeclensionForms(correction.Where(form => form.Plural).ToList()));
-                    entries.Add(entry);
-                }
+                var correction = name.NameForms;
+                var entry = new Entry(
+                    new DeclensionForms(correction.Where(form => !form.Plural).ToList()),
+                    new DeclensionForms(correction.Where(form => form.Plural).ToList()));
+                entries.Add(entry);
             }
 
             return entries;
