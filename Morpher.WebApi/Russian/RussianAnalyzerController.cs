@@ -1,6 +1,5 @@
 ﻿namespace Morpher.WebService.V3.Russian
 {
-    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
@@ -14,18 +13,15 @@
     {
         private readonly IRussianAnalyzer _analyzer;
         private readonly IResultTrimmer _resultTrimmer;
-        private readonly IUserDictionaryLookup _dictionaryLookup;
         private readonly IExceptionDictionary _exceptionDictionary;
 
         public RussianAnalyzerController(
             IRussianAnalyzer analyzer,
             IResultTrimmer resultTrimmer,
-            IUserDictionaryLookup dictionaryLookup,
             IExceptionDictionary exceptionDictionary)
         {
             _analyzer = analyzer;
             _resultTrimmer = resultTrimmer;
-            _dictionaryLookup = dictionaryLookup;
             _exceptionDictionary = exceptionDictionary;
         }
 
@@ -42,13 +38,6 @@
 
             Data.DeclensionResult declensionResult =
                 _analyzer.Declension(s, flags);
-
-            var corrections = _dictionaryLookup.Lookup(s);
-
-            if (corrections != null)
-            {
-                declensionResult = new ExceptionResult(corrections, declensionResult);
-            }
 
             _resultTrimmer.Trim(declensionResult, Request.GetToken());
 

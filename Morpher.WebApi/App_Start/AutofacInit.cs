@@ -128,7 +128,7 @@
             builder.RegisterType<ResultTrimmer>()
                 .As<IResultTrimmer>();
             builder.RegisterType<DatabaseUserDictionary>()
-                .As<IUserDictionaryLookup>();
+                .As<IUserDictionaryLookup>().SingleInstance();
             builder.RegisterType<DatabaseUserDictionary>()
                 .As<IExceptionDictionary>();
 
