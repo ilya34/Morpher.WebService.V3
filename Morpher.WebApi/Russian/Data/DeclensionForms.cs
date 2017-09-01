@@ -7,7 +7,7 @@
     using System.Xml.Serialization;
     using General.Data;
 
-    [DataContract]
+    [DataContract(Name = "множественное")]
     [KnownType(typeof(ExceptionForms))]
     [XmlType("single-number-forms")]
     public class DeclensionForms

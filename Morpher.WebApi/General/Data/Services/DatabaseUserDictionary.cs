@@ -25,15 +25,12 @@
         {
             using (UserCorrectionDataContext context = new UserCorrectionDataContext())
             {
-                //context.DeferredLoadingEnabled = false;
                 DataLoadOptions dataLoadOptions = new DataLoadOptions();
                 dataLoadOptions.LoadWith<Name>(name => name.NameForms);
                 context.LoadOptions = dataLoadOptions;
                 var result = context.UserVotes.Where(vote => vote.UserID == userId)
                     .Select(vote => vote.Name).ToList();
                 
-
-
                 _correctionCache.Set(userId.ToString().ToLowerInvariant(), result,
                     new DateTimeOffset(DateTime.Today.AddDays(1)));
             }
@@ -132,6 +129,7 @@
                 }
 
                 context.SubmitChanges();
+                _correctionCache.Remove(cache.UserId.ToString().ToLowerInvariant());
             }
         }
 
@@ -144,6 +142,8 @@
             }
 
             var cache = (MorpherCacheObject)_morpherCache.Get(token.ToString().ToLowerInvariant());
+
+            _correctionCache.Remove(cache.UserId.ToString().ToLowerInvariant());
 
             using (UserCorrectionDataContext context = new UserCorrectionDataContext())
             {

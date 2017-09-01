@@ -2,7 +2,7 @@
 {
     using System.Runtime.Serialization;
 
-    [DataContract]
+    [DataContract(Name = "xml")]
     public class ExceptionResult : DeclensionResult
     {
         private readonly Entry _entry;
@@ -20,6 +20,7 @@
             }
         }
 
+        [DataMember(Name = "множественное", EmitDefaultValue = false, Order = 8)]
         public override DeclensionForms Plural => _exceptionForms ?? _declensionResult.Plural;
 
         public override string Nominative 

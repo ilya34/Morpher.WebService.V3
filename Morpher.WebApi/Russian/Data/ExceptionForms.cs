@@ -2,7 +2,7 @@
 {
     using System.Runtime.Serialization;
 
-    [DataContract]
+    [DataContract(Name = "множественное")]
     public class ExceptionForms : DeclensionForms
     {
         private readonly DeclensionForms _correction;
