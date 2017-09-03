@@ -1,7 +1,5 @@
 ﻿namespace Morpher.WebService.V3.General.Data
 {
-    using Russian.Data;
-
     public interface IUserDictionaryLookup
     {
         /// <summary>
@@ -10,6 +8,6 @@
         /// <param name="nominativeSingular">именительная форма, регистр не учитывается</param>
         /// <remarks>Вызвать toUpperCase/toLowerCase для nominativeSingular</remarks>
         /// <returns>Пользовательское исправление</returns>
-        Entry Lookup(string nominativeSingular);
+        object Lookup(string nominativeSingular);
     }
 }
