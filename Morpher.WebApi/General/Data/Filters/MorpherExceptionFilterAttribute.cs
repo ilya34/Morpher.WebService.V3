@@ -42,7 +42,10 @@
 
             var response = new ServiceErrorMessage(exception);
             context.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
-            context.Response.Headers.Add("Error-Code", new[] { response.Code.ToString() });
+            if (!context.Response.Headers.Contains("Error-Code"))
+            {
+                context.Response.Headers.Add("Error-Code", new[] {response.Code.ToString()});
+            }
 
             switch (format)
             {

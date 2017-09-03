@@ -69,7 +69,11 @@
                             break;
                     }
 
-                    context.Response.Headers.Add("Error-Code", new[] { response.Code.ToString() });
+                    if (!context.Response.Headers.ContainsKey("Error-Code"))
+                    {
+                        context.Response.Headers.Add("Error-Code", new[] {response.Code.ToString()});
+                    }
+
                     await Next.Invoke(context);
                     return;
                 }
