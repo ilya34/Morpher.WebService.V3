@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
@@ -23,12 +24,15 @@
     [TestFixture]
     class OwinPipilineTests
     {
-        private IContainer container;
+        private IContainer _container;
 
         private TestServer PrepareTestServer(ContainerBuilder builder)
         {
 
-            HttpConfiguration configuration = new HttpConfiguration();
+            HttpConfiguration configuration = new HttpConfiguration()
+            {
+                IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always
+            };
             TestWebApiResolver apiResolver = new TestWebApiResolver();
 
             configuration.Services.Replace(typeof(IAssembliesResolver), apiResolver);
@@ -40,23 +44,27 @@
             builder.RegisterInstance(
                     Mock.Of<IResultTrimmer>(trimmer => true))
                 .As<IResultTrimmer>();
+            builder.RegisterInstance(
+                    Mock.Of<IExceptionDictionary>())
+                .As<IExceptionDictionary>();
+
 
             builder.RegisterApiControllers(apiResolver.GetAssemblies().First());
             builder.RegisterWebApiFilterProvider(configuration);
             builder.RegisterWebApiModelBinderProvider();
-            container = builder.Build();
-            configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+            _container = builder.Build();
+            configuration.DependencyResolver = new AutofacWebApiDependencyResolver(_container);
 
             TestServer testServer = TestServer.Create(appBuilder =>
             {
-                appBuilder.UseAutofacMiddleware(container);
+                appBuilder.UseAutofacMiddleware(_container);
                 appBuilder.UseWebApi(configuration);
             });
 
             return testServer;
         }
 
-        private IRussianAnalyzer mockAnalyzer =
+        private readonly IRussianAnalyzer mockAnalyzer =
             Mock.Of<IRussianAnalyzer>(
                 analyzer => analyzer.Declension(It.IsAny<string>(), It.IsAny<DeclensionFlags>()) ==
                             new DeclensionResult());
@@ -113,7 +121,7 @@
                 }
 
                 // Assert
-                var morpheLog = container.Resolve<IMorpherLog>();
+                var morpheLog = _container.Resolve<IMorpherLog>();
                 morpheLog.Sync();
                 Assert.AreEqual(1, databaseLogMock.Logs.Count);
                 var logEntity = databaseLogMock.Logs.First();
@@ -165,11 +173,15 @@
                 // Act
                 using (var client = testServer.HttpClient)
                 {
-                    await client.GetAsync("/russian/declension?s=");
+                    var result = await client.GetAsync("/russian/declension?s=");
+                    if (result.StatusCode == HttpStatusCode.InternalServerError)
+                    {
+                        throw new Exception(await result.Content.ReadAsStringAsync());
+                    }
                 }
 
                 // Assert
-                var morpheLog = container.Resolve<IMorpherLog>();
+                var morpheLog = _container.Resolve<IMorpherLog>();
                 morpheLog.Sync();
                 Assert.AreEqual(1, databaseLogMock.Logs.Count);
                 var logEntity = databaseLogMock.Logs.First();
