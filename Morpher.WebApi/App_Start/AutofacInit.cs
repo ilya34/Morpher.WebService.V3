@@ -3,7 +3,9 @@
     using System;
     using System.Configuration;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
+    using System.Web.Hosting;
     using System.Web.Http;
     using Autofac;
     using Autofac.Core;
@@ -49,10 +51,31 @@
             if (runAsLocalService)
             {
                 RegisterLocalOnlyServices(builder);
+
+                string externalAnalyzer = ConfigurationManager.AppSettings.Get("ExternalAnalyzer");
+                string path = Path.Combine(
+                    AppDomain.CurrentDomain.BaseDirectory,
+                    "bin",
+                    externalAnalyzer);
+                var analyzer = Assembly.LoadFile(path);
+                string filePathRu = HostingEnvironment.MapPath("~/App_Data/UserDict.xml");
+                builder.RegisterAssemblyTypes(analyzer)
+                    .Where(type => typeof(IExceptionDictionary).IsAssignableFrom(type))
+                    .As<IExceptionDictionary, IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathRu);
+
+                builder.RegisterType<MorpherCache>()
+                    .As<ICorrectionCache>()
+                    .WithParameter("name", "UserCorrection")
+                    .SingleInstance();
             }
             else
             {
                 RegisterGlobalOnlyServices(builder);
+
+                builder.RegisterType<DatabaseUserDictionary>()
+                    .As<IUserDictionaryLookup>().SingleInstance();
+                builder.RegisterType<DatabaseUserDictionary>()
+                    .As<IExceptionDictionary>();
             }
 
             RegisterSharedServices(builder);
@@ -127,15 +150,7 @@
 
             builder.RegisterType<ResultTrimmer>()
                 .As<IResultTrimmer>();
-            builder.RegisterType<DatabaseUserDictionary>()
-                .As<IUserDictionaryLookup>().SingleInstance();
-            builder.RegisterType<DatabaseUserDictionary>()
-                .As<IExceptionDictionary>();
 
-            builder.RegisterType<MorpherCache>()
-                .As<ICorrectionCache>()
-                .WithParameter("name", "UserCorrection")
-                .SingleInstance();
 
             builder.RegisterType<LogSyncer>().AsSelf().InstancePerLifetimeScope();
 
