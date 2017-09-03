@@ -3,9 +3,11 @@
     using System;
     using System.Collections.Specialized;
     using System.Configuration;
+    using System.Web;
     using System.Web.Http;
     using System.Web.Mvc;
     using System.Web.Routing;
+    using Elmah;
     using FluentScheduler;
     using General.Data;
     using General.Data.Services;
@@ -44,9 +46,20 @@
             }
         }
 
-        protected void Application_Error(object sender, EventArgs e)
+        void ErrorLog_Filtering(object sender, ExceptionFilterEventArgs args)
         {
-            Exception exception = Server.GetLastError();
+            Filter(args);
+        }
+
+        void ErrorMail_Filtering(object sender, ExceptionFilterEventArgs args)
+        {
+            Filter(args);
+        }
+
+        void Filter(ExceptionFilterEventArgs args)
+        {
+            if (args.Exception.GetBaseException() is MorpherException)
+                args.Dismiss();
         }
     }
 }
