@@ -41,7 +41,7 @@
         /// </summary>
         /// <param name="nominativeSingular">именительная форма, регистр не учитывается</param>
         /// <returns>Пользовательское исправление</returns>
-        public Entry Lookup(string nominativeSingular)
+        public object Lookup(string nominativeSingular)
         {
             var token = HttpContext.Current.Request.GetToken();
             if (token == null)
@@ -64,10 +64,7 @@
                     return null;
                 }
 
-                Entry entry = new Entry(
-                    new DeclensionForms(result.Where(form => !form.Plural).ToList()),
-                    new DeclensionForms(result.Where(form => form.Plural).ToList()));
-                return entry;
+                return result.ToList();
             }
 
             // load to cache
