@@ -63,14 +63,16 @@
                     .Where(type => typeof(IExceptionDictionary).IsAssignableFrom(type))
                     .As<IExceptionDictionary, IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathRu);
 
-                builder.RegisterType<MorpherCache>()
-                    .As<ICorrectionCache>()
-                    .WithParameter("name", "UserCorrection")
-                    .SingleInstance();
+
             }
             else
             {
                 RegisterGlobalOnlyServices(builder);
+
+                builder.RegisterType<MorpherCache>()
+                    .As<ICorrectionCache>()
+                    .WithParameter("name", "UserCorrection")
+                    .SingleInstance();
 
                 builder.RegisterType<DatabaseUserDictionary>()
                     .As<IUserDictionaryLookup>().SingleInstance();

@@ -55,7 +55,11 @@
                 throw new RequiredParameterIsNotSpecifiedException(nameof(unit));
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, _analyzer.Spell(n, unit), format);
+            var s = _analyzer.Spell(n, unit);
+
+             _resultTrimmer.Trim(s, Request.GetToken());
+
+            return Request.CreateResponse(HttpStatusCode.OK, s, format);
         }
 
         [Route("adjectivize")]
