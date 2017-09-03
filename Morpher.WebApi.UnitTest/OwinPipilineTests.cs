@@ -117,7 +117,11 @@
                 // Act
                 using (var client = testServer.HttpClient)
                 {
-                    await client.GetAsync("/russian/declension?s=Пользователь");
+                    var result = await client.GetAsync("/russian/declension?s=Пользователь");
+                    if (result.StatusCode == HttpStatusCode.InternalServerError)
+                    {
+                        throw new Exception(await result.Content.ReadAsStringAsync());
+                    }
                 }
 
                 // Assert
@@ -233,6 +237,11 @@
                     for (int i = 0; i < 3; i++)
                     {
                         var result = await client.GetAsync("/russian/declension?s=Тест");
+                        if (result.StatusCode == HttpStatusCode.InternalServerError)
+                        {
+                            throw new Exception(await result.Content.ReadAsStringAsync());
+                        }
+
                         Assert.AreEqual(true, result.IsSuccessStatusCode, "StatudCode != OK");
                     }
 
@@ -292,6 +301,12 @@
                     for (int i = 0; i < 3; i++)
                     {
                         var result = await client.GetAsync($"/russian/declension?s=Тест&token={testToken}");
+
+                        if (result.StatusCode == HttpStatusCode.InternalServerError)
+                        {
+                            throw new Exception(await result.Content.ReadAsStringAsync());
+                        }
+
                         Assert.AreEqual(true, result.IsSuccessStatusCode, "StatudCode != OK");
                     }
 
@@ -355,6 +370,12 @@
                     for (int i = 0; i < 3; i++)
                     {
                         var result = await client.GetAsync($"/russian/declension?s=Тест");
+
+                        if (result.StatusCode == HttpStatusCode.InternalServerError)
+                        {
+                            throw new Exception(await result.Content.ReadAsStringAsync());
+                        }
+
                         Assert.AreEqual(true, result.IsSuccessStatusCode, "StatudCode != OK");
                     }
 
