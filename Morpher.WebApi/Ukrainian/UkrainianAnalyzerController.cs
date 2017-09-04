@@ -44,7 +44,7 @@
         [ThrottleThis]
         [LogThis]
         [HttpGet]
-        public HttpResponseMessage Spell(int n, string unit, ResponseFormat? format = null)
+        public HttpResponseMessage Spell(decimal n, string unit, ResponseFormat? format = null)
         {
             if (string.IsNullOrWhiteSpace(unit))
             {

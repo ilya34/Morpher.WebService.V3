@@ -14,7 +14,7 @@
 
     public class WebApiApplication : System.Web.HttpApplication
     {
-        private readonly bool isLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
+        private readonly bool isLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["RunAsLocalService"]);
 
         protected void Application_Start()
         {
