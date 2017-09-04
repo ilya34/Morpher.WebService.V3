@@ -40,7 +40,7 @@
              var props = obj
                 .GetType()
                 .GetProperties()
-                .Where(info => CustomAttributeExtensions.GetCustomAttribute((MemberInfo) info, typeof(OnlyForPaidAttribute)) != null)
+                .Where(info => info.GetCustomAttribute(typeof(OnlyForPaidAttribute)) != null)
                 .ToArray();
 
             Trim(props, obj);
