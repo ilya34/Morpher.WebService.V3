@@ -7,6 +7,6 @@
     {
         DeclensionResult Declension(string s, DeclensionFlags? flags = null);
 
-        NumberSpelling Spell(int n, string unit);
+        NumberSpelling Spell(decimal n, string unit);
     }
 }
