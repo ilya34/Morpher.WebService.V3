@@ -26,7 +26,7 @@
             }
         }
 
-        public NumberSpelling Spell(int n, string unit)
+        public NumberSpelling Spell(decimal n, string unit)
         {
             try
             {
