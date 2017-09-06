@@ -29,7 +29,8 @@
 
                 if (result != ApiThrottlingResult.Success)
                 {
-                    var response = new ServiceErrorMessage(result.GenerateMorpherException());
+                    var exception = result.GenerateMorpherException();
+                    var response = new ServiceErrorMessage(exception);
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
                     var format = context.Request.Query.Get("format");
@@ -72,6 +73,7 @@
                     if (!context.Response.Headers.ContainsKey("Error-Code"))
                     {
                         context.Response.Headers.Add("Error-Code", new[] {response.Code.ToString()});
+                        context.Response.StatusCode = (int)exception.ResponseCode;
                     }
 
                     await Next.Invoke(context);
