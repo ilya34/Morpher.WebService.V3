@@ -209,8 +209,6 @@
     <Compile Include="Russian\Data\DeclensionForms.cs" />
     <Compile Include="Russian\Data\DeclensionResult.cs" />
     <Compile Include="Russian\Data\Entry.cs" />
-    <Compile Include="Russian\Data\ExceptionForms.cs" />
-    <Compile Include="Russian\Data\ExceptionResult.cs" />
     <Compile Include="Russian\Data\NumberSpelling.cs" />
     <Compile Include="Ukrainian\Data\DeclensionForms.cs" />
     <Compile Include="Ukrainian\Data\DeclensionResult.cs" />

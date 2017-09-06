@@ -5,7 +5,6 @@
     using General.Data;
 
     [DataContract(Name = "xml")]
-    [KnownType(typeof(ExceptionResult))]
     public class DeclensionResult : DeclensionForms
     {
         public DeclensionResult()

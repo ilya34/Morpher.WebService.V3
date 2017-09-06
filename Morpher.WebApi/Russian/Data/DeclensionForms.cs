@@ -8,7 +8,6 @@
     using General.Data;
 
     [DataContract(Name = "множественное")]
-    [KnownType(typeof(ExceptionForms))]
     [XmlType("single-number-forms")]
     public class DeclensionForms
     {
@@ -71,18 +70,5 @@
         [XmlElement("М")]
         [OnlyForPaid]
         public virtual string PrepositionalWithPre { get; set; }
-
-        public void AddOrUpdate(DeclensionForms form)
-        {
-            var props = typeof(DeclensionForms).GetProperties();
-            foreach (var prop in props)
-            {
-                object value = prop.GetValue(form);
-                if (value != null)
-                {
-                    prop.SetValue(this, value);
-                }
-            }
-        }
     }
 }
