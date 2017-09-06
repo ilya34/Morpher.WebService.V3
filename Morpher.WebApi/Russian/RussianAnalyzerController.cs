@@ -1,5 +1,6 @@
 ﻿namespace Morpher.WebService.V3.Russian
 {
+    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
@@ -103,7 +104,7 @@
 
             if (Request.GetToken() == null)
             {
-                throw new RequiredParameterIsNotSpecifiedException("token");
+                throw new TokenNotFoundExceptionException();
             }
 
             var result = _exceptionDictionary.Remove(s);
@@ -126,7 +127,7 @@
 
             if (Request.GetToken() == null)
             {
-                throw new RequiredParameterIsNotSpecifiedException("token");
+                throw new TokenNotFoundExceptionException();
             }
 
             _exceptionDictionary.Add(model);
@@ -140,7 +141,7 @@
         {
             if (Request.GetToken() == null)
             {
-                throw new RequiredParameterIsNotSpecifiedException("token");
+                throw new TokenNotFoundExceptionException();
             }
 
             var result = _exceptionDictionary.GetAll();

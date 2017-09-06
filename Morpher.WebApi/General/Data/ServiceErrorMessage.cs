@@ -3,11 +3,18 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
+    using Exceptions;
 
     [DataContract(Name = "error")]
     public class ServiceErrorMessage
     { 
         public ServiceErrorMessage(MorpherException exception)
+        {
+            Code = exception.Code;
+            Message = exception.Message;
+        }
+
+        public ServiceErrorMessage(ServerException exception)
         {
             Code = exception.Code;
             Message = exception.Message;

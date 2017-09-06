@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Specialized;
     using System.Configuration;
+    using System.Net;
     using System.Web;
     using System.Web.Http;
     using System.Web.Mvc;
@@ -10,6 +11,7 @@
     using Elmah;
     using FluentScheduler;
     using General.Data;
+    using General.Data.Exceptions;
     using General.Data.Services;
 
     public class WebApiApplication : System.Web.HttpApplication
@@ -58,8 +60,16 @@
 
         void Filter(ExceptionFilterEventArgs args)
         {
-            if (args.Exception.GetBaseException() is MorpherException)
+            if (args.Exception.GetBaseException() is MorpherException && !(args.Exception.GetBaseException() is ServerException))
+            {
                 args.Dismiss();
+            }
+
+            var statusCode = HttpContext.Current.Response.StatusCode;
+            if (statusCode != (int) HttpStatusCode.InternalServerError)
+            {
+                args.Dismiss();
+            }
         }
     }
 }

@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Security.Policy;
+    using System.Web;
     using Microsoft.Owin;
 
     public class MorpherLog : IMorpherLog
@@ -22,7 +24,7 @@
         {
             
             string remoteAddress = context.Request.RemoteIpAddress;
-            string queryString = context.Request.QueryString.ToString();
+            string queryString = HttpUtility.HtmlDecode(context.Request.QueryString.ToString());
             string urlPath = context.Request.Path.ToString();
             string userAgent = context.Request.Headers.Get("User-Agent");
             int errorCode;

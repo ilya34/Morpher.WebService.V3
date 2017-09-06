@@ -1,28 +1,28 @@
 ﻿namespace Morpher.WebService.V3.General.Data
 {
     using System;
+    using System.Net;
 
     public class NumeralsDeclensionNotSupportedException : MorpherException
     {
         private static readonly string ErrorMessage =
             "Склонение числительных в declension не поддерживается. Используйте метод spell.";
 
+        private static readonly HttpStatusCode ResponseWith = (HttpStatusCode)495;
+
         public NumeralsDeclensionNotSupportedException()
             : base(ErrorMessage, 4)
         {
             Code = 4;
+            ResponseCode = ResponseWith;
         }
 
-        public NumeralsDeclensionNotSupportedException(string mesage, int code)
-            : base(ErrorMessage, code)
-        {
-            Code = code;
-        }
 
-        public NumeralsDeclensionNotSupportedException(string message, int code, Exception innerException)
+        public NumeralsDeclensionNotSupportedException(string message, int code, Exception innerException = null)
             : base(ErrorMessage, code, innerException)
         {
             Code = code;
+            ResponseCode = ResponseWith;
         }
     }
 }

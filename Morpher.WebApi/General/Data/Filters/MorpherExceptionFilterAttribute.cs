@@ -7,6 +7,7 @@
     using System.Web.Http.Filters;
     using System.Xml;
     using Autofac.Integration.WebApi;
+    using Exceptions;
     using Newtonsoft.Json;
     using Formatting = Newtonsoft.Json.Formatting;
 
@@ -14,11 +15,7 @@
     {
         public override void OnException(HttpActionExecutedContext context)
         {
-            var exception = context.Exception as MorpherException;
-            if (exception == null)
-            {
-                return;
-            }
+            var exception = context.Exception as MorpherException ?? new ServerException(context.Exception);
 
             var format = context.Request.GetQueryString("format");
 
@@ -45,6 +42,7 @@
             if (!context.Response.Headers.Contains("Error-Code"))
             {
                 context.Response.Headers.Add("Error-Code", new[] {response.Code.ToString()});
+                context.Response.StatusCode = exception.ResponseCode;
             }
 
             switch (format)
