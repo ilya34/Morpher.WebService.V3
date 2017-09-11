@@ -204,6 +204,7 @@
     <Compile Include="General\Data\Exceptions\RussianWordsNotFoundException.cs" />
     <Compile Include="General\Data\Exceptions\TokenNotFoundExceptionException.cs" />
     <Compile Include="Russian\Data\CorrectionPostModel.cs" />
+    <Compile Include="Russian\Data\DeclensionFormsForCorrection.cs" />
     <Compile Include="Russian\Data\FullName.cs" />
     <Compile Include="Russian\Data\DeclensionForms.cs" />
     <Compile Include="Russian\Data\DeclensionResult.cs" />

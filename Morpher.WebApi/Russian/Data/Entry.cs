@@ -5,7 +5,7 @@
     [DataContract]
     public class Entry
     {
-        public Entry(DeclensionForms singular, DeclensionForms plural)
+        public Entry(DeclensionFormsForCorrection  singular, DeclensionFormsForCorrection plural)
         {
             Singular = singular;
             Plural = plural;
@@ -16,9 +16,9 @@
         }
 
         [DataMember(Name = "singular", EmitDefaultValue = false)]
-        public DeclensionForms Singular { get; set; }
+        public DeclensionFormsForCorrection Singular { get; set; }
 
         [DataMember(Name = "plural", EmitDefaultValue = false)]
-        public DeclensionForms Plural { get; set; }
+        public DeclensionFormsForCorrection Plural { get; set; }
     }
 }

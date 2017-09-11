@@ -189,8 +189,8 @@
             {
                 var correction = name.NameForms;
                 var entry = new Entry(
-                    new DeclensionForms(correction.Where(form => !form.Plural).ToList()),
-                    new DeclensionForms(correction.Where(form => form.Plural).ToList()));
+                    new DeclensionFormsForCorrection(correction.Where(form => !form.Plural).ToList()),
+                    new DeclensionFormsForCorrection(correction.Where(form => form.Plural).ToList()));
                 entries.Add(entry);
             }
 
