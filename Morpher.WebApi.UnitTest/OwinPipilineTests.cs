@@ -246,7 +246,7 @@
                     }
 
                     var errorResult = await client.GetAsync("/russian/declension?s=Тест");
-                    Assert.AreEqual(HttpStatusCode.BadRequest, errorResult.StatusCode);
+                    Assert.AreEqual(HttpStatusCode.PaymentRequired, errorResult.StatusCode);
                 }
             }
         }
@@ -311,7 +311,7 @@
                     }
 
                     var errorResult = await client.GetAsync($"/russian/declension?s=Тест&token={testToken}");
-                    Assert.AreEqual(HttpStatusCode.BadRequest, errorResult.StatusCode);
+                    Assert.AreEqual(HttpStatusCode.PaymentRequired, errorResult.StatusCode);
                 }
             }
         }
@@ -380,7 +380,7 @@
                     }
 
                     var errorResult = await client.GetAsync($"/russian/declension?s=Тест&token={testToken}");
-                    Assert.AreEqual(HttpStatusCode.BadRequest, errorResult.StatusCode);
+                    Assert.AreEqual(HttpStatusCode.PaymentRequired, errorResult.StatusCode);
                 }
             }
         }
