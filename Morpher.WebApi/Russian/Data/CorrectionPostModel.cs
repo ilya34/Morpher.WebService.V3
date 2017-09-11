@@ -17,14 +17,14 @@
         public string В { get; set; }
         public string Т { get; set; }
         public string П { get; set; }
-        public string П_о { get; set; }
+        public string М { get; set; }
         public string М_И { get; set; }
         public string М_Р { get; set; }
         public string М_Д { get; set; }
         public string М_В { get; set; }
         public string М_Т { get; set; }
         public string М_П { get; set; }
-        public string М_П_о { get; set; }
+        public string М_М { get; set; }
 
         public bool IsEmpty()
         {
@@ -34,14 +34,14 @@
                    && string.IsNullOrWhiteSpace(В)
                    && string.IsNullOrWhiteSpace(Т)
                    && string.IsNullOrWhiteSpace(П)
-                   && string.IsNullOrWhiteSpace(П_о)
+                   && string.IsNullOrWhiteSpace(М)
                    && string.IsNullOrWhiteSpace(М_И)
                    && string.IsNullOrWhiteSpace(М_Р)
                    && string.IsNullOrWhiteSpace(М_Д)
                    && string.IsNullOrWhiteSpace(М_В)
                    && string.IsNullOrWhiteSpace(М_Т)
                    && string.IsNullOrWhiteSpace(М_П)
-                   && string.IsNullOrWhiteSpace(М_П_о);
+                   && string.IsNullOrWhiteSpace(М_М);
         }
 
         public static implicit operator List<NameForm>(CorrectionPostModel model)
@@ -114,12 +114,12 @@
                 });
             }
 
-            if (!string.IsNullOrWhiteSpace(model.П_о))
+            if (!string.IsNullOrWhiteSpace(model.М))
             {
                 nameForms.Add(new NameForm()
                 {
                     Plural = false,
-                    AccentedText = model.П_о,
+                    AccentedText = model.М,
                     FormID = 'М',
                     LanguageID = "RU"
                 });
@@ -192,12 +192,12 @@
                 });
             }
 
-            if (!string.IsNullOrWhiteSpace(model.М_П_о))
+            if (!string.IsNullOrWhiteSpace(model.М_М))
             {
                 nameForms.Add(new NameForm()
                 {
                     Plural = true,
-                    AccentedText = model.М_П_о,
+                    AccentedText = model.М_М,
                     FormID = 'М',
                     LanguageID = "RU"
                 });
