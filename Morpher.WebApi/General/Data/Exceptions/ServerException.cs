@@ -11,9 +11,9 @@
         private static readonly HttpStatusCode ResponseWith = HttpStatusCode.InternalServerError;
 
         public ServerException()
-            : base(ErrorMessage, 12)
+            : base(ErrorMessage, 11)
         {
-            Code = 12;
+            Code = 11;
             ResponseCode = ResponseWith;
         }
 
@@ -25,7 +25,7 @@
         }
 
         public ServerException(Exception inner)
-            : base(ErrorMessage, 12, inner)
+            : base(ErrorMessage, 11, inner)
         {
             Code = 12;
             ResponseCode = ResponseWith;

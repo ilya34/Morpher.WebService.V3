@@ -7,7 +7,7 @@
     {
         private static readonly string ErrorMessage = "Неверный формат токена.";
 
-        private static readonly HttpStatusCode ResponseWith = (HttpStatusCode)497;
+        private static readonly HttpStatusCode ResponseWith = (HttpStatusCode)498;
 
         public InvalidTokenFormatException()
             : base(ErrorMessage, 10)

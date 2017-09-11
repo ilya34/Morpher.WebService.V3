@@ -31,7 +31,7 @@
                 {
                     var exception = result.GenerateMorpherException();
                     var response = new ServiceErrorMessage(exception);
-                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    context.Response.StatusCode = (int)exception.ResponseCode;
 
                     var format = context.Request.Query.Get("format");
                     if (format == null)
@@ -73,7 +73,6 @@
                     if (!context.Response.Headers.ContainsKey("Error-Code"))
                     {
                         context.Response.Headers.Add("Error-Code", new[] {response.Code.ToString()});
-                        context.Response.StatusCode = (int)exception.ResponseCode;
                     }
 
                     await Next.Invoke(context);

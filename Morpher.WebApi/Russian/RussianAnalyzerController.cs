@@ -114,12 +114,7 @@
         [Route("userdict")]
         [HttpPost]
         public HttpResponseMessage UserDictAdd([FromBody] CorrectionPostModel model)
-        {
-            if (model.IsEmpty())
-            {
-                throw new CorrectionPostModelIsEmptyException();
-            }
-            
+        {            
             if (string.IsNullOrWhiteSpace(model.И))
             {
                 throw new RequiredParameterIsNotSpecifiedException("И");
