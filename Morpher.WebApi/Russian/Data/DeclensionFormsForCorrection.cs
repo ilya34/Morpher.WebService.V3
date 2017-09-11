@@ -8,6 +8,10 @@
     [DataContract]
     public class DeclensionFormsForCorrection
     {
+        public DeclensionFormsForCorrection()
+        {
+        }
+
         public DeclensionFormsForCorrection(List<Models.NameForm> nameForms)
         {
             Nominative = nameForms.SingleOrDefault(form => form.FormID == 'И')?.AccentedText;
