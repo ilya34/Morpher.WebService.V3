@@ -3,7 +3,6 @@
     using System;
     using System.Configuration;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
     using System.Web.Hosting;
     using System.Web.Http;
@@ -62,8 +61,6 @@
                 builder.RegisterAssemblyTypes(analyzer)
                     .Where(type => typeof(IExceptionDictionary).IsAssignableFrom(type))
                     .As<IExceptionDictionary, IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathRu);
-
-
             }
             else
             {
@@ -155,6 +152,7 @@
 
 
             builder.RegisterType<LogSyncer>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<UserCacheSyncer>().AsSelf().InstancePerLifetimeScope();
 
             // Используется в LoggingMiddleware
             builder.RegisterType<MorpherLog>().As<IMorpherLog>().SingleInstance();

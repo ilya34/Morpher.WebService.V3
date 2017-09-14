@@ -24,7 +24,7 @@
         {
             
             string remoteAddress = context.Request.RemoteIpAddress;
-            string queryString = HttpUtility.HtmlDecode(context.Request.QueryString.ToString());
+            string queryString = HttpUtility.UrlDecode(context.Request.QueryString.ToString());
             string urlPath = context.Request.Path.ToString();
             string userAgent = context.Request.Headers.Get("User-Agent");
             int errorCode;

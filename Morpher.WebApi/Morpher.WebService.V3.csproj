@@ -173,6 +173,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="General\Data\CompressedCache.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompressedCache.dbml</DependentUpon>
+    </Compile>
     <Compile Include="General\Data\Exceptions\InvalidFlagsException.cs" />
     <Compile Include="General\Data\Exceptions\ServerException.cs" />
     <Compile Include="General\Data\Extensions\DeclensionFlagsExtensions.cs" />
@@ -186,6 +191,8 @@
     <Compile Include="General\Data\Middlewares\GuidInsertMiddleware.cs" />
     <Compile Include="General\Data\Middlewares\LoggingMiddleware.cs" />
     <Compile Include="General\Data\Middlewares\UserCacheLoaderMiddleware.cs" />
+    <Compile Include="General\Data\Services\UserCacheSyncer.cs" />
+    <Compile Include="General\Gzip.cs" />
     <Compile Include="General\LemmaNormalizer.cs" />
     <Compile Include="Russian\Data\AdjectiveGenders.cs" />
     <Compile Include="App_Start\AutofacInit.cs" />
@@ -279,6 +286,11 @@
       <LastGenOutput>UserCorrection.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="General\Data\CompressedCache.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>CompressedCache.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\PublishProfiles\Morpher.pubxml" />
     <Content Include="General\SecretConfigs\connectionStrings.config" />
     <Content Include="General\SecretConfigs\webServiceSettings.config" />
@@ -301,6 +313,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="SecretConfigs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="General\Data\CompressedCache.dbml.layout">
+      <DependentUpon>CompressedCache.dbml</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

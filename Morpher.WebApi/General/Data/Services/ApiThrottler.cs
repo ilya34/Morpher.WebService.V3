@@ -136,8 +136,6 @@
             }
 
             int limit = _morpherDatabase.GetDefaultDailyQueryLimit();
-            int query = _morpherDatabase.GetQueryCountByIp(ip);
-            limit -= query;
 
             // Записываем  объект в кэш.
             MorpherCacheObject morpherCacheObject = new MorpherCacheObject() { QueriesLeft = limit, PaidUser = false, Unlimited = false };
@@ -173,11 +171,6 @@
             if (morpherCacheObject.Unlimited)
             {
                 morpherCacheObject.QueriesLeft = 1000;
-            }
-            else
-            {
-                int queries = _morpherDatabase.GetQueryCountByToken(guid);
-                morpherCacheObject.QueriesLeft -= queries;
             }
 
             _morpherCache.Set(guid.ToString().ToLowerInvariant(), morpherCacheObject, _absoluteExpiration);
