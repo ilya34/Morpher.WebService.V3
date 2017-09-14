@@ -225,7 +225,6 @@
 
             Mock<IMorpherDatabase> morpherDatabaseMock = new Mock<IMorpherDatabase>();
             morpherDatabaseMock.Setup(database => database.IsIpBlocked("0.0.0.0")).Returns(false);
-            morpherDatabaseMock.Setup(database => database.GetQueryCountByIp("0.0.0.0")).Returns(0);
             morpherDatabaseMock.Setup(database => database.GetDefaultDailyQueryLimit()).Returns(3);
 
             builder.RegisterInstance(morpherDatabaseMock.Object).As<IMorpherDatabase>().SingleInstance();
@@ -283,7 +282,6 @@
 
             Mock<IMorpherDatabase> morpherDatabaseMock = new Mock<IMorpherDatabase>();
             Guid testToken = Guid.NewGuid();
-            morpherDatabaseMock.Setup(database => database.GetQueryCountByToken(testToken)).Returns(0);
             morpherDatabaseMock.Setup(database => database.GetUserLimits(testToken)).Returns(new MorpherCacheObject()
             {
                 PaidUser = false,
@@ -349,7 +347,6 @@
 
             Mock<IMorpherDatabase> morpherDatabaseMock = new Mock<IMorpherDatabase>();
             Guid testToken = Guid.Parse("e4c7d4ca-8037-44fa-a314-2b1717c626d8");
-            morpherDatabaseMock.Setup(database => database.GetQueryCountByToken(testToken)).Returns(0);
             morpherDatabaseMock.Setup(database => database.GetUserLimits(testToken)).Returns(new MorpherCacheObject()
             {
                 PaidUser = false,

@@ -25,23 +25,28 @@
             }
         }
 
-        public List<KeyValuePair<string, object>> GetMorpherCache()
+        public List<KeyValuePair<string, MorpherCacheObject>> GetMorpherCache()
         {
             using (CompressedCacheDataContext context = new CompressedCacheDataContext())
             {
                 var result = context.CompressedCaches.FirstOrDefault(cache => cache.Date == DateTime.Now.Date);
                 if (result != null)
                 {
-                    return JsonConvert.DeserializeObject<List<KeyValuePair<string, object>>>(Gzip.UnZip(result.GZipCache));
+                    return JsonConvert.DeserializeObject<List<KeyValuePair<string, MorpherCacheObject>>>(Gzip.UnZip(result.GZipCache));
                 }
 
                 return null;
             }
         }
 
-        public void UploadMorpherCache(List<KeyValuePair<string, object>> cache)
+        public void UploadMorpherCache(List<KeyValuePair<string, MorpherCacheObject>> cache)
         {
-            string serializedCache = Gzip.Zip(JsonConvert.SerializeObject(cache));
+
+            List<KeyValuePair<string, MorpherCacheObject>> pairs =
+                cache.Select(   
+                    pair => new KeyValuePair<string, MorpherCacheObject>(pair.Key, (MorpherCacheObject)pair.Value)).ToList();
+
+            string serializedCache = Gzip.Zip(JsonConvert.SerializeObject(pairs));
 
             using (CompressedCacheDataContext context = new CompressedCacheDataContext())
             {

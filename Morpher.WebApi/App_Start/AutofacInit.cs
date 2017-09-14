@@ -3,7 +3,6 @@
     using System;
     using System.Configuration;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
     using System.Web.Hosting;
     using System.Web.Http;
@@ -62,8 +61,6 @@
                 builder.RegisterAssemblyTypes(analyzer)
                     .Where(type => typeof(IExceptionDictionary).IsAssignableFrom(type))
                     .As<IExceptionDictionary, IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathRu);
-
-
             }
             else
             {
@@ -117,15 +114,10 @@
 
         private static void RegisterSharedServices(ContainerBuilder builder)
         {
-            var morpherCache = new MorpherCache("FirstLoaded");
-            
-            //builder.
-            builder.Register<Action<MorpherCache>>(context => (cache => morpherCache = cache));
-            builder.RegisterInstance(morpherCache).As<IMorpherCache>().SingleInstance();
-            //builder.RegisterType<MorpherCache>()
-            //    .As<IMorpherCache>()
-            //    .WithParameter("name", "ApiThrottler")
-            //    .SingleInstance();
+            builder.RegisterType<MorpherCache>()
+                .As<IMorpherCache>()
+                .WithParameter("name", "ApiThrottler")
+                .SingleInstance();
 
             // Filters
             builder.Register(context => new MorpherExceptionFilterAttribute())
@@ -160,6 +152,7 @@
 
 
             builder.RegisterType<LogSyncer>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<UserCacheSyncer>().AsSelf().InstancePerLifetimeScope();
 
             // Используется в LoggingMiddleware
             builder.RegisterType<MorpherLog>().As<IMorpherLog>().SingleInstance();

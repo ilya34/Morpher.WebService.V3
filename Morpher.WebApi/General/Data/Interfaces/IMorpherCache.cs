@@ -8,6 +8,8 @@
     {
         string Name { get; }
 
+        bool FirstLoad { get; set; }
+
         object Get(string key, string regionName = null);
 
         void Set(string key, object value, DateTimeOffset absoluteExpirationDateTime, string regionName = null);
@@ -16,7 +18,7 @@
 
         long GetCount(string regionName = null);
 
-        List<KeyValuePair<string, object>> GetAll();
+        List<KeyValuePair<string, MorpherCacheObject>> GetAll();
 
         object Remove(string key, string regionName = null);
     }

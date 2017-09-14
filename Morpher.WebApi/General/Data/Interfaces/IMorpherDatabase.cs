@@ -8,9 +8,9 @@
     {
         int GetDefaultDailyQueryLimit();
 
-        List<KeyValuePair<string, object>> GetMorpherCache();
+        List<KeyValuePair<string, MorpherCacheObject>> GetMorpherCache();
 
-        void UploadMorpherCache(List<KeyValuePair<string, object>> cache);
+        void UploadMorpherCache(List<KeyValuePair<string, MorpherCacheObject>> cache);
 
         MorpherCacheObject GetUserLimits(Guid guid);
 

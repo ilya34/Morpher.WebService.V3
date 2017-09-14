@@ -191,6 +191,7 @@
     <Compile Include="General\Data\Middlewares\GuidInsertMiddleware.cs" />
     <Compile Include="General\Data\Middlewares\LoggingMiddleware.cs" />
     <Compile Include="General\Data\Middlewares\UserCacheLoaderMiddleware.cs" />
+    <Compile Include="General\Data\Services\UserCacheSyncer.cs" />
     <Compile Include="General\Gzip.cs" />
     <Compile Include="General\LemmaNormalizer.cs" />
     <Compile Include="Russian\Data\AdjectiveGenders.cs" />

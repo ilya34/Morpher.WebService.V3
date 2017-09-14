@@ -29,6 +29,7 @@
                 Registry registry = new Registry();
                 JobManager.JobFactory = new JobFactory();
                 registry.Schedule<LogSyncer>().ToRunEvery(everyMinutes).Minutes();
+                registry.Schedule<UserCacheSyncer>().ToRunEvery(Convert.ToInt32(conf["SyncUserCacheEveryMinutes"])).Minutes();
                 JobManager.Initialize(registry);
             }
 
@@ -45,6 +46,11 @@
                 IMorpherLog log =
                     (IMorpherLog) AutofacInit.AutofacWebApiDependencyResolver.GetService(typeof(IMorpherLog));
                 log.Sync();
+                IMorpherDatabase database =
+                    (IMorpherDatabase) AutofacInit.AutofacWebApiDependencyResolver.GetService(typeof(IMorpherDatabase));
+                IMorpherCache cache =
+                    (IMorpherCache) AutofacInit.AutofacWebApiDependencyResolver.GetService(typeof(IMorpherCache));
+                database.UploadMorpherCache(cache.GetAll());
             }
         }
 

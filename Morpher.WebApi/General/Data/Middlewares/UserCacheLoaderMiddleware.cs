@@ -10,25 +10,23 @@
         private readonly IApiThrottler _apiThrottler;
         private readonly IMorpherCache _cache;
         private readonly IMorpherDatabase _database;
-        private readonly Action<MorpherCache> _action;
 
         public UserCacheLoaderMiddleware(
             OwinMiddleware next,
             IApiThrottler apiThrottler,
             IMorpherCache cache,
-            IMorpherDatabase database,
-            Action<MorpherCache> action) : base(next)
+            IMorpherDatabase database) : base(next)
         {
             _apiThrottler = apiThrottler;
             _cache = cache;
             _database = database;
-            _action = action;
         }
 
         public override Task Invoke(IOwinContext context)
         {
-            if (_cache.GetCount() == 0)
+            if (_cache.FirstLoad)
             {
+                _cache.FirstLoad = false;
                 var cache = _database.GetMorpherCache();
 
                 if (cache != null)

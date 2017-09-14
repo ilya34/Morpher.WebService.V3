@@ -13,10 +13,11 @@
         {
         }
 
+        public bool FirstLoad { get; set; } = true;
 
-        public List<KeyValuePair<string, object>> GetAll()
+        public List<KeyValuePair<string, MorpherCacheObject>> GetAll()
         {
-            return  this.ToList();
+            return this.Select(pair => new KeyValuePair<string, MorpherCacheObject>(pair.Key, (MorpherCacheObject)pair.Value)).ToList();
         }
     }
 }
