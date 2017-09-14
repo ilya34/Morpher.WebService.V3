@@ -5,6 +5,7 @@
     using System.Web.Http;
     using Data;
     using General.Data;
+    using General.Data.Exceptions;
 
     [RoutePrefix("ukrainian")]
     public class UkrainianAnalyzerController : ApiController
@@ -29,6 +30,11 @@
             if (string.IsNullOrWhiteSpace(s))
             {
                 throw new RequiredParameterIsNotSpecifiedException(nameof(s));
+            }
+
+            if (this.Request.GetQueryString("flags") != null && flags == null)
+            {
+                throw new InvalidFlagsException();
             }
 
             Data.DeclensionResult declensionResult =

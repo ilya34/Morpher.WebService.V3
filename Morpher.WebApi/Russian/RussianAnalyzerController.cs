@@ -37,6 +37,11 @@
                 throw new RequiredParameterIsNotSpecifiedException(nameof(s));
             }
 
+            if (this.Request.GetQueryString("flags") != null && flags == null)
+            {
+                throw new InvalidFlagsException();
+            }
+
             Data.DeclensionResult declensionResult =
                 _analyzer.Declension(s, flags);
 
