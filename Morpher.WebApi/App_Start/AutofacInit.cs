@@ -117,10 +117,15 @@
 
         private static void RegisterSharedServices(ContainerBuilder builder)
         {
-            builder.RegisterType<MorpherCache>()
-                .As<IMorpherCache>()
-                .WithParameter("name", "ApiThrottler")
-                .SingleInstance();
+            var morpherCache = new MorpherCache("FirstLoaded");
+            
+            //builder.
+            builder.Register<Action<MorpherCache>>(context => (cache => morpherCache = cache));
+            builder.RegisterInstance(morpherCache).As<IMorpherCache>().SingleInstance();
+            //builder.RegisterType<MorpherCache>()
+            //    .As<IMorpherCache>()
+            //    .WithParameter("name", "ApiThrottler")
+            //    .SingleInstance();
 
             // Filters
             builder.Register(context => new MorpherExceptionFilterAttribute())

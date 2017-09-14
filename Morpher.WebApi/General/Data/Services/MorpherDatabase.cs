@@ -1,52 +1,74 @@
 ﻿namespace Morpher.WebService.V3.General.Data.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Linq;
     using Dapper;
+    using Newtonsoft.Json;
 
     public class MorpherDatabase : IMorpherDatabase
     {
-        private readonly string connectionString;
+        private readonly string _connectionString;
 
         public MorpherDatabase(string connectionString)
         {
-            this.connectionString = connectionString;
+            this._connectionString = connectionString;
         }
 
         public int GetDefaultDailyQueryLimit()
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 return connection.QuerySingleOrDefault<int>("SELECT TOP 1 DailyQueryLimit FROM WebServiceSettings");
             }
         }
 
-        public int GetQueryCountByIp(string ip)
+        public List<KeyValuePair<string, object>> GetMorpherCache()
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (CompressedCacheDataContext context = new CompressedCacheDataContext())
             {
-                return connection.QuerySingle<int>(
-                    "sp_GetQueryCountByIp",
-                    new { Ip = ip },
-                    commandType: CommandType.StoredProcedure);
+                var result = context.CompressedCaches.FirstOrDefault(cache => cache.Date == DateTime.Now.Date);
+                if (result != null)
+                {
+                    return JsonConvert.DeserializeObject<List<KeyValuePair<string, object>>>(Gzip.UnZip(result.GZipCache));
+                }
+
+                return null;
             }
         }
 
-        public int GetQueryCountByToken(Guid guid)
+        public void UploadMorpherCache(List<KeyValuePair<string, object>> cache)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            string serializedCache = Gzip.Zip(JsonConvert.SerializeObject(cache));
+
+            using (CompressedCacheDataContext context = new CompressedCacheDataContext())
             {
-                return connection.QuerySingle<int>(
-                    "sp_GetQueryCount",
-                    new { Token = guid },
-                    commandType: CommandType.StoredProcedure);
+                var result =
+                    context.CompressedCaches.FirstOrDefault(
+                        compressedCache => compressedCache.Date == DateTime.Now.Date);
+
+                if (result != null)
+                {
+                    result.GZipCache = serializedCache;
+                }
+                else
+                {
+                    context.CompressedCaches.InsertOnSubmit(new CompressedCache()
+                    {
+                        Date = DateTime.Now.Date,
+                        GZipCache = serializedCache
+                    });
+                }
+
+                context.SubmitChanges();
             }
         }
 
         public MorpherCacheObject GetUserLimits(Guid guid)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 return connection.QueryFirstOrDefault<MorpherCacheObject>(
                     "sp_GetLimit",
@@ -57,7 +79,7 @@
 
         public bool IsIpBlocked(string ip)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 return connection.QueryFirstOrDefault<bool>(
                     "SELECT Blocked FROM RemoteAddresses WHERE REMOTE_ADDR = @ip",

@@ -8,17 +8,29 @@
     using System.Threading.Tasks;
     using System.Web.Http;
     using Data;
+    using Data.Services;
 
     public class ServiceController : ApiController
     {
         private readonly IApiThrottler apiThrottler;
 
         private readonly IMorpherLog log;
+        private readonly IMorpherDatabase _morpherDatabase;
+        private readonly IMorpherCache _morpherCache;
 
-        public ServiceController(IApiThrottler apiThrottler, IMorpherLog log)
+        public ServiceController(IApiThrottler apiThrottler, IMorpherLog log, IMorpherDatabase morpherDatabase, IMorpherCache morpherCache)
         {
             this.apiThrottler = apiThrottler;
             this.log = log;
+            _morpherDatabase = morpherDatabase;
+            _morpherCache = morpherCache;
+        }
+
+        [Route("upload")]
+        public bool UploadCache()
+        {
+            _morpherDatabase.UploadMorpherCache(_morpherCache.GetAll());
+            return true;
         }
 
         [Route("get_queries_left_for_today")]

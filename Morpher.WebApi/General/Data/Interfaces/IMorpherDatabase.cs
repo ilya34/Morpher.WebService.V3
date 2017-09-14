@@ -1,14 +1,16 @@
 ﻿namespace Morpher.WebService.V3.General.Data
 {
     using System;
+    using System.Collections.Generic;
+    using Services;
 
     public interface IMorpherDatabase
     {
         int GetDefaultDailyQueryLimit();
 
-        int GetQueryCountByIp(string ip);
+        List<KeyValuePair<string, object>> GetMorpherCache();
 
-        int GetQueryCountByToken(Guid guid);
+        void UploadMorpherCache(List<KeyValuePair<string, object>> cache);
 
         MorpherCacheObject GetUserLimits(Guid guid);
 
