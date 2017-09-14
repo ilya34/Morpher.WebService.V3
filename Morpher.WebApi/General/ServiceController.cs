@@ -12,26 +12,19 @@
 
     public class ServiceController : ApiController
     {
-        private readonly IApiThrottler apiThrottler;
-
-        private readonly IMorpherLog log;
+        private readonly IApiThrottler _apiThrottler;
+        private readonly IMorpherLog _log;
         private readonly IMorpherDatabase _morpherDatabase;
         private readonly IMorpherCache _morpherCache;
 
         public ServiceController(IApiThrottler apiThrottler, IMorpherLog log, IMorpherDatabase morpherDatabase, IMorpherCache morpherCache)
         {
-            this.apiThrottler = apiThrottler;
-            this.log = log;
+            this._apiThrottler = apiThrottler;
+            this._log = log;
             _morpherDatabase = morpherDatabase;
             _morpherCache = morpherCache;
         }
 
-        [Route("upload")]
-        public bool UploadCache()
-        {
-            _morpherDatabase.UploadMorpherCache(_morpherCache.GetAll());
-            return true;
-        }
 
         [Route("get_queries_left_for_today")]
         [HttpGet]
@@ -42,7 +35,7 @@
             MorpherCacheObject cacheObject = null;
             if (guid == null)
             {
-                cacheObject = apiThrottler.GetQueryLimit(Request.GetClientIp());
+                cacheObject = _apiThrottler.GetQueryLimit(Request.GetClientIp());
 
                 if (cacheObject == null)
                 {
@@ -54,7 +47,7 @@
             }
             else
             {
-                cacheObject = apiThrottler.GetQueryLimit(guid.Value);
+                cacheObject = _apiThrottler.GetQueryLimit(guid.Value);
 
                 if (cacheObject == null)
                 {
@@ -79,11 +72,13 @@
                 return Request.CreateResponse(HttpStatusCode.Forbidden, "Not today", postModel.Format);
             }
 
-            new Task(() => log.Sync()).Start();
+            bool r = _apiThrottler.RemoveFromCache(postModel.ClientToken.ToLowerInvariant()) != null;
+            new Task(() => _log.Sync()).Start();
+            new Task(() => _morpherDatabase.UploadMorpherCache(_morpherCache.GetAll())).Start();
 
             return Request.CreateResponse(
                 HttpStatusCode.OK,
-                apiThrottler.RemoveFromCache(postModel.ClientToken.ToLowerInvariant()) != null,
+                r,
                 postModel.Format);
         }
     }
