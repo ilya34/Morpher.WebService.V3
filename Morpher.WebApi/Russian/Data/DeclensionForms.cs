@@ -5,6 +5,7 @@ namespace Morpher.WebService.V3.Russian.Data
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Runtime.Serialization;
     using General.Data;
 
     [DataContract(Name = "множественное")]
