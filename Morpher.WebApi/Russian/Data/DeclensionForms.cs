@@ -1,14 +1,13 @@
-﻿namespace Morpher.WebService.V3.Russian.Data
+﻿using System.Xml.Serialization;
+
+namespace Morpher.WebService.V3.Russian.Data
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Runtime.Serialization;
-    using System.Xml.Serialization;
     using General.Data;
 
-    [DataContract(Name = "множественное")]
-    [KnownType(typeof(DeclensionFormsForCorrection))]
+    [XmlRoot("множественное")]
     public class DeclensionForms
     {
         /// <summary>
@@ -42,25 +41,25 @@
             PrepositionalWithPre = serviceResult.PrepositionalWithO;
         }
 
-        [DataMember(Order = 0, Name = "И", EmitDefaultValue = false)]
+        [XmlElement("И", Order = 0)]
         public virtual string Nominative { get; set; }
 
-        [DataMember(Order = 1, Name = "Р", EmitDefaultValue = false)]
+        [XmlElement("Р", Order = 1)]
         public virtual string Genitive { get; set; }
 
-        [DataMember(Order = 2, Name = "Д", EmitDefaultValue = false)]
+        [XmlElement("Д", Order = 2)]
         public virtual string Dative { get; set; }
 
-        [DataMember(Order = 3, Name = "В", EmitDefaultValue = false)]
+        [XmlElement("В", Order = 3)]
         public virtual string Accusative { get; set; }
 
-        [DataMember(Order = 4, Name = "Т", EmitDefaultValue = false)]
+        [XmlElement("Т", Order = 4)]
         public virtual string Instrumental { get; set; }
 
-        [DataMember(Order = 5, Name = "П", EmitDefaultValue = false)]
+        [XmlElement("П", Order = 5)]
         public virtual string Prepositional { get; set; }
 
-        [DataMember(Order = 6, Name = "П_о", EmitDefaultValue = false)]
+        [XmlElement("П_о", Order = 8)]
         [OnlyForPaid]
         public virtual string PrepositionalWithPre { get; set; }
     }

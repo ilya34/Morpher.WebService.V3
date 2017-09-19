@@ -1,8 +1,8 @@
 ﻿namespace Morpher.WebService.V3.Russian.Data
 {
-    using System.Runtime.Serialization;
+    using System.Xml.Serialization;
 
-    [DataContract]
+    [XmlRoot]
     public class Entry
     {
         public Entry(DeclensionFormsForCorrection  singular, DeclensionFormsForCorrection plural)
@@ -15,10 +15,10 @@
         {
         }
 
-        [DataMember(Name = "singular", EmitDefaultValue = false)]
+        [XmlElement("singular")]
         public DeclensionFormsForCorrection Singular { get; set; }
 
-        [DataMember(Name = "plural", EmitDefaultValue = false)]
+        [XmlElement("plural")]
         public DeclensionFormsForCorrection Plural { get; set; }
     }
 }

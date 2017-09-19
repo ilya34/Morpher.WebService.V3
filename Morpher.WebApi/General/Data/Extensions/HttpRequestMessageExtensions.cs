@@ -1,4 +1,6 @@
-﻿namespace Morpher.WebService.V3.General.Data
+﻿using System.Web.Http;
+
+namespace Morpher.WebService.V3.General.Data
 {
     using System;
     using System.Collections.Generic;
@@ -19,7 +21,11 @@
         static HttpRequestMessageExtensions()
         {
             JsonMediaTypeFormatter = new JsonMediaTypeFormatter { SerializerSettings = { Formatting = Formatting.Indented } };
-            XmlMediaTypeFormatter = new XmlMediaTypeFormatter();
+            XmlMediaTypeFormatter = new XmlMediaTypeFormatter()
+            {
+                UseXmlSerializer = true,
+                WriterSettings = { OmitXmlDeclaration = false}
+            };
         }
 
         public static HttpResponseMessage CreateResponse<T>(
