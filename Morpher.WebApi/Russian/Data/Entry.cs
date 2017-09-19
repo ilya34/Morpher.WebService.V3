@@ -1,6 +1,7 @@
 ﻿namespace Morpher.WebService.V3.Russian.Data
 {
     using System.Xml.Serialization;
+    using Newtonsoft.Json;
 
     [XmlRoot]
     public class Entry
@@ -16,9 +17,11 @@
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         public bool GenderXmlSpecified { get; set; } = false;
 
         [XmlIgnore]
+        [JsonIgnore]
         public Gender? Gender
         {
             get { return GenderXmlSpecified ? GenderXml : (Gender?)null; }
@@ -37,6 +40,7 @@
         }
 
         [XmlAttribute("gender")]
+        [JsonProperty]
         public Gender GenderXml { get; set; }
 
         [XmlElement("singular")]
