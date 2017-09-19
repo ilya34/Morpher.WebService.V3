@@ -42,7 +42,7 @@
         }
 
         [XmlAttribute("gender")]
-        [JsonProperty]
+        [DataMember(Name = "gender", EmitDefaultValue = false)]
         public Gender GenderXml { get; set; }
 
         [DataMember(Name = "singular", EmitDefaultValue = false)]
