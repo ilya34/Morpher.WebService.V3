@@ -6,7 +6,6 @@
     using System.Xml.Serialization;
 
     [XmlRoot("xml")]
-    [DataContract]
     public class DeclensionResult : DeclensionForms
     {
         public DeclensionResult()
