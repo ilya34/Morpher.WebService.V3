@@ -1,13 +1,10 @@
 ﻿namespace Morpher.WebService.V3.Ukrainian.Data
 {
-    using System.Runtime.Serialization;
     using System.Xml.Serialization;
 
-    [DataContract]
-    [XmlType("single-number-forms")]
+    [XmlRoot]
     public class DeclensionForms
-    {
-        
+    {    
         /// <summary>
         /// Используется в LibAnalyzer
         /// </summary>
@@ -26,32 +23,25 @@
             Vocative = serviceResult.Vocative;
         }
 
-        [DataMember(Order = 0, Name = "Н", EmitDefaultValue = false)]
-        [XmlElement("И")]
+        [XmlElement("Н", Order = 0)]
         public string Nominative { get; set; }
 
-        [DataMember(Order = 1, Name = "Р", EmitDefaultValue = false)]
-        [XmlElement("Р")]
+        [XmlElement("Р", Order = 1)]
         public string Genitive { get; set; }
 
-        [DataMember(Order = 2, Name = "Д", EmitDefaultValue = false)]
-        [XmlElement("Д")]
+        [XmlElement("Д", Order = 2)]
         public string Dative { get; set; }
 
-        [DataMember(Order = 3, Name = "З", EmitDefaultValue = false)]
-        [XmlElement("З")]
+        [XmlElement("З", Order = 3)]
         public string Accusative { get; set; }
 
-        [DataMember(Order = 4, Name = "О", EmitDefaultValue = false)]
-        [XmlElement("О")]
+        [XmlElement("О", Order = 4)]
         public string Instrumental { get; set; }
 
-        [DataMember(Order = 5, Name = "М", EmitDefaultValue = false)]
-        [XmlElement("М")]
+        [XmlElement("М", Order = 5)]
         public string Prepositional { get; set; }
 
-        [DataMember(Order = 6, Name = "К", EmitDefaultValue = false)]
-        [XmlElement("К")]
+        [XmlElement("К", Order = 6)]
         public string Vocative { get; set; }
     }
 }
