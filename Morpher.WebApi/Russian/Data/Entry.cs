@@ -3,6 +3,7 @@
     using System.Xml.Serialization;
     using Newtonsoft.Json;
 
+    [DataContract]
     [XmlRoot]
     public class Entry
     {
@@ -43,9 +44,11 @@
         [JsonProperty]
         public Gender GenderXml { get; set; }
 
+        [DataMember(Name = "singular", EmitDefaultValue = false)]
         [XmlElement("singular")]
         public DeclensionFormsForCorrection Singular { get; set; }
 
+        [DataMember(Name = "plural", EmitDefaultValue = false)]
         [XmlElement("plural")]
         public DeclensionFormsForCorrection Plural { get; set; }
     }
