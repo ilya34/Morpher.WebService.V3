@@ -1,5 +1,6 @@
 ﻿namespace Morpher.WebService.V3.Russian.Data
 {
+    using System.Runtime.Serialization;
     using System.Xml.Serialization;
 
     [DataContract]

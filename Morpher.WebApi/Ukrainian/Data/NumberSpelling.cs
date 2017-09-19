@@ -1,5 +1,6 @@
 ﻿namespace Morpher.WebService.V3.Ukrainian.Data
 {
+    using System.Runtime.Serialization;
     using System.Xml.Serialization;
 
     [DataContract(Name = "PropisUkrResult")]
