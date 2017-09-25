@@ -19,7 +19,7 @@
 
 
         public NumeralsDeclensionNotSupportedException(string message, int code, Exception innerException = null)
-            : base(ErrorMessage, code, innerException)
+            : base(message, code, innerException)
         {
             Code = code;
             ResponseCode = ResponseWith;

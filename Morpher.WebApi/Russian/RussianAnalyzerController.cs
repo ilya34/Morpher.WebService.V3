@@ -99,7 +99,7 @@
 
         [Route("userdict")]
         [HttpDelete]
-        public HttpResponseMessage UserDictDelete(string s)
+        public HttpResponseMessage UserDictDelete(string s, ResponseFormat? format = null)
         {
             if (string.IsNullOrWhiteSpace(s))
             {
@@ -112,7 +112,7 @@
             }
 #endif
             var result = _exceptionDictionary.Remove(s);
-            return Request.CreateResponse(!result ? HttpStatusCode.NotFound : HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.OK, result, format);
         }
 
         [Route("userdict")]
@@ -138,12 +138,12 @@
         [HttpGet]
         public HttpResponseMessage UserDictGetAll(ResponseFormat? format = null)
         {
-//#if !LOCAL
-//            if (Request.GetToken() == null)
-//            {
-//                throw new TokenNotFoundExceptionException();
-//            }
-//#endif
+#if !LOCAL
+            if (Request.GetToken() == null)
+            {
+                throw new TokenNotFoundExceptionException();
+            }
+#endif
             var result = _exceptionDictionary.GetAll();
 
             return Request.CreateResponse(HttpStatusCode.OK, result, format);
