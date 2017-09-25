@@ -190,7 +190,6 @@
     <Compile Include="General\Data\Interfaces\IAttributeUrls.cs" />
     <Compile Include="General\Data\Interfaces\ICorrectionCache.cs" />
     <Compile Include="General\Data\JobFactory.cs" />
-    <Compile Include="General\Data\Middlewares\GuidInsertMiddleware.cs" />
     <Compile Include="General\Data\Middlewares\LoggingMiddleware.cs" />
     <Compile Include="General\Data\Middlewares\UserCacheLoaderMiddleware.cs" />
     <Compile Include="General\Data\Services\UserCacheSyncer.cs" />
@@ -329,7 +328,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;LOCAL</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
