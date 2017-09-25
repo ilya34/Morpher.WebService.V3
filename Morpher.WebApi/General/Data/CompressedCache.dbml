@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="slepov_0546d" Class="CompressedCacheDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=SSQL-12R2WEB01.client.parking.ru;Initial Catalog=slepov_0546d;User ID=slepov_0546d" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="slepov_0546dConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.CompressedCache" Member="CompressedCaches">
+    <Type Name="CompressedCache">
+      <Column Name="Date" Type="System.DateTime" DbType="Date NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="GZipCache" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>

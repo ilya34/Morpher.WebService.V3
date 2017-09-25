@@ -1,0 +1,13 @@
+version: 1.0.{build}
+configuration: Release
+nuget:
+  project_feed: true
+before_build:
+- cmd: nuget restore
+build:
+  verbosity: minimal
+after_build:
+- cmd: >-
+    nuget pack Morpher.WebApi/Morpher.WebService.V3.nuspec -Version %appveyor_build_version%
+artifacts:
+- path: '*.nupkg'

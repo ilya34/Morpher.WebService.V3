@@ -3,30 +3,33 @@
     using System;
     using System.Collections.Specialized;
     using System.Configuration;
-    using System.IO;
+    using System.Net;
+    using System.Web;
     using System.Web.Http;
     using System.Web.Mvc;
     using System.Web.Routing;
-
+    using Elmah;
     using FluentScheduler;
-
-    using Morpher.WebService.V3.Services;
-    using Morpher.WebService.V3.Services.Interfaces;
-
-    using Ninject;
+    using General.Data;
+    using General.Data.Exceptions;
+    using General.Data.Services;
 
     public class WebApiApplication : System.Web.HttpApplication
     {
+        private readonly bool isLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["RunAsLocalService"]);
+
         protected void Application_Start()
         {
-            bool isLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["IsLocal"]);
+            AutofacInit.Init();
 
             if (!isLocal)
             {
                 NameValueCollection conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
                 int everyMinutes = Convert.ToInt32(conf["SyncCacheEveryMinutes"]);
                 Registry registry = new Registry();
+                JobManager.JobFactory = new JobFactory();
                 registry.Schedule<LogSyncer>().ToRunEvery(everyMinutes).Minutes();
+                registry.Schedule<UserCacheSyncer>().ToRunEvery(Convert.ToInt32(conf["SyncUserCacheEveryMinutes"])).Minutes();
                 JobManager.Initialize(registry);
             }
 
@@ -34,44 +37,45 @@
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-
-            IKernel kernel = (IKernel)DependencyResolver.Current.GetService(typeof(IKernel));
-
-            if (isLocal)
-            {
-                IRussianDictService russianDictService = kernel.Get<IRussianDictService>();
-                IUkrainianDictService ukrainianDictService = kernel.Get<IUkrainianDictService>();
-                string filePathRu = Server.MapPath("~/App_Data/UserDict.xml");
-                if (File.Exists(filePathRu))
-                {                    
-                    using (StreamReader streamReader = new StreamReader(filePathRu))
-                    {
-                        var list = RussianDictService.LoadFromXml(streamReader);
-                        russianDictService.Load(list);
-                    }
-                }
-
-                string filePathUkr = Server.MapPath("~/App_Data/UserDictUkr.xml");
-                if (File.Exists(filePathUkr))
-                {
-                    using (StreamReader streamReader = new StreamReader(filePathUkr))
-                    {
-                        var list = UkrainianDictService.LoadFromXml(streamReader);
-                        ukrainianDictService.Load(list);
-                    }
-                }
-            }
         }
 
         protected void Application_End()
         {
-            IMorpherLog log = (IMorpherLog)DependencyResolver.Current.GetService(typeof(IMorpherLog));
-            log.Sync();
+            if (!isLocal)
+            {
+                IMorpherLog log =
+                    (IMorpherLog) AutofacInit.AutofacWebApiDependencyResolver.GetService(typeof(IMorpherLog));
+                log.Sync();
+                IMorpherDatabase database =
+                    (IMorpherDatabase) AutofacInit.AutofacWebApiDependencyResolver.GetService(typeof(IMorpherDatabase));
+                IMorpherCache cache =
+                    (IMorpherCache) AutofacInit.AutofacWebApiDependencyResolver.GetService(typeof(IMorpherCache));
+                database.UploadMorpherCache(cache.GetAll());
+            }
         }
 
-        protected void Application_Error(object sender, EventArgs e)
+        void ErrorLog_Filtering(object sender, ExceptionFilterEventArgs args)
         {
-            Exception exception = this.Server.GetLastError();
+            Filter(args);
+        }
+
+        void ErrorMail_Filtering(object sender, ExceptionFilterEventArgs args)
+        {
+            Filter(args);
+        }
+
+        void Filter(ExceptionFilterEventArgs args)
+        {
+            if (args.Exception.GetBaseException() is MorpherException && !(args.Exception.GetBaseException() is ServerException))
+            {
+                args.Dismiss();
+            }
+
+            var statusCode = HttpContext.Current.Response.StatusCode;
+            if (statusCode != (int) HttpStatusCode.InternalServerError)
+            {
+                args.Dismiss();
+            }
         }
     }
 }
