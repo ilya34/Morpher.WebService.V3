@@ -108,7 +108,7 @@
 #if !LOCAL
             if (Request.GetToken() == null)
             {
-                throw new TokenNotFoundExceptionException();
+                throw new TokenNotFoundException();
             }
 #endif
             var result = _exceptionDictionary.Remove(s);
@@ -126,7 +126,7 @@
 #if !LOCAL
             if (Request.GetToken() == null)
             {
-                throw new TokenNotFoundExceptionException();
+                throw new TokenNotFoundException();
             }
 #endif
             _exceptionDictionary.Add(model);
@@ -141,7 +141,7 @@
 #if !LOCAL
             if (Request.GetToken() == null)
             {
-                throw new TokenNotFoundExceptionException();
+                throw new TokenNotFoundException();
             }
 #endif
             var result = _exceptionDictionary.GetAll();

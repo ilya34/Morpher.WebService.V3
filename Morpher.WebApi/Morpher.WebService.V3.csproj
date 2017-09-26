@@ -205,13 +205,13 @@
     <Compile Include="General\Data\DeclensionFlags.cs" />
     <Compile Include="General\Data\Exceptions\ExceededDailyLimitException.cs" />
     <Compile Include="General\Data\Exceptions\InvalidTokenFormatException.cs" />
-    <Compile Include="General\Data\Exceptions\IpBlockedExceptionException.cs" />
+    <Compile Include="General\Data\Exceptions\IpBlockedException.cs" />
     <Compile Include="General\Data\Exceptions\MorpherException.cs" />
     <Compile Include="General\Data\Exceptions\NotPayedException.cs" />
     <Compile Include="General\Data\Exceptions\NumeralsDeclensionNotSupportedException.cs" />
     <Compile Include="General\Data\Exceptions\RequiredParameterIsNotSpecifiedException.cs" />
     <Compile Include="General\Data\Exceptions\RussianWordsNotFoundException.cs" />
-    <Compile Include="General\Data\Exceptions\TokenNotFoundExceptionException.cs" />
+    <Compile Include="General\Data\Exceptions\TokenNotFoundException.cs" />
     <Compile Include="Russian\Data\CorrectionPostModel.cs" />
     <Compile Include="Russian\Data\DeclensionFormsForCorrection.cs" />
     <Compile Include="Russian\Data\FullName.cs" />

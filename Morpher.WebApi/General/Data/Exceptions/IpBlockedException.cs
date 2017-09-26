@@ -3,21 +3,21 @@
     using System;
     using System.Net;
 
-    public class IpBlockedExceptionException : MorpherException
+    public class IpBlockedException : MorpherException
     {
         private static readonly string ErrorMessage =
             "IP заблокирован.";
 
         private static readonly HttpStatusCode ResponseWith = HttpStatusCode.Forbidden;
 
-        public IpBlockedExceptionException()
+        public IpBlockedException()
             : base(ErrorMessage, 3)
         {
             Code = 3;
             ResponseCode = ResponseWith;
         }
 
-        public IpBlockedExceptionException(string message, int code, Exception inner = null)
+        public IpBlockedException(string message, int code, Exception inner = null)
             : base(message, code, inner)
         {
             Code = code;
