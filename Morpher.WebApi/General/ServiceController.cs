@@ -41,7 +41,7 @@
                 {
                     return Request.CreateResponse(
                         HttpStatusCode.OK,
-                        new ServiceErrorMessage(new IpBlockedExceptionException()),
+                        new ServiceErrorMessage(new IpBlockedException()),
                         format);
                 }
             }
@@ -53,7 +53,7 @@
                 {
                     return Request.CreateResponse(
                         HttpStatusCode.OK,
-                        new ServiceErrorMessage(new TokenNotFoundExceptionException()),
+                        new ServiceErrorMessage(new TokenNotFoundException()),
                         format);
                 }
             }

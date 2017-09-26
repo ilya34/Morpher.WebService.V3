@@ -3,20 +3,20 @@
     using System;
     using System.Net;
 
-    public class TokenNotFoundExceptionException : MorpherException
+    public class TokenNotFoundException : MorpherException
     {
         private static readonly string ErrorMessage = "Данный token не найден";
 
         private static readonly HttpStatusCode ResponseWith = (HttpStatusCode)498;
 
-        public TokenNotFoundExceptionException()
+        public TokenNotFoundException()
             : base(ErrorMessage, 9)
         {
             Code = 9;
             ResponseCode = ResponseWith;
         }
 
-        public TokenNotFoundExceptionException(string mesage, int code, Exception innerException = null)
+        public TokenNotFoundException(string mesage, int code, Exception innerException = null)
             : base(mesage, code, innerException)
         {
             Code = code;
