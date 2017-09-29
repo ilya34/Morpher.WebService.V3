@@ -111,8 +111,8 @@
                 throw new TokenNotFoundException();
             }
 #endif
-            var result = _exceptionDictionary.Remove(s);
-            return Request.CreateResponse(HttpStatusCode.OK, result, format);
+            bool found = _exceptionDictionary.Remove(s);
+            return Request.CreateResponse(HttpStatusCode.OK, found, format);
         }
 
         [Route("userdict")]
