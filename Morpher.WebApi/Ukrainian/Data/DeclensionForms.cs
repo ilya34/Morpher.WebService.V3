@@ -1,7 +1,10 @@
 ﻿namespace Morpher.WebService.V3.Ukrainian.Data
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml.Serialization;
+    using Models;
 
     [DataContract]
     [XmlRoot]
@@ -23,6 +26,17 @@
             Instrumental = serviceResult.Instrumental;
             Prepositional = serviceResult.Prepositional;
             Vocative = serviceResult.Vocative;
+        }
+
+        public DeclensionForms(List<NameForm> nameForms)
+        {
+            Nominative = nameForms.SingleOrDefault(form => form.FormID == 'Н')?.AccentedText;
+            Genitive = nameForms.SingleOrDefault(form => form.FormID == 'Р')?.AccentedText;
+            Accusative = nameForms.SingleOrDefault(form => form.FormID == 'З')?.AccentedText;
+            Dative = nameForms.SingleOrDefault(form => form.FormID == 'Д')?.AccentedText;
+            Instrumental = nameForms.SingleOrDefault(form => form.FormID == 'О')?.AccentedText;
+            Prepositional = nameForms.SingleOrDefault(form => form.FormID == 'М')?.AccentedText;
+            Vocative = nameForms.SingleOrDefault(form => form.FormID == 'К')?.AccentedText;
         }
 
         [DataMember(Order = 0, Name = "Н", EmitDefaultValue = false)]

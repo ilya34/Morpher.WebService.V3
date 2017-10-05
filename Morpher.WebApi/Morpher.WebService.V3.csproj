@@ -180,6 +180,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CompressedCache.dbml</DependentUpon>
     </Compile>
+    <Compile Include="General\Data\CorrectionLanguage.cs" />
     <Compile Include="General\Data\Exceptions\InvalidFlagsException.cs" />
     <Compile Include="General\Data\Exceptions\ServerException.cs" />
     <Compile Include="General\Data\Extensions\DeclensionFlagsExtensions.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="General\Data\Extensions\IOwinRequestExtensions.cs" />
     <Compile Include="General\Data\Extensions\StringExtensions.cs" />
     <Compile Include="General\Data\Filters\MorpherExceptionFilterAttribute.cs" />
+    <Compile Include="General\Data\Gender.cs" />
     <Compile Include="General\Data\Interfaces\IAttributeUrls.cs" />
     <Compile Include="General\Data\Interfaces\ICorrectionCache.cs" />
     <Compile Include="General\Data\JobFactory.cs" />
@@ -218,10 +220,15 @@
     <Compile Include="Russian\Data\DeclensionForms.cs" />
     <Compile Include="Russian\Data\DeclensionResult.cs" />
     <Compile Include="Russian\Data\Entry.cs" />
-    <Compile Include="Russian\Data\Gender.cs" />
+    <Compile Include="Russian\Data\IExceptionDictionary.cs" />
+    <Compile Include="Russian\Data\IUserDictionaryLookup.cs" />
     <Compile Include="Russian\Data\NumberSpelling.cs" />
+    <Compile Include="Ukrainian\Data\CorrectionPostModel.cs" />
     <Compile Include="Ukrainian\Data\DeclensionForms.cs" />
     <Compile Include="Ukrainian\Data\DeclensionResult.cs" />
+    <Compile Include="Ukrainian\Data\Entry.cs" />
+    <Compile Include="Ukrainian\Data\IExceptionDictionary.cs" />
+    <Compile Include="Ukrainian\Data\IUserDictionaryLookup.cs" />
     <Compile Include="Ukrainian\Data\NumberSpelling.cs" />
     <Compile Include="General\Data\UserCorrection.designer.cs">
       <AutoGen>True</AutoGen>
@@ -230,10 +237,8 @@
     </Compile>
     <Compile Include="General\Data\Services\DatabaseUserDictionary.cs" />
     <Compile Include="General\Data\Services\DummyResultTrimmer.cs" />
-    <Compile Include="General\Data\Interfaces\IExceptionDictionary.cs" />
     <Compile Include="General\Data\Interfaces\IRussianAnalyzer.cs" />
     <Compile Include="General\Data\Interfaces\IUkrainianAnalyzer.cs" />
-    <Compile Include="General\Data\Interfaces\IUserDictionaryLookup.cs" />
     <Compile Include="General\Data\Interfaces\IResultTrimmer.cs" />
     <Compile Include="General\Data\Services\MorpherLog.cs" />
     <Compile Include="General\Data\LogEntity.cs" />

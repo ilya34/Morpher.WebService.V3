@@ -1,7 +1,7 @@
-﻿namespace Morpher.WebService.V3.General.Data
+﻿namespace Morpher.WebService.V3.Russian
 {
     using System.Collections.Generic;
-    using Russian.Data;
+    using Data;
 
     public interface IExceptionDictionary
     {

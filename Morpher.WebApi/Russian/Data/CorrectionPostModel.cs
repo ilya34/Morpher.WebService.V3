@@ -1,7 +1,7 @@
 ﻿namespace Morpher.WebService.V3.Russian.Data
 {
-    using System;
     using System.Collections.Generic;
+    using General;
     using Models;
 
     /// <summary>
@@ -55,7 +55,7 @@
                     Plural = false,
                     AccentedText = model.И,
                     FormID = 'И',
-                    LanguageID = "RU"
+                    LanguageID = CorrectionLanguage.Russian.ToDatabaseLanguage()
                 });
             }
 
@@ -66,7 +66,7 @@
                     Plural = false,
                     AccentedText = model.Р,
                     FormID = 'Р',
-                    LanguageID = "RU"
+                    LanguageID = CorrectionLanguage.Russian.ToDatabaseLanguage()
                 });
             }
 
@@ -77,7 +77,7 @@
                     Plural = false,
                     AccentedText = model.Д,
                     FormID = 'Д',
-                    LanguageID = "RU"
+                    LanguageID = CorrectionLanguage.Russian.ToDatabaseLanguage()
                 });
             }
 
@@ -88,7 +88,7 @@
                     Plural = false,
                     AccentedText = model.В,
                     FormID = 'В',
-                    LanguageID = "RU"
+                    LanguageID = CorrectionLanguage.Russian.ToDatabaseLanguage()
                 });
             }
 
@@ -99,7 +99,7 @@
                     Plural = false,
                     AccentedText = model.Т,
                     FormID = 'Т',
-                    LanguageID = "RU"
+                    LanguageID = CorrectionLanguage.Russian.ToDatabaseLanguage()
                 });
             }
 
@@ -110,7 +110,7 @@
                     Plural = false,
                     AccentedText = model.П,
                     FormID = 'П',
-                    LanguageID = "RU"
+                    LanguageID = CorrectionLanguage.Russian.ToDatabaseLanguage()
                 });
             }
 
@@ -121,7 +121,7 @@
                     Plural = false,
                     AccentedText = model.М,
                     FormID = 'М',
-                    LanguageID = "RU"
+                    LanguageID = CorrectionLanguage.Russian.ToDatabaseLanguage()
                 });
             }
 
@@ -133,7 +133,7 @@
                     Plural = true,
                     AccentedText = model.М_И,
                     FormID = 'И',
-                    LanguageID = "RU"
+                    LanguageID = CorrectionLanguage.Russian.ToDatabaseLanguage()
                 });
             }
 
@@ -144,7 +144,7 @@
                     Plural = true,
                     AccentedText = model.М_Р,
                     FormID = 'Р',
-                    LanguageID = "RU"
+                    LanguageID = CorrectionLanguage.Russian.ToDatabaseLanguage()
                 });
             }
 
@@ -155,7 +155,7 @@
                     Plural = true,
                     AccentedText = model.М_Д,
                     FormID = 'Д',
-                    LanguageID = "RU"
+                    LanguageID = CorrectionLanguage.Russian.ToDatabaseLanguage()
                 });
             }
 
@@ -166,7 +166,7 @@
                     Plural = true,
                     AccentedText = model.М_В,
                     FormID = 'В',
-                    LanguageID = "RU"
+                    LanguageID = CorrectionLanguage.Russian.ToDatabaseLanguage()
                 });
             }
 
@@ -177,7 +177,7 @@
                     Plural = true,
                     AccentedText = model.М_Т,
                     FormID = 'Т',
-                    LanguageID = "RU"
+                    LanguageID = CorrectionLanguage.Russian.ToDatabaseLanguage()
                 });
             }
 
@@ -188,7 +188,7 @@
                     Plural = true,
                     AccentedText = model.М_П,
                     FormID = 'П',
-                    LanguageID = "RU"
+                    LanguageID = CorrectionLanguage.Russian.ToDatabaseLanguage()
                 });
             }
 
@@ -199,7 +199,7 @@
                     Plural = true,
                     AccentedText = model.М_М,
                     FormID = 'М',
-                    LanguageID = "RU"
+                    LanguageID = CorrectionLanguage.Russian.ToDatabaseLanguage()
                 });
             }
 

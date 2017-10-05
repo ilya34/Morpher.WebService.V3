@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebService.V3.Russian.Data
+﻿namespace Morpher.WebService.V3.General.Data
 {
     using System.Xml.Serialization;
     using Newtonsoft.Json;

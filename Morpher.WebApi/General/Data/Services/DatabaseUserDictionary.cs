@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebService.V3.General.Data.Services
+﻿namespace Morpher.WebService.V3.General.Data
 {
     using System;
     using System.Collections.Generic;
@@ -7,10 +7,12 @@
     using System.Web;
     using Interfaces;
     using Models;
-    using Russian.Data;
-    using DeclensionForms = Russian.Data.DeclensionForms;
 
-    public class DatabaseUserDictionary : IUserDictionaryLookup, IExceptionDictionary
+    public class DatabaseUserDictionary : 
+        Russian.IUserDictionaryLookup,
+        Russian.IExceptionDictionary,
+        Ukrainian.IUserDictionaryLookup,
+        Ukrainian.IExceptionDictionary
     {
         private readonly IMorpherCache _morpherCache;
         private readonly ICorrectionCache _correctionCache;
@@ -36,43 +38,7 @@
             }
         }
 
-        /// <summary>
-        /// Получает пользовательское исправление из БД
-        /// </summary>
-        /// <param name="nominativeSingular">именительная форма, регистр не учитывается</param>
-        /// <returns>Пользовательское исправление</returns>
-        public object Lookup(string nominativeSingular)
-        {
-            var token = HttpContext.Current.Request.GetToken();
-            if (token == null)
-            {
-                return null;
-            }
-
-            var cache = (MorpherCacheObject)_morpherCache.Get(token.ToString().ToLowerInvariant());
-
-            var correctionCache = (List<Name>)_correctionCache.Get(cache.UserId.ToString().ToLowerInvariant());
-
-            if (correctionCache != null)
-            {
-                var result = correctionCache.FirstOrDefault(
-                    name => name.Lemma == LemmaNormalizer.Normalize(nominativeSingular)
-                            && name.LanguageID == "RU")?.NameForms;
-
-                if (result == null || !result.Any())
-                {
-                    return null;
-                }
-
-                return result.ToList();
-            }
-
-            // load to cache
-            LoadToCache(cache.UserId.Value);
-            return Lookup(nominativeSingular);
-        }
-
-        public void Add(CorrectionPostModel model)
+        private void Add(string nominativeSingular, List<NameForm> forms)
         {
             var token = HttpContext.Current.Request.GetToken();
             if (token == null)
@@ -82,7 +48,7 @@
 
             var cache = (MorpherCacheObject)_morpherCache.Get(token.ToString().ToLowerInvariant());
 
-            string normalizedLemma = LemmaNormalizer.Normalize(model.И);
+            string normalizedLemma = LemmaNormalizer.Normalize(nominativeSingular);
 
             using (UserCorrectionDataContext context = new UserCorrectionDataContext())
             {
@@ -108,7 +74,6 @@
                 name.Lemma = normalizedLemma;
                 userVote.SubmittedUTC = DateTime.UtcNow;
 
-                List<NameForm> forms = model;
                 foreach (var nameForm in forms)
                 {
                     var dbForm = name.NameForms.FirstOrDefault(
@@ -130,7 +95,7 @@
             }
         }
 
-        public bool Remove(string nominativeForm)
+        private bool Remove(string nominativeSingular, CorrectionLanguage language)
         {
             var token = HttpContext.Current.Request.GetToken();
             if (token == null)
@@ -147,7 +112,8 @@
                 var query = (from name in context.Names
                              join userVote in context.UserVotes on name.ID equals userVote.NameID
                              where userVote.UserID == cache.UserId
-                                   && name.Lemma == LemmaNormalizer.Normalize(nominativeForm)
+                                   && name.Lemma == LemmaNormalizer.Normalize(nominativeSingular)
+                                   && name.LanguageID == language.ToDatabaseLanguage()
                              select new { name, userVote }).FirstOrDefault();
                 if (query == null)
                 {
@@ -165,7 +131,7 @@
             }
         }
 
-        public List<Entry> GetAll()
+        public List<Name> GetAll(CorrectionLanguage language)
         {
             var token = HttpContext.Current.Request.GetToken();
             if (token == null)
@@ -180,17 +146,103 @@
             if (correctionCache == null)
             {
                 LoadToCache(cache.UserId.Value);
-                return GetAll();
+                return GetAll(language);
             }
 
-            List<Entry> entries = new List<Entry>();
+            return correctionCache.Where(name => name.LanguageID == language.ToDatabaseLanguage()).ToList();
+        }
+
+        private object Lookup(string nominativeSingular, CorrectionLanguage language)
+        {
+            var token = HttpContext.Current.Request.GetToken();
+            if (token == null)
+            {
+                return null;
+            }
+
+            var cache = (MorpherCacheObject)_morpherCache.Get(token.ToString().ToLowerInvariant());
+
+            var correctionCache = (List<Name>)_correctionCache.Get(cache.UserId.ToString().ToLowerInvariant());
+
+            if (correctionCache != null)
+            {
+                var result = correctionCache.FirstOrDefault(
+                    name => name.Lemma == LemmaNormalizer.Normalize(nominativeSingular)
+                            && name.LanguageID == language.ToDatabaseLanguage())?.NameForms;
+
+                if (result == null || !result.Any())
+                {
+                    return null;
+                }
+
+                return result.ToList();
+            }
+
+            // load to cache
+            LoadToCache(cache.UserId.Value);
+            return Lookup(nominativeSingular, language);
+        }
+
+        object Russian.IUserDictionaryLookup.Lookup(string nomonativeSingular)
+        {
+            return Lookup(nomonativeSingular, CorrectionLanguage.Russian);
+        }
+
+        void Russian.IExceptionDictionary.Add(Russian.Data.CorrectionPostModel correctionPostModel)
+        {
+            List<NameForm> forms = correctionPostModel;
+            Add(correctionPostModel.И, forms);
+        }
+
+        bool Russian.IExceptionDictionary.Remove(string nomitiveSingular)
+        {
+            return Remove(nomitiveSingular, CorrectionLanguage.Russian);
+        }
+
+        List<Russian.Data.Entry> Russian.IExceptionDictionary.GetAll()
+        {
+            var correctionCache = GetAll(CorrectionLanguage.Russian);
+            List<Russian.Data.Entry> entries = new List<Russian.Data.Entry>();
 
             foreach (var name in correctionCache)
             {
                 var correction = name.NameForms;
-                var entry = new Entry(
-                    new DeclensionFormsForCorrection(correction.Where(form => !form.Plural).ToList()),
-                    new DeclensionFormsForCorrection(correction.Where(form => form.Plural).ToList()));
+                var entry = new Russian.Data.Entry(
+                    new Russian.Data.DeclensionFormsForCorrection(correction.Where(form => !form.Plural).ToList()),
+                    new Russian.Data.DeclensionFormsForCorrection(correction.Where(form => form.Plural).ToList()));
+                entries.Add(entry);
+            }
+
+            return entries;
+        }
+
+        object Ukrainian.IUserDictionaryLookup.Lookup(string nominativeSingular)
+        {
+            return Lookup(nominativeSingular, CorrectionLanguage.Ukrainian);
+        }
+
+        void Ukrainian.IExceptionDictionary.Add(Ukrainian.Data.CorrectionPostModel correctionPostModel)
+        {
+            List<NameForm> forms = correctionPostModel;
+            Add(correctionPostModel.Н, forms);
+        }
+
+        bool Ukrainian.IExceptionDictionary.Remove(string nominativeSingular)
+        {
+            return Remove(nominativeSingular, CorrectionLanguage.Ukrainian);
+        }
+
+        List<Ukrainian.Data.Entry> Ukrainian.IExceptionDictionary.GetAll()
+        {
+            var correctionCache = GetAll(CorrectionLanguage.Russian);
+            List<Ukrainian.Data.Entry> entries = new List<Ukrainian.Data.Entry>();
+
+            foreach (var name in correctionCache)
+            {
+                var correction = name.NameForms;
+                var entry = new Ukrainian.Data.Entry(
+                    new Ukrainian.Data.DeclensionForms(correction.Where(form => !form.Plural).ToList()),
+                    new Ukrainian.Data.DeclensionForms(correction.Where(form => form.Plural).ToList()));
                 entries.Add(entry);
             }
 

@@ -18,6 +18,7 @@
     using Moq;
     using NUnit.Framework;
     using Owin;
+    using Russian;
     using DeclensionFlags = General.Data.DeclensionFlags;
     using DeclensionResult = Russian.Data.DeclensionResult;
 

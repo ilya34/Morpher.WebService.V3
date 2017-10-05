@@ -59,8 +59,8 @@
                 var analyzer = Assembly.LoadFile(path);
                 string filePathRu = HostingEnvironment.MapPath("~/App_Data/UserDict.xml");
                 builder.RegisterAssemblyTypes(analyzer)
-                    .Where(type => typeof(IExceptionDictionary).IsAssignableFrom(type))
-                    .As<IExceptionDictionary, IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathRu);
+                    .Where(type => typeof(Russian.IExceptionDictionary).IsAssignableFrom(type))
+                    .As<Russian.IExceptionDictionary, Russian.IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathRu);
             }
             else
             {
@@ -72,9 +72,9 @@
                     .SingleInstance();
 
                 builder.RegisterType<DatabaseUserDictionary>()
-                    .As<IUserDictionaryLookup>().SingleInstance();
+                    .As<Russian.IUserDictionaryLookup, Ukrainian.IUserDictionaryLookup>().SingleInstance();
                 builder.RegisterType<DatabaseUserDictionary>()
-                    .As<IExceptionDictionary>();
+                    .As<Russian.IExceptionDictionary, Ukrainian.IExceptionDictionary>().SingleInstance();
             }
 
             RegisterSharedServices(builder);
