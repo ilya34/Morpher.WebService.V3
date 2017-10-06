@@ -219,6 +219,10 @@
         Ukrainian.Data.Entry Ukrainian.IUserDictionaryLookup.Lookup(string nominativeSingular)
         {
             var list = Lookup(nominativeSingular, CorrectionLanguage.Ukrainian);
+            if (list == null)
+            {
+                return null;
+            }
 
             Ukrainian.Data.Entry entry = new Ukrainian.Data.Entry();
             entry.Singular = new Ukrainian.Data.DeclensionForms()
