@@ -152,7 +152,7 @@
             return correctionCache.Where(name => name.LanguageID == language.ToDatabaseLanguage()).ToList();
         }
 
-        private object Lookup(string nominativeSingular, CorrectionLanguage language)
+        private List<NameForm> Lookup(string nominativeSingular, CorrectionLanguage language)
         {
             var token = HttpContext.Current.Request.GetToken();
             if (token == null)
@@ -216,9 +216,37 @@
             return entries;
         }
 
-        object Ukrainian.IUserDictionaryLookup.Lookup(string nominativeSingular)
+        Ukrainian.Data.Entry Ukrainian.IUserDictionaryLookup.Lookup(string nominativeSingular)
         {
-            return Lookup(nominativeSingular, CorrectionLanguage.Ukrainian);
+            var list = Lookup(nominativeSingular, CorrectionLanguage.Ukrainian);
+
+            Ukrainian.Data.Entry entry = new Ukrainian.Data.Entry();
+            entry.Singular = new Ukrainian.Data.DeclensionForms()
+            {
+                Nominative = list.SingleOrDefault(form => form.FormID == 'Н' && !form.Plural)?.AccentedText,
+                Genitive = list.SingleOrDefault(form => form.FormID == 'Р' && !form.Plural)?.AccentedText,
+                Accusative = list.SingleOrDefault(form => form.FormID == 'З' && !form.Plural)?.AccentedText,
+                Dative = list.SingleOrDefault(form => form.FormID == 'Д' && !form.Plural)?.AccentedText,
+                Instrumental = list.SingleOrDefault(form => form.FormID == 'О' && !form.Plural)?.AccentedText,
+                Prepositional = list.SingleOrDefault(form => form.FormID == 'М' && !form.Plural)?.AccentedText,
+                Vocative = list.SingleOrDefault(form => form.FormID == 'К' && !form.Plural)?.AccentedText
+            };
+
+            if (list.Any(form => form.Plural))
+            {
+                entry.Plural = new Ukrainian.Data.DeclensionForms()
+                {
+                    Nominative = list.SingleOrDefault(form => form.FormID == 'Н' && form.Plural)?.AccentedText,
+                    Genitive = list.SingleOrDefault(form => form.FormID == 'Р' && form.Plural)?.AccentedText,
+                    Accusative = list.SingleOrDefault(form => form.FormID == 'З' && form.Plural)?.AccentedText,
+                    Dative = list.SingleOrDefault(form => form.FormID == 'Д' && form.Plural)?.AccentedText,
+                    Instrumental = list.SingleOrDefault(form => form.FormID == 'О' && form.Plural)?.AccentedText,
+                    Prepositional = list.SingleOrDefault(form => form.FormID == 'М' && form.Plural)?.AccentedText,
+                    Vocative = list.SingleOrDefault(form => form.FormID == 'К' && form.Plural)?.AccentedText
+                };
+            }
+
+            return entry;
         }
 
         void Ukrainian.IExceptionDictionary.Add(Ukrainian.Data.CorrectionPostModel correctionPostModel)
