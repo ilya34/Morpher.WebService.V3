@@ -43,162 +43,36 @@
         {
             List<NameForm> nameForms = new List<NameForm>();
 
-            if (!string.IsNullOrWhiteSpace(model.Н))
-            {
-                nameForms.Add(new NameForm()
-                {
-                    Plural = false,
-                    AccentedText = model.Н,
-                    FormID = 'Н',
-                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
-                });
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.Р))
-            {
-                nameForms.Add(new NameForm()
-                {
-                    Plural = false,
-                    AccentedText = model.Р,
-                    FormID = 'Р',
-                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
-                });
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.Д))
-            {
-                nameForms.Add(new NameForm()
-                {
-                    Plural = false,
-                    AccentedText = model.Д,
-                    FormID = 'Д',
-                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
-                });
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.З))
-            {
-                nameForms.Add(new NameForm()
-                {
-                    Plural = false,
-                    AccentedText = model.З,
-                    FormID = 'З',
-                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
-                });
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.О))
-            {
-                nameForms.Add(new NameForm()
-                {
-                    Plural = false,
-                    AccentedText = model.О,
-                    FormID = 'О',
-                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
-                });
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.М))
-            {
-                nameForms.Add(new NameForm()
-                {
-                    Plural = false,
-                    AccentedText = model.М,
-                    FormID = 'М',
-                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
-                });
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.К))
-            {
-                nameForms.Add(new NameForm()
-                {
-                    Plural = false,
-                    AccentedText = model.К,
-                    FormID = 'К',
-                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
-                });
-            }
-
-            // Plural
-            if (!string.IsNullOrWhiteSpace(model.М_Н))
-            {
-                nameForms.Add(new NameForm()
-                {
-                    Plural = true,
-                    AccentedText = model.М_Н,
-                    FormID = 'Н',
-                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
-                });
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.М_Р))
-            {
-                nameForms.Add(new NameForm()
-                {
-                    Plural = true,
-                    AccentedText = model.М_Р,
-                    FormID = 'Р',
-                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
-                });
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.М_Д))
-            {
-                nameForms.Add(new NameForm()
-                {
-                    Plural = true,
-                    AccentedText = model.М_Д,
-                    FormID = 'Д',
-                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
-                });
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.М_З))
-            {
-                nameForms.Add(new NameForm()
-                {
-                    Plural = true,
-                    AccentedText = model.М_З,
-                    FormID = 'З',
-                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
-                });
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.М_О))
-            {
-                nameForms.Add(new NameForm()
-                {
-                    Plural = true,
-                    AccentedText = model.М_О,
-                    FormID = 'О',
-                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
-                });
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.М_М))
-            {
-                nameForms.Add(new NameForm()
-                {
-                    Plural = true,
-                    AccentedText = model.М_М,
-                    FormID = 'М',
-                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
-                });
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.М_К))
-            {
-                nameForms.Add(new NameForm()
-                {
-                    Plural = true,
-                    AccentedText = model.М_К,
-                    FormID = 'К',
-                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
-                });
-            }
+            GetValue(nameForms, model.Н, 'Н');
+            GetValue(nameForms, model.Р, 'Р');
+            GetValue(nameForms, model.Д, 'Д');
+            GetValue(nameForms, model.З, 'З');
+            GetValue(nameForms, model.О, 'О');
+            GetValue(nameForms, model.М, 'М');
+            GetValue(nameForms, model.К, 'К');
+            GetValue(nameForms, model.М_Н, 'Н', true);
+            GetValue(nameForms, model.М_Р, 'Р', true);
+            GetValue(nameForms, model.М_Д, 'Д', true);
+            GetValue(nameForms, model.М_З, 'З', true);
+            GetValue(nameForms, model.М_О, 'О', true);
+            GetValue(nameForms, model.М_М, 'М', true);
+            GetValue(nameForms, model.М_К, 'К', true);
 
             return nameForms;
+        }
+
+        static void GetValue(List<NameForm> nameForms, string form, char formID, bool plural = false)
+        {
+            if (!string.IsNullOrWhiteSpace(form))
+            {
+                nameForms.Add(new NameForm()
+                {
+                    Plural = plural,
+                    AccentedText = form,
+                    FormID = formID,
+                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
+                });
+            }
         }
     }
 }
