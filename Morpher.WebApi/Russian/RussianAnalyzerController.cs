@@ -105,12 +105,7 @@
             {
                 throw new RequiredParameterIsNotSpecifiedException(nameof(s));
             }
-#if !LOCAL
-            if (Request.GetToken() == null)
-            {
-                throw new TokenNotFoundException();
-            }
-#endif
+
             bool found = _exceptionDictionary.Remove(s);
             return Request.CreateResponse(HttpStatusCode.OK, found, format);
         }
@@ -123,12 +118,7 @@
             {
                 throw new RequiredParameterIsNotSpecifiedException("И");
             }
-#if !LOCAL
-            if (Request.GetToken() == null)
-            {
-                throw new TokenNotFoundException();
-            }
-#endif
+
             _exceptionDictionary.Add(model);
 
             return Request.CreateResponse(HttpStatusCode.OK);
@@ -138,12 +128,6 @@
         [HttpGet]
         public HttpResponseMessage UserDictGetAll(ResponseFormat? format = null)
         {
-#if !LOCAL
-            if (Request.GetToken() == null)
-            {
-                throw new TokenNotFoundException();
-            }
-#endif
             var result = _exceptionDictionary.GetAll();
 
             return Request.CreateResponse(HttpStatusCode.OK, result, format);

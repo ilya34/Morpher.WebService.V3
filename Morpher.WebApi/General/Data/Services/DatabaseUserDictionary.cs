@@ -136,7 +136,7 @@
             var token = HttpContext.Current.Request.GetToken();
             if (token == null)
             {
-                return null;
+                throw new TokenNotFoundException();
             }
 
             var cache = (MorpherCacheObject)_morpherCache.Get(token.ToString().ToLowerInvariant());
@@ -157,7 +157,7 @@
             var token = HttpContext.Current.Request.GetToken();
             if (token == null)
             {
-                return null;
+                throw new TokenNotFoundException();
             }
 
             var cache = (MorpherCacheObject)_morpherCache.Get(token.ToString().ToLowerInvariant());
