@@ -235,21 +235,7 @@
                 Prepositional = list.SingleOrDefault(form => form.FormID == 'М' && !form.Plural)?.AccentedText,
                 Vocative = list.SingleOrDefault(form => form.FormID == 'К' && !form.Plural)?.AccentedText
             };
-
-            if (list.Any(form => form.Plural))
-            {
-                entry.Plural = new Ukrainian.Data.DeclensionForms()
-                {
-                    Nominative = list.SingleOrDefault(form => form.FormID == 'Н' && form.Plural)?.AccentedText,
-                    Genitive = list.SingleOrDefault(form => form.FormID == 'Р' && form.Plural)?.AccentedText,
-                    Accusative = list.SingleOrDefault(form => form.FormID == 'З' && form.Plural)?.AccentedText,
-                    Dative = list.SingleOrDefault(form => form.FormID == 'Д' && form.Plural)?.AccentedText,
-                    Instrumental = list.SingleOrDefault(form => form.FormID == 'О' && form.Plural)?.AccentedText,
-                    Prepositional = list.SingleOrDefault(form => form.FormID == 'М' && form.Plural)?.AccentedText,
-                    Vocative = list.SingleOrDefault(form => form.FormID == 'К' && form.Plural)?.AccentedText
-                };
-            }
-
+            
             return entry;
         }
 
@@ -266,15 +252,14 @@
 
         List<Ukrainian.Data.Entry> Ukrainian.IExceptionDictionary.GetAll()
         {
-            var correctionCache = GetAll(CorrectionLanguage.Russian);
+            var correctionCache = GetAll(CorrectionLanguage.Ukrainian);
             List<Ukrainian.Data.Entry> entries = new List<Ukrainian.Data.Entry>();
 
             foreach (var name in correctionCache)
             {
                 var correction = name.NameForms;
                 var entry = new Ukrainian.Data.Entry(
-                    new Ukrainian.Data.DeclensionForms(correction.Where(form => !form.Plural).ToList()),
-                    new Ukrainian.Data.DeclensionForms(correction.Where(form => form.Plural).ToList()));
+                    new Ukrainian.Data.DeclensionForms(correction.Where(form => !form.Plural).ToList()));
                 entries.Add(entry);
             }
 

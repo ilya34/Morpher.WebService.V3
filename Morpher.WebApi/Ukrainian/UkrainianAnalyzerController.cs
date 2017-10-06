@@ -12,13 +12,16 @@
     {
         private readonly IUkrainianAnalyzer _analyzer;
         private readonly IResultTrimmer _resultTrimmer;
+        private readonly IExceptionDictionary _exceptionDictionary;
 
         public UkrainianAnalyzerController(
             IUkrainianAnalyzer analyzer,
-            IResultTrimmer resultTrimmer)
+            IResultTrimmer resultTrimmer,
+            IExceptionDictionary exceptionDictionary)
         {
             _analyzer = analyzer;
             _resultTrimmer = resultTrimmer;
+            _exceptionDictionary = exceptionDictionary;
         }
 
         [Route("declension", Name = "UkrainianDeclension")]
@@ -60,6 +63,42 @@
             NumberSpelling numberSpelling =
                     _analyzer.Spell(n, unit);
             return Request.CreateResponse(HttpStatusCode.OK, numberSpelling, format);
+        }
+
+        [Route("userdict")]
+        [HttpDelete]
+        public HttpResponseMessage UserDictDelete(string s, ResponseFormat? format = null)
+        {
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                throw new RequiredParameterIsNotSpecifiedException(nameof(s));
+            }
+
+            bool found = _exceptionDictionary.Remove(s);
+            return Request.CreateResponse(HttpStatusCode.OK, found, format);
+        }
+
+        [Route("userdict")]
+        [HttpPost]
+        public HttpResponseMessage UserDictAdd([FromBody] CorrectionPostModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Н))
+            {
+                throw new RequiredParameterIsNotSpecifiedException("Н");
+            }
+
+            _exceptionDictionary.Add(model);
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        [Route("userdict")]
+        [HttpGet]
+        public HttpResponseMessage UserDictGetAll(ResponseFormat? format = null)
+        {
+            var result = _exceptionDictionary.GetAll();
+
+            return Request.CreateResponse(HttpStatusCode.OK, result, format);
         }
     }
 }

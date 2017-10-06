@@ -9,10 +9,9 @@
     [XmlRoot]
     public class Entry
     {
-        public Entry(DeclensionForms singular, DeclensionForms plural)
+        public Entry(DeclensionForms singular)
         {
             Singular = singular;
-            Plural = plural;
         }
 
         public Entry()
@@ -49,9 +48,5 @@
         [DataMember(Name = "singular", EmitDefaultValue = false)]
         [XmlElement("singular")]
         public DeclensionForms Singular { get; set; }
-
-        [DataMember(Name = "plural", EmitDefaultValue = false)]
-        [XmlElement("plural")]
-        public DeclensionForms Plural { get; set; }
     }
 }
