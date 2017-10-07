@@ -43,25 +43,25 @@
         {
             List<NameForm> nameForms = new List<NameForm>();
 
-            GetValue(nameForms, model.Н, 'Н');
-            GetValue(nameForms, model.Р, 'Р');
-            GetValue(nameForms, model.Д, 'Д');
-            GetValue(nameForms, model.З, 'З');
-            GetValue(nameForms, model.О, 'О');
-            GetValue(nameForms, model.М, 'М');
-            GetValue(nameForms, model.К, 'К');
-            GetValue(nameForms, model.М_Н, 'Н', true);
-            GetValue(nameForms, model.М_Р, 'Р', true);
-            GetValue(nameForms, model.М_Д, 'Д', true);
-            GetValue(nameForms, model.М_З, 'З', true);
-            GetValue(nameForms, model.М_О, 'О', true);
-            GetValue(nameForms, model.М_М, 'М', true);
-            GetValue(nameForms, model.М_К, 'К', true);
+            Add(nameForms, model.Н, 'Н');
+            Add(nameForms, model.Р, 'Р');
+            Add(nameForms, model.Д, 'Д');
+            Add(nameForms, model.З, 'З');
+            Add(nameForms, model.О, 'О');
+            Add(nameForms, model.М, 'М');
+            Add(nameForms, model.К, 'К');
+            Add(nameForms, model.М_Н, 'Н', true);
+            Add(nameForms, model.М_Р, 'Р', true);
+            Add(nameForms, model.М_Д, 'Д', true);
+            Add(nameForms, model.М_З, 'З', true);
+            Add(nameForms, model.М_О, 'О', true);
+            Add(nameForms, model.М_М, 'М', true);
+            Add(nameForms, model.М_К, 'К', true);
 
             return nameForms;
         }
 
-        static void GetValue(List<NameForm> nameForms, string form, char formID, bool plural = false)
+        static void Add(List<NameForm> nameForms, string form, char formID, bool plural = false)
         {
             if (!string.IsNullOrWhiteSpace(form))
             {
