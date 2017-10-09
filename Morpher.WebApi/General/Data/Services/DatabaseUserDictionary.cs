@@ -197,7 +197,12 @@
 
         void Russian.IExceptionDictionary.Add(Russian.Data.CorrectionPostModel correctionPostModel)
         {
-            List<NameForm> forms = correctionPostModel;
+            List<NameForm> forms = correctionPostModel.ToNameForms();
+            if (forms.Count < 2)
+            {
+             throw  new RequiredParameterIsNotSpecifiedException(message: "Нужно указать хотя бы одну косвенную форму.");
+            }
+
             Add(correctionPostModel.И, forms);
         }
 
@@ -248,7 +253,12 @@
 
         void Ukrainian.IExceptionDictionary.Add(Ukrainian.Data.CorrectionPostModel correctionPostModel)
         {
-            List<NameForm> forms = correctionPostModel;
+            List<NameForm> forms = correctionPostModel.ToNameForms();
+            if (forms.Count < 2)
+            {
+                throw new RequiredParameterIsNotSpecifiedException(message: "Нужно указать хотя бы одну косвенную форму.");
+            }
+
             Add(correctionPostModel.Н, forms);
         }
 
