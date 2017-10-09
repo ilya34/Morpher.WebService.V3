@@ -12,6 +12,8 @@
             Plural = new DeclensionResult(forms.Where(form => form.Plural).ToList());
         }
 
+        public LookupEntry() { }
+
         public DeclensionResult Singular { get; set; }
 
         public DeclensionResult Plural { get; set; }
