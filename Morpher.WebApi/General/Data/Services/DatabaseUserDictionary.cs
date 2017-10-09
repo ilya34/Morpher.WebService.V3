@@ -183,7 +183,7 @@
             return Lookup(nominativeSingular, language);
         }
 
-        Russian.Data.LookupEntry Russian.IUserDictionaryLookup.Lookup(string nomonativeSingular)
+        Russian.Data.Entry Russian.IUserDictionaryLookup.Lookup(string nomonativeSingular)
         {
             var list = Lookup(nomonativeSingular, CorrectionLanguage.Russian);
             if (list == null)
@@ -191,7 +191,16 @@
                 return null;
             }
 
-            return new Russian.Data.LookupEntry(list); 
+            Russian.Data.DeclensionFormsForCorrection singular = new
+                Russian.Data.DeclensionFormsForCorrection(list.Where(form => !form.Plural).ToList());
+            Russian.Data.DeclensionFormsForCorrection plural = null;
+            var pluralList = list.Where(form => form.Plural).ToList();
+            if (pluralList.Any())
+            {
+                plural = new Russian.Data.DeclensionFormsForCorrection(pluralList);
+            }
+
+            return new Russian.Data.Entry(singular, plural); 
         }
 
         void Russian.IExceptionDictionary.Add(Russian.Data.CorrectionPostModel correctionPostModel)

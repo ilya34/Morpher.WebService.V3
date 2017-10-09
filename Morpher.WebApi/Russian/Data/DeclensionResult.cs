@@ -1,12 +1,9 @@
 ﻿namespace Morpher.WebService.V3.Russian.Data
 {
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using System.Runtime.Serialization;
     using General.Data;
     using System.Xml.Serialization;
-    using Models;
 
     [DataContract(Name = "xml")]
     [XmlRoot("xml")]
@@ -15,16 +12,6 @@
         public DeclensionResult()
         {
             
-        }
-
-        public DeclensionResult(List<NameForm> forms)
-        {
-            Nominative = forms.SingleOrDefault(form => form.FormID == 'И')?.AccentedText;
-            Genitive = forms.SingleOrDefault(form => form.FormID == 'Р')?.AccentedText;
-            Accusative = forms.SingleOrDefault(form => form.FormID == 'В')?.AccentedText;
-            Dative = forms.SingleOrDefault(form => form.FormID == 'Д')?.AccentedText;
-            Instrumental = forms.SingleOrDefault(form => form.FormID == 'Т')?.AccentedText;
-            Prepositional = forms.SingleOrDefault(form => form.FormID == 'П')?.AccentedText;
         }
 
         [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor")]
