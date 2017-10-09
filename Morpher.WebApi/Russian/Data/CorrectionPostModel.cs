@@ -57,7 +57,7 @@
                     Plural = plural,
                     AccentedText = form,
                     FormID = formID,
-                    LanguageID = CorrectionLanguage.Ukrainian.ToDatabaseLanguage()
+                    LanguageID = CorrectionLanguage.Russian.ToDatabaseLanguage()
                 });
             }
         }
