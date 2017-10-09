@@ -7,7 +7,6 @@
     using System.Web;
     using Interfaces;
     using Models;
-    using Russian.Data;
 
     public class DatabaseUserDictionary : 
         Russian.IUserDictionaryLookup,
@@ -184,7 +183,7 @@
             return Lookup(nominativeSingular, language);
         }
 
-        LookupEntry Russian.IUserDictionaryLookup.Lookup(string nomonativeSingular)
+        Russian.Data.LookupEntry Russian.IUserDictionaryLookup.Lookup(string nomonativeSingular)
         {
             var list = Lookup(nomonativeSingular, CorrectionLanguage.Russian);
             if (list == null)
@@ -192,7 +191,7 @@
                 return null;
             }
 
-            return new LookupEntry(list); 
+            return new Russian.Data.LookupEntry(list); 
         }
 
         void Russian.IExceptionDictionary.Add(Russian.Data.CorrectionPostModel correctionPostModel)
@@ -229,7 +228,7 @@
         }
 
         Ukrainian.Data.Entry Ukrainian.IUserDictionaryLookup.Lookup(string nominativeSingular)
-        {
+        {   
             var list = Lookup(nominativeSingular, CorrectionLanguage.Ukrainian);
             if (list == null)
             {
