@@ -183,9 +183,9 @@
             return Lookup(nominativeSingular, language);
         }
 
-        Russian.Data.Entry Russian.IUserDictionaryLookup.Lookup(string nomonativeSingular)
+        Russian.Data.Entry Russian.IUserDictionaryLookup.Lookup(string nominativaSingular)
         {
-            var list = Lookup(nomonativeSingular, CorrectionLanguage.Russian);
+            var list = Lookup(nominativaSingular, CorrectionLanguage.Russian);
             if (list == null)
             {
                 return null;
