@@ -157,7 +157,7 @@
             var token = HttpContext.Current.Request.GetToken();
             if (token == null)
             {
-                throw new TokenNotFoundException();
+                return null;
             }
 
             var cache = (MorpherCacheObject)_morpherCache.Get(token.ToString().ToLowerInvariant());
