@@ -75,9 +75,9 @@
                     .WithParameter("name", "UserCorrection")
                     .SingleInstance();
 
+
                 builder.RegisterType<DatabaseUserDictionary>()
-                    .As<Russian.IUserDictionaryLookup, Ukrainian.IUserDictionaryLookup>().SingleInstance();
-                builder.RegisterType<DatabaseUserDictionary>()
+                    .As<Russian.IUserDictionaryLookup, Ukrainian.IUserDictionaryLookup>()
                     .As<Russian.IExceptionDictionary, Ukrainian.IExceptionDictionary>().SingleInstance();
             }
 
