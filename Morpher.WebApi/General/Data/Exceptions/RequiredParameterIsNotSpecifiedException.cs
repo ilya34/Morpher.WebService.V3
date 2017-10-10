@@ -17,7 +17,7 @@
             ResponseCode = ResponseWith;
         }
 
-        public RequiredParameterIsNotSpecifiedException(string message, int code, Exception inner = null)
+        public RequiredParameterIsNotSpecifiedException(string message, int code = 6, Exception inner = null)
             : base(message, code, inner)
         {
             Code = code;

@@ -58,9 +58,13 @@
                     externalAnalyzer);
                 var analyzer = Assembly.LoadFile(path);
                 string filePathRu = HostingEnvironment.MapPath("~/App_Data/UserDict.xml");
+                string filePathUkr = HostingEnvironment.MapPath("~/App_Data/UserDictUkr.xml");
                 builder.RegisterAssemblyTypes(analyzer)
-                    .Where(type => typeof(IExceptionDictionary).IsAssignableFrom(type))
-                    .As<IExceptionDictionary, IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathRu);
+                    .Where(type => typeof(Russian.IExceptionDictionary).IsAssignableFrom(type))
+                    .As<Russian.IExceptionDictionary, Russian.IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathRu);
+                builder.RegisterAssemblyTypes(analyzer)
+                    .Where(type => typeof(Ukrainian.IExceptionDictionary).IsAssignableFrom(type))
+                    .As<Ukrainian.IExceptionDictionary, Ukrainian.IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathUkr);
             }
             else
             {
@@ -71,10 +75,10 @@
                     .WithParameter("name", "UserCorrection")
                     .SingleInstance();
 
+
                 builder.RegisterType<DatabaseUserDictionary>()
-                    .As<IUserDictionaryLookup>().SingleInstance();
-                builder.RegisterType<DatabaseUserDictionary>()
-                    .As<IExceptionDictionary>();
+                    .As<Russian.IUserDictionaryLookup, Ukrainian.IUserDictionaryLookup>()
+                    .As<Russian.IExceptionDictionary, Ukrainian.IExceptionDictionary>().SingleInstance();
             }
 
             RegisterSharedServices(builder);

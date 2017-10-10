@@ -11,6 +11,7 @@
     {
         public DeclensionResult()
         {
+            
         }
 
         [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor")]
