@@ -38,7 +38,7 @@
             }
         }
 
-        private void Add(string nominativeSingular, List<NameForm> forms)
+        private void Add(string nominativeSingular, List<NameForm> forms, CorrectionLanguage language)
         {
             var token = HttpContext.Current.Request.GetToken();
             if (token == null)
@@ -55,13 +55,13 @@
                 var userVote = context.UserVotes.FirstOrDefault(
                     vote => vote.UserID == cache.UserId
                             && vote.Name.Lemma == normalizedLemma
-                            && vote.Name.LanguageID == "RU");
+                            && vote.Name.LanguageID == language.ToDatabaseLanguage());
 
                 Name name;
                 if (userVote == null)
                 {
                     var nameId = Guid.NewGuid();
-                    name = new Name() { ID = nameId, LanguageID = "RU" };
+                    name = new Name() { ID = nameId, LanguageID = language.ToDatabaseLanguage() };
                     context.Names.InsertOnSubmit(name);
                     userVote = new UserVote() { Name = name, UserID = cache.UserId.Value };
                     context.UserVotes.InsertOnSubmit(userVote);
@@ -211,7 +211,7 @@
              throw  new RequiredParameterIsNotSpecifiedException(message: "Нужно указать хотя бы одну косвенную форму.");
             }
 
-            Add(correctionPostModel.И, forms);
+            Add(correctionPostModel.И, forms, CorrectionLanguage.Russian);
         }
 
         bool Russian.IExceptionDictionary.Remove(string nomitiveSingular)
@@ -267,7 +267,7 @@
                 throw new RequiredParameterIsNotSpecifiedException(message: "Нужно указать хотя бы одну косвенную форму.");
             }
 
-            Add(correctionPostModel.Н, forms);
+            Add(correctionPostModel.Н, forms, CorrectionLanguage.Ukrainian);
         }
 
         bool Ukrainian.IExceptionDictionary.Remove(string nominativeSingular)
