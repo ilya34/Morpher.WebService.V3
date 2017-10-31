@@ -98,6 +98,7 @@
         }
 
         [Route("accentizer")]
+        [ThrottleThis(100, "text")]
         [LogThis]
         [HttpGet]
         public HttpResponseMessage Accentizer(string text, ResponseFormat? format = null)

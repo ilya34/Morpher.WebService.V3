@@ -4,6 +4,6 @@
 
     public interface IAttributeUrls
     {
-        HashSet<string> Urls { get; }
+        Dictionary<string, ThrottleThisAttribute> Urls { get; }
     }
 }
