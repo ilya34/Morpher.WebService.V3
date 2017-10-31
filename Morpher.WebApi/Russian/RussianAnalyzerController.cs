@@ -98,10 +98,10 @@
         }
 
         [Route("addstressmarks")]
-        [ThrottleThis(100, "text")]
+        [ThrottleThis(100, TarificationMode.PerSymbol)]
         [LogThis]
-        [HttpGet]
-        public HttpResponseMessage Accentizer(string text, ResponseFormat? format = null)
+        [HttpPost]
+        public HttpResponseMessage Accentizer([FromBody]string text)
         {
             if (string.IsNullOrWhiteSpace(text))
             {
@@ -109,7 +109,7 @@
             }
 
             string accentized = _analyzer.Accentizer(text);
-            return Request.CreateResponse(HttpStatusCode.OK, accentized, format);
+            return Request.CreateResponse(HttpStatusCode.OK, accentized, ResponseFormat.PlainText);
         }
 
         [Route("userdict")]

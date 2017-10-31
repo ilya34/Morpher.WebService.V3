@@ -13,26 +13,19 @@
     public class ThrottleThisAttribute : Attribute
     {
 
-        public ThrottleThisAttribute(int cost = 1)
-        {
-            Mode = TarificationMode.PerRequest;
-            Cost = cost;
-        }
-
         /// <summary>
-        /// Per symbol tarification
+        /// For per word tarification use overload with delimiter
         /// </summary>
         /// <param name="cost">Maximum symbols for one request</param>
-        /// <param name="queryParameter">Name of query parameter for counting symbols</param>
+        /// <param name="mode">TarificationMode</param>
         /// <remarks>
         /// In PerSymbol mode cost means maximum symbols for one request.
         /// Example: If cost = 50 then 45 symbols = 1 request, 54 = 2 requests.
         /// Symbols count always rounded to upper bound.
         /// </remarks>
-        public ThrottleThisAttribute(int cost, string queryParameter)
+        public ThrottleThisAttribute(int cost = 1, TarificationMode mode = TarificationMode.PerRequest)
         {
-            Mode = TarificationMode.PerSymbol;
-            QueryParameter = queryParameter;
+            Mode = mode;
             Cost = cost;
         }
 
@@ -50,8 +43,6 @@
         public int Cost { get; }
 
         public char Delimiter { get; }
-
-        public string QueryParameter { get; }
 
         public TarificationMode Mode { get; }
     }

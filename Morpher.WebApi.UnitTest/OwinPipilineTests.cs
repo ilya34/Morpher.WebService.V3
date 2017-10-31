@@ -5,6 +5,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
     using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
@@ -103,7 +106,7 @@
             IAttributeUrls attributeUrls =
                 Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    { "/russian/declension", new ThrottleThisAttribute(1) }
+                    { "/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -163,7 +166,7 @@
             IAttributeUrls attributeUrls =
                 Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    { "/russian/declension", new ThrottleThisAttribute(1) }
+                    { "/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -216,7 +219,7 @@
             IAttributeUrls attributeUrls =
                 Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    { "/russian/declension", new ThrottleThisAttribute(1) }
+                    { "/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -273,7 +276,7 @@
             IAttributeUrls attributeUrls =
                 Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    { "/russian/declension", new ThrottleThisAttribute(1) }
+                    { "/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -338,7 +341,7 @@
             IAttributeUrls attributeUrls =
                 Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    { "/russian/declension", new ThrottleThisAttribute(1) }
+                    { "/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -398,7 +401,7 @@
             IAttributeUrls attributeUrls =
                 Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    { "/russian/addstressmarks", new ThrottleThisAttribute(10, "text") }
+                    { "/russian/addstressmarks", new ThrottleThisAttribute(10, TarificationMode.PerSymbol) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -415,8 +418,10 @@
             {
                 using (var client = server.HttpClient)
                 {
-
-                    var result = await client.GetAsync("/russian/addstressmarks?Text=здесь 18 символов");
+                    HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, "/russian/addstressmarks");
+                    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+                    message.Content = new StringContent("здесь 17 символов", Encoding.UTF8, "text/plain");
+                    var result = await client.SendAsync(message);
                     if (result.StatusCode == HttpStatusCode.InternalServerError)
                     {
                         throw new Exception(await result.Content.ReadAsStringAsync());

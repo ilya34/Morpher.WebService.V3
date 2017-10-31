@@ -4,6 +4,7 @@
     using System.IO;
     using System.Net;
     using System.Runtime.Serialization;
+    using System.Text;
     using System.Threading.Tasks;
     using Microsoft.Owin;
     using Newtonsoft.Json;
@@ -26,8 +27,10 @@
 
         private ApiThrottlingResult PerSymbol(IOwinRequest request)
         {
-            string value = request.Query.Get(_throttleThisAttribute.QueryParameter);
-            if (value == null) throw new RequiredParameterIsNotSpecifiedException(_throttleThisAttribute.QueryParameter);
+            string value;
+            using (StreamReader reader = new StreamReader(request.Body, Encoding.UTF8))
+                value = reader.ReadToEnd();
+            if (value == null) throw new RequiredParameterIsNotSpecifiedException("Text not found");
             int requestCost = (int)Math.Ceiling((double)value.Length / _throttleThisAttribute.Cost);
             return _apiThrottler.Throttle(request, requestCost);
         }
@@ -102,7 +105,7 @@
 
                     if (!context.Response.Headers.ContainsKey("Error-Code"))
                     {
-                        context.Response.Headers.Add("Error-Code", new[] {response.Code.ToString()});
+                        context.Response.Headers.Add("Error-Code", new[] { response.Code.ToString() });
                     }
 
                     await Next.Invoke(context);

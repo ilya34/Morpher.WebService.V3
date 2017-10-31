@@ -10,7 +10,6 @@ namespace Morpher.WebService.V3.General.Data
     using System.Net.Http.Formatting;
     using System.ServiceModel.Channels;
     using System.Text;
-    using Newtonsoft.Json;
 
     public static class HttpRequestMessageExtensions
     {
@@ -18,14 +17,15 @@ namespace Morpher.WebService.V3.General.Data
 
         private static readonly XmlMediaTypeFormatter XmlMediaTypeFormatter;
 
+        private static readonly PlainTextFormatter PlainTextFormatter;
+
         static HttpRequestMessageExtensions()
         {
-            JsonMediaTypeFormatter = new JsonMediaTypeFormatter { SerializerSettings = { Formatting = Formatting.Indented } };
-            XmlMediaTypeFormatter = new XmlMediaTypeFormatter()
-            {
-                UseXmlSerializer = true,
-                WriterSettings = { OmitXmlDeclaration = false}
-            };
+            JsonMediaTypeFormatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+            XmlMediaTypeFormatter = GlobalConfiguration.Configuration.Formatters.XmlFormatter;
+            PlainTextFormatter = (PlainTextFormatter)GlobalConfiguration.Configuration.Formatters.Single(formatter =>
+                    formatter.GetType() == typeof(PlainTextFormatter));
+
         }
 
         public static HttpResponseMessage CreateResponse<T>(
@@ -33,16 +33,18 @@ namespace Morpher.WebService.V3.General.Data
             HttpStatusCode statusCode,
             T value,
             ResponseFormat? format)
-        {           
+        {
             switch (format)
             {
                 case ResponseFormat.Json:
                     return message.CreateResponse(statusCode, value, JsonMediaTypeFormatter);
                 case ResponseFormat.Xml:
                     return message.CreateResponse(statusCode, value, XmlMediaTypeFormatter);
+                case ResponseFormat.PlainText:
+                    return message.CreateResponse(statusCode, value, PlainTextFormatter);
                 default:
-                    return message.Headers.Accept.ToString() == "application/json" ? 
-                        message.CreateResponse(statusCode, value, JsonMediaTypeFormatter) : 
+                    return message.Headers.Accept.ToString() == "application/json" ?
+                        message.CreateResponse(statusCode, value, JsonMediaTypeFormatter) :
                         message.CreateResponse(statusCode, value, XmlMediaTypeFormatter);
             }
         }

@@ -4,6 +4,7 @@
     using System.Web.Http.ExceptionHandling;
 
     using Elmah.Contrib.WebApi;
+    using General.Data;
 
     public static class WebApiConfig
     {
@@ -11,6 +12,11 @@
         {
             // Web API configuration and services
             config.Services.Add(typeof(IExceptionLogger), new ElmahExceptionLogger());
+            config.Formatters.Add(new PlainTextFormatter());
+
+            config.Formatters.JsonFormatter.Indent = true;
+            config.Formatters.XmlFormatter.UseXmlSerializer = true;
+            config.Formatters.XmlFormatter.WriterSettings.OmitXmlDeclaration = false;
 
             // Web API routes
             config.MapHttpAttributeRoutes();
