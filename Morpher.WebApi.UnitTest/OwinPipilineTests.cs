@@ -101,9 +101,9 @@
                 .SingleInstance();
 
             IAttributeUrls attributeUrls =
-                Mock.Of<IAttributeUrls>(urls => urls.Urls == new HashSet<string>()
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    "/russian/declension"
+                    { "/russian/declension", new ThrottleThisAttribute(1) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -161,9 +161,9 @@
                 .SingleInstance();
 
             IAttributeUrls attributeUrls =
-                Mock.Of<IAttributeUrls>(urls => urls.Urls == new HashSet<string>()
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    "/russian/declension"
+                    { "/russian/declension", new ThrottleThisAttribute(1) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -214,9 +214,9 @@
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
 
             IAttributeUrls attributeUrls =
-                Mock.Of<IAttributeUrls>(urls => urls.Urls == new HashSet<string>()
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    "/russian/declension"
+                    { "/russian/declension", new ThrottleThisAttribute(1) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -271,9 +271,9 @@
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
 
             IAttributeUrls attributeUrls =
-                Mock.Of<IAttributeUrls>(urls => urls.Urls == new HashSet<string>()
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    "/russian/declension"
+                    { "/russian/declension", new ThrottleThisAttribute(1) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -336,9 +336,9 @@
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
 
             IAttributeUrls attributeUrls =
-                Mock.Of<IAttributeUrls>(urls => urls.Urls == new HashSet<string>()
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    "/russian/declension"
+                    { "/russian/declension", new ThrottleThisAttribute(1) }
                 });
 
             builder.RegisterInstance(attributeUrls)
