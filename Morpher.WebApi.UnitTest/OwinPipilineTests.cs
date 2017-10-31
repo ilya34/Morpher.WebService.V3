@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -418,10 +419,8 @@
             {
                 using (var client = server.HttpClient)
                 {
-                    HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, "/russian/addstressmarks");
-                    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-                    message.Content = new StringContent("здесь 17 символов", Encoding.UTF8, "text/plain");
-                    var result = await client.SendAsync(message);
+                    var result = await client.PostAsync("/russian/addstressmarks",
+                        new StringContent("здесь 17 символов", Encoding.UTF8, "text/plain"));
                     if (result.StatusCode == HttpStatusCode.InternalServerError)
                     {
                         throw new Exception(await result.Content.ReadAsStringAsync());
