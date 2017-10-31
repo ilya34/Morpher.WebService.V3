@@ -97,6 +97,20 @@
             return Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
         }
 
+        [Route("accentizer")]
+        [LogThis]
+        [HttpGet]
+        public HttpResponseMessage Accentizer(string text, ResponseFormat? format = null)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                throw new RequiredParameterIsNotSpecifiedException(nameof(text));
+            }
+
+            string accentized = _analyzer.Accentizer(text);
+            return Request.CreateResponse(HttpStatusCode.OK, accentized, format);
+        }
+
         [Route("userdict")]
         [HttpDelete]
         public HttpResponseMessage UserDictDelete(string s, ResponseFormat? format = null)

@@ -14,5 +14,7 @@
         AdjectiveGenders AdjectiveGenders(string s);
 
         List<string> Adjectives(string s);
+
+        string Accentizer(string text);
     }
 }
