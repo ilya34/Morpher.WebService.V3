@@ -1,6 +1,4 @@
-﻿using System.Web.Http;
-
-namespace Morpher.WebService.V3.General.Data
+﻿namespace Morpher.WebService.V3.General.Data
 {
     using System;
     using System.Collections.Generic;
@@ -21,10 +19,9 @@ namespace Morpher.WebService.V3.General.Data
 
         static HttpRequestMessageExtensions()
         {
-            JsonMediaTypeFormatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
-            XmlMediaTypeFormatter = GlobalConfiguration.Configuration.Formatters.XmlFormatter;
-            PlainTextFormatter = (PlainTextFormatter)GlobalConfiguration.Configuration.Formatters.Single(formatter =>
-                    formatter.GetType() == typeof(PlainTextFormatter));
+            JsonMediaTypeFormatter = WebApiConfig.JsonMediaTypeFormatter;
+            XmlMediaTypeFormatter = WebApiConfig.XmlMediaTypeFormatter;
+            PlainTextFormatter = WebApiConfig.PlainTextFormatter;
 
         }
 
