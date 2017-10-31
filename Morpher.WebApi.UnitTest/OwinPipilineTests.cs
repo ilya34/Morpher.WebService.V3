@@ -381,5 +381,52 @@
                 }
             }
         }
+
+        [Test]
+        public async Task ApiThrottlerTest_BySymbol()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+
+            // Fix user-agent & remote ip
+            builder.RegisterType<FixRequestTestDataMiddleware>();
+            builder.RegisterType<ThrottlingMiddleware>();
+            MorpherCache cache = new MorpherCache("ApiThrottler");
+            builder.RegisterInstance(cache).As<IMorpherCache>();
+            builder.RegisterInstance(mockAnalyzer).As<IRussianAnalyzer>();
+            builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
+
+            IAttributeUrls attributeUrls =
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
+                {
+                    { "/russian/addstressmarks", new ThrottleThisAttribute(10, "text") }
+                });
+
+            builder.RegisterInstance(attributeUrls)
+                .As<IAttributeUrls>()
+                .Keyed<IAttributeUrls>("ApiThrottler");
+
+            Mock<IMorpherDatabase> morpherDatabaseMock = new Mock<IMorpherDatabase>();
+            morpherDatabaseMock.Setup(database => database.IsIpBlocked("0.0.0.0")).Returns(false);
+            morpherDatabaseMock.Setup(database => database.GetDefaultDailyQueryLimit()).Returns(3);
+
+            builder.RegisterInstance(morpherDatabaseMock.Object).As<IMorpherDatabase>().SingleInstance();
+
+            using (var server = PrepareTestServer(builder))
+            {
+                using (var client = server.HttpClient)
+                {
+
+                    var result = await client.GetAsync("/russian/addstressmarks?Text=здесь 18 символов");
+                    if (result.StatusCode == HttpStatusCode.InternalServerError)
+                    {
+                        throw new Exception(await result.Content.ReadAsStringAsync());
+                    }
+
+                    Assert.AreEqual(true, result.IsSuccessStatusCode, "StatudCode != OK");
+                    var cacheEntry = (MorpherCacheObject)cache.Get("0.0.0.0");
+                    Assert.AreEqual(1, cacheEntry.QueriesLeft);
+                }
+            }
+        }
     }
 }

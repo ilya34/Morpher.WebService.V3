@@ -97,7 +97,7 @@
             return Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
         }
 
-        [Route("accentizer")]
+        [Route("addstressmarks")]
         [ThrottleThis(100, "text")]
         [LogThis]
         [HttpGet]
