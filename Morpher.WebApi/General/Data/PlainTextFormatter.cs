@@ -6,7 +6,6 @@
     using System.Net.Http;
     using System.Net.Http.Formatting;
     using System.Net.Http.Headers;
-    using System.Threading;
     using System.Threading.Tasks;
 
     public class PlainTextFormatter : MediaTypeFormatter
@@ -37,11 +36,11 @@
             object value,
             Stream writeStream,
             HttpContent content,
-            TransportContext transportContext,
-            CancellationToken cancellationToken)
+            TransportContext transportContext)
         {
-            var streamReader = new StreamWriter(writeStream);
-            await streamReader.WriteAsync((string)value);
+            var streamWriter = new StreamWriter(writeStream);
+            await streamWriter.WriteAsync((string)value);
+            await streamWriter.FlushAsync();
         }
     }
 }
