@@ -30,7 +30,7 @@
         }
 
         /// <summary>
-        /// Used for PerWord & PerSymbol tarification mode
+        /// Used for PerWord &amp; PerSymbol tarification mode
         /// </summary>
         /// <param name="delimiter">symbol for delimiter</param>
         public ThrottleThisAttribute(int cost, char delimiter)
