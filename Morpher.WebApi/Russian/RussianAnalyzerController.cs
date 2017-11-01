@@ -109,7 +109,7 @@
             }
 
             string accentized = _analyzer.Accentizer(text);
-            return Request.CreateResponse(HttpStatusCode.OK, accentized, ResponseFormat.PlainText);
+            return Request.CreateResponse(HttpStatusCode.OK, accentized, WebApiConfig.PlainTextFormatter);
         }
 
         [Route("userdict")]
