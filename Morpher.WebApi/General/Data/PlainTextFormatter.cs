@@ -28,10 +28,8 @@
             HttpContent content,
             IFormatterLogger formatterLogger)
         {
-            using (var streamReader = new StreamReader(readStream))
-            {
-                return await streamReader.ReadToEndAsync();
-            }
+            var streamReader = new StreamReader(readStream);
+            return await streamReader.ReadToEndAsync();
         }
 
         public override async Task WriteToStreamAsync(
@@ -42,10 +40,8 @@
             TransportContext transportContext,
             CancellationToken cancellationToken)
         {
-            using (var writer = new StreamWriter(writeStream))
-            {
-                await writer.WriteAsync((string)value);
-            }
+            var streamReader = new StreamWriter(writeStream);
+            await streamReader.WriteAsync((string)value);
         }
     }
 }
