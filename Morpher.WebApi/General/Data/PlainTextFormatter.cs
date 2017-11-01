@@ -27,8 +27,8 @@
             HttpContent content,
             IFormatterLogger formatterLogger)
         {
-            var streamReader = new StreamReader(readStream);
-            return await streamReader.ReadToEndAsync();
+            StreamReader reader = new StreamReader(readStream);
+            return await reader.ReadToEndAsync();
         }
 
         public override async Task WriteToStreamAsync(

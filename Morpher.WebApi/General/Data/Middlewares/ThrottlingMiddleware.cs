@@ -27,9 +27,9 @@
 
         private ApiThrottlingResult PerSymbol(IOwinRequest request)
         {
-            string value;
-            using (StreamReader reader = new StreamReader(request.Body, Encoding.UTF8))
-                value = reader.ReadToEnd();
+            StreamReader reader = new StreamReader(request.Body, Encoding.UTF8);
+            var value = reader.ReadToEnd();
+            request.Body.Position = 0;
             if (value == null) throw new RequiredParameterIsNotSpecifiedException("Text not found");
             int requestCost = (int)Math.Ceiling((double)value.Length / _throttleThisAttribute.Cost);
             return _apiThrottler.Throttle(request, requestCost);
