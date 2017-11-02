@@ -37,8 +37,6 @@
                     return message.CreateResponse(statusCode, value, JsonMediaTypeFormatter);
                 case ResponseFormat.Xml:
                     return message.CreateResponse(statusCode, value, XmlMediaTypeFormatter);
-                case ResponseFormat.PlainText:
-                    return message.CreateResponse(statusCode, value, PlainTextFormatter);
                 default:
                     return message.Headers.Accept.ToString() == "application/json" ?
                         message.CreateResponse(statusCode, value, JsonMediaTypeFormatter) :
