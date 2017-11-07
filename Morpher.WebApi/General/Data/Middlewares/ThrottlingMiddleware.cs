@@ -51,7 +51,8 @@
 
         public override async Task Invoke(IOwinContext context)
         {
-            if (_attributeUrls.Urls.TryGetValue(context.Request.Path.ToString().ToLowerInvariant(), out _throttleThisAttribute))
+            string method = $"{context.Request.Method.ToLowerInvariant()}:{context.Request.Path.ToString().ToLowerInvariant()}";
+            if (_attributeUrls.Urls.TryGetValue(method, out _throttleThisAttribute))
             {
                 ApiThrottlingResult result;
                 switch (_throttleThisAttribute.Mode)

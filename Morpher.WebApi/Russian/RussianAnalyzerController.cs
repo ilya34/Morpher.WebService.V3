@@ -50,7 +50,7 @@
             return Request.CreateResponse(HttpStatusCode.OK, declensionResult, format);
         }
 
-        [Route("declension_list")]
+        [Route("declension")]
         [ThrottleThis(1, TarificationMode.PerWord)]
         [HttpPost]
         public HttpResponseMessage DeclensionList(

@@ -1,7 +1,6 @@
 ﻿namespace Morpher.WebService.V3.General.Data
 {
     using System.Threading.Tasks;
-    using Autofac.Features.AttributeFilters;
     using Microsoft.Owin;
 
     public class LoggingMiddleware : OwinMiddleware
@@ -25,7 +24,8 @@
                 await Next.Invoke(context);
             }
 
-            if (_attributeUrls.Urls.ContainsKey(context.Request.Path.ToString().ToLowerInvariant()))
+            string method = $"{context.Request.Method.ToLowerInvariant()}:{context.Request.Path.ToString().ToLowerInvariant()}";
+            if (_attributeUrls.Urls.ContainsKey(method))
             {
                 _morpherLog.Log(context);
             }
