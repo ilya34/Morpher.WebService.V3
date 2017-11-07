@@ -15,14 +15,10 @@
 
         private static readonly XmlMediaTypeFormatter XmlMediaTypeFormatter;
 
-        private static readonly PlainTextFormatter PlainTextFormatter;
-
         static HttpRequestMessageExtensions()
         {
             JsonMediaTypeFormatter = WebApiConfig.JsonMediaTypeFormatter;
             XmlMediaTypeFormatter = WebApiConfig.XmlMediaTypeFormatter;
-            PlainTextFormatter = WebApiConfig.PlainTextFormatter;
-
         }
 
         public static HttpResponseMessage CreateResponse<T>(
