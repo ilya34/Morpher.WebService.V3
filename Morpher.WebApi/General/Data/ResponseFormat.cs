@@ -3,7 +3,6 @@
     public enum ResponseFormat : byte
     {
         Xml = 0,
-        Json = 1,
-        PlainText = 2
+        Json = 1
     }
 }
