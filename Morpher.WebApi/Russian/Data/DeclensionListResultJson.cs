@@ -23,10 +23,10 @@
             ServiceErrorMessage = message;
         }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public DeclensionResult  DeclensionResult { get; set; }
 
-        [DataMember]
+        [DataMember(Name = "Error", EmitDefaultValue = false)]
         public ServiceErrorMessage ServiceErrorMessage { get; set; }
 
         public static List<DeclensionListResultJson> InflectList(
