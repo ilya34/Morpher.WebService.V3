@@ -107,7 +107,7 @@
             IAttributeUrls attributeUrls =
                 Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    { "/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
+                    { "get:/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -167,7 +167,7 @@
             IAttributeUrls attributeUrls =
                 Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    { "/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
+                    { "get:/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -220,7 +220,7 @@
             IAttributeUrls attributeUrls =
                 Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    { "/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
+                    { "get:/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -277,7 +277,7 @@
             IAttributeUrls attributeUrls =
                 Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    { "/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
+                    { "get:/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -342,7 +342,7 @@
             IAttributeUrls attributeUrls =
                 Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    { "/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
+                    { "get:/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -402,7 +402,7 @@
             IAttributeUrls attributeUrls =
                 Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    { "/russian/addstressmarks", new ThrottleThisAttribute(10, TarificationMode.PerSymbol) }
+                    { "post:/russian/addstressmarks", new ThrottleThisAttribute(10, TarificationMode.PerSymbol) }
                 });
 
             builder.RegisterInstance(attributeUrls)
