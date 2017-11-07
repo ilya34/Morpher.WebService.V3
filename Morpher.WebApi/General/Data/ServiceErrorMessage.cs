@@ -1,13 +1,17 @@
 ﻿namespace Morpher.WebService.V3.General.Data
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
+    using System.Xml.Serialization;
     using Exceptions;
 
     [DataContract(Name = "error")]
+    [XmlRoot]
     public class ServiceErrorMessage
-    { 
+    {
+        public ServiceErrorMessage()
+        {
+        }
+
         public ServiceErrorMessage(MorpherException exception)
         {
             Code = exception.Code;
@@ -21,9 +25,11 @@
         }
 
         [DataMember(Name = "code", Order = 0)]
-        public int Code { get; protected set; }
+        [XmlElement("code")]
+        public int Code { get; set; }
 
         [DataMember(Name = "message", Order = 1)]
-        public string Message { get; protected set; }
+        [XmlElement("message")]
+        public string Message { get; set; }
     }
 }
