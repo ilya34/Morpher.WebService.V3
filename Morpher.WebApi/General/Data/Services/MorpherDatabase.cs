@@ -41,10 +41,9 @@
 
         public void UploadMorpherCache(List<KeyValuePair<string, MorpherCacheObject>> cache)
         {
-
             List<KeyValuePair<string, MorpherCacheObject>> pairs =
                 cache.Select(   
-                    pair => new KeyValuePair<string, MorpherCacheObject>(pair.Key, (MorpherCacheObject)pair.Value)).ToList();
+                    pair => new KeyValuePair<string, MorpherCacheObject>(pair.Key, pair.Value)).ToList();
 
             string serializedCache = Gzip.Zip(JsonConvert.SerializeObject(pairs));
 
