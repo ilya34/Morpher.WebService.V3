@@ -25,11 +25,17 @@
             _attributeUrls = attributeUrls;
         }
 
-        private ApiThrottlingResult PerSymbol(IOwinRequest request)
+        private static string ReadBody(IOwinRequest request)
         {
             StreamReader reader = new StreamReader(request.Body, Encoding.UTF8);
             var value = reader.ReadToEnd();
             request.Body.Position = 0;
+            return value;
+        }
+
+        private ApiThrottlingResult PerSymbol(IOwinRequest request)
+        {
+            var value = ReadBody(request);
             if (value == null) throw new RequiredParameterIsNotSpecifiedException("Text not found");
             int requestCost = (int)Math.Ceiling((double)value.Length / _throttleThisAttribute.Cost);
             return _apiThrottler.Throttle(request, requestCost);
@@ -37,12 +43,16 @@
 
         private ApiThrottlingResult PerWord(IOwinRequest request)
         {
-            throw new NotImplementedException();
+            var value = ReadBody(request);
+            if (value == null) throw new RequiredParameterIsNotSpecifiedException("Text not found");
+            int requestCost = (int) Math.Ceiling((double) value.Split('\n').Length / _throttleThisAttribute.Cost);
+            return _apiThrottler.Throttle(request, requestCost);
         }
 
         public override async Task Invoke(IOwinContext context)
         {
-            if (_attributeUrls.Urls.TryGetValue(context.Request.Path.ToString().ToLowerInvariant(), out _throttleThisAttribute))
+            string method = $"{context.Request.Method.ToLowerInvariant()}:{context.Request.Path.ToString().ToLowerInvariant()}";
+            if (_attributeUrls.Urls.TryGetValue(method, out _throttleThisAttribute))
             {
                 ApiThrottlingResult result;
                 switch (_throttleThisAttribute.Mode)
