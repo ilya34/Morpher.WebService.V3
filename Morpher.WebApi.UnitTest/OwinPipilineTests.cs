@@ -3,8 +3,12 @@
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
     using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
@@ -101,9 +105,9 @@
                 .SingleInstance();
 
             IAttributeUrls attributeUrls =
-                Mock.Of<IAttributeUrls>(urls => urls.Urls == new HashSet<string>()
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    "/russian/declension"
+                    { "/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -161,9 +165,9 @@
                 .SingleInstance();
 
             IAttributeUrls attributeUrls =
-                Mock.Of<IAttributeUrls>(urls => urls.Urls == new HashSet<string>()
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    "/russian/declension"
+                    { "/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -214,9 +218,9 @@
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
 
             IAttributeUrls attributeUrls =
-                Mock.Of<IAttributeUrls>(urls => urls.Urls == new HashSet<string>()
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    "/russian/declension"
+                    { "/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -271,9 +275,9 @@
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
 
             IAttributeUrls attributeUrls =
-                Mock.Of<IAttributeUrls>(urls => urls.Urls == new HashSet<string>()
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    "/russian/declension"
+                    { "/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -336,9 +340,9 @@
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
 
             IAttributeUrls attributeUrls =
-                Mock.Of<IAttributeUrls>(urls => urls.Urls == new HashSet<string>()
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
                 {
-                    "/russian/declension"
+                    { "/russian/declension", new ThrottleThisAttribute(1, TarificationMode.PerRequest) }
                 });
 
             builder.RegisterInstance(attributeUrls)
@@ -378,6 +382,53 @@
 
                     var errorResult = await client.GetAsync($"/russian/declension?s=Тест&token={testToken}");
                     Assert.AreEqual(HttpStatusCode.PaymentRequired, errorResult.StatusCode);
+                }
+            }
+        }
+
+        [Test]
+        public async Task ApiThrottlerTest_BySymbol()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+
+            // Fix user-agent & remote ip
+            builder.RegisterType<FixRequestTestDataMiddleware>();
+            builder.RegisterType<ThrottlingMiddleware>();
+            MorpherCache cache = new MorpherCache("ApiThrottler");
+            builder.RegisterInstance(cache).As<IMorpherCache>();
+            builder.RegisterInstance(mockAnalyzer).As<IRussianAnalyzer>();
+            builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
+
+            IAttributeUrls attributeUrls =
+                Mock.Of<IAttributeUrls>(urls => urls.Urls == new Dictionary<string, ThrottleThisAttribute>()
+                {
+                    { "/russian/addstressmarks", new ThrottleThisAttribute(10, TarificationMode.PerSymbol) }
+                });
+
+            builder.RegisterInstance(attributeUrls)
+                .As<IAttributeUrls>()
+                .Keyed<IAttributeUrls>("ApiThrottler");
+
+            Mock<IMorpherDatabase> morpherDatabaseMock = new Mock<IMorpherDatabase>();
+            morpherDatabaseMock.Setup(database => database.IsIpBlocked("0.0.0.0")).Returns(false);
+            morpherDatabaseMock.Setup(database => database.GetDefaultDailyQueryLimit()).Returns(3);
+
+            builder.RegisterInstance(morpherDatabaseMock.Object).As<IMorpherDatabase>().SingleInstance();
+
+            using (var server = PrepareTestServer(builder))
+            {
+                using (var client = server.HttpClient)
+                {
+                    var result = await client.PostAsync("/russian/addstressmarks",
+                        new StringContent("здесь 17 символов", Encoding.UTF8, "text/plain"));
+                    if (result.StatusCode == HttpStatusCode.InternalServerError)
+                    {
+                        throw new Exception(await result.Content.ReadAsStringAsync());
+                    }
+
+                    Assert.AreEqual(true, result.IsSuccessStatusCode, "StatudCode != OK");
+                    var cacheEntry = (MorpherCacheObject)cache.Get("0.0.0.0");
+                    Assert.AreEqual(1, cacheEntry.QueriesLeft);
                 }
             }
         }

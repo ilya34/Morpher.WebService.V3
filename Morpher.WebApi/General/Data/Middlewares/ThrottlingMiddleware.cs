@@ -1,8 +1,10 @@
 ﻿namespace Morpher.WebService.V3.General.Data
 {
+    using System;
     using System.IO;
     using System.Net;
     using System.Runtime.Serialization;
+    using System.Text;
     using System.Threading.Tasks;
     using Microsoft.Owin;
     using Newtonsoft.Json;
@@ -11,6 +13,8 @@
     {
         private readonly IApiThrottler _apiThrottler;
         private readonly IAttributeUrls _attributeUrls;
+
+        private ThrottleThisAttribute _throttleThisAttribute;
 
         public ThrottlingMiddleware(
             OwinMiddleware next,
@@ -21,11 +25,40 @@
             _attributeUrls = attributeUrls;
         }
 
+        private ApiThrottlingResult PerSymbol(IOwinRequest request)
+        {
+            StreamReader reader = new StreamReader(request.Body, Encoding.UTF8);
+            var value = reader.ReadToEnd();
+            request.Body.Position = 0;
+            if (value == null) throw new RequiredParameterIsNotSpecifiedException("Text not found");
+            int requestCost = (int)Math.Ceiling((double)value.Length / _throttleThisAttribute.Cost);
+            return _apiThrottler.Throttle(request, requestCost);
+        }
+
+        private ApiThrottlingResult PerWord(IOwinRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
         public override async Task Invoke(IOwinContext context)
         {
-            if (_attributeUrls.Urls.Contains(context.Request.Path.ToString().ToLowerInvariant()))
+            if (_attributeUrls.Urls.TryGetValue(context.Request.Path.ToString().ToLowerInvariant(), out _throttleThisAttribute))
             {
-                ApiThrottlingResult result = _apiThrottler.Throttle(context.Request);
+                ApiThrottlingResult result;
+                switch (_throttleThisAttribute.Mode)
+                {
+                    case TarificationMode.PerRequest:
+                        result = _apiThrottler.Throttle(context.Request, _throttleThisAttribute.Cost);
+                        break;
+                    case TarificationMode.PerSymbol:
+                        result = PerSymbol(context.Request);
+                        break;
+                    case TarificationMode.PerWord:
+                        result = PerWord(context.Request);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
 
                 if (result != ApiThrottlingResult.Success)
                 {
@@ -72,7 +105,7 @@
 
                     if (!context.Response.Headers.ContainsKey("Error-Code"))
                     {
-                        context.Response.Headers.Add("Error-Code", new[] {response.Code.ToString()});
+                        context.Response.Headers.Add("Error-Code", new[] { response.Code.ToString() });
                     }
 
                     await Next.Invoke(context);

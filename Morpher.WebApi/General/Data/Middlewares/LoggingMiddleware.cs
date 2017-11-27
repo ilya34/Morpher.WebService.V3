@@ -25,7 +25,7 @@
                 await Next.Invoke(context);
             }
 
-            if (_attributeUrls.Urls.Contains(context.Request.Path.ToString().ToLowerInvariant()))
+            if (_attributeUrls.Urls.ContainsKey(context.Request.Path.ToString().ToLowerInvariant()))
             {
                 _morpherLog.Log(context);
             }

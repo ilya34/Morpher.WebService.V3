@@ -97,6 +97,21 @@
             return Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
         }
 
+        [Route("addstressmarks")]
+        [ThrottleThis(100, TarificationMode.PerSymbol)]
+        [LogThis]
+        [HttpPost]
+        public HttpResponseMessage Accentizer([FromBody]string text, [FromUri]ResponseFormat? format = null)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                throw new RequiredParameterIsNotSpecifiedException(nameof(text));
+            }
+
+            string accentized = _analyzer.Accentizer(text);
+            return Request.CreateResponse(HttpStatusCode.OK, accentized, format);
+        }
+
         [Route("userdict")]
         [HttpDelete]
         public HttpResponseMessage UserDictDelete(string s, ResponseFormat? format = null)

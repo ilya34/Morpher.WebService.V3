@@ -65,5 +65,10 @@
                 throw new MorpherException(exc.Message, -1);
             }
         }
+
+        public string Accentizer(string text)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

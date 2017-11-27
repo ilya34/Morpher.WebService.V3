@@ -18,28 +18,11 @@
             _morpherCache = morpherCache;
         }
 
-        /// <summary>
-        /// Выполняет тарификацию по IP адресу
-        /// </summary>
-        /// <param name="ip">ip адрес клиента</param>
-        /// <returns>Результат тарификации</returns>
-        public ApiThrottlingResult Throttle(string ip)
-        {
-            MorpherCacheObject morpherCacheObject = GetQueryLimit(ip);
 
-            // Если GetQueryLimit вернул null, значит IP адрес помечен в бд как Blocked
-            if (morpherCacheObject == null)
-            {
-                return ApiThrottlingResult.IpBlocked;
-            }
-
-            return Decrement(morpherCacheObject);
-        }
-
-        static ApiThrottlingResult Decrement(MorpherCacheObject morpherCacheObject)
-        {
-            return Interlocked.Decrement(ref morpherCacheObject.QueriesLeft) >= 0 
-                ? ApiThrottlingResult.Success 
+        static ApiThrottlingResult Charge(MorpherCacheObject morpherCacheObject, int cost)
+        {            
+            return Interlocked.Add(ref morpherCacheObject.QueriesLeft, -cost) >= 0
+                ? ApiThrottlingResult.Success
                 : ApiThrottlingResult.Overlimit;
         }
 
@@ -67,7 +50,7 @@
         /// </summary>
         /// <param name="guid">Токен клиента</param>
         /// <returns>Результат тарификации</returns>
-        public ApiThrottlingResult Throttle(Guid guid)
+        public ApiThrottlingResult Throttle(Guid guid, int cost)
         {
             MorpherCacheObject morpherCacheObject = GetQueryLimit(guid);
 
@@ -82,22 +65,40 @@
                 return ApiThrottlingResult.Success;
             }
 
-            return Decrement(morpherCacheObject);
+            return Charge(morpherCacheObject, cost);
         }
 
-        public ApiThrottlingResult Throttle(IOwinRequest request)
+        /// <summary>
+        /// Выполняет тарификацию по IP адресу
+        /// </summary>
+        /// <param name="ip">ip адрес клиента</param>
+        /// <returns>Результат тарификации</returns>
+        public ApiThrottlingResult Throttle(string ip, int cost)
+        {
+            MorpherCacheObject morpherCacheObject = GetQueryLimit(ip);
+
+            // Если GetQueryLimit вернул null, значит IP адрес помечен в бд как Blocked
+            if (morpherCacheObject == null)
+            {
+                return ApiThrottlingResult.IpBlocked;
+            }
+
+            return Charge(morpherCacheObject, cost);
+        }
+
+        public ApiThrottlingResult Throttle(IOwinRequest request, int cost)
         {        
             try
             {
                 Guid? token = request.GetToken();
                 if (token != null)
                 {
-                    return Throttle(token.Value);
+                    return Throttle(token.Value, cost);
                 }
                 else
                 {
                     string ip = request.RemoteIpAddress;
-                    return Throttle(ip);
+                    return Throttle(ip, cost);
                 }
             }
             catch (InvalidTokenFormatException)

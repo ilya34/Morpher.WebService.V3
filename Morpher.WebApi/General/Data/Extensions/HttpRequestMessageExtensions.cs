@@ -1,6 +1,4 @@
-﻿using System.Web.Http;
-
-namespace Morpher.WebService.V3.General.Data
+﻿namespace Morpher.WebService.V3.General.Data
 {
     using System;
     using System.Collections.Generic;
@@ -10,7 +8,6 @@ namespace Morpher.WebService.V3.General.Data
     using System.Net.Http.Formatting;
     using System.ServiceModel.Channels;
     using System.Text;
-    using Newtonsoft.Json;
 
     public static class HttpRequestMessageExtensions
     {
@@ -20,12 +17,8 @@ namespace Morpher.WebService.V3.General.Data
 
         static HttpRequestMessageExtensions()
         {
-            JsonMediaTypeFormatter = new JsonMediaTypeFormatter { SerializerSettings = { Formatting = Formatting.Indented } };
-            XmlMediaTypeFormatter = new XmlMediaTypeFormatter()
-            {
-                UseXmlSerializer = true,
-                WriterSettings = { OmitXmlDeclaration = false}
-            };
+            JsonMediaTypeFormatter = WebApiConfig.JsonMediaTypeFormatter;
+            XmlMediaTypeFormatter = WebApiConfig.XmlMediaTypeFormatter;
         }
 
         public static HttpResponseMessage CreateResponse<T>(
@@ -33,7 +26,7 @@ namespace Morpher.WebService.V3.General.Data
             HttpStatusCode statusCode,
             T value,
             ResponseFormat? format)
-        {           
+        {
             switch (format)
             {
                 case ResponseFormat.Json:
@@ -41,8 +34,8 @@ namespace Morpher.WebService.V3.General.Data
                 case ResponseFormat.Xml:
                     return message.CreateResponse(statusCode, value, XmlMediaTypeFormatter);
                 default:
-                    return message.Headers.Accept.ToString() == "application/json" ? 
-                        message.CreateResponse(statusCode, value, JsonMediaTypeFormatter) : 
+                    return message.Headers.Accept.ToString() == "application/json" ?
+                        message.CreateResponse(statusCode, value, JsonMediaTypeFormatter) :
                         message.CreateResponse(statusCode, value, XmlMediaTypeFormatter);
             }
         }

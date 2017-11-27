@@ -8,7 +8,7 @@
 
     public class AttributeUrls : IAttributeUrls
     {
-        public HashSet<string> Urls { get; } = new HashSet<string>();
+        public Dictionary<string, ThrottleThisAttribute> Urls { get; } = new Dictionary<string, ThrottleThisAttribute>();
 
         public AttributeUrls(Type attributeType)
         {
@@ -26,7 +26,8 @@
                 foreach (var methodInfo in methods)
                 {
                     var methodRoute = GetActionRoute(methodInfo);
-                    Urls.Add($"{controllerRoute.ToLowerInvariant()}/{methodRoute.ToLowerInvariant()}");
+                    var attribute = methodInfo.GetCustomAttribute<ThrottleThisAttribute>();
+                    Urls.Add($"{controllerRoute.ToLowerInvariant()}/{methodRoute.ToLowerInvariant()}", attribute);
                 }
             }
         }

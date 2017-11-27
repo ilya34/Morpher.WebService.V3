@@ -5,7 +5,7 @@
 
     public interface IApiThrottler
     {
-        ApiThrottlingResult Throttle(IOwinRequest request);
+        ApiThrottlingResult Throttle(IOwinRequest request, int count);
 
         ApiThrottlingResult LoadIntoCache(IOwinRequest request);
         object RemoveFromCache(string key);
