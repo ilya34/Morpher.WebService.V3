@@ -1,4 +1,6 @@
-﻿namespace Morpher.WebService.V3
+﻿using Morpher.WebService.V3.Qazaq;
+
+namespace Morpher.WebService.V3
 {
     using System;
     using System.Configuration;
@@ -37,7 +39,7 @@
             Container = builder.Build();
             AutofacWebApiDependencyResolver = new AutofacWebApiDependencyResolver(Container);
             config.DependencyResolver = AutofacWebApiDependencyResolver;
-            
+
             System.Web.Mvc.DependencyResolver.SetResolver(new AutofacDependencyResolver(Container));
         }
 
@@ -98,6 +100,9 @@
                 builder.RegisterType<UkrainianWebAnalyzer>().As<IUkrainianAnalyzer>()
                     .WithParameter("client", client.Ukrainian)
                     .SingleInstance();
+                builder.RegisterType<UkrainianWebAnalyzer>().As<IUkrainianAnalyzer>()
+                    .WithParameter("client", client.Ukrainian)
+                    .SingleInstance();
             }
             else
             {
@@ -113,6 +118,9 @@
                 builder.RegisterAssemblyTypes(analyzer)
                     .Where(type => typeof(IUkrainianAnalyzer).IsAssignableFrom(type))
                     .As<IUkrainianAnalyzer>().SingleInstance();
+                builder.RegisterAssemblyTypes(analyzer)
+                    .Where(type => typeof(IQazaqAnalyzer).IsAssignableFrom(type))
+                    .As<IQazaqAnalyzer>().SingleInstance();
             }
         }
 
