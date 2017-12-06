@@ -2,6 +2,6 @@
 {
     public interface IQazaqAnalyzer
     {
-
+        DeclensionResult Declension(string s);
     }
 }
