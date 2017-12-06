@@ -71,8 +71,8 @@
                 args.Dismiss();
             }
 
-            var statusCode = HttpContext.Current.Response.StatusCode;
-            if (statusCode != (int) HttpStatusCode.InternalServerError)
+            var statusCode = (args.Exception as HttpException)?.GetHttpCode() ?? -1;
+            if (statusCode != (int)HttpStatusCode.InternalServerError)
             {
                 args.Dismiss();
             }
