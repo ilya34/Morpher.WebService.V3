@@ -216,6 +216,8 @@
     <Compile Include="General\Data\Exceptions\TokenNotFoundException.cs" />
     <Compile Include="Russian\Data\CorrectionPostModel.cs" />
     <Compile Include="Russian\Data\DeclensionFormsForCorrection.cs" />
+    <Compile Include="Russian\Data\DeclensionListResultJson.cs" />
+    <Compile Include="Russian\Data\DeclensionListResultXml.cs" />
     <Compile Include="Russian\Data\FullName.cs" />
     <Compile Include="Russian\Data\DeclensionForms.cs" />
     <Compile Include="Russian\Data\DeclensionResult.cs" />

@@ -1,5 +1,6 @@
 ﻿namespace Morpher.WebService.V3.Russian
 {
+    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
@@ -47,6 +48,38 @@
             _resultTrimmer.Trim(declensionResult, Request.GetToken());
 
             return Request.CreateResponse(HttpStatusCode.OK, declensionResult, format);
+        }
+
+        [Route("declension")]
+        [ThrottleThis(1, TarificationMode.PerWord)]
+        [HttpPost]
+        public HttpResponseMessage DeclensionList(
+            [FromBody]string text,
+            [FromUri]General.Data.DeclensionFlags? flags = null,
+            [FromUri]ResponseFormat? format = null)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                throw new RequiredParameterIsNotSpecifiedException(nameof(text));
+
+            var words = text.Split('\n');
+            
+            Func<string, General.Data.DeclensionFlags?, Data.DeclensionResult> inflector =
+                (s, f) =>
+            {
+                var result = _analyzer.Declension(s, f);
+                _resultTrimmer.Trim(result, Request.GetToken());
+                return result;
+            };
+
+            return format == ResponseFormat.Json ?
+            Request.CreateResponse(
+                HttpStatusCode.OK,
+                DeclensionListResultJson.InflectList(inflector, words, flags),
+                ResponseFormat.Json) : 
+            Request.CreateResponse(
+                HttpStatusCode.OK,
+                DeclensionListResultXml.InflectList(inflector, words, flags),
+                ResponseFormat.Xml);
         }
 
         [Route("spell")]
