@@ -21,5 +21,7 @@
         List<KeyValuePair<string, MorpherCacheObject>> GetAll();
 
         object Remove(string key, string regionName = null);
+
+        string GetAllAsJson();
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Morpher.WebService.V3.General.Data.Services
+﻿using Newtonsoft.Json;
+
+namespace Morpher.WebService.V3.General.Data.Services
 {
     using System.Collections.Generic;
     using System.Collections.Specialized;
@@ -19,5 +21,7 @@
         {
             return this.Select(pair => new KeyValuePair<string, MorpherCacheObject>(pair.Key, (MorpherCacheObject)pair.Value)).ToList();
         }
+
+        public string GetAllAsJson() => JsonConvert.SerializeObject(GetAll());
     }
 }

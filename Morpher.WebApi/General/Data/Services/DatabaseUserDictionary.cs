@@ -161,8 +161,11 @@
             }
 
             var cache = (MorpherCacheObject)_morpherCache.Get(token.ToString().ToLowerInvariant());
-            if (cache == null) throw new Exception("Can't retrive user from cache");
-            if (cache.UserId == null) throw new Exception("User without UserId?");
+            if (cache == null)
+            {
+                var cacheJson = _morpherCache.GetAllAsJson();
+                throw new Exception($"Cant find user in cache. Cache: {cacheJson}");
+            }
 
             var correctionCache = (List<Name>)_correctionCache.Get(cache.UserId.ToString().ToLowerInvariant());
 
