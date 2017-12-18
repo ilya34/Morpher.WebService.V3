@@ -8,7 +8,6 @@
     using System.Web.Http;
     using Autofac;
     using Autofac.Core;
-    using Autofac.Integration.Mvc;
     using Autofac.Integration.WebApi;
     using General.Data;
     using General.Data.Interfaces;
@@ -37,8 +36,6 @@
             Container = builder.Build();
             AutofacWebApiDependencyResolver = new AutofacWebApiDependencyResolver(Container);
             config.DependencyResolver = AutofacWebApiDependencyResolver;
-            
-            System.Web.Mvc.DependencyResolver.SetResolver(new AutofacDependencyResolver(Container));
         }
 
         private static void RegisterServices(ContainerBuilder builder)
