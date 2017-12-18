@@ -1,4 +1,6 @@
-﻿namespace Morpher.WebService.V3
+﻿using Autofac.Configuration;
+
+namespace Morpher.WebService.V3
 {
     using System;
     using System.Configuration;
@@ -32,7 +34,7 @@
             builder.RegisterWebApiModelBinderProvider();
 
             RegisterServices(builder);
-
+            builder.RegisterModule(new ConfigurationSettingsReader("autofac", "InjectionConfigs/Local.config"));
             Container = builder.Build();
             AutofacWebApiDependencyResolver = new AutofacWebApiDependencyResolver(Container);
             config.DependencyResolver = AutofacWebApiDependencyResolver;
@@ -48,20 +50,20 @@
             {
                 RegisterLocalOnlyServices(builder);
 
-                string externalAnalyzer = ConfigurationManager.AppSettings.Get("ExternalAnalyzer");
-                string path = Path.Combine(
-                    AppDomain.CurrentDomain.BaseDirectory,
-                    "bin",
-                    externalAnalyzer);
-                var analyzer = Assembly.LoadFile(path);
-                string filePathRu = HostingEnvironment.MapPath("~/App_Data/UserDict.xml");
-                string filePathUkr = HostingEnvironment.MapPath("~/App_Data/UserDictUkr.xml");
-                builder.RegisterAssemblyTypes(analyzer)
-                    .Where(type => typeof(Russian.IExceptionDictionary).IsAssignableFrom(type))
-                    .As<Russian.IExceptionDictionary, Russian.IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathRu);
-                builder.RegisterAssemblyTypes(analyzer)
-                    .Where(type => typeof(Ukrainian.IExceptionDictionary).IsAssignableFrom(type))
-                    .As<Ukrainian.IExceptionDictionary, Ukrainian.IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathUkr);
+                //string externalAnalyzer = ConfigurationManager.AppSettings.Get("ExternalAnalyzer");
+                //string path = Path.Combine(
+                //    AppDomain.CurrentDomain.BaseDirectory,
+                //    "bin",
+                //    externalAnalyzer);
+                //var analyzer = Assembly.LoadFile(path);
+                //string filePathRu = HostingEnvironment.MapPath("~/App_Data/UserDict.xml");
+                //string filePathUkr = HostingEnvironment.MapPath("~/App_Data/UserDictUkr.xml");
+                //builder.RegisterAssemblyTypes(analyzer)
+                //    .Where(type => typeof(Russian.IExceptionDictionary).IsAssignableFrom(type))
+                //    .As<Russian.IExceptionDictionary, Russian.IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathRu);
+                //builder.RegisterAssemblyTypes(analyzer)
+                //    .Where(type => typeof(Ukrainian.IExceptionDictionary).IsAssignableFrom(type))
+                //    .As<Ukrainian.IExceptionDictionary, Ukrainian.IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathUkr);
             }
             else
             {
@@ -79,7 +81,7 @@
             }
 
             RegisterSharedServices(builder);
-            RegisterAnalyzers(builder);
+            //RegisterAnalyzers(builder);
         }
 
         private static void RegisterAnalyzers(ContainerBuilder builder)
