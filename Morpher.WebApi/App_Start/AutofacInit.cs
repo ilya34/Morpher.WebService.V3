@@ -75,16 +75,6 @@ namespace Morpher.WebService.V3
                 .As<IResultTrimmer>();
 
 
-            // Используется в LoggingMiddleware
-            //builder.RegisterType<MorpherLog>().As<IMorpherLog>().SingleInstance();
-            builder.RegisterType<DatabaseLog>().As<IDatabaseLog>()
-                .WithParameter("connectionString", connectionString);
-
-            // Исплользуется в ThrottlingMIddleware
-            //builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
-            builder.RegisterType<MorpherDatabase>().As<IMorpherDatabase>()
-                .WithParameter("connectionString", connectionString);
-
             // Middlewares
             builder.RegisterType<UserCacheLoaderMiddleware>();
             builder.RegisterType<ThrottlingMiddleware>()
