@@ -238,7 +238,10 @@
     <Compile Include="Russian\Data\DeclensionResult.cs" />
     <Compile Include="Russian\Data\Entry.cs" />
     <Compile Include="Russian\Data\Gender.cs" />
+    <Compile Include="Russian\Data\IAccentizer.cs" />
+    <Compile Include="Russian\Data\IAdjectivizer.cs" />
     <Compile Include="Russian\Data\IExceptionDictionary.cs" />
+    <Compile Include="Russian\Data\IMorpher.cs" />
     <Compile Include="Russian\Data\IUserDictionaryLookup.cs" />
     <Compile Include="Russian\Data\NumberSpelling.cs" />
     <Compile Include="Ukrainian\Data\CorrectionPostModel.cs" />
@@ -256,14 +259,12 @@
     </Compile>
     <Compile Include="General\Data\Services\DatabaseUserDictionary.cs" />
     <Compile Include="General\Data\Services\DummyResultTrimmer.cs" />
-    <Compile Include="General\Data\Interfaces\IRussianAnalyzer.cs" />
-    <Compile Include="General\Data\Interfaces\IUkrainianAnalyzer.cs" />
+    <Compile Include="Ukrainian\Data\IUkrainianAnalyzer.cs" />
     <Compile Include="General\Data\Interfaces\IResultTrimmer.cs" />
     <Compile Include="General\Data\Services\MorpherLog.cs" />
     <Compile Include="General\Data\LogEntity.cs" />
     <Compile Include="General\Data\Services\LogSyncer.cs" />
     <Compile Include="General\Data\Services\ResultTrimmer.cs" />
-    <Compile Include="Russian\RussianWebAnalyzer.cs" />
     <Compile Include="General\Data\Interfaces\IDatabaseLog.cs" />
     <Compile Include="General\Data\Interfaces\IMorpherCache.cs" />
     <Compile Include="General\Data\Interfaces\IMorpherDatabase.cs" />

@@ -1,4 +1,7 @@
-﻿namespace Morpher.WebService.V3
+﻿using Morpher.WebService.V3.Russian.Data;
+using Morpher.WebService.V3.Ukrainian.Data;
+
+namespace Morpher.WebService.V3
 {
     using System;
     using System.Configuration;
@@ -13,8 +16,6 @@
     using General.Data.Interfaces;
     using General.Data.Middlewares;
     using General.Data.Services;
-    using Russian;
-    using Ukrainian;
 
     public static class AutofacInit
     {
@@ -88,13 +89,13 @@
 
             if (externalAnalyzer == null)
             {
-                MorpherClient client = new MorpherClient();
-                builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>()
-                    .WithParameter("client", client.Russian)
-                    .SingleInstance();
-                builder.RegisterType<UkrainianWebAnalyzer>().As<IUkrainianAnalyzer>()
-                    .WithParameter("client", client.Ukrainian)
-                    .SingleInstance();
+                //MorpherClient client = new MorpherClient();
+                //builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>()
+                //    .WithParameter("client", client.Russian)
+                //    .SingleInstance();
+                //builder.RegisterType<UkrainianWebAnalyzer>().As<IUkrainianAnalyzer>()
+                //    .WithParameter("client", client.Ukrainian)
+                //    .SingleInstance();
             }
             else
             {
@@ -105,8 +106,17 @@
                 var analyzer = Assembly.LoadFile(path);
 
                 builder.RegisterAssemblyTypes(analyzer)
-                    .Where(type => typeof(IRussianAnalyzer).IsAssignableFrom(type))
-                    .As<IRussianAnalyzer>().SingleInstance();
+                    .Where(type => typeof(IMorpher).IsAssignableFrom(type))
+                    .As<IMorpher>().SingleInstance();
+
+                builder.RegisterAssemblyTypes(analyzer)
+                    .Where(type => typeof(IAccentizer).IsAssignableFrom(type))
+                    .As<IAccentizer>().SingleInstance();
+
+                builder.RegisterAssemblyTypes(analyzer)
+                    .Where(type => typeof(IAdjectivizer).IsAssignableFrom(type))
+                    .As<IAdjectivizer>().SingleInstance();
+
                 builder.RegisterAssemblyTypes(analyzer)
                     .Where(type => typeof(IUkrainianAnalyzer).IsAssignableFrom(type))
                     .As<IUkrainianAnalyzer>().SingleInstance();
