@@ -338,7 +338,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SecretConfigs\" />
+    <Folder Include="InjectionConfigs\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="General\Data\CompressedCache.dbml.layout">
