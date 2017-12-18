@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-
-namespace Morpher.WebService.V3.General.Data.Services
+﻿namespace Morpher.WebService.V3.General.Data.Services
 {
     using System;
     using System.Collections.Concurrent;
@@ -11,9 +9,9 @@ namespace Morpher.WebService.V3.General.Data.Services
     {
         private readonly string connectionString;
 
-        public DatabaseLog()
+        public DatabaseLog(string connectionString)
         {
-            this.connectionString = ConfigurationManager.ConnectionStrings["MorpherDatabase"].ConnectionString;
+            this.connectionString = connectionString;
         }
 
         public void Upload(ConcurrentQueue<LogEntity> logs)

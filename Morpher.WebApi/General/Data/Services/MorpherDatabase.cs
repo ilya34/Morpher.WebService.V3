@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-
-namespace Morpher.WebService.V3.General.Data.Services
+﻿namespace Morpher.WebService.V3.General.Data.Services
 {
     using System;
     using System.Collections.Generic;
@@ -14,9 +12,9 @@ namespace Morpher.WebService.V3.General.Data.Services
     {
         private readonly string _connectionString;
 
-        public MorpherDatabase()
+        public MorpherDatabase(string connectionString)
         {
-            this._connectionString = ConfigurationManager.ConnectionStrings["MorpherDatabase"].ConnectionString;
+            this._connectionString = connectionString;
         }
 
         public int GetDefaultDailyQueryLimit()
