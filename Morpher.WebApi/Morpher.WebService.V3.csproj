@@ -94,16 +94,16 @@
       <HintPath>..\packages\Microsoft.Extensions.Primitives.1.0.0\lib\netstandard1.0\Microsoft.Extensions.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Morpher.WebService.V3.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Morpher.WebService.V3.Client.1.0.33\lib\Morpher.WebService.V3.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Morpher.WebService.V3.Client, Version=2.0.108.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Morpher.WebService.V3.Client.2.0.108\lib\net40\Morpher.WebService.V3.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -244,6 +244,8 @@
     <Compile Include="Russian\Data\IMorpher.cs" />
     <Compile Include="Russian\Data\IUserDictionaryLookup.cs" />
     <Compile Include="Russian\Data\NumberSpelling.cs" />
+    <Compile Include="General\Data\MorpherHelper.cs" />
+    <Compile Include="Russian\WebAnalyzer.cs" />
     <Compile Include="Ukrainian\Data\CorrectionPostModel.cs" />
     <Compile Include="Ukrainian\Data\DeclensionForms.cs" />
     <Compile Include="Ukrainian\Data\DeclensionResult.cs" />
@@ -291,7 +293,7 @@
     <Compile Include="General\Data\ServiceErrorMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="General\Data\Interfaces\IMorpherLog.cs" />
-    <Compile Include="Ukrainian\UkrainianWebAnalyzer.cs" />
+    <Compile Include="Ukrainian\WebAnalyzer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -318,8 +320,7 @@
       <LastGenOutput>CompressedCache.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="InjectionConfigs\Local.config" />
-    <Content Include="InjectionConfigs\WS3.config" />
+    <Content Include="LocalInjection.config" />
     <None Include="Properties\PublishProfiles\Morpher.pubxml" />
     <Content Include="General\SecretConfigs\connectionStrings.config" />
     <Content Include="General\SecretConfigs\webServiceSettings.config" />
