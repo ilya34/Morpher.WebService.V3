@@ -323,7 +323,7 @@
     <Content Include="LocalInjection.config" />
     <None Include="Properties\PublishProfiles\Morpher.pubxml" />
     <Content Include="General\SecretConfigs\connectionStrings.config" />
-    <Content Include="General\SecretConfigs\webServiceSettings.config" />
+    <Content Include="General\SecretConfigs\SecretSettings.config" />
     <Content Include="General\SecretConfigs\smtp.config" />
     <None Include="Web.Local.config">
       <DependentUpon>Web.config</DependentUpon>

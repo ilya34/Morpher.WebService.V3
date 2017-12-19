@@ -1,4 +1,5 @@
-﻿using Autofac.Configuration;
+﻿using System.Collections.Specialized;
+using Autofac.Configuration;
 using Morpher.WebService.V3.Russian.Data;
 using Morpher.WebService.V3.Ukrainian.Data;
 
@@ -37,7 +38,8 @@ namespace Morpher.WebService.V3
             builder.RegisterWebApiFilterProvider(config);
             builder.RegisterWebApiModelBinderProvider();
 
-            bool runAsLocalService = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("RunAsLocalService"));
+            bool runAsLocalService = Convert.ToBoolean(
+                ((NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings")).Get("RunAsLocalService"));
 
             if (runAsLocalService)
             {
@@ -57,7 +59,7 @@ namespace Morpher.WebService.V3
         private static void RegisterGlobal(ContainerBuilder builder)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MorpherDatabase"].ConnectionString;
-            string externalAnalyzer = ConfigurationManager.AppSettings.Get("ExternalAnalyzer");
+            string externalAnalyzer = ((NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings")).Get("ExternalAnalyzer");
 
             string path = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
@@ -141,7 +143,8 @@ namespace Morpher.WebService.V3
 
         private static void RegisterLocal(ContainerBuilder builder)
         {
-            string externalAnalyzer = ConfigurationManager.AppSettings.Get("ExternalAnalyzer");
+            var conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
+            string externalAnalyzer = conf.Get("ExternalAnalyzer");
             string path = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
                 "bin",
@@ -151,7 +154,12 @@ namespace Morpher.WebService.V3
             string filePathUkr = HostingEnvironment.MapPath("~/App_Data/UserDictUkr.xml");
 
             builder.RegisterType<DummyResultTrimmer>().As<IResultTrimmer>();
-            builder.RegisterType<MorpherClient>().AsSelf();
+
+            Guid token;
+            if (Guid.TryParse(conf.Get("MorpherClientToken"), out token))
+                builder.RegisterType<MorpherClient>().AsSelf().WithParameter("token", token);
+            else
+                builder.RegisterType<MorpherClient>().AsSelf();
 
             builder.RegisterAssemblyTypes(analyzer)
                 .Where(type => typeof(Russian.IExceptionDictionary).IsAssignableFrom(type))
