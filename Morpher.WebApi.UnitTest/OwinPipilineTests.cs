@@ -44,6 +44,10 @@ namespace Morpher.WebService.V3.UnitTests
             configuration.Services.Replace(typeof(IAssembliesResolver), apiResolver);
             WebApiConfig.Register(configuration);
 
+
+            builder.RegisterInstance(Mock.Of<IAccentizer>());
+            builder.RegisterInstance(Mock.Of<IAdjectivizer>());
+
             builder.RegisterInstance(
                 Mock.Of<IUserDictionaryLookup>(lookup => lookup.Lookup(It.IsAny<string>()) == null))
                 .As<IUserDictionaryLookup>();
@@ -91,7 +95,6 @@ namespace Morpher.WebService.V3.UnitTests
         /// </summary>
         /// <returns></returns>
         [Test]
-        [Ignore("Temp")]
         public async Task LogWithoutError()
         {
             // Arrange
@@ -148,7 +151,6 @@ namespace Morpher.WebService.V3.UnitTests
         /// </summary>
         /// <returns></returns>
         [Test]
-        [Ignore("Temp")]
         public async Task LogWithError()
         {
             // Arrange
@@ -207,13 +209,13 @@ namespace Morpher.WebService.V3.UnitTests
         /// Четвертый Overlimit
         /// </summary>
         [Test]
-        [Ignore("Temp")]
         public async Task ApiThrottlerTest_ByIp()
         {
             ContainerBuilder builder = new ContainerBuilder();
 
             // Fix user-agent & remote ip
             builder.RegisterType<FixRequestTestDataMiddleware>();
+
             builder.RegisterType<ThrottlingMiddleware>();
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()
@@ -265,7 +267,6 @@ namespace Morpher.WebService.V3.UnitTests
         /// Четвертый Overlimit
         /// </summary>
         [Test]
-        [Ignore("Temp")]
         public async Task ApiThrottlerTest_ByToken_QueryString()
         {
             ContainerBuilder builder = new ContainerBuilder();
@@ -331,7 +332,6 @@ namespace Morpher.WebService.V3.UnitTests
         /// Четвертый Overlimit
         /// </summary>
         [Test]
-        [Ignore("Temp")]
         public async Task ApiThrottlerTest_ByToken_ViaHeader()
         {
             ContainerBuilder builder = new ContainerBuilder();
@@ -394,7 +394,6 @@ namespace Morpher.WebService.V3.UnitTests
         }
 
         [Test]
-        [Ignore("Temp")]
         public async Task ApiThrottlerTest_BySymbol()
         {
             ContainerBuilder builder = new ContainerBuilder();
