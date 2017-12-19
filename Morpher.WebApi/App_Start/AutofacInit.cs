@@ -1,5 +1,6 @@
 ﻿using System.Collections.Specialized;
 using Autofac.Configuration;
+using Morpher.WebService.V3.Russian;
 using Morpher.WebService.V3.Russian.Data;
 using Morpher.WebService.V3.Ukrainian.Data;
 
@@ -9,7 +10,6 @@ namespace Morpher.WebService.V3
     using System.Configuration;
     using System.IO;
     using System.Reflection;
-    using System.Web.Hosting;
     using System.Web.Http;
     using Autofac;
     using Autofac.Core;
@@ -42,14 +42,9 @@ namespace Morpher.WebService.V3
                 ((NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings")).Get("RunAsLocalService"));
 
             if (runAsLocalService)
-            {
                 RegisterLocal(builder);
-                builder.RegisterModule(new ConfigurationSettingsReader("autofac", "LocalInjection.config"));
-            }
             else
-            {
                 RegisterGlobal(builder);
-            }
 
             Container = builder.Build();
             AutofacWebApiDependencyResolver = new AutofacWebApiDependencyResolver(Container);
@@ -141,8 +136,87 @@ namespace Morpher.WebService.V3
                 .As<Russian.IExceptionDictionary, Ukrainian.IExceptionDictionary>().SingleInstance();
         }
 
+        private static void RegisterFromAssembly(ContainerBuilder builder, Type type, Assembly assembly)
+        {
+            builder.RegisterAssemblyTypes(assembly)
+                .Where(type.IsAssignableFrom)
+                .As(type).SingleInstance();
+        }
+
         private static void RegisterLocal(ContainerBuilder builder)
         {
+            string morpherPath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "bin",
+                "Morpher.dll");
+
+            string accentizerPath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "bin",
+                "Accentizer2.dll");
+
+            string adjectivizerPath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "bin",
+                "Adjectivizer.dll");
+
+            string ukrainianPath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "bin",
+                "Morpher.Ukrainian.dll");
+
+            string externalAnalyzer =
+                ((NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings")).Get("ExternalAnalyzer");
+
+            string externalAdapter = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "bin",
+                externalAnalyzer);
+
+            var analyzer = Assembly.LoadFile(externalAdapter);
+
+            if (File.Exists(externalAdapter))
+            {
+                if (File.Exists(morpherPath))
+                {
+                    RegisterFromAssembly(builder, typeof(IMorpher), analyzer);
+                    builder.RegisterAssemblyTypes(analyzer)
+                        .Where(type => typeof(IExceptionDictionary).IsAssignableFrom(type))
+                        .As<IExceptionDictionary, IUserDictionaryLookup>().SingleInstance()
+                        .WithParameter("userDict", "UserDict.xml");
+                }
+                else
+                {
+                    builder.RegisterType<WebAnalyzer>().As<IMorpher>();
+                    builder.RegisterType<WebExceptionDictionary>().As<IExceptionDictionary>();
+                }
+
+                if (File.Exists(accentizerPath)) RegisterFromAssembly(builder, typeof(IAccentizer), analyzer);
+                else builder.RegisterType<WebAnalyzer>().As<IAccentizer>();
+
+                if (File.Exists(adjectivizerPath)) RegisterFromAssembly(builder, typeof(IAdjectivizer), analyzer);
+                else builder.RegisterType<WebAnalyzer>().As<IAdjectivizer>();
+
+                if (File.Exists(ukrainianPath))
+                {
+                    RegisterFromAssembly(builder, typeof(IUkrainianAnalyzer), analyzer);
+                    builder.RegisterAssemblyTypes(analyzer)
+                        .Where(type => typeof(Ukrainian.IExceptionDictionary).IsAssignableFrom(type))
+                        .As<Ukrainian.IExceptionDictionary, Ukrainian.IUserDictionaryLookup>().SingleInstance()
+                        .WithParameter("userDict", "UserDictUkr.xml");
+                }
+                else
+                {
+                    builder.RegisterType<Ukrainian.WebAnalyzer>().As<IUkrainianAnalyzer>();
+                    builder.RegisterType<Ukrainian.WebExceptionDictionary>().As<Ukrainian.IExceptionDictionary>();
+                }
+            }
+            else
+            {
+                builder.RegisterType<WebAnalyzer>().As<IMorpher, IAdjectivizer, IAccentizer>();
+                builder.RegisterType<Ukrainian.WebAnalyzer>().As<IUkrainianAnalyzer>();
+            }
+
             var conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
             builder.RegisterType<DummyResultTrimmer>().As<IResultTrimmer>();
             Guid token;

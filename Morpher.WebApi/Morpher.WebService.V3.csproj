@@ -322,7 +322,6 @@
       <LastGenOutput>CompressedCache.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="LocalInjection.config" />
     <None Include="Properties\PublishProfiles\Morpher.pubxml" />
     <Content Include="General\SecretConfigs\connectionStrings.config" />
     <Content Include="General\SecretConfigs\SecretSettings.config" />
