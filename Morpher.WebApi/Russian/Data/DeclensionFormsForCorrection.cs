@@ -24,6 +24,17 @@
             Locative = nameForms.SingleOrDefault(form => form.FormID == 'М')?.AccentedText;
         }
 
+        public DeclensionFormsForCorrection(CorrectionForms correctionForms)
+        {
+            Nominative = correctionForms.Nominative;
+            Genitive = correctionForms.Genitive;
+            Dative = correctionForms.Dative;
+            Accusative = correctionForms.Accusative;
+            Instrumental = correctionForms.Instrumental;
+            Prepositional = correctionForms.Prepositional;
+            Locative = correctionForms.Locative;
+        }
+
         [DataMember(Order = 0, Name = "И", EmitDefaultValue = false)]
         [XmlElement("И")]
         public virtual string Nominative { get; set; }

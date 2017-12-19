@@ -246,6 +246,7 @@
     <Compile Include="Russian\Data\NumberSpelling.cs" />
     <Compile Include="General\Data\MorpherHelper.cs" />
     <Compile Include="Russian\WebAnalyzer.cs" />
+    <Compile Include="Russian\WebExceptionDictionary.cs" />
     <Compile Include="Ukrainian\Data\CorrectionPostModel.cs" />
     <Compile Include="Ukrainian\Data\DeclensionForms.cs" />
     <Compile Include="Ukrainian\Data\DeclensionResult.cs" />
@@ -294,6 +295,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="General\Data\Interfaces\IMorpherLog.cs" />
     <Compile Include="Ukrainian\WebAnalyzer.cs" />
+    <Compile Include="Ukrainian\WebExceptionDictionary.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

@@ -144,29 +144,12 @@ namespace Morpher.WebService.V3
         private static void RegisterLocal(ContainerBuilder builder)
         {
             var conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
-            string externalAnalyzer = conf.Get("ExternalAnalyzer");
-            string path = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "bin",
-                externalAnalyzer);
-            var analyzer = Assembly.LoadFile(path);
-            string filePathRu = HostingEnvironment.MapPath("~/App_Data/UserDict.xml");
-            string filePathUkr = HostingEnvironment.MapPath("~/App_Data/UserDictUkr.xml");
-
             builder.RegisterType<DummyResultTrimmer>().As<IResultTrimmer>();
-
             Guid token;
             if (Guid.TryParse(conf.Get("MorpherClientToken"), out token))
                 builder.RegisterType<MorpherClient>().AsSelf().WithParameter("token", token);
             else
                 builder.RegisterType<MorpherClient>().AsSelf();
-
-            builder.RegisterAssemblyTypes(analyzer)
-                .Where(type => typeof(Russian.IExceptionDictionary).IsAssignableFrom(type))
-                .As<Russian.IExceptionDictionary, Russian.IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathRu);
-            builder.RegisterAssemblyTypes(analyzer)
-                .Where(type => typeof(Ukrainian.IExceptionDictionary).IsAssignableFrom(type))
-                .As<Ukrainian.IExceptionDictionary, Ukrainian.IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathUkr);
         }
     }
 }
