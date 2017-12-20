@@ -58,7 +58,7 @@ namespace Morpher.WebService.V3.Russian.Data
 
         [DataMember(Name = "множественное", EmitDefaultValue = false, Order = 8)]
         [XmlElement("множественное", Order = 8)]
-        [CheckForPayed]
+        [CheckForPaid]
         public virtual DeclensionForms Plural { get; set; }
 
         [DataMember(Name = "где", EmitDefaultValue = false, Order = 10)]
