@@ -156,10 +156,10 @@ namespace Morpher.WebService.V3
 
             string externalAdapter = Path.Combine(binPath, externalAnalyzer);
 
-            var analyzer = Assembly.LoadFile(externalAdapter);
-
             if (File.Exists(externalAdapter))
             {
+                var analyzer = Assembly.LoadFile(externalAdapter);
+
                 if (File.Exists(morpherPath))
                 {
                     RegisterFromAssembly(builder, typeof(IMorpher), analyzer);
