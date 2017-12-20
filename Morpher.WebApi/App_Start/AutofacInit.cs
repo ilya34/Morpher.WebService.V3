@@ -198,6 +198,8 @@ namespace Morpher.WebService.V3
             {
                 builder.RegisterType<WebAnalyzer>().As<IMorpher, IAdjectivizer, IAccentizer>();
                 builder.RegisterType<Ukrainian.WebAnalyzer>().As<IUkrainianAnalyzer>();
+                builder.RegisterType<Ukrainian.WebExceptionDictionary>().As<Ukrainian.IExceptionDictionary>();
+                builder.RegisterType<WebExceptionDictionary>().As<IExceptionDictionary>();
             }
 
             var conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
