@@ -145,33 +145,16 @@ namespace Morpher.WebService.V3
 
         private static void RegisterLocal(ContainerBuilder builder)
         {
-            string morpherPath = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "bin",
-                "Morpher.dll");
-
-            string accentizerPath = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "bin",
-                "Accentizer2.dll");
-
-            string adjectivizerPath = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "bin",
-                "Adjectivizer.dll");
-
-            string ukrainianPath = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "bin",
-                "Morpher.Ukrainian.dll");
+            string binPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin");
+            string morpherPath = Path.Combine(binPath, "Morpher.dll");
+            string accentizerPath = Path.Combine(binPath,"Accentizer2.dll");
+            string adjectivizerPath = Path.Combine(binPath, "Adjectivizer.dll");
+            string ukrainianPath = Path.Combine(binPath, "Morpher.Ukrainian.dll");
 
             string externalAnalyzer =
                 ((NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings")).Get("ExternalAnalyzer");
 
-            string externalAdapter = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "bin",
-                externalAnalyzer);
+            string externalAdapter = Path.Combine(binPath, externalAnalyzer);
 
             var analyzer = Assembly.LoadFile(externalAdapter);
 
