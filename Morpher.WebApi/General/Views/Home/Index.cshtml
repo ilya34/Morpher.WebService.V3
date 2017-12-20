@@ -45,7 +45,6 @@
        
         ul {
             margin-top: 10px;
-            margin-left: 20px;
         }
 
         li {
@@ -75,35 +74,40 @@
             font-weight: normal;
             background-color: #003366;
             margin-top: 0px;
-            margin-bottom: 0px;
+            margin-bottom: 30px;
             margin-left: -30px;
             padding-top: 10px;
-            padding-bottom: 3px;
-            padding-left: 15px;
+            padding-bottom: 13px;
+            padding-left: 30px;
             width: 105%;
         }
     </style>
 
     <title>
-        Веб-сервис "Морфер"
+        Веб-сервис "Морфер" 3.0
     </title>
 </head>
 
 <body>
 
     <div id="content">
-        <p class="heading1">Веб-сервис склонения по падежам «Морфер»</p><br>
-        <p>Веб-сервис предзначен для склонения по падежам слов и словосочетаний на русском и украинском языках.</p>
-        <blockquote><a href="http://morpher.ru/ws3/">Онлайн-документация</a></blockquote>
-        <p>Примеры вызова функций склонения через HTTP GET:</p>
+        <p class="heading1">Веб-сервис склонения по падежам «Морфер» 3.0</p>
+        <p>Примеры вызова функций через HTTP GET:</p>
+        <p>Русский язык:</p>
         <ul>
-            <li><a href="~/russian/declension?s=Пользователь">@(ViewBag.Url + "russian/declension?s=Пользователь")</a></li>
-            <li><a href="~/russian/spell?n=10&unit=рубль">@(ViewBag.Url + "russian/spell?n=10&unit=рубль")</a></li>
-            <li><a href="~/russian/genders?s=уважаемый&format=json">@(ViewBag.Url + "russian/gender?s=Уважаемый&format=json")</a></li>
+            <li><a href="~/russian/declension?s=Пользователь">склонение по падежам</a></li>
+            <li><a href="~/russian/spell?n=10&unit=рубль">пропись чисел</a></li>
+            <li><a href="~/russian/genders?s=уважаемый&format=json">склонение по родам</a></li>
+            <li><a href="~/russian/adjectivize?s=Мытищи&format=json">образование прилагательных</a></li>
         </ul>
+        <p>Украинский язык:</p>
         <ul>
-            <li><a href="~/ukrainian/declension?s=Користувач">@(ViewBag.Url + "ukrainian/declension?s=Користувач")</a></li>
-            <li><a href="~/ukrainian/spell?n=10&unit=рубль">@(ViewBag.Url + "ukrainian/spell?n=10&unit=рубль")</a></li>
+            <li><a href="~/ukrainian/declension?s=Користувач">склонение по падежам</a></li>
+            <li><a href="~/ukrainian/spell?n=10&unit=рубль">пропись чисел</a></li>
+        </ul>
+        <p>См. также:</p>
+        <ul>
+            <li><a href="http://morpher.ru/ws3/">Онлайн-документация</a></li>
         </ul>
     </div>
 </body>
