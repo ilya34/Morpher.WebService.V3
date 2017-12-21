@@ -43,14 +43,14 @@
             switch (format)
             {
                 case "json":
-                    context.Response.Headers.Add("application/json", "charset=utf-8");
+                    context.Response.Headers.Add("Content-type", "application/json, charset=utf-8");
                     context.Response.Content =
                         new StringContent(
                             JsonConvert.SerializeObject(response, Formatting.Indented));
                     break;
                 case "xml":
                 default:
-                    context.Response.Headers.Add("application/xml", "charset=utf-8");
+                    context.Response.Headers.Add("Content-type", "application/xml, charset=utf-8");
                     DataContractSerializer contractSerializer = new DataContractSerializer(typeof(ServiceErrorMessage));
                     // Если писать поток в StreamContent ничего не выводит
                     // Если из ByteArray то кривая кодировка.
