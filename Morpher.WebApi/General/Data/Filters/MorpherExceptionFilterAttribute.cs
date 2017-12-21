@@ -1,4 +1,6 @@
-﻿namespace Morpher.WebService.V3.General.Data
+﻿using System.Net.Http.Headers;
+
+namespace Morpher.WebService.V3.General.Data
 {
     using System.IO;
     using System.Net;
@@ -43,14 +45,13 @@
             switch (format)
             {
                 case "json":
-                    context.Response.Headers.Add("Content-type", "application/json, charset=utf-8");
                     context.Response.Content =
                         new StringContent(
                             JsonConvert.SerializeObject(response, Formatting.Indented));
+                    context.Response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     break;
                 case "xml":
                 default:
-                    context.Response.Headers.Add("Content-type", "application/xml, charset=utf-8");
                     DataContractSerializer contractSerializer = new DataContractSerializer(typeof(ServiceErrorMessage));
                     // Если писать поток в StreamContent ничего не выводит
                     // Если из ByteArray то кривая кодировка.
@@ -64,6 +65,7 @@
                             context.Response.Content = new StringContent(stringWriter.GetStringBuilder().ToString());
                         }
                     }
+                    context.Response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
                     break;
             }
         }
