@@ -17,6 +17,17 @@
         {
         }
 
+        public DeclensionForms(CorrectionForms correctionForms)
+        {
+            Nominative = correctionForms.Nominative;
+            Vocative = correctionForms.Vocative;
+            Accusative = correctionForms.Accusative;
+            Dative = correctionForms.Dative;
+            Genitive = correctionForms.Genitive;
+            Instrumental = correctionForms.Instrumental;
+            Prepositional = correctionForms.Prepositional;
+        }
+
         public DeclensionForms(Ukrainian.DeclensionForms serviceResult)
         {
             Nominative = serviceResult.Nominative;

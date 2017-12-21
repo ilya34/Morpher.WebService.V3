@@ -14,6 +14,11 @@
             Singular = singular;
         }
 
+        public Entry(CorrectionEntry entry)
+        {
+            Singular = new DeclensionForms(entry.Singular);
+        }
+
         public Entry()
         {
         }

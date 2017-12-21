@@ -46,24 +46,24 @@
     <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.0\lib\net40\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    <Reference Include="Autofac.Configuration, Version=3.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Configuration.3.3.0\lib\net40\Autofac.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Autofac.Integration.Owin, Version=4.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.Owin.4.1.0\lib\net45\Autofac.Integration.Owin.dll</HintPath>
+    <Reference Include="Autofac.Integration.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Owin.3.1.0\lib\net45\Autofac.Integration.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Autofac.Integration.WebApi, Version=4.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.WebApi2.4.1.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+    <Reference Include="Autofac.Integration.WebApi, Version=3.4.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.WebApi2.3.4.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Autofac.Integration.WebApi.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.WebApi2.Owin.4.0.0\lib\net45\Autofac.Integration.WebApi.Owin.dll</HintPath>
+    <Reference Include="Autofac.Integration.WebApi.Owin, Version=3.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.WebApi2.Owin.3.3.0\lib\net45\Autofac.Integration.WebApi.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -82,8 +82,16 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Morpher.WebService.V3.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Morpher.WebService.V3.Client.1.0.33\lib\Morpher.WebService.V3.Client.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Configuration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.1.0.0\lib\netstandard1.1\Microsoft.Extensions.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.1.0.0\lib\netstandard1.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.1.0.0\lib\netstandard1.0\Microsoft.Extensions.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -92,6 +100,10 @@
     </Reference>
     <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Morpher.WebService.V3.Client, Version=2.0.108.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Morpher.WebService.V3.Client.2.0.108\lib\net40\Morpher.WebService.V3.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -103,9 +115,12 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -223,9 +238,15 @@
     <Compile Include="Russian\Data\DeclensionResult.cs" />
     <Compile Include="Russian\Data\Entry.cs" />
     <Compile Include="Russian\Data\Gender.cs" />
+    <Compile Include="Russian\Data\IAccentizer.cs" />
+    <Compile Include="Russian\Data\IAdjectivizer.cs" />
     <Compile Include="Russian\Data\IExceptionDictionary.cs" />
+    <Compile Include="Russian\Data\IMorpher.cs" />
     <Compile Include="Russian\Data\IUserDictionaryLookup.cs" />
     <Compile Include="Russian\Data\NumberSpelling.cs" />
+    <Compile Include="General\Data\MorpherHelper.cs" />
+    <Compile Include="Russian\WebAnalyzer.cs" />
+    <Compile Include="Russian\WebExceptionDictionary.cs" />
     <Compile Include="Ukrainian\Data\CorrectionPostModel.cs" />
     <Compile Include="Ukrainian\Data\DeclensionForms.cs" />
     <Compile Include="Ukrainian\Data\DeclensionResult.cs" />
@@ -241,14 +262,12 @@
     </Compile>
     <Compile Include="General\Data\Services\DatabaseUserDictionary.cs" />
     <Compile Include="General\Data\Services\DummyResultTrimmer.cs" />
-    <Compile Include="General\Data\Interfaces\IRussianAnalyzer.cs" />
-    <Compile Include="General\Data\Interfaces\IUkrainianAnalyzer.cs" />
+    <Compile Include="Ukrainian\Data\IUkrainianAnalyzer.cs" />
     <Compile Include="General\Data\Interfaces\IResultTrimmer.cs" />
     <Compile Include="General\Data\Services\MorpherLog.cs" />
     <Compile Include="General\Data\LogEntity.cs" />
     <Compile Include="General\Data\Services\LogSyncer.cs" />
     <Compile Include="General\Data\Services\ResultTrimmer.cs" />
-    <Compile Include="Russian\RussianWebAnalyzer.cs" />
     <Compile Include="General\Data\Interfaces\IDatabaseLog.cs" />
     <Compile Include="General\Data\Interfaces\IMorpherCache.cs" />
     <Compile Include="General\Data\Interfaces\IMorpherDatabase.cs" />
@@ -275,7 +294,8 @@
     <Compile Include="General\Data\ServiceErrorMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="General\Data\Interfaces\IMorpherLog.cs" />
-    <Compile Include="Ukrainian\UkrainianWebAnalyzer.cs" />
+    <Compile Include="Ukrainian\WebAnalyzer.cs" />
+    <Compile Include="Ukrainian\WebExceptionDictionary.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -304,7 +324,7 @@
     </Content>
     <None Include="Properties\PublishProfiles\Morpher.pubxml" />
     <Content Include="General\SecretConfigs\connectionStrings.config" />
-    <Content Include="General\SecretConfigs\webServiceSettings.config" />
+    <Content Include="General\SecretConfigs\SecretSettings.config" />
     <Content Include="General\SecretConfigs\smtp.config" />
     <None Include="Web.Local.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -322,9 +342,7 @@
       <DependentUpon>UserCorrection.dbml</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SecretConfigs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="General\Data\CompressedCache.dbml.layout">
       <DependentUpon>CompressedCache.dbml</DependentUpon>

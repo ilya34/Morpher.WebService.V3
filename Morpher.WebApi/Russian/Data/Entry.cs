@@ -19,6 +19,12 @@
         {
         }
 
+        public Entry(CorrectionEntry entry)
+        {
+            Singular = new DeclensionFormsForCorrection(entry.Singular);
+            Plural = new DeclensionFormsForCorrection(entry.Plural);
+        }
+
         [XmlIgnore]
         [JsonIgnore]
         public bool GenderXmlSpecified { get; set; } = false;

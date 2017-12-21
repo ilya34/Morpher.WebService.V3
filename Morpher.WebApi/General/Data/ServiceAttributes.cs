@@ -58,7 +58,7 @@
     }
 
     [AttributeUsage(AttributeTargets.Property, Inherited = true)]
-    public class CheckForPayedAttribute : Attribute
+    public class CheckForPaidAttribute : Attribute
     {
     }
 }

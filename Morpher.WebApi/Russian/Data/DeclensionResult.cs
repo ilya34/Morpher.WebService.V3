@@ -1,4 +1,6 @@
-﻿namespace Morpher.WebService.V3.Russian.Data
+﻿using System;
+
+namespace Morpher.WebService.V3.Russian.Data
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
@@ -23,7 +25,21 @@
                 Plural = new DeclensionForms(serviceResult.Plural);
             }
 
-            Gender = serviceResult.Gender;
+            switch (serviceResult.Gender)
+            {
+                case Russian.Gender.Masculine:
+                    Gender = "Мужской";
+                    break;
+                case Russian.Gender.Feminine:
+                    Gender = "Женский";
+                    break;
+                case Russian.Gender.Neuter:
+                    Gender = "Средний";
+                    break;
+                case Russian.Gender.Plural:
+                case null:
+                    break;
+            }
 
             if (serviceResult.FullName != null)
             {
@@ -42,7 +58,7 @@
 
         [DataMember(Name = "множественное", EmitDefaultValue = false, Order = 8)]
         [XmlElement("множественное", Order = 8)]
-        [CheckForPayed]
+        [CheckForPaid]
         public virtual DeclensionForms Plural { get; set; }
 
         [DataMember(Name = "где", EmitDefaultValue = false, Order = 10)]
