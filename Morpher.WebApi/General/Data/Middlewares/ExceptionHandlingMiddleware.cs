@@ -22,7 +22,6 @@ namespace Morpher.WebService.V3.General.Data.Middlewares
             try
             {
                 await Next.Invoke(context);
-                throw new InvalidTokenFormatException();
             }
             catch (Exception exc)
             {
