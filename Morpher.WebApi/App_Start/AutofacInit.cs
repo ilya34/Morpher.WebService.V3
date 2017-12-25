@@ -31,9 +31,9 @@ namespace Morpher.WebService.V3
             var config = GlobalConfiguration.Configuration;
 
             // Exception Filter
-            builder.Register(context => new MorpherExceptionFilterAttribute())
-                .AsWebApiExceptionFilterFor<ApiController>().SingleInstance();
-
+            //builder.Register(context => new MorpherExceptionFilterAttribute())
+            //    .AsWebApiExceptionFilterFor<ApiController>().SingleInstance();
+            builder.RegisterType<ExceptionHandlingMiddleware>();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterWebApiFilterProvider(config);
             builder.RegisterWebApiModelBinderProvider();
