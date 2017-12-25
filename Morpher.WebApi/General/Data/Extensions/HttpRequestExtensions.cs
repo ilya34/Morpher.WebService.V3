@@ -6,6 +6,18 @@
 
     public static class HttpRequestExtensions
     {
+        public static ResponseFormat GetResponseFormat(this HttpRequest request)
+        {
+            var requestedResponseFormat =
+                request.QueryString.Get("format") ?? request.Headers.Get("Accept");
+            ResponseFormat responseFormat = ResponseFormat.Xml;
+            if (requestedResponseFormat != null
+                && (requestedResponseFormat.ToLowerInvariant() == "json"
+                    || requestedResponseFormat.Contains("application/json")))
+                responseFormat = ResponseFormat.Json;
+            return responseFormat;
+        }
+
         public static Guid? GetToken(this HttpRequest request)
         {
             string token = request.QueryString.Get("token") ?? GetBasicAuthorization(request);

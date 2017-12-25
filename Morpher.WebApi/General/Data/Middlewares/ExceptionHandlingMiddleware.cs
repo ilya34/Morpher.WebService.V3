@@ -26,15 +26,8 @@ namespace Morpher.WebService.V3.General.Data.Middlewares
             catch (Exception exc)
             {
                 var exception = exc as MorpherException ?? new ServerException(exc);
-                var requestedResponseFormat =
-                    context.Request.Query.Get("format") ?? context.Request.Headers.Get("Accept");
-                ResponseFormat responseFormat = ResponseFormat.Xml;
-                if (requestedResponseFormat != null
-                    && (requestedResponseFormat.ToLowerInvariant() == "json"
-                        || requestedResponseFormat.Contains("application/json")))
-                    responseFormat = ResponseFormat.Json;
-
                 var ctx = HttpContext.Current;
+                ResponseFormat responseFormat = ctx.Request.GetResponseFormat();
                 ctx.Response.Clear();
                 ctx.Response.StatusCode = (int)exception.ResponseCode;
                 var responseObject = new ServiceErrorMessage(exception);
