@@ -8,7 +8,6 @@
     using System.Threading.Tasks;
     using System.Web.Http;
     using Data;
-    using Data.Services;
 
     public class ServiceController : ApiController
     {
@@ -17,7 +16,11 @@
         private readonly IMorpherDatabase _morpherDatabase;
         private readonly IMorpherCache _morpherCache;
 
-        public ServiceController(IApiThrottler apiThrottler, IMorpherLog log, IMorpherDatabase morpherDatabase, IMorpherCache morpherCache)
+        public ServiceController(
+            IApiThrottler apiThrottler,
+            IMorpherLog log,
+            IMorpherDatabase morpherDatabase,
+            IMorpherCache morpherCache)
         {
             this._apiThrottler = apiThrottler;
             this._log = log;

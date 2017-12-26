@@ -1,5 +1,6 @@
 ﻿using System.Collections.Specialized;
 using Autofac.Configuration;
+using Morpher.WebService.V3.General.Data.Services.DummyServices;
 using Morpher.WebService.V3.Russian;
 using Morpher.WebService.V3.Russian.Data;
 using Morpher.WebService.V3.Ukrainian.Data;
@@ -145,6 +146,12 @@ namespace Morpher.WebService.V3
 
         private static void RegisterLocal(ContainerBuilder builder)
         {
+            builder.RegisterType<General.Data.Services.DummyServices.ApiThrottler>().As<IApiThrottler>();
+            builder.RegisterType<General.Data.Services.DummyServices.MorpherCache>().As<IMorpherCache>();
+            builder.RegisterType<General.Data.Services.DummyServices.MorpherDatabase>().As<IMorpherDatabase>();
+            builder.RegisterType<General.Data.Services.DummyServices.ResultTrimmer>().As<IResultTrimmer>();
+            builder.RegisterType<General.Data.Services.DummyServices.MorpherLog>().As<IMorpherLog>();
+
             string binPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin");
             string morpherPath = Path.Combine(binPath, "Morpher.dll");
             string accentizerPath = Path.Combine(binPath,"Accentizer2.dll");
@@ -203,7 +210,6 @@ namespace Morpher.WebService.V3
             }
 
             var conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
-            builder.RegisterType<DummyResultTrimmer>().As<IResultTrimmer>();
             Guid token;
             if (Guid.TryParse(conf.Get("MorpherClientToken"), out token))
                 builder.RegisterType<MorpherClient>().AsSelf().WithParameter("token", token);

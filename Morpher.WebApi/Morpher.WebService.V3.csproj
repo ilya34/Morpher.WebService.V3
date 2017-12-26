@@ -210,6 +210,11 @@
     <Compile Include="General\Data\Middlewares\LoggingMiddleware.cs" />
     <Compile Include="General\Data\Middlewares\UserCacheLoaderMiddleware.cs" />
     <Compile Include="General\Data\PlainTextFormatter.cs" />
+    <Compile Include="General\Data\Services\DummyServices\ApiThrottler.cs" />
+    <Compile Include="General\Data\Services\DummyServices\MorpherCache.cs" />
+    <Compile Include="General\Data\Services\DummyServices\MorpherDatabase.cs" />
+    <Compile Include="General\Data\Services\DummyServices\MorpherLog.cs" />
+    <Compile Include="General\Data\Services\DummyServices\ResultTrimmer.cs" />
     <Compile Include="General\Data\Services\UserCacheSyncer.cs" />
     <Compile Include="General\Gzip.cs" />
     <Compile Include="General\LemmaNormalizer.cs" />
@@ -262,7 +267,6 @@
       <DependentUpon>UserCorrection.dbml</DependentUpon>
     </Compile>
     <Compile Include="General\Data\Services\DatabaseUserDictionary.cs" />
-    <Compile Include="General\Data\Services\DummyResultTrimmer.cs" />
     <Compile Include="Ukrainian\Data\IUkrainianAnalyzer.cs" />
     <Compile Include="General\Data\Interfaces\IResultTrimmer.cs" />
     <Compile Include="General\Data\Services\MorpherLog.cs" />

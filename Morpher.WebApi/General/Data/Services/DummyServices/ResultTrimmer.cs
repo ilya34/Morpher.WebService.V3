@@ -1,8 +1,8 @@
-﻿namespace Morpher.WebService.V3.General.Data.Services
-{
-    using System;
+﻿using System;
 
-    public class DummyResultTrimmer : IResultTrimmer
+namespace Morpher.WebService.V3.General.Data.Services.DummyServices
+{
+    public class ResultTrimmer : IResultTrimmer
     {
         public void Trim(object obj)
         {
