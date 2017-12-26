@@ -9,16 +9,27 @@ namespace Morpher.WebService.V3.General
     using System.Net.Http;
     using System.Web.Http.Filters;
     using Autofac.Integration.WebApi;
-    using General;
     using Newtonsoft.Json;
     using Formatting = Newtonsoft.Json.Formatting;
 
     public class MorpherExceptionFilterAttribute : ExceptionFilterAttribute, IAutofacExceptionFilter
     {
+        private ResponseFormat GetResponseFormat(HttpActionExecutedContext context)
+        {
+            var requestedResponseFormat =
+                context.Request.GetQueryString("format") ?? context.Request.GetHeader("Accept");
+            ResponseFormat responseFormat = ResponseFormat.Xml;
+            if (requestedResponseFormat != null
+                && (requestedResponseFormat.ToLowerInvariant() == "json"
+                    || requestedResponseFormat.Contains("application/json")))
+                responseFormat = ResponseFormat.Json;
+            return responseFormat;
+        }
+
         public override void OnException(HttpActionExecutedContext context)
         {
             var exception = context.Exception as MorpherException ?? new ServerException(context.Exception);
-            var responseFormat = HttpContext.Current.Request.GetResponseFormat();
+            var responseFormat = GetResponseFormat(context);
 
             var responseObject = new ServiceErrorMessage(exception);
             context.Response = new HttpResponseMessage();
