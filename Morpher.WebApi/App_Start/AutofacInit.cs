@@ -1,6 +1,4 @@
 ﻿using System.Collections.Specialized;
-using Autofac.Configuration;
-using Morpher.WebService.V3.General.Data.Services.DummyServices;
 using Morpher.WebService.V3.Russian;
 using Morpher.WebService.V3.Russian.Data;
 using Morpher.WebService.V3.Ukrainian.Data;
