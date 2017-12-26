@@ -30,8 +30,6 @@ namespace Morpher.WebService.V3.General
 
         public override async Task Invoke(IOwinContext context)
         {
-            var stream = context.Response.Body;
-            var t = stream as MemoryStream;
             try
             {
                 await Next.Invoke(context);
