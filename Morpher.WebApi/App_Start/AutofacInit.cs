@@ -128,8 +128,8 @@ namespace Morpher.WebService.V3
 
 
             builder.RegisterType<DatabaseUserDictionary>()
-                .As<Uk.IUserDictionaryLookup, Uk.IUserDictionaryLookup>()
-                .As<Uk.IExceptionDictionary, Uk.IExceptionDictionary>().SingleInstance();
+                .As<Ru.IUserDictionaryLookup, Uk.IUserDictionaryLookup>()
+                .As<Ru.IExceptionDictionary, Uk.IExceptionDictionary>().SingleInstance();
         }
 
         private static void RegisterFromAssembly(ContainerBuilder builder, Type type, Assembly assembly)
