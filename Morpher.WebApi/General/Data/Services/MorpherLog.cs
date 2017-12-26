@@ -1,8 +1,7 @@
-﻿namespace Morpher.WebService.V3.General.Data.Services
+﻿namespace Morpher.WebService.V3.General
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Security.Policy;
     using System.Web;
     using Microsoft.Owin;
 

@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebService.V3.General.Data
+﻿namespace Morpher.WebService.V3.General
 {
     public static class StringExtensions
     {

@@ -1,7 +1,5 @@
-﻿namespace Morpher.WebService.V3.Russian
+﻿namespace Morpher.WebService.V3.Russian.Data
 {
-    using Data;
-
     public interface IUserDictionaryLookup
     {
         /// <summary>

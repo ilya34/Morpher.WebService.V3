@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebService.V3.General.Data.Services
+﻿namespace Morpher.WebService.V3.General
 {
     using System;
     using System.Collections.Generic;

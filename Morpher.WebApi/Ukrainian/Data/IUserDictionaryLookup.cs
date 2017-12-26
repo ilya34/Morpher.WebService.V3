@@ -1,4 +1,4 @@
-﻿namespace Morpher.WebService.V3.Ukrainian
+﻿namespace Morpher.WebService.V3.Ukrainian.Data
 {
     using Data;
 

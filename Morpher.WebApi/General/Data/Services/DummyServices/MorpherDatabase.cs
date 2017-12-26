@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Morpher.WebService.V3.General.Data.Services.DummyServices
+namespace Morpher.WebService.V3.General.DummyServices
 {
     public class MorpherDatabase : IMorpherDatabase
     {

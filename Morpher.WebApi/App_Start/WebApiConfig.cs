@@ -5,7 +5,7 @@
     using System.Web.Http.ExceptionHandling;
 
     using Elmah.Contrib.WebApi;
-    using General.Data;
+    using General;
 
     public static class WebApiConfig
     {

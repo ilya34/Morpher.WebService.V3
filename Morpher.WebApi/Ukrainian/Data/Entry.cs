@@ -2,7 +2,6 @@
 {
     using System.Runtime.Serialization;
     using System.Xml.Serialization;
-    using General.Data;
     using Newtonsoft.Json;
 
     [DataContract]

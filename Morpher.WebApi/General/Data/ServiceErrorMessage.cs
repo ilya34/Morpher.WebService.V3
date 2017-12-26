@@ -1,8 +1,7 @@
-﻿namespace Morpher.WebService.V3.General.Data
+﻿namespace Morpher.WebService.V3.General
 {
     using System.Runtime.Serialization;
     using System.Xml.Serialization;
-    using Exceptions;
 
     [DataContract(Name = "error")]
     [XmlRoot("error")]

@@ -3,13 +3,13 @@ using System.Net.Http.Headers;
 using System.Web;
 using System.Xml.Serialization;
 
-namespace Morpher.WebService.V3.General.Data
+namespace Morpher.WebService.V3.General
 {
     using System.IO;
     using System.Net.Http;
     using System.Web.Http.Filters;
     using Autofac.Integration.WebApi;
-    using Exceptions;
+    using General;
     using Newtonsoft.Json;
     using Formatting = Newtonsoft.Json.Formatting;
 

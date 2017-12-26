@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Morpher.WebService.V3.General.Data;
+using Morpher.WebService.V3.General;
 using Morpher.WebService.V3.Ukrainian.Data;
 
-namespace Morpher.WebService.V3.Ukrainian
+namespace Morpher.WebService.V3.Ukrainian.Data
 {
     public class WebExceptionDictionary : IExceptionDictionary
     {

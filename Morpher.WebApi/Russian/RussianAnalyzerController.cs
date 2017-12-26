@@ -6,8 +6,7 @@
     using System.Net.Http;
     using System.Web.Http;
     using Data;
-    using General.Data;
-    using General.Data.Exceptions;
+    using General;
 
     [RoutePrefix("russian")]
     public class RussianAnalyzerController : ApiController
@@ -36,7 +35,7 @@
         [ThrottleThis]
         [LogThis]
         [HttpGet]
-        public HttpResponseMessage Declension(string s, General.Data.DeclensionFlags? flags = null, ResponseFormat? format = null)
+        public HttpResponseMessage Declension(string s, General.DeclensionFlags? flags = null, ResponseFormat? format = null)
         {
             if (string.IsNullOrWhiteSpace(s))
             {
@@ -61,7 +60,7 @@
         [HttpPost]
         public HttpResponseMessage DeclensionList(
             [FromBody]string text,
-            [FromUri]General.Data.DeclensionFlags? flags = null,
+            [FromUri]General.DeclensionFlags? flags = null,
             [FromUri]ResponseFormat? format = null)
         {
             if (string.IsNullOrWhiteSpace(text))
@@ -69,7 +68,7 @@
 
             var words = text.Split('\n');
             
-            Func<string, General.Data.DeclensionFlags?, Data.DeclensionResult> inflector =
+            Func<string, General.DeclensionFlags?, Data.DeclensionResult> inflector =
                 (s, f) =>
             {
                 var result = _morpher.Declension(s, f);

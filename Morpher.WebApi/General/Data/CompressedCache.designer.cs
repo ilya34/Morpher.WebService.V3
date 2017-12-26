@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Morpher.WebService.V3.General.Data
+namespace Morpher.WebService.V3.General
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -22,7 +22,7 @@ namespace Morpher.WebService.V3.General.Data
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="slepov_0546d")]
+	[Database(Name="slepov_0546d")]
 	public partial class CompressedCacheDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -74,7 +74,7 @@ namespace Morpher.WebService.V3.General.Data
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CompressedCache")]
+	[Table(Name="dbo.CompressedCache")]
 	public partial class CompressedCache : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -99,7 +99,7 @@ namespace Morpher.WebService.V3.General.Data
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="Date NOT NULL", IsPrimaryKey=true)]
+		[Column(Storage="_Date", DbType="Date NOT NULL", IsPrimaryKey=true)]
 		public System.DateTime Date
 		{
 			get
@@ -119,7 +119,7 @@ namespace Morpher.WebService.V3.General.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GZipCache", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		[Column(Storage="_GZipCache", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
 		public string GZipCache
 		{
 			get

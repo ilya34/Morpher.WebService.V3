@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Morpher.WebService.V3.General.Data.Services.DummyServices
+namespace Morpher.WebService.V3.General.DummyServices
 {
     public class ResultTrimmer : IResultTrimmer
     {

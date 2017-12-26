@@ -1,7 +1,7 @@
 ﻿using System.Collections.Specialized;
-using Morpher.WebService.V3.Russian;
-using Morpher.WebService.V3.Russian.Data;
-using Morpher.WebService.V3.Ukrainian.Data;
+
+using Ru = Morpher.WebService.V3.Russian.Data;
+using Uk = Morpher.WebService.V3.Ukrainian.Data;
 
 namespace Morpher.WebService.V3
 {
@@ -13,10 +13,7 @@ namespace Morpher.WebService.V3
     using Autofac;
     using Autofac.Core;
     using Autofac.Integration.WebApi;
-    using General.Data;
-    using General.Data.Interfaces;
-    using General.Data.Middlewares;
-    using General.Data.Services;
+    using General;
 
     public static class AutofacInit
     {
@@ -62,20 +59,20 @@ namespace Morpher.WebService.V3
             var analyzer = Assembly.LoadFile(path);
 
             builder.RegisterAssemblyTypes(analyzer)
-                .Where(type => typeof(IMorpher).IsAssignableFrom(type))
-                .As<IMorpher>().SingleInstance();
+                .Where(type => typeof(Ru.IMorpher).IsAssignableFrom(type))
+                .As<Ru.IMorpher>().SingleInstance();
 
             builder.RegisterAssemblyTypes(analyzer)
-                .Where(type => typeof(IAccentizer).IsAssignableFrom(type))
-                .As<IAccentizer>().SingleInstance();
+                .Where(type => typeof(Ru.IAccentizer).IsAssignableFrom(type))
+                .As<Ru.IAccentizer>().SingleInstance();
 
             builder.RegisterAssemblyTypes(analyzer)
-                .Where(type => typeof(IAdjectivizer).IsAssignableFrom(type))
-                .As<IAdjectivizer>().SingleInstance();
+                .Where(type => typeof(Ru.IAdjectivizer).IsAssignableFrom(type))
+                .As<Ru.IAdjectivizer>().SingleInstance();
 
             builder.RegisterAssemblyTypes(analyzer)
-                .Where(type => typeof(IUkrainianAnalyzer).IsAssignableFrom(type))
-                .As<IUkrainianAnalyzer>().SingleInstance();
+                .Where(type => typeof(Uk.IUkrainianAnalyzer).IsAssignableFrom(type))
+                .As<Uk.IUkrainianAnalyzer>().SingleInstance();
 
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()
@@ -131,8 +128,8 @@ namespace Morpher.WebService.V3
 
 
             builder.RegisterType<DatabaseUserDictionary>()
-                .As<Russian.IUserDictionaryLookup, Ukrainian.IUserDictionaryLookup>()
-                .As<Russian.IExceptionDictionary, Ukrainian.IExceptionDictionary>().SingleInstance();
+                .As<Uk.IUserDictionaryLookup, Uk.IUserDictionaryLookup>()
+                .As<Uk.IExceptionDictionary, Uk.IExceptionDictionary>().SingleInstance();
         }
 
         private static void RegisterFromAssembly(ContainerBuilder builder, Type type, Assembly assembly)
@@ -144,11 +141,11 @@ namespace Morpher.WebService.V3
 
         private static void RegisterLocal(ContainerBuilder builder)
         {
-            builder.RegisterType<General.Data.Services.DummyServices.ApiThrottler>().As<IApiThrottler>();
-            builder.RegisterType<General.Data.Services.DummyServices.MorpherCache>().As<IMorpherCache>();
-            builder.RegisterType<General.Data.Services.DummyServices.MorpherDatabase>().As<IMorpherDatabase>();
-            builder.RegisterType<General.Data.Services.DummyServices.ResultTrimmer>().As<IResultTrimmer>();
-            builder.RegisterType<General.Data.Services.DummyServices.MorpherLog>().As<IMorpherLog>();
+            builder.RegisterType<General.DummyServices.ApiThrottler>().As<IApiThrottler>();
+            builder.RegisterType<General.DummyServices.MorpherCache>().As<IMorpherCache>();
+            builder.RegisterType<General.DummyServices.MorpherDatabase>().As<IMorpherDatabase>();
+            builder.RegisterType<General.DummyServices.ResultTrimmer>().As<IResultTrimmer>();
+            builder.RegisterType<General.DummyServices.MorpherLog>().As<IMorpherLog>();
 
             string binPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin");
             string morpherPath = Path.Combine(binPath, "Morpher.dll");
@@ -167,44 +164,44 @@ namespace Morpher.WebService.V3
 
                 if (File.Exists(morpherPath))
                 {
-                    RegisterFromAssembly(builder, typeof(IMorpher), analyzer);
+                    RegisterFromAssembly(builder, typeof(Ru.IMorpher), analyzer);
                     builder.RegisterAssemblyTypes(analyzer)
-                        .Where(type => typeof(IExceptionDictionary).IsAssignableFrom(type))
-                        .As<IExceptionDictionary, IUserDictionaryLookup>().SingleInstance()
+                        .Where(type => typeof(Ru.IExceptionDictionary).IsAssignableFrom(type))
+                        .As<Ru.IExceptionDictionary, Ru.IUserDictionaryLookup>().SingleInstance()
                         .WithParameter("userDict", "UserDict.xml");
                 }
                 else
                 {
-                    builder.RegisterType<WebAnalyzer>().As<IMorpher>();
-                    builder.RegisterType<WebExceptionDictionary>().As<IExceptionDictionary>();
+                    builder.RegisterType<Ru.WebAnalyzer>().As<Ru.IMorpher>();
+                    builder.RegisterType<Ru.WebExceptionDictionary>().As<Ru.IExceptionDictionary>();
                 }
 
-                if (File.Exists(accentizerPath)) RegisterFromAssembly(builder, typeof(IAccentizer), analyzer);
-                else builder.RegisterType<WebAnalyzer>().As<IAccentizer>();
+                if (File.Exists(accentizerPath)) RegisterFromAssembly(builder, typeof(Ru.IAccentizer), analyzer);
+                else builder.RegisterType<Ru.WebAnalyzer>().As<Ru.IAccentizer>();
 
-                if (File.Exists(adjectivizerPath)) RegisterFromAssembly(builder, typeof(IAdjectivizer), analyzer);
-                else builder.RegisterType<WebAnalyzer>().As<IAdjectivizer>();
+                if (File.Exists(adjectivizerPath)) RegisterFromAssembly(builder, typeof(Ru.IAdjectivizer), analyzer);
+                else builder.RegisterType<Ru.WebAnalyzer>().As<Ru.IAdjectivizer>();
 
                 if (File.Exists(ukrainianPath))
                 {
-                    RegisterFromAssembly(builder, typeof(IUkrainianAnalyzer), analyzer);
+                    RegisterFromAssembly(builder, typeof(Uk.IUkrainianAnalyzer), analyzer);
                     builder.RegisterAssemblyTypes(analyzer)
-                        .Where(type => typeof(Ukrainian.IExceptionDictionary).IsAssignableFrom(type))
-                        .As<Ukrainian.IExceptionDictionary, Ukrainian.IUserDictionaryLookup>().SingleInstance()
+                        .Where(type => typeof(Uk.IExceptionDictionary).IsAssignableFrom(type))
+                        .As<Uk.IExceptionDictionary, Uk.IUserDictionaryLookup>().SingleInstance()
                         .WithParameter("userDict", "UserDictUkr.xml");
                 }
                 else
                 {
-                    builder.RegisterType<Ukrainian.WebAnalyzer>().As<IUkrainianAnalyzer>();
-                    builder.RegisterType<Ukrainian.WebExceptionDictionary>().As<Ukrainian.IExceptionDictionary>();
+                    builder.RegisterType<Uk.WebAnalyzer>().As<Uk.IUkrainianAnalyzer>();
+                    builder.RegisterType<Uk.WebExceptionDictionary>().As<Uk.IExceptionDictionary>();
                 }
             }
             else
             {
-                builder.RegisterType<WebAnalyzer>().As<IMorpher, IAdjectivizer, IAccentizer>();
-                builder.RegisterType<Ukrainian.WebAnalyzer>().As<IUkrainianAnalyzer>();
-                builder.RegisterType<Ukrainian.WebExceptionDictionary>().As<Ukrainian.IExceptionDictionary>();
-                builder.RegisterType<WebExceptionDictionary>().As<IExceptionDictionary>();
+                builder.RegisterType<Ru.WebAnalyzer>().As<Ru.IMorpher, Ru.IAdjectivizer, Ru.IAccentizer>();
+                builder.RegisterType<Uk.WebAnalyzer>().As<Uk.IUkrainianAnalyzer>();
+                builder.RegisterType<Uk.WebExceptionDictionary>().As<Uk.IExceptionDictionary>();
+                builder.RegisterType<Uk.WebExceptionDictionary>().As<Uk.IExceptionDictionary>();
             }
 
             var conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");

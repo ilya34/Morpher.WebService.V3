@@ -1,8 +1,7 @@
-﻿namespace Morpher.WebService.V3.General.Data
+﻿namespace Morpher.WebService.V3.General
 {
     using System;
     using System.IO;
-    using System.Net;
     using System.Runtime.Serialization;
     using System.Text;
     using System.Threading.Tasks;

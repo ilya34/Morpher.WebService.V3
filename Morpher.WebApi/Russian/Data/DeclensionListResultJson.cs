@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
-    using General.Data;
+    using General;
 
     [DataContract]
     public class DeclensionListResultJson

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Morpher.WebService.V3.General.Data
+namespace Morpher.WebService.V3.General
 {
     public static class MorpherHelper
     {
@@ -16,33 +16,33 @@ namespace Morpher.WebService.V3.General.Data
             return exc;
         }
 
-        public static Russian.DeclensionFlags? MapFlags(this General.Data.DeclensionFlags? flags)
+        public static Russian.DeclensionFlags? MapFlags(this DeclensionFlags? flags)
         {
             if (flags == null) return null;
 
             Russian.DeclensionFlags serviceFlags = 0;
-            if ((flags & General.Data.DeclensionFlags.Name) != 0)
+            if ((flags & DeclensionFlags.Name) != 0)
                 serviceFlags |= Russian.DeclensionFlags.Name;
 
-            if ((flags & General.Data.DeclensionFlags.Common) != 0)
+            if ((flags & DeclensionFlags.Common) != 0)
                 serviceFlags |= Russian.DeclensionFlags.Common;
 
-            if ((flags & General.Data.DeclensionFlags.Feminine) != 0)
+            if ((flags & DeclensionFlags.Feminine) != 0)
                 serviceFlags |= Russian.DeclensionFlags.Feminine;
 
-            if ((flags & General.Data.DeclensionFlags.Masculine) != 0)
+            if ((flags & DeclensionFlags.Masculine) != 0)
                 serviceFlags |= Russian.DeclensionFlags.Masculine;
 
-            if ((flags & General.Data.DeclensionFlags.Neuter) != 0)
+            if ((flags & DeclensionFlags.Neuter) != 0)
                 serviceFlags |= Russian.DeclensionFlags.Neuter;
 
-            if ((flags & General.Data.DeclensionFlags.Animate) != 0)
+            if ((flags & DeclensionFlags.Animate) != 0)
                 serviceFlags |= Russian.DeclensionFlags.Animate;
 
-            if ((flags & General.Data.DeclensionFlags.Inanimate) != 0)
+            if ((flags & DeclensionFlags.Inanimate) != 0)
                 serviceFlags |= Russian.DeclensionFlags.Inanimate;
 
-            if ((flags & General.Data.DeclensionFlags.Plural) != 0)
+            if ((flags & DeclensionFlags.Plural) != 0)
                 serviceFlags |= Russian.DeclensionFlags.Plural;
 
             return serviceFlags;

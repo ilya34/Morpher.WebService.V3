@@ -10,9 +10,7 @@
     using System.Web.Routing;
     using Elmah;
     using FluentScheduler;
-    using General.Data;
-    using General.Data.Exceptions;
-    using General.Data.Services;
+    using General;
 
     public class WebApiApplication : System.Web.HttpApplication
     {

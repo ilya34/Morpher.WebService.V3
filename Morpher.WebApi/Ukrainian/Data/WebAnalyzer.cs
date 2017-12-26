@@ -1,8 +1,8 @@
-﻿namespace Morpher.WebService.V3.Ukrainian
+﻿namespace Morpher.WebService.V3.Ukrainian.Data
 {
     using System;
     using Data;
-    using General.Data;
+    using General;
 
     public class WebAnalyzer : IUkrainianAnalyzer
     {

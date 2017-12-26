@@ -1,18 +1,17 @@
-﻿namespace Morpher.WebService.V3.General.Data
+﻿namespace Morpher.WebService.V3.General
 {
     using System;
     using System.Collections.Generic;
     using System.Data.Linq;
     using System.Linq;
     using System.Web;
-    using Interfaces;
     using Models;
 
     public class DatabaseUserDictionary : 
-        Russian.IUserDictionaryLookup,
-        Russian.IExceptionDictionary,
-        Ukrainian.IUserDictionaryLookup,
-        Ukrainian.IExceptionDictionary
+        Russian.Data.IUserDictionaryLookup,
+        Russian.Data.IExceptionDictionary,
+        Ukrainian.Data.IUserDictionaryLookup,
+        Ukrainian.Data.IExceptionDictionary
     {
         private readonly IMorpherCache _morpherCache;
         private readonly ICorrectionCache _correctionCache;
@@ -188,7 +187,7 @@
             return Lookup(nominativeSingular, language);
         }
 
-        Russian.Data.Entry Russian.IUserDictionaryLookup.Lookup(string nominativaSingular)
+        Russian.Data.Entry Russian.Data.IUserDictionaryLookup.Lookup(string nominativaSingular)
         {
             var list = Lookup(nominativaSingular, CorrectionLanguage.Russian);
             if (list == null)
@@ -208,7 +207,7 @@
             return new Russian.Data.Entry(singular, plural); 
         }
 
-        void Russian.IExceptionDictionary.Add(Russian.Data.CorrectionPostModel correctionPostModel)
+        void Russian.Data.IExceptionDictionary.Add(Russian.Data.CorrectionPostModel correctionPostModel)
         {
             List<NameForm> forms = correctionPostModel.ToNameForms();
             if (forms.Count < 2)
@@ -219,12 +218,12 @@
             Add(correctionPostModel.И, forms, CorrectionLanguage.Russian);
         }
 
-        bool Russian.IExceptionDictionary.Remove(string nomitiveSingular)
+        bool Russian.Data.IExceptionDictionary.Remove(string nomitiveSingular)
         {
             return Remove(nomitiveSingular, CorrectionLanguage.Russian);
         }
 
-        List<Russian.Data.Entry> Russian.IExceptionDictionary.GetAll()
+        List<Russian.Data.Entry> Russian.Data.IExceptionDictionary.GetAll()
         {
             var correctionCache = GetAll(CorrectionLanguage.Russian);
             List<Russian.Data.Entry> entries = new List<Russian.Data.Entry>();
@@ -241,7 +240,7 @@
             return entries;
         }
 
-        Ukrainian.Data.Entry Ukrainian.IUserDictionaryLookup.Lookup(string nominativeSingular)
+        Ukrainian.Data.Entry Ukrainian.Data.IUserDictionaryLookup.Lookup(string nominativeSingular)
         {   
             var list = Lookup(nominativeSingular, CorrectionLanguage.Ukrainian);
             if (list == null)
@@ -264,7 +263,7 @@
             return entry;
         }
 
-        void Ukrainian.IExceptionDictionary.Add(Ukrainian.Data.CorrectionPostModel correctionPostModel)
+        void Ukrainian.Data.IExceptionDictionary.Add(Ukrainian.Data.CorrectionPostModel correctionPostModel)
         {
             List<NameForm> forms = correctionPostModel.ToNameForms();
             if (forms.Count < 2)
@@ -275,12 +274,12 @@
             Add(correctionPostModel.Н, forms, CorrectionLanguage.Ukrainian);
         }
 
-        bool Ukrainian.IExceptionDictionary.Remove(string nominativeSingular)
+        bool Ukrainian.Data.IExceptionDictionary.Remove(string nominativeSingular)
         {
             return Remove(nominativeSingular, CorrectionLanguage.Ukrainian);
         }
 
-        List<Ukrainian.Data.Entry> Ukrainian.IExceptionDictionary.GetAll()
+        List<Ukrainian.Data.Entry> Ukrainian.Data.IExceptionDictionary.GetAll()
         {
             var correctionCache = GetAll(CorrectionLanguage.Ukrainian);
             List<Ukrainian.Data.Entry> entries = new List<Ukrainian.Data.Entry>();

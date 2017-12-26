@@ -4,8 +4,7 @@
     using System.Net.Http;
     using System.Web.Http;
     using Data;
-    using General.Data;
-    using General.Data.Exceptions;
+    using General;
 
     [RoutePrefix("ukrainian")]
     public class UkrainianAnalyzerController : ApiController

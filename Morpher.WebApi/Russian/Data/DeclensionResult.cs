@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Morpher.WebService.V3.Russian.Data
+﻿namespace Morpher.WebService.V3.Russian.Data
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
-    using General.Data;
+    using General;
     using System.Xml.Serialization;
 
     [DataContract(Name = "xml")]

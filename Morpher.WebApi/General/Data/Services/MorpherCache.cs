@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
 
-namespace Morpher.WebService.V3.General.Data.Services
+namespace Morpher.WebService.V3.General
 {
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
     using System.Runtime.Caching;
-    using Interfaces;
 
     public class MorpherCache : MemoryCache, ICorrectionCache, IMorpherCache
     {

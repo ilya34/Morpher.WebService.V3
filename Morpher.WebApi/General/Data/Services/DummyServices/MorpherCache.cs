@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Caching;
 
-namespace Morpher.WebService.V3.General.Data.Services.DummyServices
+namespace Morpher.WebService.V3.General.DummyServices
 {
     public class MorpherCache : IMorpherCache
     {

@@ -4,11 +4,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Serialization;
 using Microsoft.Owin;
-using Morpher.WebService.V3.General.Data.Exceptions;
 using Newtonsoft.Json;
 using Formatting = Newtonsoft.Json.Formatting;
 
-namespace Morpher.WebService.V3.General.Data.Middlewares
+namespace Morpher.WebService.V3.General
 {
     public class ExceptionHandlingMiddleware : OwinMiddleware
     {

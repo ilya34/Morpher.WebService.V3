@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Morpher.WebService.V3.General.Data;
-using Morpher.WebService.V3.Russian.Data;
+using Morpher.WebService.V3.General;
 
-namespace Morpher.WebService.V3.Russian
+namespace Morpher.WebService.V3.Russian.Data
 {
     public class WebAnalyzer : IMorpher, IAdjectivizer, IAccentizer
     {
@@ -14,11 +13,11 @@ namespace Morpher.WebService.V3.Russian
             _client = client.Russian;
         }
 
-        public Data.DeclensionResult Declension(string s, General.Data.DeclensionFlags? flags = null)
+        public DeclensionResult Declension(string s, General.DeclensionFlags? flags = null)
         {
             try
             {
-                return new Data.DeclensionResult(
+                return new DeclensionResult(
                     _client.Parse(s, flags.MapFlags()));
             }
             catch (Exception exc)
@@ -33,8 +32,8 @@ namespace Morpher.WebService.V3.Russian
             {
                 var result = _client.Spell(n, unit);
                 NumberSpelling numberSpelling = new NumberSpelling(
-                    new Data.DeclensionForms(result.NumberDeclension),
-                    new Data.DeclensionForms(result.UnitDeclension));
+                    new DeclensionForms(result.NumberDeclension),
+                    new DeclensionForms(result.UnitDeclension));
                 return numberSpelling;
             }
             catch (Exception exc)
@@ -43,12 +42,12 @@ namespace Morpher.WebService.V3.Russian
             }
         }
 
-        public Data.AdjectiveGenders AdjectiveGenders(string s)
+        public AdjectiveGenders AdjectiveGenders(string s)
         {
             try
             {
                 var result = _client.AdjectiveGenders(s);
-                return new Data.AdjectiveGenders(result);
+                return new AdjectiveGenders(result);
             }
             catch (Exception exc)
             {

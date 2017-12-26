@@ -1,9 +1,9 @@
-﻿namespace Morpher.WebService.V3.General.Data.Middlewares
+﻿namespace Morpher.WebService.V3.General
 {
     using System;
     using System.Threading.Tasks;
     using Microsoft.Owin;
-    using Services;
+    using General;
 
     public class UserCacheLoaderMiddleware : OwinMiddleware
     {

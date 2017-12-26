@@ -17,14 +17,13 @@ namespace Morpher.WebService.V3.UnitTests
 
     using Autofac;
     using Autofac.Integration.WebApi;
-    using General.Data;
-    using General.Data.Services;
+    using General;
     using Microsoft.Owin.Testing;
     using Moq;
     using NUnit.Framework;
     using Owin;
     using Russian;
-    using DeclensionFlags = General.Data.DeclensionFlags;
+    using DeclensionFlags = General.DeclensionFlags;
     using DeclensionResult = Russian.Data.DeclensionResult;
 
     [TestFixture]
