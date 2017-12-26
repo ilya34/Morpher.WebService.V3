@@ -41,28 +41,35 @@
                     logEntity.UserId);
             }
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                SqlBulkCopyOptions options =
-                      SqlBulkCopyOptions.TableLock
-                    | SqlBulkCopyOptions.FireTriggers
-                    | SqlBulkCopyOptions.UseInternalTransaction;
-
-                using (SqlBulkCopy bulkCopy = new SqlBulkCopy(
-                    connection,
-                    options,
-                    null))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    foreach (DataColumn column in dataTable.Columns)
-                    {
-                        bulkCopy.ColumnMappings.Add(column.ColumnName, column.ColumnName);
-                    }
+                    SqlBulkCopyOptions options =
+                        SqlBulkCopyOptions.TableLock
+                        | SqlBulkCopyOptions.FireTriggers
+                        | SqlBulkCopyOptions.UseInternalTransaction;
 
-                    bulkCopy.DestinationTableName = dataTable.TableName;
-                    connection.Open();
-                    bulkCopy.WriteToServer(dataTable);
-                    connection.Close();
+                    using (SqlBulkCopy bulkCopy = new SqlBulkCopy(
+                        connection,
+                        options,
+                        null))
+                    {
+                        foreach (DataColumn column in dataTable.Columns)
+                        {
+                            bulkCopy.ColumnMappings.Add(column.ColumnName, column.ColumnName);
+                        }
+
+                        bulkCopy.DestinationTableName = dataTable.TableName;
+                        connection.Open();
+                        bulkCopy.WriteToServer(dataTable);
+                        connection.Close();
+                    }
                 }
+            }
+            catch (Exception exc)
+            {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(exc);
             }
         }
     }
