@@ -2,11 +2,9 @@
 {
     using System;
     using System.IO;
-    using System.Runtime.Serialization;
     using System.Text;
     using System.Threading.Tasks;
     using Microsoft.Owin;
-    using Newtonsoft.Json;
 
     public class ThrottlingMiddleware : OwinMiddleware
     {

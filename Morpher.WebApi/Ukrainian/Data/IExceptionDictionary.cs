@@ -1,7 +1,6 @@
 ﻿namespace Morpher.WebService.V3.Ukrainian.Data
 {
     using System.Collections.Generic;
-    using Data;
 
     public interface IExceptionDictionary
     {
