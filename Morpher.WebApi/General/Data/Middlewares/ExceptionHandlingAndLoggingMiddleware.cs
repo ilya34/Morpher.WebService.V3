@@ -8,10 +8,18 @@ using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Morpher.WebService.V3.General
 {
-    public class ExceptionHandlingMiddleware : OwinMiddleware
+    public class ExceptionHandlingAndLoggingMiddleware : OwinMiddleware
     {
-        public ExceptionHandlingMiddleware(OwinMiddleware next) : base(next)
+        private readonly IMorpherLog _morpherLog;
+        private readonly IAttributeUrls _attributeUrls;
+
+        public ExceptionHandlingAndLoggingMiddleware(
+            OwinMiddleware next,
+            IMorpherLog morpherLog,
+            IAttributeUrls attributeUrls) : base(next)
         {
+            _morpherLog = morpherLog;
+            _attributeUrls = attributeUrls;
         }
 
         ResponseFormat GetResponseFormat(IOwinContext context)
@@ -56,6 +64,16 @@ namespace Morpher.WebService.V3.General
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
+                }
+
+                context.Response.Headers.Set("Error-Code", exception.Code.ToString());
+            }
+            finally
+            {
+                string method = $"{context.Request.Method.ToLowerInvariant()}:{context.Request.Path.ToString().ToLowerInvariant()}";
+                if (_attributeUrls.Urls.ContainsKey(method))
+                {
+                    _morpherLog.Log(context);
                 }
             }
         }

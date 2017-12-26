@@ -116,7 +116,7 @@ namespace Morpher.WebService.V3.UnitTests
                 .As<IAttributeUrls>()
                 .Keyed<IAttributeUrls>("Logger");
 
-            builder.RegisterType<LoggingMiddleware>();
+            builder.RegisterType<ExceptionHandlingAndLoggingMiddleware>();
 
             using (var testServer = PrepareTestServer(builder))
             {
@@ -176,7 +176,7 @@ namespace Morpher.WebService.V3.UnitTests
                 .As<IAttributeUrls>()
                 .Keyed<IAttributeUrls>("Logger");
 
-            builder.RegisterType<LoggingMiddleware>();
+            builder.RegisterType<ExceptionHandlingAndLoggingMiddleware>();
 
             using (var testServer = PrepareTestServer(builder))
             {
@@ -211,7 +211,8 @@ namespace Morpher.WebService.V3.UnitTests
 
             // Fix user-agent & remote ip
             builder.RegisterType<FixRequestTestDataMiddleware>();
-            builder.RegisterType<ExceptionHandlingMiddleware>();
+            builder.RegisterInstance(Mock.Of<IMorpherLog>()).As<IMorpherLog>();
+            builder.RegisterType<ExceptionHandlingAndLoggingMiddleware>();
             builder.RegisterType<ThrottlingMiddleware>();
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()
@@ -269,7 +270,8 @@ namespace Morpher.WebService.V3.UnitTests
 
             // Fix user-agent & remote ip
             builder.RegisterType<FixRequestTestDataMiddleware>();
-            builder.RegisterType<ExceptionHandlingMiddleware>();
+            builder.RegisterInstance(Mock.Of<IMorpherLog>()).As<IMorpherLog>();
+            builder.RegisterType<ExceptionHandlingAndLoggingMiddleware>();
             builder.RegisterType<ThrottlingMiddleware>();
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()
@@ -335,7 +337,8 @@ namespace Morpher.WebService.V3.UnitTests
 
             // Fix user-agent & remote ip
             builder.RegisterType<FixRequestTestDataMiddleware>();
-            builder.RegisterType<ExceptionHandlingMiddleware>();
+            builder.RegisterType<ExceptionHandlingAndLoggingMiddleware>();
+            builder.RegisterInstance(Mock.Of<IMorpherLog>()).As<IMorpherLog>();
             builder.RegisterType<ThrottlingMiddleware>();
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()

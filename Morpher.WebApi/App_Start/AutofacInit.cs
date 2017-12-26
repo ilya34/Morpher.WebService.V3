@@ -29,7 +29,7 @@ namespace Morpher.WebService.V3
             // Exception Filter
             builder.Register(context => new MorpherExceptionFilterAttribute())
                 .AsWebApiExceptionFilterFor<ApiController>().SingleInstance();
-            builder.RegisterType<ExceptionHandlingMiddleware>();
+            builder.RegisterType<ExceptionHandlingAndLoggingMiddleware>();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterWebApiFilterProvider(config);
             builder.RegisterWebApiModelBinderProvider();
@@ -116,7 +116,7 @@ namespace Morpher.WebService.V3
                     (pi, ctx) => pi.ParameterType == typeof(IAttributeUrls),
                     (pi, ctx) => ctx.ResolveKeyed<IAttributeUrls>("ApiThrottler")));
 
-            builder.RegisterType<LoggingMiddleware>()
+            builder.RegisterType<ExceptionHandlingAndLoggingMiddleware>()
                 .WithParameter(new ResolvedParameter(
                     (pi, ctx) => pi.ParameterType == typeof(IAttributeUrls),
                     (pi, ctx) => ctx.ResolveKeyed<IAttributeUrls>("Logger")));
