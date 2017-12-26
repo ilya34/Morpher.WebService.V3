@@ -67,9 +67,10 @@
                     }
                 }
             }
+            // Elmah will not send mail for these error as it is out of IIS pipeline
             catch (Exception exc)
             {
-                Elmah.ErrorSignal.FromCurrentContext().Raise(exc);
+                Mail.SendErrorEmail(exc);
             }
         }
     }

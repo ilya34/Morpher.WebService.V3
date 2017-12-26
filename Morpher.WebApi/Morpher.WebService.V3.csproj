@@ -217,6 +217,7 @@
     <Compile Include="General\Data\Services\UserCacheSyncer.cs" />
     <Compile Include="General\Gzip.cs" />
     <Compile Include="General\LemmaNormalizer.cs" />
+    <Compile Include="General\Mail.cs" />
     <Compile Include="Russian\Data\AdjectiveGenders.cs" />
     <Compile Include="App_Start\AutofacInit.cs" />
     <Compile Include="App_Start\Startup.cs" />
