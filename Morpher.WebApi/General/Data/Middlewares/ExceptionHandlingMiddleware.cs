@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -15,9 +16,22 @@ namespace Morpher.WebService.V3.General
         {
         }
 
+        ResponseFormat GetResponseFormat(IOwinContext context)
+        {
+            var requestedResponseFormat =
+                context.Request.Query.Get("format") ?? context.Request.Headers.Get("Accept");
+            ResponseFormat responseFormat = ResponseFormat.Xml;
+            if (requestedResponseFormat != null
+                && (requestedResponseFormat.ToLowerInvariant() == "json"
+                    || requestedResponseFormat.Contains("application/json")))
+                responseFormat = ResponseFormat.Json;
+            return responseFormat;
+        }
 
         public override async Task Invoke(IOwinContext context)
         {
+            var stream = context.Response.Body;
+            var t = stream as MemoryStream;
             try
             {
                 await Next.Invoke(context);
@@ -26,7 +40,7 @@ namespace Morpher.WebService.V3.General
             {
                 var exception = exc as MorpherException ?? new ServerException(exc);
                 var ctx = HttpContext.Current;
-                ResponseFormat responseFormat = ctx.Request.GetResponseFormat();
+                ResponseFormat responseFormat = GetResponseFormat(context);
                 ctx.Response.Clear();
                 ctx.Response.StatusCode = (int)exception.ResponseCode;
                 var responseObject = new ServiceErrorMessage(exception);

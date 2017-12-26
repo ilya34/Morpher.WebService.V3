@@ -214,7 +214,7 @@ namespace Morpher.WebService.V3.UnitTests
 
             // Fix user-agent & remote ip
             builder.RegisterType<FixRequestTestDataMiddleware>();
-
+            builder.RegisterType<ExceptionHandlingMiddleware>();
             builder.RegisterType<ThrottlingMiddleware>();
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()
@@ -272,6 +272,7 @@ namespace Morpher.WebService.V3.UnitTests
 
             // Fix user-agent & remote ip
             builder.RegisterType<FixRequestTestDataMiddleware>();
+            builder.RegisterType<ExceptionHandlingMiddleware>();
             builder.RegisterType<ThrottlingMiddleware>();
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()
@@ -337,6 +338,7 @@ namespace Morpher.WebService.V3.UnitTests
 
             // Fix user-agent & remote ip
             builder.RegisterType<FixRequestTestDataMiddleware>();
+            builder.RegisterType<ExceptionHandlingMiddleware>();
             builder.RegisterType<ThrottlingMiddleware>();
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()
