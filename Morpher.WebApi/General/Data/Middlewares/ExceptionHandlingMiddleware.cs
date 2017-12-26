@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 using System.Xml.Serialization;
 using Microsoft.Owin;
 using Newtonsoft.Json;
@@ -37,22 +38,24 @@ namespace Morpher.WebService.V3.General
             catch (Exception exc)
             {
                 var exception = exc as MorpherException ?? new ServerException(exc);
-                var ctx = HttpContext.Current;
                 ResponseFormat responseFormat = GetResponseFormat(context);
-                ctx.Response.Clear();
-                ctx.Response.StatusCode = (int)exception.ResponseCode;
                 var responseObject = new ServiceErrorMessage(exception);
+                context.Response.StatusCode = (int) exception.ResponseCode;
                 switch (responseFormat)
                 {
                     case ResponseFormat.Xml:
-                        ctx.Response.ContentType = "application/xml";
-                        XmlSerializer serializer = new XmlSerializer(typeof(ServiceErrorMessage));
-                        serializer.Serialize(ctx.Response.OutputStream, responseObject);
+                        context.Response.ContentType = "application/xml";
+                        using (var sw = new StringWriter())
+                        {
+                            XmlSerializer serializer = new XmlSerializer(typeof(ServiceErrorMessage));
+                            serializer.Serialize(sw, responseObject);
+                            context.Response.Write(sw.ToString());
+                        }
+
                         break;
                     case ResponseFormat.Json:
-                        ctx.Response.ContentType = "application/json";
-                        var byteArray = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(responseObject, Formatting.Indented));
-                        await ctx.Response.OutputStream.WriteAsync(byteArray, 0, byteArray.Length);
+                        context.Response.ContentType = "application/json";
+                        context.Response.Write(JsonConvert.SerializeObject(responseObject, Formatting.Indented));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
