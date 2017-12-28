@@ -120,7 +120,7 @@ namespace Morpher.WebService.V3
                     (pi, ctx) => pi.ParameterType == typeof(IAttributeUrls),
                     (pi, ctx) => ctx.ResolveKeyed<IAttributeUrls>("ApiThrottler")));
 
-            builder.RegisterType<LoggingMiddleware>()
+            builder.RegisterType<ExceptionHandlingAndLoggingMiddleware>()
                 .WithParameter(new ResolvedParameter(
                     (pi, ctx) => pi.ParameterType == typeof(IAttributeUrls),
                     (pi, ctx) => ctx.ResolveKeyed<IAttributeUrls>("Logger")));

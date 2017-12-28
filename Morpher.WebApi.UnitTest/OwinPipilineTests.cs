@@ -120,7 +120,7 @@ namespace Morpher.WebService.V3.UnitTests
                 .As<IAttributeUrls>()
                 .Keyed<IAttributeUrls>("Logger");
 
-            builder.RegisterType<LoggingMiddleware>();
+            builder.RegisterType<ExceptionHandlingAndLoggingMiddleware>();
 
             using (var testServer = PrepareTestServer(builder))
             {
@@ -180,7 +180,7 @@ namespace Morpher.WebService.V3.UnitTests
                 .As<IAttributeUrls>()
                 .Keyed<IAttributeUrls>("Logger");
 
-            builder.RegisterType<LoggingMiddleware>();
+            builder.RegisterType<ExceptionHandlingAndLoggingMiddleware>();
 
             using (var testServer = PrepareTestServer(builder))
             {
