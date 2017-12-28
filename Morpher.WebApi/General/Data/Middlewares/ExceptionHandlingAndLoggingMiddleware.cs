@@ -66,6 +66,9 @@ namespace Morpher.WebService.V3.General.Data
                         throw new ArgumentOutOfRangeException();
                 }
 
+                if (context.Response.StatusCode == 500)
+                    Mail.SendErrorEmail(exc);
+
                 context.Response.Headers.Set("Error-Code", exception.Code.ToString());
             }
             finally
