@@ -68,7 +68,7 @@ namespace Morpher.WebService.V3.Russian.Data
         public string Prepositional { get; set; }
 
         [JsonProperty(Order = 6, PropertyName = "П_о", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [XmlElement("П_о", Order = 8)]
+        [XmlElement("П_о", Order = 6)]
         [OnlyForPaid]
         public string PrepositionalWithPre { get; set; }
     }

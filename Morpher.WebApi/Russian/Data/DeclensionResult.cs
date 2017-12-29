@@ -61,23 +61,23 @@ namespace Morpher.WebService.V3.Russian.Data
         [CheckForPaid]
         public virtual DeclensionForms Plural { get; set; }
 
-        [JsonProperty(PropertyName = "где", DefaultValueHandling = DefaultValueHandling.Ignore, Order = 10)]
-        [XmlElement("где", Order = 10)]
+        [JsonProperty(PropertyName = "где", DefaultValueHandling = DefaultValueHandling.Ignore, Order = 9)]
+        [XmlElement("где", Order = 9)]
         [OnlyForPaid]
         public virtual string Where { get; set; }
 
-        [JsonProperty(Order = 11, PropertyName = "куда", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [XmlElement("куда", Order = 11)]
+        [JsonProperty(Order = 10, PropertyName = "куда", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [XmlElement("куда", Order = 10)]
         [OnlyForPaid]
         public virtual string To { get; set; }
 
-        [JsonProperty(Order = 12, PropertyName = "откуда", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [XmlElement("откуда", Order = 12)]
+        [JsonProperty(Order = 11, PropertyName = "откуда", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [XmlElement("откуда", Order = 11)]
         [OnlyForPaid]
         public virtual string From { get; set; }
 
-        [JsonProperty(PropertyName = "ФИО", DefaultValueHandling = DefaultValueHandling.Ignore, Order = 13)]
-        [XmlElement("ФИО", Order = 13)]
+        [JsonProperty(PropertyName = "ФИО", DefaultValueHandling = DefaultValueHandling.Ignore, Order = 12)]
+        [XmlElement("ФИО", Order = 12)]
         public virtual FullName FullName { get; set; }
     }
 }

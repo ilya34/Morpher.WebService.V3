@@ -27,11 +27,11 @@ namespace Morpher.WebService.V3.General.Data
         }
 
         [JsonProperty(PropertyName = "code", Order = 0)]
-        [XmlElement("code")]
+        [XmlElement("code", Order = 0)]
         public int Code { get; set; }
 
         [JsonProperty(PropertyName = "message", Order = 1)]
-        [XmlElement("message")]
+        [XmlElement("message", Order = 1)]
         public string Message { get; set; }
     }
 }
