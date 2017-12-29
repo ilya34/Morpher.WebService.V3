@@ -203,11 +203,12 @@
     <Compile Include="General\Data\Extensions\IOwinRequestExtensions.cs" />
     <Compile Include="General\Data\Extensions\StringExtensions.cs" />
     <Compile Include="General\Data\Mail.cs" />
-    <Compile Include="General\Data\Middlewares\ExceptionHandlingAndLoggingMiddleware.cs" />
+    <Compile Include="General\Data\Middlewares\ExceptionHandlingMiddleware.cs" />
     <Compile Include="General\Data\Filters\MorpherExceptionFilterAttribute.cs" />
     <Compile Include="General\Data\Interfaces\IAttributeUrls.cs" />
     <Compile Include="General\Data\Interfaces\ICorrectionCache.cs" />
     <Compile Include="General\Data\JobFactory.cs" />
+    <Compile Include="General\Data\Middlewares\LoggingMiddleware.cs" />
     <Compile Include="General\Data\Middlewares\UserCacheLoaderMiddleware.cs" />
     <Compile Include="General\Data\PlainTextFormatter.cs" />
     <Compile Include="General\Data\Services\UserCacheSyncer.cs" />

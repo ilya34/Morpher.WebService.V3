@@ -1,4 +1,5 @@
-﻿using Morpher.WebService.V3.Russian.Data;
+﻿using Morpher.WebService.V3.General.Data.Middlewares;
+using Morpher.WebService.V3.Russian.Data;
 
 namespace Morpher.WebService.V3.UnitTests
 {
@@ -120,7 +121,7 @@ namespace Morpher.WebService.V3.UnitTests
                 .As<IAttributeUrls>()
                 .Keyed<IAttributeUrls>("Logger");
 
-            builder.RegisterType<ExceptionHandlingAndLoggingMiddleware>();
+            builder.RegisterType<LoggingMiddleware>();
 
             using (var testServer = PrepareTestServer(builder))
             {
@@ -180,7 +181,7 @@ namespace Morpher.WebService.V3.UnitTests
                 .As<IAttributeUrls>()
                 .Keyed<IAttributeUrls>("Logger");
 
-            builder.RegisterType<ExceptionHandlingAndLoggingMiddleware>();
+            builder.RegisterType<LoggingMiddleware>();
 
             using (var testServer = PrepareTestServer(builder))
             {

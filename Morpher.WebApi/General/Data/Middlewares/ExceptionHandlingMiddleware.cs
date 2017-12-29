@@ -8,18 +8,11 @@ using Newtonsoft.Json;
 
 namespace Morpher.WebService.V3.General.Data
 {
-    public class ExceptionHandlingAndLoggingMiddleware : OwinMiddleware
+    public class ExceptionHandlingMiddleware : OwinMiddleware
     {
-        private readonly IMorpherLog _morpherLog;
-        private readonly IAttributeUrls _attributeUrls;
-
-        public ExceptionHandlingAndLoggingMiddleware(
-            OwinMiddleware next,
-            IMorpherLog morpherLog,
-            IAttributeUrls attributeUrls) : base(next)
+        public ExceptionHandlingMiddleware(
+            OwinMiddleware next) : base(next)
         {
-            _morpherLog = morpherLog;
-            _attributeUrls = attributeUrls;
         }
 
         ResponseFormat GetResponseFormat(IOwinContext context)
@@ -70,14 +63,6 @@ namespace Morpher.WebService.V3.General.Data
                     Mail.SendErrorEmail(exc);
 
                 context.Response.Headers.Set("Error-Code", exception.Code.ToString());
-            }
-            finally
-            {
-                string method = $"{context.Request.Method.ToLowerInvariant()}:{context.Request.Path.ToString().ToLowerInvariant()}";
-                if (_attributeUrls.Urls.ContainsKey(method))
-                {
-                    _morpherLog.Log(context);
-                }
             }
         }
     }
