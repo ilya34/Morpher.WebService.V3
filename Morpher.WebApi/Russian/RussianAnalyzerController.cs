@@ -1,5 +1,6 @@
 ﻿namespace Morpher.WebService.V3.Russian
 {
+    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
@@ -11,16 +12,22 @@
     [RoutePrefix("russian")]
     public class RussianAnalyzerController : ApiController
     {
-        private readonly IRussianAnalyzer _analyzer;
+        private readonly IMorpher _morpher;
+        private readonly IAdjectivizer _adjectivizer;
+        private readonly IAccentizer _accentizer;
         private readonly IResultTrimmer _resultTrimmer;
         private readonly IExceptionDictionary _exceptionDictionary;
 
         public RussianAnalyzerController(
-            IRussianAnalyzer analyzer,
+            IMorpher morpher,
+            IAdjectivizer adjectivizer,
+            IAccentizer accentizer,
             IResultTrimmer resultTrimmer,
             IExceptionDictionary exceptionDictionary)
         {
-            _analyzer = analyzer;
+            _morpher = morpher;
+            _adjectivizer = adjectivizer;
+            _accentizer = accentizer;
             _resultTrimmer = resultTrimmer;
             _exceptionDictionary = exceptionDictionary;
         }
@@ -42,11 +49,43 @@
             }
 
             Data.DeclensionResult declensionResult =
-                _analyzer.Declension(s, flags);
+                _morpher.Declension(s, flags);
 
             _resultTrimmer.Trim(declensionResult, Request.GetToken());
 
             return Request.CreateResponse(HttpStatusCode.OK, declensionResult, format);
+        }
+
+        [Route("declension")]
+        [ThrottleThis(1, TarificationMode.PerWord)]
+        [HttpPost]
+        public HttpResponseMessage DeclensionList(
+            [FromBody]string text,
+            [FromUri]General.Data.DeclensionFlags? flags = null,
+            [FromUri]ResponseFormat? format = null)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                throw new RequiredParameterIsNotSpecifiedException(nameof(text));
+
+            var words = text.Split('\n');
+            
+            Func<string, General.Data.DeclensionFlags?, Data.DeclensionResult> inflector =
+                (s, f) =>
+            {
+                var result = _morpher.Declension(s, f);
+                _resultTrimmer.Trim(result, Request.GetToken());
+                return result;
+            };
+
+            return format == ResponseFormat.Json ?
+            Request.CreateResponse(
+                HttpStatusCode.OK,
+                DeclensionListResultJson.InflectList(inflector, words, flags),
+                ResponseFormat.Json) : 
+            Request.CreateResponse(
+                HttpStatusCode.OK,
+                DeclensionListResultXml.InflectList(inflector, words, flags),
+                ResponseFormat.Xml);
         }
 
         [Route("spell")]
@@ -60,7 +99,7 @@
                 throw new RequiredParameterIsNotSpecifiedException(nameof(unit));
             }
 
-            var s = _analyzer.Spell(n, unit);
+            var s = _morpher.Spell(n, unit);
 
              _resultTrimmer.Trim(s, Request.GetToken());
 
@@ -78,7 +117,7 @@
                 throw new RequiredParameterIsNotSpecifiedException(nameof(s));
             }
 
-            List<string> adjectives = _analyzer.Adjectives(s);
+            List<string> adjectives = _adjectivizer.Adjectives(s);
             return Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
         }
 
@@ -93,7 +132,7 @@
                 throw new RequiredParameterIsNotSpecifiedException(nameof(s));
             }
 
-            Data.AdjectiveGenders adjectives = _analyzer.AdjectiveGenders(s);
+            Data.AdjectiveGenders adjectives = _morpher.AdjectiveGenders(s);
             return Request.CreateResponse(HttpStatusCode.OK, adjectives, format);
         }
 
@@ -108,7 +147,7 @@
                 throw new RequiredParameterIsNotSpecifiedException(nameof(text));
             }
 
-            string accentized = _analyzer.Accentizer(text);
+            string accentized = _accentizer.Accentizer(text);
             return Request.CreateResponse(HttpStatusCode.OK, accentized, format);
         }
 

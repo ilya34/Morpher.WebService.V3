@@ -1,8 +1,7 @@
-﻿namespace Morpher.WebService.V3.General.Data
-{
-    using Ukrainian.Data;
-    using DeclensionResult = Ukrainian.Data.DeclensionResult;
+﻿using Morpher.WebService.V3.General.Data;
 
+namespace Morpher.WebService.V3.Ukrainian.Data
+{
     public interface IUkrainianAnalyzer
     {
         DeclensionResult Declension(string s, DeclensionFlags? flags = null);

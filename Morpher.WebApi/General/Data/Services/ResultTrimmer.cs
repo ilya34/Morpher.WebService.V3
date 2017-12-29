@@ -48,7 +48,7 @@
             var propsToGoIn = obj
                 .GetType()
                 .GetProperties()
-                .Where(info => info.GetCustomAttribute(typeof(CheckForPayedAttribute)) != null)
+                .Where(info => info.GetCustomAttribute(typeof(CheckForPaidAttribute)) != null)
                 .ToArray();
 
             foreach (var info in propsToGoIn)

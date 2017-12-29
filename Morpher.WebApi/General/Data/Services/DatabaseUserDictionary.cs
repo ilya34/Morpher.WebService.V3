@@ -161,6 +161,11 @@
             }
 
             var cache = (MorpherCacheObject)_morpherCache.Get(token.ToString().ToLowerInvariant());
+            if (cache == null)
+            {
+                var cacheJson = _morpherCache.GetAllAsJson();
+                throw new Exception($"Cant find user in cache. Cache: {cacheJson}");
+            }
 
             var correctionCache = (List<Name>)_correctionCache.Get(cache.UserId.ToString().ToLowerInvariant());
 

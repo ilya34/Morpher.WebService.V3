@@ -8,6 +8,13 @@
 
     public class AttributeUrls : IAttributeUrls
     {
+        //TODO: All methods
+        private static readonly Dictionary<Type, string> Methods = new Dictionary<Type, string>()
+        {
+            {typeof(HttpGetAttribute), "get" },
+            {typeof(HttpPostAttribute), "post" }
+        };
+
         public Dictionary<string, ThrottleThisAttribute> Urls { get; } = new Dictionary<string, ThrottleThisAttribute>();
 
         public AttributeUrls(Type attributeType)
@@ -27,10 +34,22 @@
                 {
                     var methodRoute = GetActionRoute(methodInfo);
                     var attribute = methodInfo.GetCustomAttribute<ThrottleThisAttribute>();
-                    Urls.Add($"{controllerRoute.ToLowerInvariant()}/{methodRoute.ToLowerInvariant()}", attribute);
+                    foreach (var method in GetControllerMethods(methodInfo))
+                        Urls.Add($"{method}:{controllerRoute.ToLowerInvariant()}/{methodRoute.ToLowerInvariant()}", attribute);
                 }
             }
         }
+
+        public static IEnumerable<string> GetControllerMethods(MethodInfo methodInfo)
+        {
+            List<string> list = (
+                from method in Methods
+                where methodInfo.GetCustomAttribute(method.Key) != null
+                select method.Value).ToList();
+            if (list.Count == 0) list.Add("get");
+            return list;
+        }
+
 
         public static string GetControllerRoute(Type controller)
         {

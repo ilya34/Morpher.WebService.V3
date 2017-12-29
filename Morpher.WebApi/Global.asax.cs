@@ -16,7 +16,7 @@
 
     public class WebApiApplication : System.Web.HttpApplication
     {
-        private readonly bool isLocal = Convert.ToBoolean(ConfigurationManager.AppSettings["RunAsLocalService"]);
+        private readonly bool isLocal = Convert.ToBoolean(((NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings"))["RunAsLocalService"]);
 
         protected void Application_Start()
         {
@@ -71,8 +71,8 @@
                 args.Dismiss();
             }
 
-            var statusCode = HttpContext.Current.Response.StatusCode;
-            if (statusCode != (int) HttpStatusCode.InternalServerError)
+            var statusCode = (args.Exception as HttpException)?.GetHttpCode() ?? -1;
+            if (statusCode != (int)HttpStatusCode.InternalServerError)
             {
                 args.Dismiss();
             }

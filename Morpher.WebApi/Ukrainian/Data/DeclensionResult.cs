@@ -15,7 +15,21 @@
         public DeclensionResult(Ukrainian.DeclensionResult serviceResult)
             : base(serviceResult)
         {
-            Gender = serviceResult.Gender;
+            switch (serviceResult.Gender)
+            {
+                case Ukrainian.Gender.Masculine:
+                    Gender = "Чоловічий";
+                    break;
+                case Ukrainian.Gender.Feminine:
+                    Gender = "Жіночий";
+                    break;
+                case Ukrainian.Gender.Neuter:
+                    Gender = "Середній";
+                    break;
+                case Ukrainian.Gender.Plural:
+                case null:
+                    break;
+            }
         }
 
         [DataMember(Name = "рід", EmitDefaultValue = false, Order = 7)]
