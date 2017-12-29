@@ -4,8 +4,8 @@ using System.Xml.Serialization;
 
 namespace Morpher.WebService.V3.Qazaq
 {
-    [DataContract(Name = "көпше")]
-    [XmlRoot("көпше")]
+    [DataContract(Name = "declension")]
+    [XmlRoot("declension")]
     public class DeclensionForms
     {
         [DataMember(Name = "A", Order = 0, EmitDefaultValue = false)]
@@ -24,12 +24,12 @@ namespace Morpher.WebService.V3.Qazaq
         [XmlElement("Т", Order = 3)]
         public string Accusative { get; set; } // Табыс септік, винительный падеж
 
-        [DataMember(Name = "Ж", Order = 4, EmitDefaultValue = false)]
-        [XmlElement("Ж", Order = 4)]
+        [DataMember(Name = "Ш", Order = 4, EmitDefaultValue = false)]
+        [XmlElement("Ш", Order = 4)]
         public string Ablative { get; set; } // Шығыс септік, исходный падеж
 
-        [DataMember(Name = "Ш", Order = 5, EmitDefaultValue = false)]
-        [XmlElement("Ш", Order = 5)]
+        [DataMember(Name = "Ж", Order = 5, EmitDefaultValue = false)]
+        [XmlElement("Ж", Order = 5)]
         public string Locative { get; set; } // Жатыс септік, местный падеж
 
         [DataMember(Name = "К", Order = 6, EmitDefaultValue = false)]
