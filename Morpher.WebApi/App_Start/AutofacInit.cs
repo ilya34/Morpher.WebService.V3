@@ -151,7 +151,7 @@ namespace Morpher.WebService.V3
             string accentizerPath = Path.Combine(binPath,"Accentizer2.dll");
             string adjectivizerPath = Path.Combine(binPath, "Adjectivizer.dll");
             string ukrainianPath = Path.Combine(binPath, "Morpher.Ukrainian.dll");
-            string qazaqPath = Path.Combine(binPath, "Morpher.Kazakh.dll");
+            string qazaqPath = Path.Combine(binPath, "Kazakh.Managed.dll");
 
             string externalAnalyzer =
                 ((NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings")).Get("ExternalAnalyzer");
