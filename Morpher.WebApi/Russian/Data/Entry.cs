@@ -5,7 +5,6 @@
     using General.Data;
     using Newtonsoft.Json;
 
-    [XmlRoot]
     public class Entry
     {
         public Entry(DeclensionFormsForCorrection singular, DeclensionFormsForCorrection plural)
@@ -48,15 +47,15 @@
         }
 
         [XmlAttribute("gender")]
-        [JsonProperty(PropertyName = "gender", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "gender", DefaultValueHandling = DefaultValueHandling.Ignore, Order = 0)]
         public Gender GenderXml { get; set; }
 
-        [JsonProperty(PropertyName = "singular", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [XmlElement("singular")]
+        [JsonProperty(PropertyName = "singular", DefaultValueHandling = DefaultValueHandling.Ignore, Order = 1)]
+        [XmlElement("singular", Order = 0)]
         public DeclensionFormsForCorrection Singular { get; set; }
 
-        [JsonProperty(PropertyName = "plural", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [XmlElement("plural")]
+        [JsonProperty(PropertyName = "plural", DefaultValueHandling = DefaultValueHandling.Ignore, Order = 2)]
+        [XmlElement("plural", Order = 1)]
         public DeclensionFormsForCorrection Plural { get; set; }
     }
 }

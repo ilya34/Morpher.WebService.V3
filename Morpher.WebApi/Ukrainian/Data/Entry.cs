@@ -5,7 +5,6 @@
     using General.Data;
     using Newtonsoft.Json;
 
-    [XmlRoot]
     public class Entry
     {
         public Entry(DeclensionForms singular)
@@ -46,10 +45,10 @@
         }
 
         [XmlAttribute("gender")]
-        [JsonProperty(PropertyName = "gender", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "gender", DefaultValueHandling = DefaultValueHandling.Ignore, Order = 0)]
         public Gender GenderXml { get; set; }
 
-        [JsonProperty(PropertyName = "singular", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "singular", DefaultValueHandling = DefaultValueHandling.Ignore, Order = 1)]
         [XmlElement("singular")]
         public DeclensionForms Singular { get; set; }
     }
