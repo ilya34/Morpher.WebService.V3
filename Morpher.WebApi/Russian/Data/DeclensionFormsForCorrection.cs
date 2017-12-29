@@ -1,11 +1,12 @@
-﻿namespace Morpher.WebService.V3.Russian.Data
+﻿using Newtonsoft.Json;
+
+namespace Morpher.WebService.V3.Russian.Data
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.Serialization;
+
     using System.Xml.Serialization;
 
-    [DataContract]
     [XmlRoot]
     public class DeclensionFormsForCorrection
     {
@@ -35,31 +36,31 @@
             Locative = correctionForms.Locative;
         }
 
-        [DataMember(Order = 0, Name = "И", EmitDefaultValue = false)]
+        [JsonProperty(Order = 0, PropertyName = "И", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("И")]
         public string Nominative { get; set; }
 
-        [DataMember(Order = 1, Name = "Р", EmitDefaultValue = false)]
+        [JsonProperty(Order = 1, PropertyName = "Р", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("Р")]
         public string Genitive { get; set; }
 
-        [DataMember(Order = 2, Name = "Д", EmitDefaultValue = false)]
+        [JsonProperty(Order = 2, PropertyName = "Д", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("Д")]
         public string Dative { get; set; }
 
-        [DataMember(Order = 3, Name = "В", EmitDefaultValue = false)]
+        [JsonProperty(Order = 3, PropertyName = "В", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("В")]
         public string Accusative { get; set; }
 
-        [DataMember(Order = 4, Name = "Т", EmitDefaultValue = false)]
+        [JsonProperty(Order = 4, PropertyName = "Т", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("Т")]
         public string Instrumental { get; set; }
 
-        [DataMember(Order = 5, Name = "П", EmitDefaultValue = false)]
+        [JsonProperty(Order = 5, PropertyName = "П", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("П")]
         public string Prepositional { get; set; }
 
-        [DataMember(Order = 6, Name = "М", EmitDefaultValue = false)]
+        [JsonProperty(Order = 6, PropertyName = "М", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("М")]
         public string Locative { get; set; }
     }

@@ -1,12 +1,13 @@
-﻿namespace Morpher.WebService.V3.Ukrainian.Data
+﻿using Newtonsoft.Json;
+
+namespace Morpher.WebService.V3.Ukrainian.Data
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.Serialization;
+
     using System.Xml.Serialization;
     using Models;
 
-    [DataContract]
     [XmlRoot]
     public class DeclensionForms
     {    
@@ -50,31 +51,31 @@
             Vocative = nameForms.SingleOrDefault(form => form.FormID == 'К')?.AccentedText;
         }
 
-        [DataMember(Order = 0, Name = "Н", EmitDefaultValue = false)]
+        [JsonProperty(Order = 0, PropertyName = "Н", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("Н", Order = 0)]
         public string Nominative { get; set; }
 
-        [DataMember(Order = 1, Name = "Р", EmitDefaultValue = false)]
+        [JsonProperty(Order = 1, PropertyName = "Р", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("Р", Order = 1)]
         public string Genitive { get; set; }
 
-        [DataMember(Order = 2, Name = "Д", EmitDefaultValue = false)]
+        [JsonProperty(Order = 2, PropertyName = "Д", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("Д", Order = 2)]
         public string Dative { get; set; }
 
-        [DataMember(Order = 3, Name = "З", EmitDefaultValue = false)]
+        [JsonProperty(Order = 3, PropertyName = "З", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("З", Order = 3)]
         public string Accusative { get; set; }
 
-        [DataMember(Order = 4, Name = "О", EmitDefaultValue = false)]
+        [JsonProperty(Order = 4, PropertyName = "О", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("О", Order = 4)]
         public string Instrumental { get; set; }
 
-        [DataMember(Order = 5, Name = "М", EmitDefaultValue = false)]
+        [JsonProperty(Order = 5, PropertyName = "М", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("М", Order = 5)]
         public string Prepositional { get; set; }
 
-        [DataMember(Order = 6, Name = "К", EmitDefaultValue = false)]
+        [JsonProperty(Order = 6, PropertyName = "К", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("К", Order = 6)]
         public string Vocative { get; set; }
     }

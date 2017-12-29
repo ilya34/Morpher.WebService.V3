@@ -1,10 +1,11 @@
-﻿namespace Morpher.WebService.V3.General.Data
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+
+namespace Morpher.WebService.V3.General.Data
 {
-    using System.Runtime.Serialization;
     using System.Xml.Serialization;
     using Exceptions;
 
-    [DataContract(Name = "error")]
     [XmlRoot]
     public class ServiceErrorMessage
     {
@@ -24,11 +25,11 @@
             Message = exception.Message;
         }
 
-        [DataMember(Name = "code", Order = 0)]
+        [JsonProperty(PropertyName = "code", Order = 0)]
         [XmlElement("code")]
         public int Code { get; set; }
 
-        [DataMember(Name = "message", Order = 1)]
+        [JsonProperty(PropertyName = "message", Order = 1)]
         [XmlElement("message")]
         public string Message { get; set; }
     }

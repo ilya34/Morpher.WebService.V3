@@ -1,9 +1,10 @@
-﻿namespace Morpher.WebService.V3.Russian.Data
+﻿using Newtonsoft.Json;
+
+namespace Morpher.WebService.V3.Russian.Data
 {
-    using System.Runtime.Serialization;
+
     using System.Xml.Serialization;
 
-    [DataContract]
     [XmlRoot]
     public class AdjectiveGenders
     {
@@ -18,15 +19,15 @@
             Plural = adjectiveGenders.Plural;
         }
 
-        [DataMember(Name = "feminine", Order = 0)]
+        [JsonProperty(PropertyName = "feminine", Order = 0)]
         [XmlElement("feminine", Order = 0)]
         public string Feminie { get; set; }
 
-        [DataMember(Name = "neuter", Order = 1)]
+        [JsonProperty(PropertyName = "neuter", Order = 1)]
         [XmlElement("neuter", Order = 1)]
         public string Neuter { get; set; }
 
-        [DataMember(Name = "plural", Order = 2)]
+        [JsonProperty(PropertyName = "plural", Order = 2)]
         [XmlElement("plural", Order = 2)]
         public string Plural { get; set; }
     }

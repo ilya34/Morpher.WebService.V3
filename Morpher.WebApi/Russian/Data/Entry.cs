@@ -1,11 +1,10 @@
 ﻿namespace Morpher.WebService.V3.Russian.Data
 {
-    using System.Runtime.Serialization;
+
     using System.Xml.Serialization;
     using General.Data;
     using Newtonsoft.Json;
 
-    [DataContract]
     [XmlRoot]
     public class Entry
     {
@@ -49,14 +48,14 @@
         }
 
         [XmlAttribute("gender")]
-        [DataMember(Name = "gender", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "gender", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Gender GenderXml { get; set; }
 
-        [DataMember(Name = "singular", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "singular", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("singular")]
         public DeclensionFormsForCorrection Singular { get; set; }
 
-        [DataMember(Name = "plural", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "plural", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("plural")]
         public DeclensionFormsForCorrection Plural { get; set; }
     }

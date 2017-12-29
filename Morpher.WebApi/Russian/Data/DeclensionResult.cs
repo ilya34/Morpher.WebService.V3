@@ -1,13 +1,13 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace Morpher.WebService.V3.Russian.Data
 {
     using System.Diagnostics.CodeAnalysis;
-    using System.Runtime.Serialization;
+
     using General.Data;
     using System.Xml.Serialization;
 
-    [DataContract(Name = "xml")]
     [XmlRoot("xml")]
     public class DeclensionResult : DeclensionForms
     {
@@ -51,32 +51,32 @@ namespace Morpher.WebService.V3.Russian.Data
             From = serviceResult.From;
         }
 
-        [DataMember(Name = "род", EmitDefaultValue = false, Order = 7)]
+        [JsonProperty(PropertyName = "род", DefaultValueHandling = DefaultValueHandling.Ignore, Order = 7)]
         [XmlElement("род", Order = 7)]
         [OnlyForPaid]
         public virtual string Gender { get; set; }
 
-        [DataMember(Name = "множественное", EmitDefaultValue = false, Order = 8)]
+        [JsonProperty(PropertyName = "множественное", DefaultValueHandling = DefaultValueHandling.Ignore, Order = 8)]
         [XmlElement("множественное", Order = 8)]
         [CheckForPaid]
         public virtual DeclensionForms Plural { get; set; }
 
-        [DataMember(Name = "где", EmitDefaultValue = false, Order = 10)]
+        [JsonProperty(PropertyName = "где", DefaultValueHandling = DefaultValueHandling.Ignore, Order = 10)]
         [XmlElement("где", Order = 10)]
         [OnlyForPaid]
         public virtual string Where { get; set; }
 
-        [DataMember(Order = 11, Name = "куда", EmitDefaultValue = false)]
+        [JsonProperty(Order = 11, PropertyName = "куда", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("куда", Order = 11)]
         [OnlyForPaid]
         public virtual string To { get; set; }
 
-        [DataMember(Order = 12, Name = "откуда", EmitDefaultValue = false)]
+        [JsonProperty(Order = 12, PropertyName = "откуда", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [XmlElement("откуда", Order = 12)]
         [OnlyForPaid]
         public virtual string From { get; set; }
 
-        [DataMember(Name = "ФИО", EmitDefaultValue = false, Order = 13)]
+        [JsonProperty(PropertyName = "ФИО", DefaultValueHandling = DefaultValueHandling.Ignore, Order = 13)]
         [XmlElement("ФИО", Order = 13)]
         public virtual FullName FullName { get; set; }
     }

@@ -1,11 +1,12 @@
-﻿namespace Morpher.WebService.V3.Russian.Data
+﻿using Newtonsoft.Json;
+
+namespace Morpher.WebService.V3.Russian.Data
 {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
+
     using General.Data;
 
-    [DataContract]
     public class DeclensionListResultJson
     {
         public DeclensionListResultJson()
@@ -23,10 +24,10 @@
             ServiceErrorMessage = message;
         }
 
-        [DataMember(EmitDefaultValue = false)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public DeclensionResult  DeclensionResult { get; set; }
 
-        [DataMember(Name = "Error", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "Error", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public ServiceErrorMessage ServiceErrorMessage { get; set; }
 
         public static List<DeclensionListResultJson> InflectList(

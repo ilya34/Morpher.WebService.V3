@@ -1,10 +1,11 @@
-﻿namespace Morpher.WebService.V3.Ukrainian.Data
+﻿using Newtonsoft.Json;
+
+namespace Morpher.WebService.V3.Ukrainian.Data
 {
-    using System.Runtime.Serialization;
+
     using System.Xml.Serialization;
     using General.Data;
 
-    [DataContract(Name = "GetXmlUkrResult")]
     [XmlRoot("GetXmlUkrResult")]
     public class DeclensionResult : DeclensionForms
     {
@@ -32,7 +33,7 @@
             }
         }
 
-        [DataMember(Name = "рід", EmitDefaultValue = false, Order = 7)]
+        [JsonProperty(PropertyName = "рід", DefaultValueHandling = DefaultValueHandling.Ignore, Order = 7)]
         [XmlElement("рід", Order = 7)]
         [OnlyForPaid]
         public string Gender { get; set; }
