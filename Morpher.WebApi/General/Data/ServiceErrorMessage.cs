@@ -5,7 +5,7 @@
     using Exceptions;
 
     [DataContract(Name = "error")]
-    [XmlRoot]
+    [XmlRoot("error")]
     public class ServiceErrorMessage
     {
         public ServiceErrorMessage()
