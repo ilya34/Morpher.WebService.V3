@@ -100,9 +100,7 @@ namespace Morpher.WebService.V3
                 builder.RegisterType<UkrainianWebAnalyzer>().As<IUkrainianAnalyzer>()
                     .WithParameter("client", client.Ukrainian)
                     .SingleInstance();
-                builder.RegisterType<UkrainianWebAnalyzer>().As<IUkrainianAnalyzer>()
-                    .WithParameter("client", client.Ukrainian)
-                    .SingleInstance();
+                builder.RegisterType<QazaqWebAnalyzer>().As<IQazaqAnalyzer>().SingleInstance();
             }
             else
             {
