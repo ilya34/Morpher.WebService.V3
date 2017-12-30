@@ -30,14 +30,10 @@ namespace Morpher.WebService.V3
             var builder = new ContainerBuilder();
             var config = GlobalConfiguration.Configuration;
 
-            // Exception Filter
-            builder.Register(context => new MorpherExceptionFilterAttribute())
-                .AsWebApiExceptionFilterFor<ApiController>().SingleInstance();
-
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterWebApiFilterProvider(config);
             builder.RegisterWebApiModelBinderProvider();
-
+            builder.RegisterType<ExceptionHandlingMiddleware>();
             bool runAsLocalService = Convert.ToBoolean(
                 ((NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings")).Get("RunAsLocalService"));
 
@@ -124,7 +120,7 @@ namespace Morpher.WebService.V3
                 .WithParameter(new ResolvedParameter(
                     (pi, ctx) => pi.ParameterType == typeof(IAttributeUrls),
                     (pi, ctx) => ctx.ResolveKeyed<IAttributeUrls>("Logger")));
-            builder.RegisterType<ExceptionHandlingMiddleware>();
+
             builder.RegisterType<MorpherCache>()
                 .As<ICorrectionCache>()
                 .WithParameter("name", "UserCorrection")

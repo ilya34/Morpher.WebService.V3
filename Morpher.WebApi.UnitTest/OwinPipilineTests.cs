@@ -163,9 +163,6 @@ namespace Morpher.WebService.V3.UnitTests
             builder.RegisterInstance(databaseLogMock).As<IDatabaseLog>().SingleInstance();
             builder.RegisterType<MorpherLog>().As<IMorpherLog>().SingleInstance();
 
-            builder.Register(context => new MorpherExceptionFilterAttribute())
-                .AsWebApiExceptionFilterFor<ApiController>().SingleInstance();
-
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()
                 .WithParameter("name", "ApiThrottler")
@@ -182,7 +179,7 @@ namespace Morpher.WebService.V3.UnitTests
                 .Keyed<IAttributeUrls>("Logger");
 
             builder.RegisterType<LoggingMiddleware>();
-
+            builder.RegisterType<ExceptionHandlingMiddleware>();
             using (var testServer = PrepareTestServer(builder))
             {
                 // Act
