@@ -7,7 +7,6 @@ namespace Morpher.WebService.V3.Russian.Data
 
     using System.Xml.Serialization;
 
-    [XmlRoot]
     public class DeclensionFormsForCorrection
     {
         public DeclensionFormsForCorrection()

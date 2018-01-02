@@ -9,7 +9,6 @@ namespace Morpher.WebService.V3.Russian.Data
 
     using General.Data;
 
-    [XmlRoot("множественное")]
     public class DeclensionForms
     {
         /// <summary>

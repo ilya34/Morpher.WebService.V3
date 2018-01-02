@@ -8,7 +8,6 @@ namespace Morpher.WebService.V3.Ukrainian.Data
     using System.Xml.Serialization;
     using Models;
 
-    [XmlRoot]
     public class DeclensionForms
     {    
         /// <summary>
