@@ -463,5 +463,31 @@ namespace Morpher.WebService.V3.UnitTests
                 }
             }
         }
+
+        [Test]
+        public async Task CatchExceptionWidthMiddleware_RaisedInMiddleware()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.RegisterType<FixRequestTestDataMiddleware>();
+            builder.RegisterType<ExceptionHandlingMiddleware>();
+            builder.RegisterType<UserCacheLoaderMiddleware>();
+
+            var cacheMock = Mock.Of<IMorpherCache>(cache => cache.FirstLoad == false);
+            builder.RegisterInstance(cacheMock).As<IMorpherCache>();
+            builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
+            builder.RegisterInstance(Mock.Of<IMorpherDatabase>()).As<IMorpherDatabase>();
+
+            using (var server = PrepareTestServer(builder))
+            {
+                using (var client = server.HttpClient)
+                {
+                    var result = await client.GetAsync("/get_queries_left_for_today?token=invalid_token");
+                    Assert.AreEqual(
+                        new InvalidTokenFormatException().ResponseCode,
+                        result.StatusCode,
+                        await result.Content.ReadAsStringAsync());
+                }
+            }
+        }
     }
 }
