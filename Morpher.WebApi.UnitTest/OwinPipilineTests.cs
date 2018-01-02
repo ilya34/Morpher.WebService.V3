@@ -1,4 +1,5 @@
-﻿using Morpher.WebService.V3.General.Data.Middlewares;
+﻿using System.Runtime.InteropServices;
+using Morpher.WebService.V3.General.Data.Middlewares;
 using Morpher.WebService.V3.Russian.Data;
 
 namespace Morpher.WebService.V3.UnitTests
@@ -436,6 +437,29 @@ namespace Morpher.WebService.V3.UnitTests
                     Assert.AreEqual(true, result.IsSuccessStatusCode, "StatudCode != OK");
                     var cacheEntry = (MorpherCacheObject)cache.Get("0.0.0.0");
                     Assert.AreEqual(1, cacheEntry.QueriesLeft);
+                }
+            }
+        }
+
+        [Test]
+        public async Task CatchExceptionWidthMiddleware_RaisedInController()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.RegisterType<FixRequestTestDataMiddleware>();
+            builder.RegisterType<ExceptionHandlingMiddleware>();
+
+            var cacheMock = Mock.Of<IMorpherCache>(cache => cache.FirstLoad == false);
+            builder.RegisterInstance(cacheMock).As<IMorpherCache>();
+            builder.RegisterInstance(Mock.Of<IApiThrottler>()).As<IApiThrottler>();
+            builder.RegisterInstance(Mock.Of<IMorpherDatabase>()).As<IMorpherDatabase>();
+            builder.RegisterInstance(Mock.Of<IMorpherLog>()).As<IMorpherLog>();
+
+            using (var server = PrepareTestServer(builder))
+            {
+                using (var client = server.HttpClient)
+                {
+                    var result = await client.GetAsync("/get_queries_left_for_today?token=invalid_token");
+                    Assert.AreEqual(new InvalidTokenFormatException().ResponseCode, result.StatusCode);
                 }
             }
         }
