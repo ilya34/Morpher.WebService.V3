@@ -202,7 +202,9 @@
     <Compile Include="General\Data\Extensions\HttpRequestExtensions.cs" />
     <Compile Include="General\Data\Extensions\IOwinRequestExtensions.cs" />
     <Compile Include="General\Data\Extensions\StringExtensions.cs" />
-    <Compile Include="General\Data\Filters\MorpherExceptionFilterAttribute.cs" />
+    <Compile Include="General\Data\DumbExceptionHandler.cs" />
+    <Compile Include="General\Data\Mail.cs" />
+    <Compile Include="General\Data\Middlewares\ExceptionHandlingMiddleware.cs" />
     <Compile Include="General\Data\Interfaces\IAttributeUrls.cs" />
     <Compile Include="General\Data\Interfaces\ICorrectionCache.cs" />
     <Compile Include="General\Data\JobFactory.cs" />

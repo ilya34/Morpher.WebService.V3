@@ -1,8 +1,8 @@
-﻿namespace Morpher.WebService.V3.General.Data
-{
-    using System.Threading.Tasks;
-    using Microsoft.Owin;
+﻿using System.Threading.Tasks;
+using Microsoft.Owin;
 
+namespace Morpher.WebService.V3.General.Data.Middlewares
+{
     public class LoggingMiddleware : OwinMiddleware
     {
         private readonly IMorpherLog _morpherLog;
@@ -19,12 +19,9 @@
 
         public override async Task Invoke(IOwinContext context)
         {
-            if (context.Response.Headers.Get("Error-Code") == null)
-            {
-                await Next.Invoke(context);
-            }
-
-            string method = $"{context.Request.Method.ToLowerInvariant()}:{context.Request.Path.ToString().ToLowerInvariant()}";
+            await Next.Invoke(context);
+            string method =
+                $"{context.Request.Method.ToLowerInvariant()}:{context.Request.Path.ToString().ToLowerInvariant()}";
             if (_attributeUrls.Urls.ContainsKey(method))
             {
                 _morpherLog.Log(context);

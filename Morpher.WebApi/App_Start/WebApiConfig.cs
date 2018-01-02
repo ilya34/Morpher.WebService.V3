@@ -28,7 +28,7 @@
             config.Formatters.JsonFormatter.Indent = true;
             config.Formatters.XmlFormatter.UseXmlSerializer = true;
             config.Formatters.XmlFormatter.WriterSettings.OmitXmlDeclaration = false;
-
+            config.Services.Replace(typeof(IExceptionHandler), new DumbExceptionHandler());
             // Web API routes
             config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute(

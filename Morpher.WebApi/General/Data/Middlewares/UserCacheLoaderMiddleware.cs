@@ -39,13 +39,8 @@
             }
 
             var result = _apiThrottler.LoadIntoCache(context.Request);
-            if (result != ApiThrottlingResult.Success)
-            {
-                context.Response.Headers.Add(
-                    "Error-Code",
-                    new[] { new ServiceErrorMessage(result.GenerateMorpherException()).Code.ToString() });
-            }
-
+            if (result != ApiThrottlingResult.Success) throw result.GenerateMorpherException();
+     
             return Next.Invoke(context);
         }
     }

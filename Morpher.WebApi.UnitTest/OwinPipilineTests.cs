@@ -1,4 +1,6 @@
-﻿using Morpher.WebService.V3.Russian.Data;
+﻿using System.Runtime.InteropServices;
+using Morpher.WebService.V3.General.Data.Middlewares;
+using Morpher.WebService.V3.Russian.Data;
 
 namespace Morpher.WebService.V3.UnitTests
 {
@@ -162,9 +164,6 @@ namespace Morpher.WebService.V3.UnitTests
             builder.RegisterInstance(databaseLogMock).As<IDatabaseLog>().SingleInstance();
             builder.RegisterType<MorpherLog>().As<IMorpherLog>().SingleInstance();
 
-            builder.Register(context => new MorpherExceptionFilterAttribute())
-                .AsWebApiExceptionFilterFor<ApiController>().SingleInstance();
-
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()
                 .WithParameter("name", "ApiThrottler")
@@ -181,7 +180,7 @@ namespace Morpher.WebService.V3.UnitTests
                 .Keyed<IAttributeUrls>("Logger");
 
             builder.RegisterType<LoggingMiddleware>();
-
+            builder.RegisterType<ExceptionHandlingMiddleware>();
             using (var testServer = PrepareTestServer(builder))
             {
                 // Act
@@ -215,7 +214,7 @@ namespace Morpher.WebService.V3.UnitTests
 
             // Fix user-agent & remote ip
             builder.RegisterType<FixRequestTestDataMiddleware>();
-
+            builder.RegisterType<ExceptionHandlingMiddleware>();
             builder.RegisterType<ThrottlingMiddleware>();
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()
@@ -273,6 +272,7 @@ namespace Morpher.WebService.V3.UnitTests
 
             // Fix user-agent & remote ip
             builder.RegisterType<FixRequestTestDataMiddleware>();
+            builder.RegisterType<ExceptionHandlingMiddleware>();
             builder.RegisterType<ThrottlingMiddleware>();
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()
@@ -338,6 +338,7 @@ namespace Morpher.WebService.V3.UnitTests
 
             // Fix user-agent & remote ip
             builder.RegisterType<FixRequestTestDataMiddleware>();
+            builder.RegisterType<ExceptionHandlingMiddleware>();
             builder.RegisterType<ThrottlingMiddleware>();
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()
@@ -436,6 +437,55 @@ namespace Morpher.WebService.V3.UnitTests
                     Assert.AreEqual(true, result.IsSuccessStatusCode, "StatudCode != OK");
                     var cacheEntry = (MorpherCacheObject)cache.Get("0.0.0.0");
                     Assert.AreEqual(1, cacheEntry.QueriesLeft);
+                }
+            }
+        }
+
+        [Test]
+        public async Task CatchExceptionWidthMiddleware_RaisedInController()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.RegisterType<FixRequestTestDataMiddleware>();
+            builder.RegisterType<ExceptionHandlingMiddleware>();
+
+            var cacheMock = Mock.Of<IMorpherCache>(cache => cache.FirstLoad == false);
+            builder.RegisterInstance(cacheMock).As<IMorpherCache>();
+            builder.RegisterInstance(Mock.Of<IApiThrottler>()).As<IApiThrottler>();
+            builder.RegisterInstance(Mock.Of<IMorpherDatabase>()).As<IMorpherDatabase>();
+            builder.RegisterInstance(Mock.Of<IMorpherLog>()).As<IMorpherLog>();
+
+            using (var server = PrepareTestServer(builder))
+            {
+                using (var client = server.HttpClient)
+                {
+                    var result = await client.GetAsync("/get_queries_left_for_today?token=invalid_token");
+                    Assert.AreEqual(new InvalidTokenFormatException().ResponseCode, result.StatusCode);
+                }
+            }
+        }
+
+        [Test]
+        public async Task CatchExceptionWidthMiddleware_RaisedInMiddleware()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.RegisterType<FixRequestTestDataMiddleware>();
+            builder.RegisterType<ExceptionHandlingMiddleware>();
+            builder.RegisterType<UserCacheLoaderMiddleware>();
+
+            var cacheMock = Mock.Of<IMorpherCache>(cache => cache.FirstLoad == false);
+            builder.RegisterInstance(cacheMock).As<IMorpherCache>();
+            builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
+            builder.RegisterInstance(Mock.Of<IMorpherDatabase>()).As<IMorpherDatabase>();
+
+            using (var server = PrepareTestServer(builder))
+            {
+                using (var client = server.HttpClient)
+                {
+                    var result = await client.GetAsync("/get_queries_left_for_today?token=invalid_token");
+                    Assert.AreEqual(
+                        new InvalidTokenFormatException().ResponseCode,
+                        result.StatusCode,
+                        await result.Content.ReadAsStringAsync());
                 }
             }
         }
