@@ -24,12 +24,13 @@
 
             if (!isLocal)
             {
-                NameValueCollection conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
-                int everyMinutes = Convert.ToInt32(conf["SyncCacheEveryMinutes"]);
-                Registry registry = new Registry();
+                NameValueCollection config = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
+                var registry = new Registry();
                 JobManager.JobFactory = new JobFactory();
-                registry.Schedule<LogSyncer>().ToRunEvery(everyMinutes).Minutes();
-                registry.Schedule<UserCacheSyncer>().ToRunEvery(Convert.ToInt32(conf["SyncUserCacheEveryMinutes"])).Minutes();
+                registry.Schedule<LogSyncer>()
+                    .ToRunEvery(Convert.ToInt32(config["SyncCacheEveryMinutes"])).Minutes();
+                registry.Schedule<UserCacheSyncer>()
+                    .ToRunEvery(Convert.ToInt32(config["SyncUserCacheEveryMinutes"])).Minutes();
                 JobManager.Initialize(registry);
             }
 

@@ -25,21 +25,21 @@
             ErrorCode = errorCode;
         }
 
-        public string RemoteAddress { get; set; }
+        public string RemoteAddress { get; }
 
-        public string QueryString { get; set; }
+        public string QueryString { get; }
 
-        public string QuerySource { get; set; }
+        public string QuerySource { get; }
 
         [SuppressMessage("ReSharper", "InconsistentNaming")]
-        public DateTime DateTimeUTC { get; set; }
+        public DateTime DateTimeUTC { get; }
 
-        public Guid? UserId { get; set; }
+        public Guid? UserId { get; }
 
-        public Guid? WebServiceToken { get; set; }
+        public Guid? WebServiceToken { get; }
 
-        public string UserAgent { get; set; }
+        public string UserAgent { get; }
 
-        public int ErrorCode { get; set; }
+        public int ErrorCode { get; }
     }
 }
