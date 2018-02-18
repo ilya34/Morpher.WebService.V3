@@ -1,4 +1,6 @@
-﻿namespace Morpher.WebService.V3.General.Data
+﻿using System.Net.Http.Headers;
+
+namespace Morpher.WebService.V3.General.Data
 {
     using System.IO;
     using System.Net;
@@ -17,24 +19,19 @@
         {
             var exception = context.Exception as MorpherException ?? new ServerException(context.Exception);
 
-            var format = context.Request.GetQueryString("format");
+            var format = context.Request.GetQueryString("format") ?? context.Request.GetHeader("Accept");
 
             if (format == null)
             {
-                format = context.Request.GetHeader("ContentType");
-
-                if (format == null)
-                {
-                    format = "xml";
-                }
-                else if (format.Contains("application/json"))
-                {
-                    format = "json";
-                }
-                else if (format.Contains("application/xml"))
-                {
-                    format = "xml";
-                }
+                format = "xml";
+            }
+            else if (format.Contains("application/json"))
+            {
+                format = "json";
+            }
+            else if (format.Contains("application/xml"))
+            {
+                format = "xml";
             }
 
             var response = new ServiceErrorMessage(exception);
@@ -48,10 +45,10 @@
             switch (format)
             {
                 case "json":
-
                     context.Response.Content =
                         new StringContent(
                             JsonConvert.SerializeObject(response, Formatting.Indented));
+                    context.Response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     break;
                 case "xml":
                 default:
@@ -68,6 +65,7 @@
                             context.Response.Content = new StringContent(stringWriter.GetStringBuilder().ToString());
                         }
                     }
+                    context.Response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
                     break;
             }
         }

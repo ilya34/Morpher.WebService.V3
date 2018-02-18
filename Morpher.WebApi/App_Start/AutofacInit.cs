@@ -1,21 +1,23 @@
-﻿namespace Morpher.WebService.V3
+﻿using System.Collections.Specialized;
+using Autofac.Configuration;
+using Morpher.WebService.V3.Russian;
+using Morpher.WebService.V3.Russian.Data;
+using Morpher.WebService.V3.Ukrainian.Data;
+
+namespace Morpher.WebService.V3
 {
     using System;
     using System.Configuration;
     using System.IO;
     using System.Reflection;
-    using System.Web.Hosting;
     using System.Web.Http;
     using Autofac;
     using Autofac.Core;
-    using Autofac.Integration.Mvc;
     using Autofac.Integration.WebApi;
     using General.Data;
     using General.Data.Interfaces;
     using General.Data.Middlewares;
     using General.Data.Services;
-    using Russian;
-    using Ukrainian;
 
     public static class AutofacInit
     {
@@ -28,114 +30,58 @@
             var builder = new ContainerBuilder();
             var config = GlobalConfiguration.Configuration;
 
+            // Exception Filter
+            builder.Register(context => new MorpherExceptionFilterAttribute())
+                .AsWebApiExceptionFilterFor<ApiController>().SingleInstance();
+
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterWebApiFilterProvider(config);
             builder.RegisterWebApiModelBinderProvider();
 
-            RegisterServices(builder);
+            bool runAsLocalService = Convert.ToBoolean(
+                ((NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings")).Get("RunAsLocalService"));
+
+            if (runAsLocalService)
+                RegisterLocal(builder);
+            else
+                RegisterGlobal(builder);
 
             Container = builder.Build();
             AutofacWebApiDependencyResolver = new AutofacWebApiDependencyResolver(Container);
             config.DependencyResolver = AutofacWebApiDependencyResolver;
-            
-            System.Web.Mvc.DependencyResolver.SetResolver(new AutofacDependencyResolver(Container));
         }
 
-        private static void RegisterServices(ContainerBuilder builder)
+        private static void RegisterGlobal(ContainerBuilder builder)
         {
+            string connectionString = ConfigurationManager.ConnectionStrings["MorpherDatabase"].ConnectionString;
+            string externalAnalyzer = ((NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings")).Get("ExternalAnalyzer");
 
-            bool runAsLocalService = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("RunAsLocalService"));
+            string path = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "bin",
+                externalAnalyzer);
+            var analyzer = Assembly.LoadFile(path);
 
+            builder.RegisterAssemblyTypes(analyzer)
+                .Where(type => typeof(IMorpher).IsAssignableFrom(type))
+                .As<IMorpher>().SingleInstance();
 
-            if (runAsLocalService)
-            {
-                RegisterLocalOnlyServices(builder);
+            builder.RegisterAssemblyTypes(analyzer)
+                .Where(type => typeof(IAccentizer).IsAssignableFrom(type))
+                .As<IAccentizer>().SingleInstance();
 
-                string externalAnalyzer = ConfigurationManager.AppSettings.Get("ExternalAnalyzer");
-                string path = Path.Combine(
-                    AppDomain.CurrentDomain.BaseDirectory,
-                    "bin",
-                    externalAnalyzer);
-                var analyzer = Assembly.LoadFile(path);
-                string filePathRu = HostingEnvironment.MapPath("~/App_Data/UserDict.xml");
-                string filePathUkr = HostingEnvironment.MapPath("~/App_Data/UserDictUkr.xml");
-                builder.RegisterAssemblyTypes(analyzer)
-                    .Where(type => typeof(Russian.IExceptionDictionary).IsAssignableFrom(type))
-                    .As<Russian.IExceptionDictionary, Russian.IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathRu);
-                builder.RegisterAssemblyTypes(analyzer)
-                    .Where(type => typeof(Ukrainian.IExceptionDictionary).IsAssignableFrom(type))
-                    .As<Ukrainian.IExceptionDictionary, Ukrainian.IUserDictionaryLookup>().SingleInstance().WithParameter("userDict", filePathUkr);
-            }
-            else
-            {
-                RegisterGlobalOnlyServices(builder);
+            builder.RegisterAssemblyTypes(analyzer)
+                .Where(type => typeof(IAdjectivizer).IsAssignableFrom(type))
+                .As<IAdjectivizer>().SingleInstance();
 
-                builder.RegisterType<MorpherCache>()
-                    .As<ICorrectionCache>()
-                    .WithParameter("name", "UserCorrection")
-                    .SingleInstance();
+            builder.RegisterAssemblyTypes(analyzer)
+                .Where(type => typeof(IUkrainianAnalyzer).IsAssignableFrom(type))
+                .As<IUkrainianAnalyzer>().SingleInstance();
 
-
-                builder.RegisterType<DatabaseUserDictionary>()
-                    .As<Russian.IUserDictionaryLookup, Ukrainian.IUserDictionaryLookup>()
-                    .As<Russian.IExceptionDictionary, Ukrainian.IExceptionDictionary>().SingleInstance();
-            }
-
-            RegisterSharedServices(builder);
-            RegisterAnalyzers(builder);
-        }
-
-        private static void RegisterAnalyzers(ContainerBuilder builder)
-        {
-            string externalAnalyzer = ConfigurationManager.AppSettings.Get("ExternalAnalyzer");
-
-            if (externalAnalyzer == null)
-            {
-                MorpherClient client = new MorpherClient();
-                builder.RegisterType<RussianWebAnalyzer>().As<IRussianAnalyzer>()
-                    .WithParameter("client", client.Russian)
-                    .SingleInstance();
-                builder.RegisterType<UkrainianWebAnalyzer>().As<IUkrainianAnalyzer>()
-                    .WithParameter("client", client.Ukrainian)
-                    .SingleInstance();
-            }
-            else
-            {
-                string path = Path.Combine(
-                    AppDomain.CurrentDomain.BaseDirectory,
-                    "bin",
-                    externalAnalyzer);
-                var analyzer = Assembly.LoadFile(path);
-
-                builder.RegisterAssemblyTypes(analyzer)
-                    .Where(type => typeof(IRussianAnalyzer).IsAssignableFrom(type))
-                    .As<IRussianAnalyzer>().SingleInstance();
-                builder.RegisterAssemblyTypes(analyzer)
-                    .Where(type => typeof(IUkrainianAnalyzer).IsAssignableFrom(type))
-                    .As<IUkrainianAnalyzer>().SingleInstance();
-            }
-        }
-
-        private static void RegisterSharedServices(ContainerBuilder builder)
-        {
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()
                 .WithParameter("name", "ApiThrottler")
                 .SingleInstance();
-
-            // Filters
-            builder.Register(context => new MorpherExceptionFilterAttribute())
-                .AsWebApiExceptionFilterFor<ApiController>().SingleInstance();
-        }
-
-        private static void RegisterLocalOnlyServices(ContainerBuilder builder)
-        {
-            builder.RegisterType<DummyResultTrimmer>().As<IResultTrimmer>();
-        }
-
-        private static void RegisterGlobalOnlyServices(ContainerBuilder builder)
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["MorpherDatabase"].ConnectionString;
 
             // Используются в middlewares для трэкинга нужных URL
             builder.RegisterType<AttributeUrls>()
@@ -178,6 +124,91 @@
                 .WithParameter(new ResolvedParameter(
                     (pi, ctx) => pi.ParameterType == typeof(IAttributeUrls),
                     (pi, ctx) => ctx.ResolveKeyed<IAttributeUrls>("Logger")));
+
+            builder.RegisterType<MorpherCache>()
+                .As<ICorrectionCache>()
+                .WithParameter("name", "UserCorrection")
+                .SingleInstance();
+
+
+            builder.RegisterType<DatabaseUserDictionary>()
+                .As<Russian.IUserDictionaryLookup, Ukrainian.IUserDictionaryLookup>()
+                .As<Russian.IExceptionDictionary, Ukrainian.IExceptionDictionary>().SingleInstance();
+        }
+
+        private static void RegisterFromAssembly(ContainerBuilder builder, Type type, Assembly assembly)
+        {
+            builder.RegisterAssemblyTypes(assembly)
+                .Where(type.IsAssignableFrom)
+                .As(type).SingleInstance();
+        }
+
+        private static void RegisterLocal(ContainerBuilder builder)
+        {
+            string binPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin");
+            string morpherPath = Path.Combine(binPath, "Morpher.dll");
+            string accentizerPath = Path.Combine(binPath,"Accentizer2.dll");
+            string adjectivizerPath = Path.Combine(binPath, "Adjectivizer.dll");
+            string ukrainianPath = Path.Combine(binPath, "Morpher.Ukrainian.dll");
+
+            string externalAnalyzer =
+                ((NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings")).Get("ExternalAnalyzer");
+
+            string externalAdapter = Path.Combine(binPath, externalAnalyzer);
+
+            if (File.Exists(externalAdapter))
+            {
+                var analyzer = Assembly.LoadFile(externalAdapter);
+
+                if (File.Exists(morpherPath))
+                {
+                    RegisterFromAssembly(builder, typeof(IMorpher), analyzer);
+                    builder.RegisterAssemblyTypes(analyzer)
+                        .Where(type => typeof(IExceptionDictionary).IsAssignableFrom(type))
+                        .As<IExceptionDictionary, IUserDictionaryLookup>().SingleInstance()
+                        .WithParameter("userDict", "UserDict.xml");
+                }
+                else
+                {
+                    builder.RegisterType<WebAnalyzer>().As<IMorpher>();
+                    builder.RegisterType<WebExceptionDictionary>().As<IExceptionDictionary>();
+                }
+
+                if (File.Exists(accentizerPath)) RegisterFromAssembly(builder, typeof(IAccentizer), analyzer);
+                else builder.RegisterType<WebAnalyzer>().As<IAccentizer>();
+
+                if (File.Exists(adjectivizerPath)) RegisterFromAssembly(builder, typeof(IAdjectivizer), analyzer);
+                else builder.RegisterType<WebAnalyzer>().As<IAdjectivizer>();
+
+                if (File.Exists(ukrainianPath))
+                {
+                    RegisterFromAssembly(builder, typeof(IUkrainianAnalyzer), analyzer);
+                    builder.RegisterAssemblyTypes(analyzer)
+                        .Where(type => typeof(Ukrainian.IExceptionDictionary).IsAssignableFrom(type))
+                        .As<Ukrainian.IExceptionDictionary, Ukrainian.IUserDictionaryLookup>().SingleInstance()
+                        .WithParameter("userDict", "UserDictUkr.xml");
+                }
+                else
+                {
+                    builder.RegisterType<Ukrainian.WebAnalyzer>().As<IUkrainianAnalyzer>();
+                    builder.RegisterType<Ukrainian.WebExceptionDictionary>().As<Ukrainian.IExceptionDictionary>();
+                }
+            }
+            else
+            {
+                builder.RegisterType<WebAnalyzer>().As<IMorpher, IAdjectivizer, IAccentizer>();
+                builder.RegisterType<Ukrainian.WebAnalyzer>().As<IUkrainianAnalyzer>();
+                builder.RegisterType<Ukrainian.WebExceptionDictionary>().As<Ukrainian.IExceptionDictionary>();
+                builder.RegisterType<WebExceptionDictionary>().As<IExceptionDictionary>();
+            }
+
+            var conf = (NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings");
+            builder.RegisterType<DummyResultTrimmer>().As<IResultTrimmer>();
+            Guid token;
+            if (Guid.TryParse(conf.Get("MorpherClientToken"), out token))
+                builder.RegisterType<MorpherClient>().AsSelf().WithParameter("token", token);
+            else
+                builder.RegisterType<MorpherClient>().AsSelf();
         }
     }
 }

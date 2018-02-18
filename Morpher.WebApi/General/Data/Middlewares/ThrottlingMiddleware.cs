@@ -45,7 +45,7 @@
         {
             var value = ReadBody(request);
             if (value == null) throw new RequiredParameterIsNotSpecifiedException("Text not found");
-            int requestCost = (int) Math.Ceiling((double) value.Split('\n').Length / _throttleThisAttribute.Cost);
+            int requestCost = (int)Math.Ceiling((double)value.Split('\n').Length / _throttleThisAttribute.Cost);
             return _apiThrottler.Throttle(request, requestCost);
         }
 
@@ -76,24 +76,21 @@
                     var response = new ServiceErrorMessage(exception);
                     context.Response.StatusCode = (int)exception.ResponseCode;
 
-                    var format = context.Request.Query.Get("format");
+                    var format = context.Request.Query.Get("format") ?? context.Request.Headers.Get("Accept");
+
                     if (format == null)
                     {
-                        format = context.Request.Headers.Get("ContentType");
-
-                        if (format == null)
-                        {
-                            format = "xml";
-                        }
-                        else if (format.Contains("application/json"))
-                        {
-                            format = "json";
-                        }
-                        else if (format.Contains("application/xml"))
-                        {
-                            format = "xml";
-                        }
+                        format = "xml";
                     }
+                    else if (format.Contains("application/json"))
+                    {
+                        format = "json";
+                    }
+                    else if (format.Contains("application/xml"))
+                    {
+                        format = "xml";
+                    }
+
 
                     switch (format)
                     {

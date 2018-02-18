@@ -4,13 +4,13 @@
     using Data;
     using General.Data;
 
-    public class UkrainianWebAnalyzer : IUkrainianAnalyzer
+    public class WebAnalyzer : IUkrainianAnalyzer
     {
         private readonly Client _client;
 
-        public UkrainianWebAnalyzer(Client client)
+        public WebAnalyzer(MorpherClient client)
         {
-            _client = client;
+            _client = client.Ukrainian;
         }
 
         public Data.DeclensionResult Declension(string s, DeclensionFlags? flags = null)
@@ -21,7 +21,7 @@
             }
             catch (Exception exc)
             {
-                throw new MorpherException(exc.Message, -1);
+                throw MorpherHelper.MapClientExceptionIfPossible(exc);
             }
         }
 
@@ -29,14 +29,14 @@
         {
             try
             {
-                var result = _client.Spell((uint) n, unit);
+                var result = _client.Spell(n, unit);
                 return new NumberSpelling(
                     new Data.DeclensionForms(result.NumberDeclension),
                     new Data.DeclensionForms(result.UnitDeclension));
             }
             catch (Exception exc)
             {
-                throw new MorpherException(exc.Message, -1);
+                throw MorpherHelper.MapClientExceptionIfPossible(exc);
             }
         }
     }

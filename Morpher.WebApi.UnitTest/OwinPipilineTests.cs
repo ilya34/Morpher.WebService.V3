@@ -1,4 +1,6 @@
-﻿namespace Morpher.WebService.V3.UnitTests
+﻿using Morpher.WebService.V3.Russian.Data;
+
+namespace Morpher.WebService.V3.UnitTests
 {
     using System;
     using System.Collections.Concurrent;
@@ -42,6 +44,10 @@
             configuration.Services.Replace(typeof(IAssembliesResolver), apiResolver);
             WebApiConfig.Register(configuration);
 
+
+            builder.RegisterInstance(Mock.Of<IAccentizer>());
+            builder.RegisterInstance(Mock.Of<IAdjectivizer>());
+
             builder.RegisterInstance(
                 Mock.Of<IUserDictionaryLookup>(lookup => lookup.Lookup(It.IsAny<string>()) == null))
                 .As<IUserDictionaryLookup>();
@@ -68,8 +74,8 @@
             return testServer;
         }
 
-        private readonly IRussianAnalyzer mockAnalyzer =
-            Mock.Of<IRussianAnalyzer>(
+        private readonly IMorpher mockAnalyzer =
+            Mock.Of<IMorpher>(
                 analyzer => analyzer.Declension(It.IsAny<string>(), It.IsAny<DeclensionFlags>()) ==
                             new DeclensionResult());
 
@@ -93,7 +99,7 @@
         {
             // Arrange
             ContainerBuilder builder = new ContainerBuilder();
-            builder.RegisterInstance(mockAnalyzer).As<IRussianAnalyzer>();
+            builder.RegisterInstance(mockAnalyzer).As<IMorpher>();
 
             // LoggingMiddleware использует два класса для работы с логами в бд.
             DatabaseLogMock databaseLogMock = new DatabaseLogMock();
@@ -149,7 +155,7 @@
         {
             // Arrange
             ContainerBuilder builder = new ContainerBuilder();
-            builder.RegisterInstance(mockAnalyzer).As<IRussianAnalyzer>();
+            builder.RegisterInstance(mockAnalyzer).As<IMorpher>();
 
             // LoggingMiddleware использует два класса для работы с логами в бд.
             DatabaseLogMock databaseLogMock = new DatabaseLogMock();
@@ -209,12 +215,13 @@
 
             // Fix user-agent & remote ip
             builder.RegisterType<FixRequestTestDataMiddleware>();
+
             builder.RegisterType<ThrottlingMiddleware>();
             builder.RegisterType<MorpherCache>()
                 .As<IMorpherCache>()
                 .WithParameter("name", "ApiThrottler")
                 .SingleInstance();
-            builder.RegisterInstance(mockAnalyzer).As<IRussianAnalyzer>();
+            builder.RegisterInstance(mockAnalyzer).As<IMorpher>();
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
 
             IAttributeUrls attributeUrls =
@@ -271,7 +278,7 @@
                 .As<IMorpherCache>()
                 .WithParameter("name", "ApiThrottler")
                 .SingleInstance();
-            builder.RegisterInstance(mockAnalyzer).As<IRussianAnalyzer>();
+            builder.RegisterInstance(mockAnalyzer).As<IMorpher>();
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
 
             IAttributeUrls attributeUrls =
@@ -336,7 +343,7 @@
                 .As<IMorpherCache>()
                 .WithParameter("name", "ApiThrottler")
                 .SingleInstance();
-            builder.RegisterInstance(mockAnalyzer).As<IRussianAnalyzer>();
+            builder.RegisterInstance(mockAnalyzer).As<IMorpher>();
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
 
             IAttributeUrls attributeUrls =
@@ -396,7 +403,7 @@
             builder.RegisterType<ThrottlingMiddleware>();
             MorpherCache cache = new MorpherCache("ApiThrottler");
             builder.RegisterInstance(cache).As<IMorpherCache>();
-            builder.RegisterInstance(mockAnalyzer).As<IRussianAnalyzer>();
+            builder.RegisterInstance(mockAnalyzer).As<IMorpher>();
             builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
 
             IAttributeUrls attributeUrls =
