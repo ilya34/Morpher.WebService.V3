@@ -14,7 +14,7 @@
             this.connectionString = connectionString;
         }
 
-        public void Upload(ConcurrentQueue<LogEntity> logs)
+        public void Upload(ConcurrentQueue<LogEntry> logs)
         {
             DataTable dataTable = new DataTable("Queries3");
 
@@ -27,18 +27,18 @@
             dataTable.Columns.Add("ErrorCode", typeof(int));
             dataTable.Columns.Add("UserId", typeof(Guid));
 
-            LogEntity logEntity;
-            while (logs.TryDequeue(out logEntity))
+            LogEntry logEntry;
+            while (logs.TryDequeue(out logEntry))
             {
                 dataTable.Rows.Add(
-                    logEntity.RemoteAddress,
-                    logEntity.QueryString.Truncate(150),
-                    logEntity.QuerySource.Truncate(150),
-                    logEntity.DateTimeUTC,
-                    logEntity.WebServiceToken,
-                    logEntity.UserAgent,
-                    logEntity.ErrorCode,
-                    logEntity.UserId);
+                    logEntry.RemoteAddress,
+                    logEntry.QueryString.Truncate(150),
+                    logEntry.QuerySource.Truncate(150),
+                    logEntry.DateTimeUTC,
+                    logEntry.WebServiceToken,
+                    logEntry.UserAgent,
+                    logEntry.ErrorCode,
+                    logEntry.UserId);
             }
 
             using (SqlConnection connection = new SqlConnection(connectionString))

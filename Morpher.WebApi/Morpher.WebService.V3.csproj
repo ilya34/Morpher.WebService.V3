@@ -265,7 +265,7 @@
     <Compile Include="Ukrainian\Data\IUkrainianAnalyzer.cs" />
     <Compile Include="General\Data\Interfaces\IResultTrimmer.cs" />
     <Compile Include="General\Data\Services\MorpherLog.cs" />
-    <Compile Include="General\Data\LogEntity.cs" />
+    <Compile Include="General\Data\LogEntry.cs" />
     <Compile Include="General\Data\Services\LogSyncer.cs" />
     <Compile Include="General\Data\Services\ResultTrimmer.cs" />
     <Compile Include="General\Data\Interfaces\IDatabaseLog.cs" />
@@ -360,7 +360,7 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <ExcludeFoldersFromDeployment>General\SecretConfigs</ExcludeFoldersFromDeployment> 
+    <ExcludeFoldersFromDeployment>General\SecretConfigs</ExcludeFoldersFromDeployment>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

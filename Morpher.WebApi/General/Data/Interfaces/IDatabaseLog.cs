@@ -4,6 +4,6 @@
 
     public interface IDatabaseLog
     {
-        void Upload(ConcurrentQueue<LogEntity> logs);
+        void Upload(ConcurrentQueue<LogEntry> logs);
     }
 }

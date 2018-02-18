@@ -3,9 +3,9 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
 
-    public class LogEntity
+    public class LogEntry
     {
-        public LogEntity(
+        public LogEntry(
             string remoteAddress,
             string queryString,
             string querySource,

@@ -12,7 +12,7 @@
 
         private readonly IMorpherCache _morpherCache;
 
-        private readonly ConcurrentQueue<LogEntity> _logQueue = new ConcurrentQueue<LogEntity>();
+        private readonly ConcurrentQueue<LogEntry> _logQueue = new ConcurrentQueue<LogEntry>();
 
         public MorpherLog(IDatabaseLog database, IMorpherCache morpherCache)
         {
@@ -42,7 +42,7 @@
             }
 
             _logQueue.Enqueue(
-                new LogEntity(remoteAddress, queryString, urlPath, DateTime.UtcNow, token, cacheObject?.UserId, userAgent, errorCode));
+                new LogEntry(remoteAddress, queryString, urlPath, DateTime.UtcNow, token, cacheObject?.UserId, userAgent, errorCode));
         }
 
         public void Sync()

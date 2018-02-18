@@ -81,9 +81,9 @@ namespace Morpher.WebService.V3.UnitTests
 
         class DatabaseLogMock : IDatabaseLog
         {
-            public ConcurrentQueue<LogEntity> Logs { get; private set; }
+            public ConcurrentQueue<LogEntry> Logs { get; private set; }
 
-            public void Upload(ConcurrentQueue<LogEntity> logs)
+            public void Upload(ConcurrentQueue<LogEntry> logs)
             {
                 Logs = logs;
             }
