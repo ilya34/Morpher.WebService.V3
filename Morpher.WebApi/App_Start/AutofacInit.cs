@@ -145,6 +145,22 @@ namespace Morpher.WebService.V3
 
         private static void RegisterLocal(ContainerBuilder builder)
         {
+            // connectionString test
+            string connectionString = ConfigurationManager.ConnectionStrings["MorpherDatabase"].ConnectionString;
+            if (String.IsNullOrEmpty(connectionString))
+            {
+                builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
+                builder.RegisterType<MorpherLog>().As<IMorpherLog>().SingleInstance();
+                builder.RegisterType<MorpherDatabase>().As<IMorpherDatabase>().WithParameter("connectionString", connectionString);
+                builder.RegisterType<MorpherCache>()
+                    .As<IMorpherCache>()
+                    .WithParameter("name", "ApiThrottler")
+                    .SingleInstance();
+                builder.RegisterType<DatabaseLog>().As<IDatabaseLog>()
+                    .WithParameter("connectionString", connectionString);
+            }
+            ////
+            
             string binPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin");
             string morpherPath = Path.Combine(binPath, "Morpher.dll");
             string accentizerPath = Path.Combine(binPath,"Accentizer2.dll");
