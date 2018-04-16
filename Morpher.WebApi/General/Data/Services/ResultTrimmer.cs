@@ -22,15 +22,7 @@
             }
 
             var cacheObject = (MorpherCacheObject) _morpherCache.Get(token.ToString().ToLowerInvariant());
-            
-            // !!!
-            if (cacheObject == null)
-            {
-                var cacheJson = _morpherCache.GetAllAsJson();
-                throw new Exception($"Cant find user in cache #2. Cache: {cacheJson}");
-            }
-            ////
-            
+                       
             if (cacheObject.PaidUser)
             {
                 return;
