@@ -21,7 +21,7 @@
                 return;
             }
 
-            var cacheObject = (MorpherCacheObject) _morpherCache.Get(token.ToString().ToLowerInvariant());                       
+            var cacheObject = (MorpherCacheObject) _morpherCache.Get(token.ToString().ToLowerInvariant());
             if (cacheObject.PaidUser)
             {
                 return;
