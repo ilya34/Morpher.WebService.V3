@@ -30,35 +30,42 @@
         [HttpGet]
         public HttpResponseMessage QueriesLeftToday(ResponseFormat? format = null)
         {
-            var guid = Request.GetToken();
-
-            MorpherCacheObject cacheObject = null;
-            if (guid == null)
+            if (Convert.ToBoolean(((NameValueCollection)ConfigurationManager.GetSection("WebServiceSettings")).Get("RunAsLocalService")))
             {
-                cacheObject = _apiThrottler.GetQueryLimit(Request.GetClientIp());
-
-                if (cacheObject == null)
-                {
-                    return Request.CreateResponse(
-                        HttpStatusCode.OK,
-                        new ServiceErrorMessage(new IpBlockedException()),
-                        format);
-                }
+                throw new FunctionNotFoundException();
             }
             else
             {
-                cacheObject = _apiThrottler.GetQueryLimit(guid.Value);
+                var guid = Request.GetToken();
 
-                if (cacheObject == null)
+                MorpherCacheObject cacheObject = null;
+                if (guid == null)
                 {
-                    return Request.CreateResponse(
-                        HttpStatusCode.OK,
-                        new ServiceErrorMessage(new TokenNotFoundException()),
-                        format);
-                }
-            }
+                    cacheObject = _apiThrottler.GetQueryLimit(Request.GetClientIp());
 
-            return Request.CreateResponse(HttpStatusCode.OK, Math.Max(cacheObject.QueriesLeft, 0), format);
+                    if (cacheObject == null)
+                    {
+                        return Request.CreateResponse(
+                            HttpStatusCode.OK,
+                            new ServiceErrorMessage(new IpBlockedException()),
+                            format);
+                    }
+                }
+                else
+                {
+                    cacheObject = _apiThrottler.GetQueryLimit(guid.Value);
+
+                    if (cacheObject == null)
+                    {
+                        return Request.CreateResponse(
+                            HttpStatusCode.OK,
+                            new ServiceErrorMessage(new TokenNotFoundException()),
+                            format);
+                    }
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, Math.Max(cacheObject.QueriesLeft, 0), format);
+            }
         }
 
         [Route("remove_client_from_cache")]
