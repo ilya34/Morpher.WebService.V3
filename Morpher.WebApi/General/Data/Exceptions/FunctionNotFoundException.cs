@@ -7,7 +7,7 @@
     {
         private static readonly string ErrorMessage = "Запрошенная функция не поддерживается";
 
-        private static readonly HttpStatusCode ResponseWith = HttpStatusCode.NotImplemented;//http code = 501 // custom code = 493;
+        private static readonly HttpStatusCode ResponseWith = HttpStatusCode.NotImplemented;//http code = 501 
 
         public FunctionNotFoundException()
             : base(ErrorMessage, 13)
