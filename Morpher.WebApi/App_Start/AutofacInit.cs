@@ -145,31 +145,11 @@ namespace Morpher.WebService.V3
 
         private static void RegisterLocal(ContainerBuilder builder)
         {
-            // connectionString test
-            string connectionString;
-            try // проверка конфиг файла в configSource и строки ConnectionStrings в Web.config
-            {
-                if (ConfigurationManager.ConnectionStrings.Count>1)// есть строка ConnectionStrings в Web.config + конфиг файл существует
-                {
-                    connectionString = ConfigurationManager.ConnectionStrings["MorpherDatabase1"].ConnectionString;
-                }
-                else // нет строки ConnectionStrings в Web.config
-                    connectionString = "";                
-            }
-            catch// конфиг файл не существует или строка ConnectionStrings в Web.config неверна
-            {
-                connectionString = "";
-            }
-
-            builder.RegisterType<ApiThrottler>().As<IApiThrottler>();
-            builder.RegisterType<MorpherLog>().As<IMorpherLog>().SingleInstance();
-            builder.RegisterType<MorpherDatabase>().As<IMorpherDatabase>().WithParameter("connectionString", connectionString);
-            builder.RegisterType<MorpherCache>()
-                .As<IMorpherCache>()
-                .WithParameter("name", "ApiThrottler")
-                .SingleInstance();
-            builder.RegisterType<DatabaseLog>().As<IDatabaseLog>()
-                .WithParameter("connectionString", connectionString);
+            // need for ServiceController for query get_queries_left_for_today
+            builder.RegisterType<DummyServiceController>().As<IApiThrottler>();
+            builder.RegisterType<DummyServiceController>().As<IMorpherLog>();
+            builder.RegisterType<DummyServiceController>().As<IMorpherDatabase>();
+            builder.RegisterType<DummyServiceController>().As<IMorpherCache>();            
             ////
             
             string binPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin");
